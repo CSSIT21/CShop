@@ -9,6 +9,7 @@ const origin = [
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
   app.enableCors({
     origin,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -18,8 +19,8 @@ async function bootstrap() {
     allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
   });
 
-  // app.use(express.json());
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.SERVER_PORT || 8080);
 }
+
 bootstrap();
