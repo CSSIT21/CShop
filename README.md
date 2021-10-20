@@ -1,2 +1,2 @@
 # CShop
-A online shopping website.
+Shop web application in CSC290 Integrated Project I
