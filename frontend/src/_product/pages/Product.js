@@ -1,6 +1,6 @@
 const ProductPage = props => {
     return <div>
-
+        This is ProductPage
     </div>;
 };
 

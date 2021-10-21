@@ -1,6 +1,6 @@
 const FavouritePage = props => {
     return <div>
-
+        This is FavouritePage
     </div>;
 };
 
