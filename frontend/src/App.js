@@ -30,7 +30,7 @@ function App() {
             <Router>
                 <Switch>
                     {/* REDIRECT / to /home */}
-                    <Redirect exact path="/" to="/home"></Redirect>
+                    <Redirect exact path="/" to="/home"/>
 
                     {/* ROUTES FOR Sidebar Layout ATTACHED */}
                     <Route path="/manage/:path?" exact>
