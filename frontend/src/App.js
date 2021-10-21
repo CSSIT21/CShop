@@ -21,6 +21,7 @@ import ProfilePage from './_profile/pages/Profile';
 import HistoryPage from './_profile/pages/History';
 import VoucherPage from './_profile/pages/Voucher';
 import AddressPage from './_profile/pages/Address';
+import LoginPage from './_auth/pages/Login';
 
 function App() {
 
@@ -78,7 +79,7 @@ function App() {
                     </Route>
                     <Route path="/login" exact>
                         <MainLayout>
-                            <Login/>
+                            <LoginPage/>
                         </MainLayout>
                     </Route>
                     <Route path="/register" exact>
