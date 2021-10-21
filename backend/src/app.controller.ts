@@ -1,12 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { PrismaService } from './prisma/prisma.service';
 
 @Controller()
 export class AppController {
-	constructor(private readonly appService: AppService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
-	@Get()
-	getHello(): string {
-		return this.appService.getHello();
+	@Get('')
+	public GetUser() {
+		return this.prisma.user.count();
+	}
+
+	@Post('')
+	public async AddUser(@Body('username') username, @Body('password') password) {
+		await this.prisma.user.create({ data: { username, password } });
+		return 'Successfully!';
 	}
 }
