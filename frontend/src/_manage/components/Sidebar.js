@@ -17,10 +17,12 @@ import {
     faUser,
     faUserSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
 let icon = [faUser, faCashRegister, faUserSlash, faBan];
+let route = ["users", "sellers", "bannedusers", "bannedsellers"];
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -79,7 +81,12 @@ export default function Sidebar(props) {
                 <List>
                     {["Users", "Sellers", "Banned users", "Banned sellers"].map(
                         (text, index) => (
-                            <ListItem button key={text}>
+                            <ListItem
+                                button
+                                key={text}
+                                to={`/manage/${route[index]}`}
+                                component={Link}
+                            >
                                 <ListItemIcon>
                                     <FontAwesomeIcon
                                         icon={icon[index]}

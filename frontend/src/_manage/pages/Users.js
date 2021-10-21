@@ -1,12 +1,15 @@
-import React from 'react';
-import MiniDrawer from '../components/Sidebar';
+import { Box } from "@mui/system";
+import React from "react";
+import Sidebar from "../components/Sidebar";
 
-const ManageAccount = () => {
-	return (
-		<div>
-			<MiniDrawer />
-		</div>
-	);
+const Users = () => {
+    return (
+        <div>
+            <Sidebar>
+                <Box>SDfsdfjsdopfhsdik;ghsi;dghsihgip[s]</Box>
+            </Sidebar>
+        </div>
+    );
 };
 
-export default ManageAccount;
+export default Users;
