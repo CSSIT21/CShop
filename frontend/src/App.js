@@ -1,6 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
 import ManageAccount from './_manage/pages/ManageAccount';
+
 import {
   BrowserRouter as Router,
   Switch,

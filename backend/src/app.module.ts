@@ -19,19 +19,6 @@ const path = require('path');
     }),
     AuthenticationModule,
     PrismaModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.JWT_EXPIRED },
-      // useFactory: (config: ConfigService) => {
-      //   return {
-      //     secret: config.get<string>('JWT_SECRET'),
-      //     signOptions: {
-      //       expiresIn: config.get<string | number>('JWT_EXPIRED'),
-      //     },
-      //   };
-      // },
-      // inject: [ConfigService],
-    }),
   ],
   controllers: [
     AppController
