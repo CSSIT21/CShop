@@ -79,3 +79,7 @@ typings/
 
 dist/
 backend/dist/main.js
+frontend/package-lock.json
+frontend/yarn.lock
+*.xml
+*.iml
