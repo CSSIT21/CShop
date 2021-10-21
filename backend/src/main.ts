@@ -10,7 +10,7 @@ const origin = [
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+  dotenv.config();
   app.enableCors({
     origin,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

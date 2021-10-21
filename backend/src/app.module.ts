@@ -20,18 +20,18 @@ const path = require('path');
     }),
     AuthenticationModule,
     PrismaModule,
-    JwtModule.registerAsync({
-      // secret: jwtConfig.JWT_SECRET,
-      // signOptions: { expiresIn: jwtConfig.JWT_EXPIRED },
-      useFactory: (config: ConfigService) => {
-        return {
-          secret: config.get<string>('JWT_SECRET'),
-          signOptions: {
-            expiresIn: config.get<string | number>('JWT_EXPIRED'),
-          },
-        };
-      },
-      inject: [ConfigService],
+    JwtModule.register({
+      secret: jwtConfig.JWT_SECRET,
+      signOptions: { expiresIn: jwtConfig.JWT_EXPIRED },
+      // useFactory: (config: ConfigService) => {
+      //   return {
+      //     secret: config.get<string>('JWT_SECRET'),
+      //     signOptions: {
+      //       expiresIn: config.get<string | number>('JWT_EXPIRED'),
+      //     },
+      //   };
+      // },
+      // inject: [ConfigService],
     }),
   ],
   controllers: [
