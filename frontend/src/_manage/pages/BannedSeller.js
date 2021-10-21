@@ -2,14 +2,13 @@ import { Box } from "@mui/system";
 import React from "react";
 import Sidebar from "../components/Sidebar";
 
-const BannedSeller = () => {
+const BannedSellerPage = () => {
+
     return (
         <div>
-            <Sidebar className="test" hello="hihihih">
-                <Box>Hello sdoghjpasighyaiopwghyailosghauio;sdgh</Box>
-            </Sidebar>
+            <Box>Banned Seller</Box>
         </div>
     );
 };
 
-export default BannedSeller;
+export default BannedSellerPage;

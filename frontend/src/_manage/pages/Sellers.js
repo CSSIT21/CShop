@@ -1,15 +1,10 @@
-import { Box } from "@mui/system";
-import React from "react";
-import Sidebar from "../components/Sidebar";
-
-const Sellers = () => {
-    return (
-        <div>
-            <Sidebar>
-                <Box>sdfsdfsdfgopsdjfgiswuedipg</Box>
-            </Sidebar>
-        </div>
-    );
+import { Box } from '@mui/system';
+const ManageSellerAccountPage = () => {
+	return (
+		<div>
+			<Box>Seller</Box>
+		</div>
+	);
 };
 
-export default Sellers;
+export default ManageSellerAccountPage;

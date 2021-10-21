@@ -1,15 +1,12 @@
 import { Box } from "@mui/system";
 import React from "react";
-import Sidebar from "../components/Sidebar";
 
-const Users = () => {
-    return (
-        <div>
-            <Sidebar>
-                <Box>SDfsdfjsdopfhsdik;ghsi;dghsihgip[s]</Box>
-            </Sidebar>
-        </div>
-    );
+const ManageAccountPage = () => {
+	return (
+		<div>
+			<Box>Users</Box>
+		</div>
+	);
 };
 
-export default Users;
+export default ManageAccountPage;

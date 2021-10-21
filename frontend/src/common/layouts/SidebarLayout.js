@@ -9,7 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
-import Logo from "../../common/assets/images/Outline.png";
+import Logo from "../assets/images/Outline.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBan,
@@ -21,8 +21,17 @@ import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
-let icon = [faUser, faCashRegister, faUserSlash, faBan];
-let route = ["users", "sellers", "bannedusers", "bannedsellers"];
+// let icon = [faUser, faCashRegister, faUserSlash, faBan];
+// let route = ["users", "sellers", "bannedusers", "bannedsellers"];
+// ["Users", "Sellers", "Banned users", "Banned sellers"]
+const generateLink = (icon, title="", path="/") => ({ icon, title, path});
+
+let links = [ 
+    generateLink(faUser, "Users", '/manage/users'),
+    generateLink(faCashRegister, "Sellers",'/manage/sellers'),
+    generateLink(faUserSlash, "Banned users",'/manage/bannedusers'),
+    generateLink(faBan, "Banned sellers",'/manage/bannedsellers'),
+];
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -62,7 +71,7 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
-export default function Sidebar(props) {
+export default function SidebarLayout(props) {
     const classes = useStyles();
 
     return (
@@ -79,7 +88,24 @@ export default function Sidebar(props) {
                     </Typography>
                 </Box>
                 <List>
-                    {["Users", "Sellers", "Banned users", "Banned sellers"].map(
+                    {links.map(({icon, title, path}, index) => (
+                        <ListItem
+                            button
+                            key={index}
+                            to={path}
+                            component={Link}
+                        >
+                            <ListItemIcon>
+                                <FontAwesomeIcon
+                                    icon={icon}
+                                    className={classes.icon}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary={title} />
+                        </ListItem>
+                    ))}
+
+                    {/* {["Users", "Sellers", "Banned users", "Banned sellers"].map(
                         (text, index) => (
                             <ListItem
                                 button
@@ -96,7 +122,7 @@ export default function Sidebar(props) {
                                 <ListItemText primary={text} />
                             </ListItem>
                         )
-                    )}
+                    )} */}
                 </List>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

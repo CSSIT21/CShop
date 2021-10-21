@@ -1,15 +1,14 @@
-import { Box } from "@mui/system";
+import {Box} from "@mui/system";
 import React from "react";
 import Sidebar from "../components/Sidebar";
 
-const BannedUsers = () => {
+const BannedUserPage = () => {
+
     return (
         <div>
-            <Sidebar>
-                <Box>sdfsdfsdfgopsdjfgiswuedipg</Box>
-            </Sidebar>
+            <Box>Banned User</Box>
         </div>
     );
 };
 
-export default BannedUsers;
+export default BannedUserPage;

@@ -1,15 +1,7 @@
-const Login = () => {
-    /** states goes here.. */
-    /** const [state, setState] = useState() */
-    /**
-     * useEffect(() => {
-     * 
-     * })
-     * 
-     */
+const LoginPage = () => {
     return <div>
-
+        This is LoginPage
     </div>;
 };
 
-export default Login;
+export default LoginPage;
