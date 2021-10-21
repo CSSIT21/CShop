@@ -1,30 +1,34 @@
 /** internal */
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from "react-router-dom";
 
 /** layouts */
-import SidebarLayout from './common/layouts/SidebarLayout';
+import SidebarLayout from "./common/layouts/SidebarLayout";
 import MainLayout from "./common/layouts/MainLayout";
 
 /** pages */
-import HomePage from './_home/pages/Home';
+import HomePage from "./_home/pages/Home";
 import UsersPage from "./_manage/pages/Users";
 import BannedUsersPage from "./_manage/pages/BannedUsers";
 import SellersPage from "./_manage/pages/Sellers";
 import BannedSellerPage from "./_manage/pages/BannedSeller";
-import FavouritePage from './_home/pages/Favourite';
-import SugggestionPage from './_home/pages/Suggestion';
+import FavouritePage from "./_home/pages/Favourite";
+import SugggestionPage from "./_home/pages/Suggestion";
 import CategoryPage from "./_category/pages/Category";
 import ProductPage from "./_product/pages/Product";
-import ChatPage from './_chat/pages/Chat';
-import RegisterPage from './_auth/pages/Register';
-import ProfilePage from './_profile/pages/Profile';
-import HistoryPage from './_profile/pages/History';
-import VoucherPage from './_profile/pages/Voucher';
-import AddressPage from './_profile/pages/Address';
-import LoginPage from './_auth/pages/Login';
+import ChatPage from "./_chat/pages/Chat";
+import RegisterPage from "./_auth/pages/Register";
+import ProfilePage from "./_profile/pages/Profile";
+import HistoryPage from "./_profile/pages/History";
+import VoucherPage from "./_profile/pages/Voucher";
+import AddressPage from "./_profile/pages/Address";
+import LoginPage from "./_auth/pages/Login";
 
 function App() {
-
     return (
         <div className="App">
             <Router>
@@ -35,76 +39,83 @@ function App() {
                     {/* ROUTES FOR Sidebar Layout ATTACHED */}
                     <Route path="/manage/:path?" exact>
                         <SidebarLayout>
+                            <Route exact path="/manage">
+                                <Redirect
+                                    exact
+                                    path="/manage"
+                                    to="/manage/users"
+                                />
+                            </Route>
                             <Route exact path="/manage/users">
-                                <UsersPage/>
+                                <UsersPage />
                             </Route>
                             <Route exact path="/manage/bannedsellers">
-                                <BannedSellerPage/>
+                                <BannedSellerPage />
                             </Route>
                             <Route exact path="/manage/sellers">
-                                <SellersPage/>
+                                <SellersPage />
                             </Route>
                             <Route exact path="/manage/bannedusers">
-                                <BannedUsersPage/>
+                                <BannedUsersPage />
                             </Route>
                         </SidebarLayout>
                     </Route>
                     <Route path="/home/:path?" exact>
                         <MainLayout>
                             <Route path="/home">
-                                <HomePage/>
+                                <HomePage />
                             </Route>
                             <Route path="/home/suggest">
-                                <SugggestionPage/>
+                                <SugggestionPage />
                             </Route>
                             <Route path="/home/favourite">
-                                <FavouritePage/>
+                                <FavouritePage />
                             </Route>
                         </MainLayout>
                     </Route>
                     <Route path="/search/category/:id" exact>
                         <MainLayout>
-                            <CategoryPage/>
+                            <CategoryPage />
                         </MainLayout>
                     </Route>
                     <Route path="/product/:id" exact>
                         <MainLayout>
-                            <ProductPage/>
+                            <ProductPage />
                         </MainLayout>
                     </Route>
                     <Route path="/chat" exact>
                         <MainLayout>
-                            <ChatPage/>
+                            <ChatPage />
                         </MainLayout>
                     </Route>
                     <Route path="/login" exact>
                         <MainLayout>
-                            <LoginPage/>
+                            <LoginPage />
                         </MainLayout>
                     </Route>
                     <Route path="/register" exact>
                         <MainLayout>
-                            <RegisterPage/>
+                            <RegisterPage />
                         </MainLayout>
                     </Route>
                     <Route path="/profile" exact>
                         <MainLayout>
-                            <ProfilePage/>
+                            <ProfilePage />
                         </MainLayout>
                     </Route>
                     <Route path="/profile/:path?" exact>
                         <MainLayout>
                             <Route path="/profile/information">
-                                <SugggestionPage/>
+                                <SugggestionPage />
                             </Route>
                             <Route path="/profile/address">
-                                <AddressPage/>
+                                <AddressPage />
                             </Route>
                             <Route path="/profile/voucher">
-                                <VoucherPage/>
+                                <VoucherPage />
                             </Route>
                             <Route path="/profile/history">
-                                <HistoryPage/>
+                                <HistoryPage />
                             </Route>
                         </MainLayout>
                     </Route>
