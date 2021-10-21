@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import express from 'express';
 import { AppModule } from './app.module';
+import * as dotenv from 'dotenv';
 
 const origin = [
   `http://localhost:${process.env.SERVER_PORT || 8080}`

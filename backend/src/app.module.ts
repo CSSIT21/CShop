@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { AppController } from './app.controller';
@@ -20,9 +20,18 @@ const path = require('path');
     }),
     AuthenticationModule,
     PrismaModule,
-    JwtModule.register({
-      secret: jwtConfig.JWT_SECRET,
-      signOptions: { expiresIn: jwtConfig.JWT_EXPIRED },
+    JwtModule.registerAsync({
+      // secret: jwtConfig.JWT_SECRET,
+      // signOptions: { expiresIn: jwtConfig.JWT_EXPIRED },
+      useFactory: (config: ConfigService) => {
+        return {
+          secret: config.get<string>('JWT_SECRET'),
+          signOptions: {
+            expiresIn: config.get<string | number>('JWT_EXPIRED'),
+          },
+        };
+      },
+      inject: [ConfigService],
     }),
   ],
   controllers: [
