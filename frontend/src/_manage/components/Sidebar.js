@@ -62,7 +62,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar(props) {
     const classes = useStyles();
-    console.log(props);
+
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />

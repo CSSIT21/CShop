@@ -5,15 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
-=======
->>>>>>> 9619b8507d16c36f54943518d3d74e697526f486
->>>>>>> Stashed changes
     "@mui/icons-material": "^5.0.4",
     "@mui/material": "^5.0.4",
     "@mui/styles": "^5.0.1",
