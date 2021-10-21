@@ -16,13 +16,12 @@ const path = require('path');
     HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: path.join(__dirname, '.env')
     }),
     AuthenticationModule,
     PrismaModule,
     JwtModule.register({
-      secret: jwtConfig.JWT_SECRET,
-      signOptions: { expiresIn: jwtConfig.JWT_EXPIRED },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRED },
       // useFactory: (config: ConfigService) => {
       //   return {
       //     secret: config.get<string>('JWT_SECRET'),
