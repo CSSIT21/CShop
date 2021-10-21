@@ -16,7 +16,6 @@ import SugggestionPage from './_home/pages/Suggestion';
 import CategoryPage from "./_category/pages/Category";
 import ProductPage from "./_product/pages/Product";
 import ChatPage from './_chat/pages/Chat';
-import { Login } from "@mui/icons-material";
 import RegisterPage from './_auth/pages/Register';
 import ProfilePage from './_profile/pages/Profile';
 import HistoryPage from './_profile/pages/History';
