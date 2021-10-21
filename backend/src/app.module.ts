@@ -9,12 +9,14 @@ import { AuthenticationModule } from './authentication/auth.module';
 import jwtConfig from './common/constant/jwt';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+const path = require('path');
 
 @Module({
   imports: [
     HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: path.join(__dirname, '.env')
     }),
     AuthenticationModule,
     PrismaModule,
