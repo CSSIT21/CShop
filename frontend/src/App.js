@@ -1,22 +1,21 @@
 import Users from "./_manage/pages/Users";
-import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from "react-router-dom";
-import { AnimatedSwitch } from 'react-router-transition';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import BannedSeller from "./_manage/pages/BannedSeller";
 import Sellers from "./_manage/pages/Sellers";
 import BannedUsers from "./_manage/pages/BannedUsers";
 import SidebarLayout from './common/layouts/SidebarLayout';
 import HomePage from './_home/pages/Home';
-import './common/assets/styles/transition.css';
-import router from "./common/router";
 
 function App() {
 
     return (
         <div className="App">
             <Router>
-                <AnimatedSwitch> 
+                <Switch> 
+                    {/* REDIRECT / to /home */}
                     <Redirect path="/" to="/home"></Redirect>
                     
+                    {/* ROUTES FOR Sidebar Layout ATTACHED */}
                     <Route>
                         <SidebarLayout>
                             <Route exact path="/manage/users">
@@ -33,7 +32,7 @@ function App() {
                             </Route>
                         </SidebarLayout>
                     </Route>
-                </AnimatedSwitch>
+                </Switch>
             </Router>
         </div>
     );
