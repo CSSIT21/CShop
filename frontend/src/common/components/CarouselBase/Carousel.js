@@ -232,7 +232,7 @@ const Carousel = ({
 
       return prevPage;
     });
-  }, [loop, page]);
+  }, [loop, page,setPageState]);
 
   const handleNext = useCallback(
     (isMobile = false) => {
@@ -268,7 +268,7 @@ const Carousel = ({
        
       }
     },
-    [loop, page, gap, railWrapperRef, scrollSnap]
+    [loop, page, gap, railWrapperRef, scrollSnap,setPageState]
   );
 
   const startAutoplayInterval = useCallback(() => {
@@ -302,7 +302,7 @@ const Carousel = ({
   const turnToPage = useCallback((page) => {
     setCurrentPage(page);
     setPageState(page);
-  }, []);
+  }, [setPageState]);
 
   useEffect(() => {
     setCurrentPage((p) => {
@@ -318,7 +318,7 @@ const Carousel = ({
       setPageState(nextPage);
       return nextPage;
     });
-  }, [pageState]);
+  }, [pageState,setPageState, loop, page]);
 
   const handleHover = useCallback(() => {
     setIsHover((hover) => !hover);
@@ -349,6 +349,7 @@ const Carousel = ({
     loopProp,
     autoplayProp,
     parseGap,
+    setPageState
   ]);
 
   return (

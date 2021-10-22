@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { For } from "../../common/utils";
 import Banner from "../components/Banner";
 
 const HomePage = (props) => {
