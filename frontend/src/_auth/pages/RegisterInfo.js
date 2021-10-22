@@ -44,18 +44,26 @@ const RegisterInfoPage = () => {
       height: 50,
       borderRadius: "50%",
       backgroundColor: "currentColor",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
   }));
 
   function QontoStepIcon(props) {
     const { active, completed, className } = props;
-
     return (
       <QontoStepIconRoot ownerState={{ active }} className={className}>
         {completed ? (
           <Check className="QontoStepIcon-completed" />
+        ) : activeStep === 0 ? (
+          <div className="QontoStepIcon">
+            <div style={stepperText}>{activeStep + 1}</div>
+          </div>
         ) : (
-          <div className="QontoStepIcon"></div>
+          <div className="QontoStepIcon">
+            <div style={stepperText}>{activeStep + 2}</div>
+          </div>
         )}
       </QontoStepIconRoot>
     );
@@ -64,6 +72,10 @@ const RegisterInfoPage = () => {
     display: "flex",
     flexDirection: "Column",
     alignItems: "center",
+  };
+  const stepperText = {
+    color: "white",
+    display: "flex",
   };
   return (
     <div style={bodyStyle}>
