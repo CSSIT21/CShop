@@ -1,17 +1,23 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import Check from "@mui/icons-material/Check";
+import RegisterInformation from "../components/RegisterInformation";
+import RegisterAddress from "../components/RegisterAddress";
+import StepperConnector from "../components/StepperConnector";
+import StepperIcon from "../components/StepperIcon";
+import { Fragment } from "react";
+import { makeStyles } from "@mui/styles";
+import { Box } from "@mui/material";
+import CButton from "../../common/components/CButton";
 
 const steps = ["Information", "Address"];
 
 const RegisterInfoPage = () => {
   const [activeStep, setActiveStep] = React.useState(0);
+  const classes = useStyles();
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -20,112 +26,98 @@ const RegisterInfoPage = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-  const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
-    color: "#eaeaf0",
-    display: "flex",
-    height: 22,
-    alignItems: "center",
-    ...(ownerState.active && {
-      color: "#FD6637",
-    }),
-    "& .QontoStepIcon-completed": {
-      color: "white",
-      backgroundColor: "#00BF9D",
-      width: 25,
-      height: 25,
-      padding: "12px",
-      borderRadius: "50%",
-    },
-    "& .QontoStepIcon": {
-      width: 50,
-      height: 50,
-      borderRadius: "50%",
-      backgroundColor: "currentColor",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  }));
-
-  function QontoStepIcon(props) {
-    const { active, completed, className } = props;
-    return (
-      <QontoStepIconRoot ownerState={{ active }} className={className}>
-        {completed ? (
-          <Check className="QontoStepIcon-completed" />
-        ) : activeStep === 0 ? (
-          <div className="QontoStepIcon">
-            <div style={stepperText}>{activeStep + 1}</div>
-          </div>
-        ) : (
-          <div className="QontoStepIcon">
-            <div style={stepperText}>{activeStep + 2}</div>
-          </div>
-        )}
-      </QontoStepIconRoot>
-    );
-  }
-  const bodyStyle = {
-    display: "flex",
-    flexDirection: "Column",
-    alignItems: "center",
-  };
-  const stepperText = {
-    color: "white",
-    display: "flex",
-  };
   return (
-    <div style={bodyStyle}>
-      <div style={{ margin: "3% 0" }}>This is for navbar</div>
-      <Box sx={{ width: "50%" }}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps} StepIconComponent={QontoStepIcon}>
-                  {label}
-                </StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        {activeStep === steps.length ? (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </Box>
-          </React.Fragment>
-        )}
-      </Box>
-    </div>
+    <Fragment>
+      <div className={classes.container}>
+        <div style={{ margin: "3% 0" }}>This is for navbar</div>
+        <div className={classes.body}>
+          <div className={classes.box}>
+            <Stepper
+              activeStep={activeStep}
+              alternativeLabel
+              connector={<StepperConnector />}
+              className={classes.stepper}
+            >
+              {steps.map((label, index) => {
+                const stepProps = {};
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel
+                      className={classes.label}
+                      StepIconComponent={({ active, completed, className }) => (
+                        <StepperIcon
+                          active={active}
+                          completed={completed}
+                          className={className}
+                          activeStep={activeStep}
+                        />
+                      )}
+                    >
+                      {label}
+                    </StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+            <div>
+              <div>
+                {activeStep === 0 ? (
+                  <RegisterInformation />
+                ) : activeStep === 1 ? (
+                  <RegisterAddress />
+                ) : (
+                  <div></div>
+                )}
+              </div>
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+                <Box sx={{ flex: "1 1 auto" }} />
+                <CButton
+                  title={activeStep === steps.length - 1 ? "Finish" : "Next"}
+                  onClick={handleNext}
+                />
+              </Box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Fragment>
   );
 };
+
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  box: {
+    width: "60%",
+    paddingTop: "5%",
+  },
+  body: {
+    backgroundColor: "#f3f4f5",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  label: {
+    "& span": {
+      fontSize: 15,
+      paddingTop: 8,
+    },
+  },
+  stepper: {
+    marginLeft: "50px",
+    marginRight: "50px",
+  },
+});
 
 export default RegisterInfoPage;
