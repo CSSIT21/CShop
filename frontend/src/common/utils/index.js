@@ -3,7 +3,7 @@ import qs from 'qs';
 
 export function For(props){
     const each = props.each || [];
-    return each.map(props.children);
+    return <>{each.map(props.children)}</>;
 }
 
 export function useQuery() {
