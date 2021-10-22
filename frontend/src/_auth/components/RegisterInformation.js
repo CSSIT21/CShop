@@ -163,66 +163,68 @@ const RegisterInformation = () => {
           </div>
           <div className={classes.birthdate}>
             <div className={classes.contextHeader}>Birthdate</div>
-            <div className={classes.textFieldBox} style={{ width: "30%" }}>
-              <TextField
-                id="year"
-                variant="outlined"
-                sx={{ borderRadius: "10px" }}
-                fullWidth
-                select
-                value={userInfo.year}
-                onChange={(e) => {
-                  setUserInfo({ ...userInfo, year: e.target.value });
-                }}
-              >
-                {years.map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className={classes.textFieldBox} style={{ width: "30%" }}>
-              <TextField
-                id="month"
-                variant="outlined"
-                sx={{ borderRadius: "10px" }}
-                fullWidth
-                select
-                value={userInfo.month}
-                onChange={(e) => {
-                  setUserInfo({ ...userInfo, month: e.target.value });
-                }}
-              >
-                {months.map((month) => (
-                  <MenuItem key={month.id} value={month.id}>
-                    {month.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className={classes.textFieldBox} style={{ width: "30%" }}>
-              <TextField
-                id="day"
-                variant="outlined"
-                sx={{ borderRadius: "10px" }}
-                fullWidth
-                select
-                value={userInfo.day}
-                onChange={(e) => {
-                  setUserInfo({ ...userInfo, day: e.target.value });
-                }}
-              >
-                {days.map((day) => (
-                  <MenuItem key={day} value={day}>
-                    {day}
-                  </MenuItem>
-                ))}
-              </TextField>
+            <div className={classes.birthdateSelect}>
+              <div className={classes.textFieldBox} style={{ width: "30%" }}>
+                <TextField
+                  id="day"
+                  variant="outlined"
+                  sx={{ borderRadius: "10px" }}
+                  fullWidth
+                  select
+                  value={userInfo.day}
+                  onChange={(e) => {
+                    setUserInfo({ ...userInfo, day: e.target.value });
+                  }}
+                >
+                  {days.map((day) => (
+                    <MenuItem key={day} value={day}>
+                      {day}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>
+              <div className={classes.textFieldBox} style={{ width: "30%" }}>
+                <TextField
+                  id="month"
+                  variant="outlined"
+                  sx={{ borderRadius: "10px" }}
+                  fullWidth
+                  select
+                  value={userInfo.month}
+                  onChange={(e) => {
+                    setUserInfo({ ...userInfo, month: e.target.value });
+                  }}
+                >
+                  {months.map((month) => (
+                    <MenuItem key={month.id} value={month.id}>
+                      {month.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>
+              <div className={classes.textFieldBox} style={{ width: "30%" }}>
+                <TextField
+                  id="year"
+                  variant="outlined"
+                  sx={{ borderRadius: "10px" }}
+                  fullWidth
+                  select
+                  value={userInfo.year}
+                  onChange={(e) => {
+                    setUserInfo({ ...userInfo, year: e.target.value });
+                  }}
+                >
+                  {years.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>
             </div>
           </div>
         </div>
-        <CButton title="FK" onClick={() => console.log(userInfo)} />
+        <CButton title="Check info" onClick={() => console.log(userInfo)} />
       </div>
     </Fragment>
   );
@@ -260,7 +262,10 @@ const useStyles = makeStyles({
       borderRadius: "10px",
     },
   },
-  date: {},
+  birthdateSelect: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 });
 
 export default RegisterInformation;
