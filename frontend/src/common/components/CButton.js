@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
+import PropTypes from "prop-types";
 
 const CButton = ({ title, size, icon, width, height }) => {
     return (
@@ -27,6 +28,14 @@ const CButton = ({ title, size, icon, width, height }) => {
             </Button>
         </div>
     );
+};
+
+CButton.propTypes = {
+    title: PropTypes.string.isRequired,
+    size: PropTypes.string,
+    icon: PropTypes.object,
+    width: PropTypes.string,
+    height: PropTypes.string,
 };
 
 export default CButton;
