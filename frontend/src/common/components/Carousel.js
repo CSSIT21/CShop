@@ -1,4 +1,4 @@
-import CarouselBase from "./CarouselBase"; ฃ
+import CarouselBase from "./CarouselBase";
 
 const Carousel = ({
   items = [],
