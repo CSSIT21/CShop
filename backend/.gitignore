@@ -4,6 +4,7 @@
 # Compiled output
 /dist
 /node_modules
+/yarn.lock
 
 # Logs
 logs
