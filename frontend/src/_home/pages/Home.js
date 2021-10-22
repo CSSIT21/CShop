@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { For } from "../../common/utils";
+import Banner from "../components/Banner";
 
 const HomePage = (props) => {
-    return (
-        <div>
-            hello tihs is HomePage
-            <ul>
-                <For each={[1, 2, 3, 4, 5]}>{(item) => <li>{item}</li>}</For>
-            </ul>
-        </div>
-    );
+  
+
+  return (
+    <>
+     <Banner />
+    </>
+  );
 };
 
 export default HomePage;
