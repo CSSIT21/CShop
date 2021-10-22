@@ -1,4 +1,5 @@
-import debounce from 'lodash.debounce'
+import { debounce } from "../../../utils";
+
 const HANDLER_NAME_SPACE = '__react-grid-carousle-resize-handler'
 
 const handleResize = debounce(e => {
