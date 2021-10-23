@@ -1,5 +1,11 @@
+import React from "react";
+
 const ProductDescription = (props) => {
-  return <div>This is ProductDescription</div>;
+  const [open, setOpen] = React.useState(true);
+  const handleClick = () => {
+    setOpen(open);
+  };
+  return <div>Product Detail</div>;
 };
 
 export default ProductDescription;
