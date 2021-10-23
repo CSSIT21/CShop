@@ -1,4 +1,5 @@
 import { useLocation } from "react-router";
+import { useRecoilState } from 'recoil';
 import qs from 'qs';
 
 export function For(props){
@@ -30,4 +31,16 @@ export function debounce(func, wait, immediate) {
         
         if (callNow) func.apply(context, args);
     };
+};
+
+export const useAtomState = (_state) => {
+  const [state,setState] = useRecoilState(_state);
+  const updateState = _ => {
+    setState(__ => {
+      const cloned = {...__};
+      Object.defineProperties(cloned,typeof _ === 'function' ? _(state) : _);
+      return {...cloned};
+    });
+  };
+  return [state, updateState];
 };

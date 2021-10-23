@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const CButton = ({
     title,
     size,
-    icon = {},
+    icon = null,
     width,
     height,
     backgroundColor = "#FD6637",
@@ -32,10 +32,11 @@ const CButton = ({
                 {...rest}
             >
                 <Box display="flex" justifyContent="center" alignItems="center">
-                    <FontAwesomeIcon
+                    {icon === null ? <></> : <FontAwesomeIcon
                         icon={icon}
                         style={{ marginRight: "7px" }}
-                    />
+                    />}
+                    
                     <Typography sx={{ textTransform: 'capitalize', fontSize }}>{title}</Typography>
                 </Box>
             </Button>
