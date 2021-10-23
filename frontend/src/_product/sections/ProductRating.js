@@ -1,51 +1,65 @@
 import React, { Component } from "react";
 import RatingStars from "../components/RatingStars";
-import ShowMoreButton from "../../common/components/CButton";
+
 import Comments from "../components/Comments";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, ThemeProvider } from "@mui/styles";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Collapse,
   Divider,
+  Fade,
+  FormControlLabel,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Switch,
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import { ExpandLessRounded, ExpandMoreRounded } from "@mui/icons-material";
+import { createTheme } from "@mui/material/styles";
 
 const ProductRating = (props) => {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-
+  const [open, setOpen] = React.useState(false);
   const handleClick = () => {
     setOpen(!open);
   };
 
+  const classes = useStyles();
+
   return (
     <Box>
       <Box>
-        <ListItemButton onClick={handleClick}>
-          <ListItemText primary="Product Rating" />
-          <RatingStars></RatingStars>
-          {/* <Typography>Product Rating</Typography> */}
-          {open ? <ExpandLessRounded /> : <ExpandMoreRounded />}
-        </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <Comments></Comments>
-          </List>
-        </Collapse>
-        <Divider />
-        {/* <Box className={classes.box}>
-          <Box>
-            <Typography>Product Rating</Typography>
-            <RatingStars></RatingStars>
-          </Box>
-        </Box> */}
+        <Accordion
+          className={classes.accordion}
+          TransitionComponent={Fade}
+          TransitionProps={{ onExited: () => setOpen(false), timeout: 700 }}
+          disableGutters
+        >
+          <AccordionSummary
+            expandIcon={<ExpandLessRounded />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            onClick={handleClick}
+          >
+            <Box className={classes.box}>
+              <Typography sx={{ fontWeight: 600, fontSize: "30px" }}>
+                Product Rating
+              </Typography>
+              <RatingStars value={5}></RatingStars>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails>{open && <Comments></Comments>}</AccordionDetails>
+        </Accordion>
+        {!open && (
+          <Fade in={!open} timeout={500}>
+            <Divider />
+          </Fade>
+        )}
       </Box>
-      <ShowMoreButton title="Show more comments"></ShowMoreButton>
     </Box>
   );
 };
@@ -53,6 +67,10 @@ const ProductRating = (props) => {
 const useStyles = makeStyles({
   box: {
     display: "flex",
+    alignItems: "center",
+  },
+  accordion: {
+    boxShadow: "none !important",
   },
 });
 
