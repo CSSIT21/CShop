@@ -10,15 +10,34 @@ const useStyles = makeStyles({
 		minWidth: '200px',
 		margin: '0 15px',
 	},
-})
+});
+
+const authenProps = {
+	component:Link,
+	width:"90px",
+	height:"38px",
+	fontSize:"14px"
+};
+const style = { 
+	border: "1px solid #FD6637",
+	backgroundColor: "white",
+	color: "#FD6637"
+};
 
 const AuthenButton = () => {
 	const classes = useStyles();
-
+	
 	return (
 		<Box className={classes.authenWrapper}>
-			<CButton component={Link} to="/login" title="Sign In" width="90px" height="38px" fontSize="14px" style={{ border: "1px solid #FD6637", backgroundColor: "white", color: "#FD6637" }} />
-			<CButton component={Link} to="/register/info" title="Sign Up" width="90px" height="38px" fontSize="14px" />
+			<CButton 
+				to="/login"
+				title="Sign In"
+				{...authenProps}
+				style={style} />
+			<CButton
+				to="/register/info"
+				title="Sign Up"
+				{...authenProps}/>
 		</Box>
 	)
 }
