@@ -4,58 +4,21 @@ import { makeStyles } from "@mui/styles";
 import MenuItem from "@mui/material/MenuItem";
 import CButton from "../../common/components/CButton";
 import { Box } from "@mui/system";
+import { years, months, days, genders } from "../../common/constants/register";
+import { useRecoilState } from 'recoil';
+import registerState from "../../common/store/registerState";
 
-const genders = [
-  { id: 0, value: "Select Gender" },
-  { id: 1, value: "Male" },
-  { id: 2, value: "Female" },
-  { id: 3, value: "Others" },
-];
-const years = [
-  "Select Year",
-  ...[...Array(150)].map((year, idx) => new Date().getFullYear() - 149 + idx),
-];
-const months = [
-  {
-    id: 0,
-    label: "Select Month",
-  },
-  ...[
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ].map((label, id) => ({ id: id + 1, label })),
-];
-const days = ["Select Day", ...[...Array(31)].map((day, idx) => 1 + idx)];
 const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
   const classes = useStyles();
-  const [userInfo, setUserInfo] = useState({
-    phoneNumber: "099-257-3398",
-    password: "",
-    confirmPassword: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    gender: genders[0].value,
-    year: years[0],
-    month: months[0].id,
-    day: days[0],
-  });
+
+  const [userInfo, setUserInfo] = useRecoilState(registerState);
 
   return (
     <Fragment>
       <Box>
         <Box className={classes.header}>Information</Box>
         <Box className={classes.context}>
+        {JSON.stringify(userInfo)}
           <Box className={classes.genInfo}>
             <Box className={classes.contextHeader}>General Information</Box>
             <Box className={classes.textFieldBox}>
@@ -64,7 +27,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 placeholder="Phone Number"
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
-                disabled
+                readonly
                 fullWidth
                 value={userInfo.phoneNumber}
               />
@@ -73,9 +36,11 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
               <TextField
                 id="password"
                 variant="outlined"
+                type="password"
                 placeholder="Password"
                 type="password"
                 fullWidth
+                value={userInfo.password}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, password: e.target.value });
                 }}
@@ -85,6 +50,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
             <Box className={classes.textFieldBox}>
               <TextField
                 id="confirmPassword"
+                type="password"
                 variant="outlined"
                 placeholder="Confirm your password"
                 type="password"
@@ -110,6 +76,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                   variant="outlined"
                   placeholder="Firstname"
                   fullWidth
+                  value={userInfo.firstname}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, firstname: e.target.value });
                   }}
@@ -123,6 +90,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                   id="lastname"
                   variant="outlined"
                   placeholder="Lastname"
+                  value={userInfo.lastname}
                   fullWidth
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, lastname: e.target.value });
@@ -137,6 +105,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 variant="outlined"
                 placeholder="Email"
                 fullWidth
+                value={userInfo.email}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, email: e.target.value });
                 }}

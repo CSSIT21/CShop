@@ -5,28 +5,39 @@ import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const CButton = ({ title, size, icon, width, height, ...rest }) => {
-
+const CButton = ({
+    title,
+    size,
+    icon = null,
+    width,
+    height,
+    backgroundColor = "#FD6637",
+    fontSize = "14px",
+    style = {},
+    ...rest
+}) => {
     return (
         <Box>
             <Button
                 variant="contained"
                 style={{
-                    backgroundColor: "#FD6637",
+                    backgroundColor: backgroundColor,
                     boxShadow: "none",
                     borderRadius: "12px",
-                    width: width,
-                    height: height,
+                    width,
+                    height,
+                    ...style
                 }}
                 size={size}
                 {...rest}
             >
                 <Box display="flex" justifyContent="center" alignItems="center">
-                    <FontAwesomeIcon
+                    {icon === null ? <></> : <FontAwesomeIcon
                         icon={icon}
                         style={{ marginRight: "7px" }}
-                    />
-                    <Typography>{title}</Typography>
+                    />}
+                    
+                    <Typography sx={{ textTransform: 'capitalize', fontSize }}>{title}</Typography>
                 </Box>
             </Button>
         </Box>
