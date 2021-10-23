@@ -22,3 +22,5 @@
 !.vscode/extensions.json
 backend/.env
 frontend/.env
+frontend/yarn.lock
+frontend/package-lock.json
