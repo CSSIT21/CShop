@@ -38,6 +38,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 variant="outlined"
                 type="password"
                 placeholder="Password"
+                type="password"
                 fullWidth
                 value={userInfo.password}
                 onChange={(e) => {
@@ -52,6 +53,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 type="password"
                 variant="outlined"
                 placeholder="Confirm your password"
+                type="password"
                 fullWidth
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, confirmPassword: e.target.value });
@@ -214,7 +216,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "32px",
     fontWeight: 600,
-    margin: "7% 0%",
+    margin: "5% 0%",
   },
   context: {
     padding: "0 12%",
@@ -227,7 +229,7 @@ const useStyles = makeStyles({
     marginBottom: "40px",
   },
   textFieldBox: {
-    marginBottom: "40px",
+    marginBottom: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
     width: "100%",

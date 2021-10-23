@@ -178,7 +178,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "32px",
     fontWeight: 600,
-    margin: "7% 0%",
+    margin: "5% 0%",
   },
   context: {
     padding: "0 12%",
@@ -188,7 +188,7 @@ const useStyles = makeStyles({
     marginBottom: "40px",
   },
   textFieldBox: {
-    marginBottom: "40px",
+    marginBottom: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
     width: "100%",
