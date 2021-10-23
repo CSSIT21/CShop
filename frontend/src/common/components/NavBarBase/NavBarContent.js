@@ -14,10 +14,6 @@ const useStyles = makeStyles({
 
 	},
 
-	navbarLeft: {
-		// marginRight: 10,
-	},
-
 	navbarMiddle: {
 		padding: '0 20px',
 		marginRight: 3,
@@ -40,7 +36,7 @@ const NavBarContent = ({ isLogin }) => {
 	return (
 		<Box className={classes.navbarWrapper} >
 
-			<Box className={classes.navbarLeft} style={{ width: isLogin ? '10%' : '12%' }}>
+			<Box style={{ width: isLogin ? '10%' : '12%' }}>
 				<a href="/home"> <img className={classes.logo} src={CShopLogo} /> </a>
 			</Box>
 
