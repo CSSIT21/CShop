@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@mui/styles";
 import MenuItem from "@mui/material/MenuItem";
 import CButton from "../../common/components/CButton";
 import { Box } from "@mui/system";
 import { years, months, days, genders } from "../../common/constants/register";
-import { useRecoilState } from 'recoil';
+import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 
 const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {

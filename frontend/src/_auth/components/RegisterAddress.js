@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CButton from "../../common/components/CButton";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
@@ -158,7 +158,7 @@ const RegisterAddress = ({
             width: "300px",
             height: "55px",
             color: "#FD6637",
-            textTransform: 'capitalize'
+            textTransform: "capitalize",
           }}
         >
           Back

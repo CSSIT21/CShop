@@ -6,7 +6,7 @@ const StepperIcon = ({ active, completed, className, activeStep }) => {
   const classes = useStyle({
     active,
   });
-  const num = [1, 2, 3];
+
   return (
     <Box>
       <Box className={`${className} ${classes.qontoStepIconRoot}`}>
