@@ -1,5 +1,3 @@
-import React, { Component } from "react";
-
 const comments = [1, 2, 3, 4, 5];
 
 const Comments = (props) => {
