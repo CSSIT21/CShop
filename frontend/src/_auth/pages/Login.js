@@ -1,14 +1,13 @@
 import { Box } from "@mui/system";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CButton from "../../common/components/CButton";
-import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -20,6 +19,9 @@ const LoginPage = () => {
   const [userPassword, setUserPassword] = useState({
     password: "",
   });
+  useEffect(() => {
+    document.body.style.backgroundColor = "#f3f4f5";
+  }, []);
   return (
     <Fragment>
       <Box className={classes.container}>
@@ -69,9 +71,7 @@ const LoginPage = () => {
             ></CButton>
           </Box>
           <Box className={classes.text}>Forgot your password?</Box>
-          <Box className={classes.divider}>
-            OR
-          </Box>
+          <Box className={classes.divider}>OR</Box>
           <Button
             variant="contained"
             style={{
@@ -82,7 +82,7 @@ const LoginPage = () => {
               width: "500px",
               marginBottom: "35px",
               padding: "8px",
-              textTransform: 'capitalize'
+              textTransform: "capitalize",
             }}
             startIcon={<Avatar src={GoogleLogo} />}
           >
@@ -101,7 +101,6 @@ const LoginPage = () => {
 };
 const useStyles = makeStyles({
   container: {
-    backgroundColor: "#f3f4f5",
     display: "flex",
     justifyContent: "center",
   },
@@ -143,11 +142,12 @@ const useStyles = makeStyles({
     width: "500px",
   },
   condition2: {
-    marginBottom: "35px",
+    margin: "20px 0",
   },
   divider: {
     margin: "25px",
     color: "#A0A3BD",
+    margin: "40px 0px",
   },
 });
 

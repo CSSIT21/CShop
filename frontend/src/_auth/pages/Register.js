@@ -1,22 +1,23 @@
 import { Box } from "@mui/system";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import Button from "@mui/material/Button";
 import CButton from "../../common/components/CButton";
-import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 //data
 const RegisterPage = () => {
   //function
   const classes = useStyles();
   const router = useHistory();
-
+  useEffect(() => {
+    document.body.style.backgroundColor = "#f3f4f5";
+  }, []);
   const [userPhoneNum, setUserPhoneNum] = useState({
     phoneNumber: "",
   });
@@ -74,10 +75,7 @@ const RegisterPage = () => {
               }}
             ></CButton>
           </Box>
-          <Box className={classes.divider}>
-            OR
-          </Box>
-
+          <Box className={classes.divider}>OR</Box>
           <Button
             variant="contained"
             style={{
@@ -88,7 +86,7 @@ const RegisterPage = () => {
               width: "500px",
               margin: "35px",
               padding: "8px",
-              textTransform: 'capitalize'
+              textTransform: "capitalize",
             }}
             startIcon={<Avatar src={GoogleLogo} />}
           >
@@ -153,14 +151,14 @@ const useStyles = makeStyles({
     margin: "35px",
   },
   condition2: {
-    marginBottom: "35px",
+    margin: "20px 0",
   },
-
   textOrange2: {
     color: "#FD6637",
   },
   divider: {
     color: "#A0A3BD",
-  }
+    margin: "10px 0px",
+  },
 });
 export default RegisterPage;
