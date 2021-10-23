@@ -8,7 +8,6 @@ const HomePage = () => {
 
   return (
     <>
-      <NavBar isLogin={isLogin} />
       <Banner />
       <button onClick={() => setIsLogin(!isLogin)} > switch</button>
     </>
