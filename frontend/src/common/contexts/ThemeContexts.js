@@ -13,6 +13,12 @@ export const ThemeContextProvider = ({ children }) => {
         shape: {
             borderRadius: 12,
         },
+        palette: {
+            primary: {
+                main: '#FD6637',
+                contrastText: 'white'
+            }
+        }
     });
 
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>;

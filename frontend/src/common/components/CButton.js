@@ -3,18 +3,30 @@ import { Button, Typography } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-const CButton = ({ title, size, icon, width, height, ...rest }) => {
+const CButton = ({
+    title,
+    size,
+    icon = {},
+    width,
+    height,
+    backgroundColor = "#FD6637",
+    fontSize = "14px",
+    style = {},
+    ...rest
+}) => {
     return (
         <Box>
             <Button
                 variant="contained"
                 style={{
-                    backgroundColor: "#FD6637",
+                    backgroundColor: backgroundColor,
                     boxShadow: "none",
                     borderRadius: "12px",
-                    width: width,
-                    height: height,
+                    width,
+                    height,
+                    ...style
                 }}
                 size={size}
                 {...rest}
@@ -24,7 +36,7 @@ const CButton = ({ title, size, icon, width, height, ...rest }) => {
                         icon={icon}
                         style={{ marginRight: "7px" }}
                     />
-                    <Typography>{title}</Typography>
+                    <Typography sx={{ textTransform: 'capitalize', fontSize }}>{title}</Typography>
                 </Box>
             </Button>
         </Box>

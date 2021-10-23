@@ -13,10 +13,16 @@ const ProductCard = ({
   status = "sold out",
   favourite = false,
   margin = 10,
-  onFavourite = () => {},
   to,
   ...rest
 }) => {
+  const onFavourite = (idx) => {
+    setItems((items) => {
+      items[idx].favourite = !items[idx].favourite;
+      return [...items];
+    });
+  };
+
   return (
     <Card
       sx={{

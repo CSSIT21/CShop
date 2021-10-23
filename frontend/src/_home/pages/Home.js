@@ -1,11 +1,9 @@
 import Banner from "../components/Banner";
 
-const HomePage = (props) => {
-  
-
+const HomePage = () => {
   return (
     <>
-     <Banner />
+      <Banner />
     </>
   );
 };

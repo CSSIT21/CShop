@@ -7,7 +7,8 @@ const Carousel = ({
   gap = 10,
   loop = false,
   pageState = 0,
-  setPageState = void 0,
+  hideArrow = true,
+  setPageState = () => { },
   children,
   ...rest
 }) => {
@@ -19,7 +20,7 @@ const Carousel = ({
       loop={loop}
       pageState={pageState}
       setPageState={setPageState}
-      hideArrow
+      hideArrow={hideArrow}
       {...rest}
     >
       {items.map((item, idx) => (
