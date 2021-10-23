@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import Avaicheck from './availability/AvaiCheck';
 import './Category.css'
 import PriceRange from './price-filter/PriceRange';
 import RateStar from './rate-filter/RateStar';
+import ServiceCheck from './Service/serviceCheck';
 
 
 export default class CategoryPage extends Component {
@@ -12,6 +14,8 @@ export default class CategoryPage extends Component {
         <h5>Filter</h5>
         <PriceRange />
         <RateStar/>
+        <ServiceCheck/>
+        <Avaicheck/>
       </div>
     );
   }

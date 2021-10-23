@@ -1,0 +1,43 @@
+.service hr {
+  width: 175px;
+  background-color: lightgray;
+  border: none;
+  height: 1.6px;
+  margin-top: 10px;
+  margin-left: 0px;
+}
+
+.service {
+  margin-left: 50px;
+}
+
+.service input[type='checkbox'] {
+  display: none;
+}
+
+.service input[type='checkbox'] + label {
+  display: inline-block;
+  position: relative;
+  padding-left: 28px;
+}
+.service input[type='checkbox'] + label::before {
+    content:'';
+    background: none;
+    position: absolute;
+    width:15px;
+    height: 15px;
+    border: black 1px solid;
+    border-radius: 1px;
+    left: 0;
+}
+.service input[type='checkbox']:checked + label::after {
+    content:'';
+    background-image:url(http://cdn.onlinewebfonts.com/svg/img_142698.png) ;
+    position: absolute;
+    width:16.5px;
+    height: 16.5px;
+    background-size: cover;
+    left: 0;
+}
+
+
