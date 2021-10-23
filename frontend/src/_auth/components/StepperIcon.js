@@ -1,29 +1,32 @@
 import { makeStyles } from "@mui/styles";
 import Check from "@mui/icons-material/Check";
+import { Box } from "@mui/system";
 
 const StepperIcon = ({ active, completed, className, activeStep }) => {
   const classes = useStyle({
     active,
   });
-
+  const num = [1, 2, 3];
   return (
-    <div className={`${className} ${classes.qontoStepIconRoot}`}>
-      {completed ? (
-        <Check className="QontoStepIcon-completed" />
-      ) : active ? (
-        <div className="QontoStepIcon">
-          <div className={classes.stepperText}>{activeStep + 1}</div>
-        </div>
-      ) : (
-        <div className="QontoStepIcon">
-          <div className={classes.stepperText}>{activeStep + 2}</div>
-        </div>
-      )}
-    </div>
+    <Box>
+      <Box className={`${className} ${classes.qontoStepIconRoot}`}>
+        {completed ? (
+          <Check className="QontoStepIcon-completed" />
+        ) : active ? (
+          <Box className="QontoStepIcon">
+            <Box className={classes.stepperText}>{activeStep + 1}</Box>
+          </Box>
+        ) : (
+          <Box className="QontoStepIcon">
+            <Box className={classes.stepperText}>{activeStep + 2}</Box>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles(() => ({
   qontoStepIconRoot: {
     display: "flex",
     height: 22,

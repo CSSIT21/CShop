@@ -3,20 +3,22 @@ import TextField from "@mui/material/TextField";
 import { makeStyles } from "@mui/styles";
 import MenuItem from "@mui/material/MenuItem";
 import CButton from "../../common/components/CButton";
+import { Box } from "@mui/system";
+
 const genders = [
-  { id: 0, value: "Select gender" },
+  { id: 0, value: "Select Gender" },
   { id: 1, value: "Male" },
   { id: 2, value: "Female" },
   { id: 3, value: "Others" },
 ];
 const years = [
-  "Select year",
+  "Select Year",
   ...[...Array(150)].map((year, idx) => new Date().getFullYear() - 149 + idx),
 ];
 const months = [
   {
     id: 0,
-    label: "Select month",
+    label: "Select Month",
   },
   ...[
     "January",
@@ -33,8 +35,8 @@ const months = [
     "December",
   ].map((label, id) => ({ id: id + 1, label })),
 ];
-const days = ["Select day", ...[...Array(31)].map((day, idx) => 1 + idx)];
-const RegisterInformation = () => {
+const days = ["Select Day", ...[...Array(31)].map((day, idx) => 1 + idx)];
+const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
   const classes = useStyles();
   const [userInfo, setUserInfo] = useState({
     phoneNumber: "099-257-3398",
@@ -51,12 +53,12 @@ const RegisterInformation = () => {
 
   return (
     <Fragment>
-      <div>
-        <div className={classes.header}>Information</div>
-        <div className={classes.context}>
-          <div className={classes.genInfo}>
-            <div className={classes.contextHeader}>General Information</div>
-            <div className={classes.textFieldBox}>
+      <Box>
+        <Box className={classes.header}>Information</Box>
+        <Box className={classes.context}>
+          <Box className={classes.genInfo}>
+            <Box className={classes.contextHeader}>General Information</Box>
+            <Box className={classes.textFieldBox}>
               <TextField
                 id="phoneNumber"
                 placeholder="Phone Number"
@@ -66,8 +68,8 @@ const RegisterInformation = () => {
                 fullWidth
                 value={userInfo.phoneNumber}
               />
-            </div>
-            <div className={classes.textFieldBox}>
+            </Box>
+            <Box className={classes.textFieldBox}>
               <TextField
                 id="password"
                 variant="outlined"
@@ -77,9 +79,9 @@ const RegisterInformation = () => {
                   setUserInfo({ ...userInfo, password: e.target.value });
                 }}
               />
-            </div>
+            </Box>
 
-            <div className={classes.textFieldBox}>
+            <Box className={classes.textFieldBox}>
               <TextField
                 id="confirmPassword"
                 variant="outlined"
@@ -89,15 +91,15 @@ const RegisterInformation = () => {
                   setUserInfo({ ...userInfo, confirmPassword: e.target.value });
                 }}
               />
-            </div>
+            </Box>
 
-            <div
+            <Box
               style={{
                 display: "flex",
                 justifyContent: "space-between",
               }}
             >
-              <div
+              <Box
                 className={classes.textFieldBox}
                 style={{ marginRight: "10px" }}
               >
@@ -110,8 +112,8 @@ const RegisterInformation = () => {
                     setUserInfo({ ...userInfo, firstname: e.target.value });
                   }}
                 />
-              </div>
-              <div
+              </Box>
+              <Box
                 className={classes.textFieldBox}
                 style={{ marginLeft: "10px" }}
               >
@@ -124,10 +126,10 @@ const RegisterInformation = () => {
                     setUserInfo({ ...userInfo, lastname: e.target.value });
                   }}
                 />
-              </div>
-            </div>
+              </Box>
+            </Box>
 
-            <div className={classes.textFieldBox}>
+            <Box className={classes.textFieldBox}>
               <TextField
                 id="email"
                 variant="outlined"
@@ -137,11 +139,11 @@ const RegisterInformation = () => {
                   setUserInfo({ ...userInfo, email: e.target.value });
                 }}
               />
-            </div>
-          </div>
-          <div className={classes.gender}>
-            <div className={classes.contextHeader}>Gender</div>
-            <div className={classes.textFieldBox} style={{ width: "30%" }}>
+            </Box>
+          </Box>
+          <Box className={classes.gender}>
+            <Box className={classes.contextHeader}>Gender</Box>
+            <Box className={classes.textFieldBox} style={{ width: "30%" }}>
               <TextField
                 id="gender"
                 variant="outlined"
@@ -159,12 +161,12 @@ const RegisterInformation = () => {
                   </MenuItem>
                 ))}
               </TextField>
-            </div>
-          </div>
-          <div className={classes.birthdate}>
-            <div className={classes.contextHeader}>Birthdate</div>
-            <div className={classes.birthdateSelect}>
-              <div className={classes.textFieldBox} style={{ width: "30%" }}>
+            </Box>
+          </Box>
+          <Box className={classes.birthdate}>
+            <Box className={classes.contextHeader}>Birthdate</Box>
+            <Box className={classes.birthdateSelect}>
+              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
                 <TextField
                   id="day"
                   variant="outlined"
@@ -182,8 +184,8 @@ const RegisterInformation = () => {
                     </MenuItem>
                   ))}
                 </TextField>
-              </div>
-              <div className={classes.textFieldBox} style={{ width: "30%" }}>
+              </Box>
+              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
                 <TextField
                   id="month"
                   variant="outlined"
@@ -201,8 +203,8 @@ const RegisterInformation = () => {
                     </MenuItem>
                   ))}
                 </TextField>
-              </div>
-              <div className={classes.textFieldBox} style={{ width: "30%" }}>
+              </Box>
+              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
                 <TextField
                   id="year"
                   variant="outlined"
@@ -220,12 +222,19 @@ const RegisterInformation = () => {
                     </MenuItem>
                   ))}
                 </TextField>
-              </div>
-            </div>
-          </div>
-        </div>
-        <CButton title="Check info" onClick={() => console.log(userInfo)} />
-      </div>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box className={classes.button}>
+          <CButton
+            title="Next"
+            onClick={handleNext}
+            width="470px"
+            height="55px"
+          />
+        </Box>
+      </Box>
     </Fragment>
   );
 };
@@ -236,20 +245,15 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "32px",
     fontWeight: 600,
-    margin: "6% 0%",
+    margin: "7% 0%",
   },
   context: {
     padding: "0 12%",
-  },
-  genInfo: {
-    display: "flex",
-    flexDirection: "column",
   },
   contextHeader: {
     fontSize: "24px",
     marginBottom: "40px",
   },
-
   textField: {
     marginBottom: "40px",
   },
@@ -265,6 +269,11 @@ const useStyles = makeStyles({
   birthdateSelect: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  button: {
+    display: "flex",
+    justifyContent: "center",
+    margin: "70px 0 180px 0",
   },
 });
 

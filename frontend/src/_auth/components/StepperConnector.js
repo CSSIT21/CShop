@@ -14,7 +14,7 @@ const useStyle = makeStyles((theme) => ({
     [`& .${stepConnectorClasses.line}`]: {
       borderColor: "#CCCCCC",
       borderRadius: 1,
-      margin: "4px 5%",
+      margin: "4px 30px",
     },
   },
 }));

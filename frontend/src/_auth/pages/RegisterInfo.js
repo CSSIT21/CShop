@@ -2,36 +2,39 @@ import * as React from "react";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
 import RegisterInformation from "../components/RegisterInformation";
 import RegisterAddress from "../components/RegisterAddress";
 import StepperConnector from "../components/StepperConnector";
 import StepperIcon from "../components/StepperIcon";
 import { Fragment } from "react";
 import { makeStyles } from "@mui/styles";
-import { Box } from "@mui/material";
-import CButton from "../../common/components/CButton";
+import { Box } from "@mui/system";
+import Success from "../components/Success";
 
 const steps = ["Information", "Address"];
 
 const RegisterInfoPage = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const classes = useStyles();
-
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    window.scrollTo(0, 0);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    window.scrollTo(0, 0);
+  };
+  const handleRegister = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   return (
     <Fragment>
-      <div className={classes.container}>
-        <div style={{ margin: "3% 0" }}>This is for navbar</div>
-        <div className={classes.body}>
-          <div className={classes.box}>
+      <Box className={classes.container}>
+        <Box style={{ margin: "3% 0" }}>This is for navbar</Box>
+        <Box className={classes.body}>
+          <Box className={classes.box}>
             <Stepper
               activeStep={activeStep}
               alternativeLabel
@@ -59,35 +62,29 @@ const RegisterInfoPage = () => {
                 );
               })}
             </Stepper>
-            <div>
-              <div>
+            <Box>
+              <Box>
                 {activeStep === 0 ? (
-                  <RegisterInformation />
+                  <RegisterInformation
+                    activeStep={activeStep}
+                    handleNext={() => handleNext()}
+                  />
                 ) : activeStep === 1 ? (
-                  <RegisterAddress />
+                  <RegisterAddress
+                    activeStep={activeStep}
+                    handleBack={() => handleBack()}
+                    handleRegister={() => handleRegister()}
+                  />
+                ) : activeStep === 2 ? (
+                  <Success />
                 ) : (
-                  <div></div>
+                  <Box></Box>
                 )}
-              </div>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <CButton
-                  title={activeStep === steps.length - 1 ? "Finish" : "Next"}
-                  onClick={handleNext}
-                />
               </Box>
-            </div>
-          </div>
-        </div>
-      </div>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </Fragment>
   );
 };

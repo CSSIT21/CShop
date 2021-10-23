@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const CButton = ({ title, size, icon, width, height, ...rest }) => {
   return (
