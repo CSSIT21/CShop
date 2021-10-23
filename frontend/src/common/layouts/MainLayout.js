@@ -1,5 +1,10 @@
+import NavBar from "../components/NavBar";
+
 const MainLayout = (props) => {
-    return <div>{props.children}</div>;
+    return <div>
+        <NavBar/>
+        {props.children}
+    </div>;
 }
 
 export default MainLayout;
