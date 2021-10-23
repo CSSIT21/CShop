@@ -1,25 +1,9 @@
-// import { StarRateRounded } from "@mui/icons-material";
-import React, { Component } from "react";
+import React from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import { fontSize } from "@mui/system";
-const customIcons = {
-  0: {
-    icon: <StarRateRounded />,
-    label: "Very Dissatisfied",
-  },
-  0.5: {
-    icon: <StarRateRounded />,
-    label: "Dissatisfied",
-  },
-};
-
 function IconContainer(props) {
-  const { value, ...other } = props;
-  return <span {...other}>{customIcons[value].icon}</span>;
-}
 
 const RatingStars = ({ value = null }) => {
   return (
@@ -33,21 +17,21 @@ const RatingStars = ({ value = null }) => {
       >
         <Rating
           sx={{
-            padding: "0 0 0 50px",
+            padding: "0 25px 0 50px",
           }}
           defaultValue={value}
           precision={0.5}
           readOnly
           icon={<StarRateRounded style={iconStyle} />}
           emptyIcon={<StarOutlineRounded style={iconStyle} />}
-        />
-        {value !== null && (
-          <Box>
-            <Typography fontSize="1.4rem" color="#FD6637">
+        />{" "}
+        <Box>
+          {value !== null && (
+            <Typography sx={{ marginTop: 1 }} fontSize="1.4rem" color="#FD6637">
               {value}
             </Typography>
-          </Box>
-        )}
+          )}
+        </Box>
       </Box>
     </>
   );

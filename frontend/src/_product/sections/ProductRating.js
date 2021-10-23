@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import RatingStars from "../components/RatingStars";
 
 import Comments from "../components/Comments";
-import { makeStyles, ThemeProvider } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Accordion,
   AccordionDetails,
@@ -19,8 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { ExpandLessRounded, ExpandMoreRounded } from "@mui/icons-material";
-import { createTheme } from "@mui/material/styles";
+import { ExpandLessRounded } from "@mui/icons-material";
 
 const ProductRating = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -31,8 +30,12 @@ const ProductRating = (props) => {
   const classes = useStyles();
 
   return (
-    <Box>
-      <Box>
+    <>
+      <Box
+        sx={{
+          padding: "50px 0px",
+        }}
+      >
         <Accordion
           className={classes.accordion}
           TransitionComponent={Fade}
@@ -41,8 +44,8 @@ const ProductRating = (props) => {
         >
           <AccordionSummary
             expandIcon={<ExpandLessRounded />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls="expand-comment"
+            id="expand-comment"
             onClick={handleClick}
           >
             <Box className={classes.box}>
@@ -60,7 +63,7 @@ const ProductRating = (props) => {
           </Fade>
         )}
       </Box>
-    </Box>
+    </>
   );
 };
 
@@ -68,6 +71,8 @@ const useStyles = makeStyles({
   box: {
     display: "flex",
     alignItems: "center",
+    padding: "0px 0px 50px 0px",
+    margin: "0px",
   },
   accordion: {
     boxShadow: "none !important",
