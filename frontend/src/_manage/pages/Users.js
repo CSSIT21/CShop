@@ -1,14 +1,14 @@
-import { faCalendarMinus } from "@fortawesome/free-solid-svg-icons";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import CButton from "../../common/components/CButton";
 
 const ManageAccountPage = () => {
     return (
-        <div>
-            <Box>User</Box>
-            <CButton title="Test" size="large" icon={faCalendarMinus} />
-        </div>
+        <Box>
+            <Typography variant="h4" fontWeight="600">
+                Manage Accounts
+            </Typography>
+        </Box>
     );
 };
 
