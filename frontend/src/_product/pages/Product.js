@@ -1,7 +1,19 @@
-const ProductPage = props => {
-    return <div>
+import React from "react";
+
+const ProductPage = (props) => {
+  return (
+    <div>
+      <div className="navbar"></div> //From Ann
+      <div className="contents">
         This is ProductPage
-    </div>;
+        {/* <ProductDetails />
+        <ShopDetails />
+        <ProductSuggestion /> //From Ann
+        <ProductDescription />
+        <ProductRating /> */}
+      </div>
+    </div>
+  );
 };
 
 export default ProductPage;
