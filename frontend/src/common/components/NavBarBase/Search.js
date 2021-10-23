@@ -30,6 +30,11 @@ const useStyles = makeStyles({
 
 		borderRadius: 10,
 		backgroundColor: '#ECECEE',
+		transition: "all ease 0.125s",
+
+		"&:focus-within": {
+			boxShadow: "1px 2px 4px rgb(0,0,0,0.2)",
+		}
 	},
 	searchInput: {
 		width: '100%',

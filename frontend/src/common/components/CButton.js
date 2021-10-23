@@ -44,11 +44,11 @@ const CButton = ({
 };
 
 CButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  size: PropTypes.string,
-  icon: PropTypes.object,
-  width: PropTypes.string,
-  height: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    size: PropTypes.string,
+    icon: PropTypes.object,
+    width: PropTypes.string,
+    height: PropTypes.string,
 };
 
 export default CButton;

@@ -1,96 +1,74 @@
+import { Box } from "@mui/system";
 import { useState } from "react";
 import Carousel from "../../common/components/Carousel";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import ProductCard from "../../common/components/ProductCard";
+import LazyImage from "../../common/components/LazyImage/LazyImage";
+import { makeStyles } from '@mui/styles';
+import CustomDot from "../../common/components/CarouselBase/CustomDot";
+import Banner1 from "../../common/assets/images/Banner1.png";
+
+const useStyles = makeStyles({
+  bannerWrapper: {
+    width: '100%',
+    padding: '40px 0',
+
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    backgroundColor: '#F4F5F6',
+  },
+
+  carouselStyle: {
+    width: "75%",
+    marginBottom: 25,
+  }
+});
 
 const Banner = () => {
-  const itemsAxios = [
+  const bannerItems = [
     {
       id: 0,
-      title: "item1",
-      favourite: false,
-      description: "werewrwerwe",
+      url: Banner1,
     },
     {
       id: 1,
-      title: "item2",
-      favourite: true,
-      description: "pytuiui",
+      url: Banner1,
+
     },
     {
       id: 2,
-      title: "item3",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 3,
-      title: "item4",
-      favourite: true,
-      description: "pytuiui",
-    },
-    {
-      id: 4,
-      title: "item5",
-      favourite: false,
-      description: "pytuiui",
+      url: Banner1,
     },
   ];
-  const [items, setItems] = useState(itemsAxios);
 
+  const [items, setItems] = useState(bannerItems);
   const [page, setPage] = useState(0);
+  const classes = useStyles();
 
-  const onFavouriteHandler = (idx) => {
-    setItems((items) => {
-      items[idx].favourite = !items[idx].favourite;
-      return [...items];
-    });
-  };
   return (
-    <>
-      {/* <Carousel
-        items={items}
-        pageState={page}
-        itemsPerRow={4}
-        setPageState={setPage}
-        gap={10}>
-        {(item, idx) => <div
-          style={{
-            padding: '10px',
-            borderRadius: '10px',
-            width: '100%',
-            aspectRatio: '1',
-            background: 'grey',
-            boxSizing: 'border-box'
-          }}>
-          {item.id}. {item.title} {item.description}
-        </div>}
-      </Carousel> */}
+    <Box className={classes.bannerWrapper}>
+      <Box className={classes.carouselStyle}>
+        <Carousel
+          items={items}
+          pageState={page}
+          setPageState={setPage}
+          loop={true}
+          itemsPerRow={1}
+          hideArrow={false}
+        >
+          {(item) => (
+            <LazyImage
+              src={item.url}
+              lazy="https://via.placeholder.com/1140x516.png"
+              key={item.id}
+            />
+          )}
+        </Carousel>
+      </Box>
 
-      <Carousel
-        items={items}
-        pageState={page}
-        setPageState={setPage}
-        loop={true}
-        itemsPerRow={2}
-      >
-        {(item, idx) => (
-          <ProductCard
-            title={item.title}
-            favourite={item.favourite}
-            onFavourite={() => {
-              onFavouriteHandler(idx);
-            }}
-            to={`/product/${item.id}`}
-          />
-        )}
-      </Carousel>
-    </>
+      <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={3} />
+    </Box >
   );
 };
 

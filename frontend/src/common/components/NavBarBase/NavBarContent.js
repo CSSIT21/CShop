@@ -11,7 +11,7 @@ const useStyles = makeStyles({
 		padding: '0px 50px',
 		display: 'flex',
 		alignItems: 'center',
-
+		marginBottom: 25,
 	},
 
 	navbarMiddle: {
