@@ -17,6 +17,7 @@ const RegisterPage = () => {
   const router = useHistory();
   useEffect(() => {
     document.body.style.backgroundColor = "#f3f4f5";
+    return () => (document.body.style.backgroundColor = "white");
   }, []);
   const [userPhoneNum, setUserPhoneNum] = useState({
     phoneNumber: "",
