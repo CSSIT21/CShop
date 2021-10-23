@@ -87,11 +87,15 @@ function App() {
                 <ChatPage />
               </MainLayout>
             </Route>
+            
+            {/* LOGIN PAGE */}
             <Route path="/login" exact>
               <MainLayout>
                 <LoginPage />
               </MainLayout>
             </Route>
+
+            {/* Register Page */}
             <Route path="/register" exact>
               <MainLayout>
                 <RegisterPage />
