@@ -3,8 +3,10 @@ import { Button, Typography } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const CButton = ({ title, size, icon, width, height, ...rest }) => {
+
     return (
         <Box>
             <Button
@@ -32,11 +34,11 @@ const CButton = ({ title, size, icon, width, height, ...rest }) => {
 };
 
 CButton.propTypes = {
-    title: PropTypes.string.isRequired,
-    size: PropTypes.string,
-    icon: PropTypes.object,
-    width: PropTypes.string,
-    height: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  size: PropTypes.string,
+  icon: PropTypes.object,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export default CButton;
