@@ -7,3 +7,7 @@
 a {
 	text-decoration: none;
 }
+
+.MuiBadge-badge .MuiBadge-standard{
+	background-color: #FD6637 !important;
+}
