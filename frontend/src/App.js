@@ -1,9 +1,9 @@
 /** internal */
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
 } from "react-router-dom";
 
 /** layouts */
@@ -22,6 +22,7 @@ import CategoryPage from "./_category/pages/Category";
 import ProductPage from "./_product/pages/Product";
 import ChatPage from "./_chat/pages/Chat";
 import RegisterPage from "./_auth/pages/Register";
+import RegisterInfoPage from "./_auth/pages/RegisterInfo";
 import ProfilePage from "./_profile/pages/Profile";
 import HistoryPage from "./_profile/pages/History";
 import VoucherPage from "./_profile/pages/Voucher";
