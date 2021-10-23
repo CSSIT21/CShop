@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
+import { Link } from 'react-router-dom';
 
 //data
 const RegisterPage = () => {
@@ -65,7 +66,7 @@ const RegisterPage = () => {
           </Box>
           <Box className={classes.button}>
             <CButton
-              title="Register"
+              title="Sign Up"
               width="500px"
               height="55px"
               onClick={() => {
@@ -74,8 +75,7 @@ const RegisterPage = () => {
             ></CButton>
           </Box>
           <Box className={classes.divider}>
-            {/* {[...Array(150)].map((space, idx) => &nbsp;)} */}
-            <Divider>OR</Divider>
+            OR
           </Box>
 
           <Button
@@ -88,6 +88,7 @@ const RegisterPage = () => {
               width: "500px",
               margin: "35px",
               padding: "8px",
+              textTransform: 'capitalize'
             }}
             startIcon={<Avatar src={GoogleLogo} />}
           >
@@ -95,7 +96,9 @@ const RegisterPage = () => {
           </Button>
           <Box className={classes.condition2}>
             Already have an account?{"\u00A0"}
-            <span className={classes.textOrange2}>Sign in</span>
+            <Link to="/login">
+              <span className={classes.textOrange2}>Sign in</span>
+            </Link>
           </Box>
         </Box>
       </Box>
@@ -156,5 +159,8 @@ const useStyles = makeStyles({
   textOrange2: {
     color: "#FD6637",
   },
+  divider: {
+    color: "#A0A3BD",
+  }
 });
 export default RegisterPage;

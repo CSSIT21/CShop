@@ -158,6 +158,7 @@ const RegisterAddress = ({
             width: "300px",
             height: "55px",
             color: "#FD6637",
+            textTransform: 'capitalize'
           }}
         >
           Back
