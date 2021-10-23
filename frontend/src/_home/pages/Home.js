@@ -8,6 +8,7 @@ const HomePage = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   return (
+    <>
       <Banner />
       <button onClick={() => setIsLogin(!isLogin)} > switch</button>
      <Banner />
