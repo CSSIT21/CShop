@@ -1,12 +1,11 @@
-import React from 'react'
 import TopBar from './NavBarBase/TopBar'
 import NavbarContent from './NavBarBase/NavBarContent'
 
-const NavBar = () => {
+const NavBar = ({ isLogin }) => {
 	return (
 		<>
 			<TopBar />
-			<NavbarContent />
+			<NavbarContent isLogin={isLogin} />
 		</>
 	)
 }

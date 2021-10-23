@@ -1,53 +1,63 @@
-import styled from 'styled-components'
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/system';
 
-const TopBarWrapper = styled.div`
-	width: 100%;
-	padding: 0px 50px;
-	margin: 15px 0px;
+const useStyles = makeStyles({
+	topBarWrapper: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 
-	box-sizing: border-box;
-	font-size: 12px;
-	line-height: 24px;
-	display: flex;
-	justify-content: space-between;
-	& a{
-	color: #A0A3BD;
-	}
-`;
+		width: '100%',
+		padding: '0px 50px',
+		margin: '15px 0px',
 
-const TopBarLeft = styled.div`
-	display: flex;
-	width: auto;
-`;
+		boxSizing: 'border-box',
+		fontSize: 12,
 
-const TopBarRight = styled.div`
-	display: flex;
-	width: auto;
-	justify-content: flex-end;
-`;
+		"& a": {
+			color: '#A0A3BD',
+		}
+	},
 
-const SellerCenter = styled.div`
-	margin-right: 50px;
-`;
+	topBarLeft: {
+		display: 'flex',
+		width: 'auto',
+	},
 
-const SellerRegister = styled.div`
-	
-`;
+	topBarRight: {
+		display: 'flex',
+		width: 'auto',
+		justifyContent: 'flex-end',
+	},
 
+	sellerCenter: {
+		marginRight: 50,
+	},
+})
 
-const SellerTopBar = () => {
+const SellerTopBar = ({ isSeller = false }) => {
+	const classes = useStyles();
+
 	return (
-		<TopBarWrapper>
-			<TopBarLeft>
-				<SellerCenter><Link to={"/login"}>Seller Center</Link></SellerCenter>
-				<SellerRegister><Link to={"/login"}>Seller Register</Link></SellerRegister>
-			</TopBarLeft>
+		<Box className={classes.topBarWrapper}>
+			<Box className={classes.topBarLeft}>
+				<Box className={classes.sellerCenter}>
+					<Link to={"/login"}>Seller Center</Link>
+				</Box>
 
-			<TopBarRight><Link to={"/support"}>Support</Link></TopBarRight>
-		</TopBarWrapper>
+				{!isSeller &&
+					<Box>
+						<Link to={"/login"}>Seller Register</Link>
+					</Box>
+				}
+			</Box>
 
+			<Box className={classes.topBarRight}>
+				<Link to={"/support"}>Support</Link>
+			</Box>
+		</Box>
 	)
 }
 
-export default SellerTopBar
+export default SellerTopBar;

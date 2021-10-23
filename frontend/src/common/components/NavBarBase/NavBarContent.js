@@ -1,54 +1,58 @@
-import styled from 'styled-components';
+import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/system';
 import CShopLogo from '../../assets/images/Logo.svg';
 import Search from './Search';
-import Menu from './Menu';
+import ActionMenu from './ActionMenu';
 import AccountDropdown from './AccountDropdown';
+import AuthenButton from './AuthenButton';
 
-const NavbarWrapper = styled.div`
-	padding: 0px 50px;
-	display: flex;
-	align-items: center;
-`;
+const useStyles = makeStyles({
+	navbarWrapper: {
+		padding: '0px 50px',
+		display: 'flex',
+		alignItems: 'center',
 
-const NavbarLeft = styled.div`
-	width: 10%;
-	margin-right: 10px;
-`;
+	},
 
-const NavbarMiddle = styled.div`
-	width: 70%;
-	padding: 0 20px;
-	margin-right: 10px;
-`;
+	navbarLeft: {
+		// marginRight: 10,
+	},
 
-const NavbarRight = styled.div`
-	width: 20%;
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-`;
+	navbarMiddle: {
+		padding: '0 20px',
+		marginRight: 3,
+	},
 
-const Logo = styled.img`
-	width: 100%;
-`;
+	navbarRight: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-around',
+	},
 
+	logo: {
+		width: '150px',
+	},
+})
 
-const NavBarContent = () => {
+const NavBarContent = ({ isLogin }) => {
+	const classes = useStyles();
+
 	return (
-		<NavbarWrapper>
-			<NavbarLeft>
-				<Logo src={CShopLogo} />
-			</NavbarLeft>
+		<Box className={classes.navbarWrapper} >
 
-			<NavbarMiddle>
+			<Box className={classes.navbarLeft} style={{ width: isLogin ? '10%' : '12%' }}>
+				<a href="/home"> <img className={classes.logo} src={CShopLogo} /> </a>
+			</Box>
+
+			<Box className={classes.navbarMiddle} style={{ width: isLogin ? '70%' : '60%' }} >
 				<Search />
-			</NavbarMiddle>
+			</Box>
 
-			<NavbarRight>
-				<Menu />
-				<AccountDropdown />
-			</NavbarRight>
-		</NavbarWrapper>
+			<Box className={classes.navbarRight} style={{ width: isLogin ? '20%' : '28%' }}>
+				<ActionMenu />
+				{isLogin ? <AccountDropdown /> : <AuthenButton />}
+			</Box>
+		</Box>
 	);
 };
 

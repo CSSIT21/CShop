@@ -1,14 +1,16 @@
+import { useState } from 'react'
 import Banner from "../components/Banner";
-import { For } from '../../common/utils';
 import NavBar from "../../common/components/NavBar"
+import CButton from '../../common/components/CButton';
 
-const HomePage = (props) => {
-
+const HomePage = () => {
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <>
-      <NavBar />
+      <NavBar isLogin={isLogin} />
       <Banner />
+      <button onClick={() => setIsLogin(!isLogin)} > switch</button>
     </>
   );
 };
