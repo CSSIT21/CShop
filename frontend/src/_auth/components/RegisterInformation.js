@@ -18,7 +18,6 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
       <Box>
         <Box className={classes.header}>Information</Box>
         <Box className={classes.context}>
-        {JSON.stringify(userInfo)}
           <Box className={classes.genInfo}>
             <Box className={classes.contextHeader}>General Information</Box>
             <Box className={classes.textFieldBox}>
@@ -38,7 +37,6 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 variant="outlined"
                 type="password"
                 placeholder="Password"
-                type="password"
                 fullWidth
                 value={userInfo.password}
                 onChange={(e) => {
@@ -53,7 +51,6 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 type="password"
                 variant="outlined"
                 placeholder="Confirm your password"
-                type="password"
                 fullWidth
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, confirmPassword: e.target.value });

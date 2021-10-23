@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -69,9 +70,7 @@ const LoginPage = () => {
           </Box>
           <Box className={classes.text}>Forgot your password?</Box>
           <Box className={classes.divider}>
-            <Divider />
             OR
-            <Divider />
           </Box>
           <Button
             variant="contained"
@@ -81,8 +80,9 @@ const LoginPage = () => {
               borderBlockColor: "gray",
               color: "black",
               width: "500px",
-              margin: "35px",
+              marginBottom: "35px",
               padding: "8px",
+              textTransform: 'capitalize'
             }}
             startIcon={<Avatar src={GoogleLogo} />}
           >
@@ -90,7 +90,9 @@ const LoginPage = () => {
           </Button>
           <Box className={classes.condition2}>
             Does not have any account yet?{"\u00A0"}
-            <span className={classes.textOrange2}>Sign Up</span>
+            <Link to="/register">
+              <span className={classes.textOrange2}>Sign Up</span>
+            </Link>
           </Box>
         </Box>
       </Box>

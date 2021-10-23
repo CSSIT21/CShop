@@ -35,7 +35,7 @@ const AuthenButton = () => {
 				{...authenProps}
 				style={style} />
 			<CButton
-				to="/register/info"
+				to="/register"
 				title="Sign Up"
 				{...authenProps}/>
 		</Box>
