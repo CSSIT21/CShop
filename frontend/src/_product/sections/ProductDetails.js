@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import img1 from "../../img/iphone-black.png";
 import img2 from "../../img/iphone-blue.png";
@@ -9,8 +9,22 @@ import ImageDetail from "../components/SideImg.js";
 import Mainpic from "../components/MainImage";
 import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/AmountField";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { style } from "@mui/system";
+import Popup from "../components/Popup";
+import { CSSTransition } from "react-transition-group";
 
 const ProductDetails = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+    setTimeout(() => {
+      setShow(true);
+    }, 3000);
+  };
+
   const classes = useStyles();
   return (
     <div className={classes.productDetail}>
@@ -67,9 +81,17 @@ const ProductDetails = () => {
         </Typography>
         <div className={classes.amountAndCart}>
           <Amount />
-          <AddToCartButton />
+          <AddToCartButton
+            title="Add to cart"
+            icon={<ShoppingCartOutlinedIcon />}
+            width="211px"
+            height="44px"
+            onClick={togglePopup}
+          />
+          {/* {isOpen && <Popup />} */}
         </div>
       </div>
+      {isOpen && <Popup />}
     </div>
   );
 };

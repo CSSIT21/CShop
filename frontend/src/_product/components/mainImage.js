@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-const sideImage = ({ img }) => {
+const MainImage = ({ img }) => {
   return (
     <Box
       sx={{
@@ -21,9 +21,9 @@ const sideImage = ({ img }) => {
           maxHeight: "100%",
           display: "block",
         }}
-      ></image>
+      />
     </Box>
   );
 };
 
-export default sideImage;
+export default MainImage;
