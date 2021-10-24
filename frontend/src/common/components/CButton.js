@@ -45,7 +45,9 @@ const CButton = ({
                 </Box>
             </Button>
         </Box>
-    );
+      </Button>
+    </Box>
+  );
 };
 
 CButton.propTypes = {
