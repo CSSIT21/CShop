@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ProductDetails from "../sections/ProductDetails";
 import ShopDetails from "../sections/ShopDetails";
 import ProductDescription from "../sections/ProductDescription";
 import ProductRating from "../sections/ProductRating";
+import ProductSuggestion from "../sections/ProductSuggestion";
 import { Box } from "@mui/material";
 
 const ProductPage = (props) => {
@@ -21,7 +22,7 @@ const ProductPage = (props) => {
       >
         <ProductDetails />
         <ShopDetails />
-        {/*<ProductSuggestion /> From Ann*/}
+        <ProductSuggestion />
         <ProductDescription />
         <ProductRating />
       </Box>
