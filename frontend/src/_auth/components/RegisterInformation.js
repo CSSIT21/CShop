@@ -125,7 +125,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
               >
                 {genders.map((gender) => (
                   <MenuItem key={gender.id} value={gender.value}>
-                    {gender.value}
+                    {gender.label}
                   </MenuItem>
                 ))}
               </TextField>
