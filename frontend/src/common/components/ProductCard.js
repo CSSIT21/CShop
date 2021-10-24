@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import ProductMedia from "./ProductCardBase/ProductMedia";
 import ProductContent from "./ProductCardBase/ProductContent";
+import { noop } from "../utils";
 
 const cardStyle = {
   minWidth: 200,
@@ -17,7 +18,7 @@ const cardStyle = {
   },
 };
 
-const ProductCard = ({ product, to, onFavourite = () => { } }) => {
+const ProductCard = ({ product, to, onFavourite = noop }) => {
   console.log(product);
   return (
     <Link to={to}>

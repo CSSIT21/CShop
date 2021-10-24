@@ -3,8 +3,8 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import Carousel from "../../common/components/Carousel";
 import CustomDot from "../../common/components/CarouselBase/CustomDot";
-import ArrowButton from "../../common/components/CarouselBase/ArrowButton";
 import { Typography } from '@mui/material';
+import CarouselButton from '../../common/components/CarouselButton';
 
 const useStyles = makeStyles({
 	categoriesWrapper: {
@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 	},
 
 	categoriesHeader: {
+		display: 'flex',
 		justifyContent: 'space-between',
 		marginBottom: '25px',
 
@@ -109,8 +110,8 @@ const CategoriesSection = () => {
 	return (
 		<Box className={classes.categoriesWrapper}>
 			<Box className={classes.categoriesHeader}>
-				<Typography component="h3" color="#12131c" fontSize="30px" fontWeight="bold" >Categories</Typography>
-				{/* <ArrowButton /> */}
+				<Typography component="span" color="#12131c" fontSize="30px" fontWeight="bold" >Categories</Typography>
+				<CarouselButton pageHandle={setPage} currentPage={page} totalPage={2} />
 			</Box >
 
 			<Box className={classes.categoriesContent}>

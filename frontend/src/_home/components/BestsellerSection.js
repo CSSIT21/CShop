@@ -5,8 +5,8 @@ import { makeStyles } from '@mui/styles';
 import { Typography } from '@mui/material';
 import Carousel from '../../common/components/Carousel';
 import CustomDot from "../../common/components/CarouselBase/CustomDot";
-import ArrowButton from "../../common/components/CarouselBase/ArrowButton";
 import ProductCard from '../../common/components/ProductCard';
+import CarouselButton from '../../common/components/CarouselButton';
 
 const useStyles = makeStyles({
 
@@ -26,6 +26,8 @@ const useStyles = makeStyles({
 	},
 
 	bestsellerHeader: {
+		display: 'flex',
+		justifyContent: 'space-between',
 		marginBottom: '25px',
 	},
 });
@@ -40,8 +42,8 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 		<Box className={classes.bestsellerWrapper}>
 			<Box className={classes.bestsellerContent}>
 				<Box className={classes.bestsellerHeader}>
-					<Typography component="h3" color="#FD6637" fontSize="30px" fontWeight="bold">Best Seller</Typography>
-					{/* <ArrowButton /> */}
+					<Typography component="span" color="#FD6637" fontSize="30px" fontWeight="bold">Best Seller</Typography>
+					<CarouselButton pageHandle={setPage} currentPage={page} totalPage={2} />
 				</Box>
 
 				<Box className={classes.bestsellerCarousel}>
