@@ -168,7 +168,7 @@ const ShopDetails = (props) => {
 const useStyles = makeStyles({});
 const text = {
   color: "#FD6637",
-  borderColor: "#FD6637",
+  border: "1px solid #FD6637",
   marginLeft: "17px",
 };
 

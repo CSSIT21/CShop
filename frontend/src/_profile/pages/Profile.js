@@ -18,9 +18,7 @@ const ProfilePage = (props) => {
   const [openShopping, setOpenShopping] = useState(true);
   return (
     <>
-      <Box className={classes.topProfile}>
-        <TopProfile />
-      </Box>
+      <TopProfile />
       <Box className={classes.container}>
         <Box style={{ width: "70%" }}>
           <ProfileArea
@@ -70,11 +68,6 @@ const ProfilePage = (props) => {
 export default ProfilePage;
 
 const useStyles = makeStyles({
-  topProfile: {
-    padding: "20px 120px",
-    marginTop: "20px",
-    boxShadow: " 0px 4px 4px rgba(196, 196, 196, 0.25)",
-  },
   container: {
     display: "flex",
     justifyContent: "center",

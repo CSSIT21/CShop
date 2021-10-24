@@ -21,10 +21,12 @@ const TopProfile = () => {
           sx={{ width: 80, height: 80, marginRight: "25px" }}
         />
         <Box className={classes.nametag}>
-          <Typography sx={{ fontSize: "24px" }}>
+          <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
             {auth.user.first_name} {auth.user.last_name}
           </Typography>
-          <Typography sx={{ fontSize: "18px" }}>#ID</Typography>
+          <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
+            #ID
+          </Typography>
         </Box>
       </Box>
       {userType === "seller" && (
@@ -54,6 +56,9 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    padding: "20px 120px",
+    marginTop: "20px",
+    boxShadow: " 0px 4px 4px rgba(196, 196, 196, 0.25)",
   },
   profile: {
     display: "flex",

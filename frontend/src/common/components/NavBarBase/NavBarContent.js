@@ -12,39 +12,39 @@ const useStyles = makeStyles({
 		padding: '0px 50px',
 		display: 'flex',
 		alignItems: 'center',
-
 	},
-
+	
 	navbarMiddle: {
 		padding: '0 20px',
 		marginRight: 3,
 	},
-
+	
 	navbarRight: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'space-around',
 	},
-
+	
 	logo: {
 		width: '150px',
 	},
-})
+});
 
-const NavBarContent = ({ isLogin }) => {
+const NavbarContent = ({ isLogin }) => {
 	const classes = useStyles();
-
+	
 	return (
-		<Box className={classes.navbarWrapper} >
-
+		<Box className={classes.navbarWrapper}>
 			<Box style={{ width: isLogin ? '10%' : '12%' }}>
-				<Link to="/home"> <img className={classes.logo} src={CShopLogo} /> </Link>
+				<Link to="/home">
+					<img className={classes.logo} src={CShopLogo} alt="Logo"/>
+				</Link>
 			</Box>
-
-			<Box className={classes.navbarMiddle} style={{ width: isLogin ? '70%' : '60%' }} >
+			
+			<Box className={classes.navbarMiddle} style={{ width: isLogin ? '70%' : '60%' }}>
 				<Search />
 			</Box>
-
+			
 			<Box className={classes.navbarRight} style={{ width: isLogin ? '20%' : '28%' }}>
 				<ActionMenu />
 				{isLogin ? <AccountDropdown /> : <AuthenButton />}
@@ -53,4 +53,4 @@ const NavBarContent = ({ isLogin }) => {
 	);
 };
 
-export default NavBarContent;
+export default NavbarContent;

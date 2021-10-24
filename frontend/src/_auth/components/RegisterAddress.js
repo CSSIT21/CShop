@@ -130,7 +130,9 @@ const RegisterAddress = ({
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
                 fullWidth
-                select
+                InputProps={{
+                  readOnly: true,
+                }}
                 value={address.postalCode}
                 onChange={(e) => {
                   setAddress({ ...address, postalCode: e.target.value });
