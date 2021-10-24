@@ -6,42 +6,45 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const CButton = ({
-    title,
-    size,
-    icon = null,
-    width,
-    height,
-    backgroundColor = "#FD6637",
-    fontSize = "14px",
-    style = {},
-    ...rest
+  title,
+  size,
+  icon = null,
+  width,
+  height,
+  backgroundColor = "#FD6637",
+  fontSize = "14px",
+  style = {},
+  ...rest
 }) => {
-    return (
-        <Box>
-            <Button
-                variant="contained"
-                style={{
-                    backgroundColor: backgroundColor,
-                    boxShadow: "none",
-                    borderRadius: "12px",
-                    width,
-                    height,
-                    ...style
-                }}
-                size={size}
-                {...rest}
-            >
-                <Box display="flex" justifyContent="center" alignItems="center">
-                    {icon === null ? <></> : <FontAwesomeIcon
-                        icon={icon}
-                        style={{ marginRight: "7px" }}
-                    />}
-                    
-                    <Typography sx={{ textTransform: 'capitalize', fontSize }}>{title}</Typography>
-                </Box>
-            </Button>
+  return (
+    <Box>
+      <Button
+        variant="contained"
+        style={{
+          backgroundColor: backgroundColor,
+          boxShadow: "none",
+          borderRadius: "10px",
+          width,
+          height,
+          ...style,
+        }}
+        size={size}
+        {...rest}
+      >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          {icon === null ? (
+            <></>
+          ) : (
+            <FontAwesomeIcon icon={icon} style={{ marginRight: "7px" }} />
+          )}
+
+          <Typography sx={{ textTransform: "capitalize", fontSize }}>
+            {title}
+          </Typography>
         </Box>
-    );
+      </Button>
+    </Box>
+  );
 };
 
 CButton.propTypes = {

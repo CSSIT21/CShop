@@ -146,7 +146,6 @@ const useStyles = makeStyles({
     margin: "20px 0",
   },
   divider: {
-    margin: "25px",
     color: "#A0A3BD",
     margin: "40px 0px",
   },
