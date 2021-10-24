@@ -8,7 +8,7 @@ const Carousel = ({
   loop = false,
   pageState = 0,
   hideArrow = true,
-  setPageState = () => { },
+  setPageState = () => {},
   children,
   ...rest
 }) => {

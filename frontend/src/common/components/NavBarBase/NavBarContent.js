@@ -5,6 +5,7 @@ import Search from './Search';
 import ActionMenu from './ActionMenu';
 import AccountDropdown from './AccountDropdown';
 import AuthenButton from './AuthenButton';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
 	navbarWrapper: {
@@ -28,19 +29,20 @@ const useStyles = makeStyles({
 	logo: {
 		width: '150px',
 	},
-})
+});
 
-const NavBarContent = ({ isLogin }) => {
+const NavbarContent = ({ isLogin }) => {
 	const classes = useStyles();
 
 	return (
-		<Box className={classes.navbarWrapper} >
-
+		<Box className={classes.navbarWrapper}>
 			<Box style={{ width: isLogin ? '10%' : '12%' }}>
-				<a href="/home"> <img className={classes.logo} src={CShopLogo} /> </a>
+				<Link to="/home">
+					<img className={classes.logo} src={CShopLogo} alt="Logo" />
+				</Link>
 			</Box>
 
-			<Box className={classes.navbarMiddle} style={{ width: isLogin ? '70%' : '60%' }} >
+			<Box className={classes.navbarMiddle} style={{ width: isLogin ? '70%' : '60%' }}>
 				<Search />
 			</Box>
 
@@ -52,4 +54,4 @@ const NavBarContent = ({ isLogin }) => {
 	);
 };
 
-export default NavBarContent;
+export default NavbarContent;

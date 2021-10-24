@@ -1,14 +1,12 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Typography } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 const CButton = ({
     title,
     size,
-    icon = {},
+    icon = "",
     width,
     height,
     backgroundColor = "#FD6637",
@@ -25,22 +23,29 @@ const CButton = ({
                     boxShadow: "none",
                     borderRadius: "12px",
                     width,
-                    height,
-                    ...style
+                    height: "45px",
+                    ...style,
                 }}
                 size={size}
                 {...rest}
             >
                 <Box display="flex" justifyContent="center" alignItems="center">
-                    <FontAwesomeIcon
-                        icon={icon}
-                        style={{ marginRight: "7px" }}
-                    />
-                    <Typography sx={{ textTransform: 'capitalize', fontSize }}>{title}</Typography>
+                    {icon ? (
+                        <Box
+                            marginRight="7px"
+                            display="flex"
+                            alignItems="center"
+                        >
+                            {icon}
+                        </Box>
+                    ) : null}
+                    <Typography sx={{ textTransform: "capitalize", fontSize }}>
+                        {title}
+                    </Typography>
                 </Box>
             </Button>
         </Box>
-    );
+  );
 };
 
 CButton.propTypes = {
