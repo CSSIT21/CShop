@@ -1,12 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-const CButton = ({ title, size, icon, width, height }) => {
+const CButton = ({ title, size, icon, width, height, ...rest }) => {
+
     return (
-        <div>
+        <Box>
             <Button
                 variant="contained"
                 style={{
@@ -17,25 +19,26 @@ const CButton = ({ title, size, icon, width, height }) => {
                     height: height,
                 }}
                 size={size}
+                {...rest}
             >
-                <Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
                     <FontAwesomeIcon
                         icon={icon}
                         style={{ marginRight: "7px" }}
                     />
-                    {title}
+                    <Typography>{title}</Typography>
                 </Box>
             </Button>
-        </div>
+        </Box>
     );
 };
 
 CButton.propTypes = {
-    title: PropTypes.string.isRequired,
-    size: PropTypes.string,
-    icon: PropTypes.object,
-    width: PropTypes.string,
-    height: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  size: PropTypes.string,
+  icon: PropTypes.object,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export default CButton;
