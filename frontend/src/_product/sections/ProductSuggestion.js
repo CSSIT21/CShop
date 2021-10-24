@@ -95,7 +95,11 @@ const ProductSuggestion = ({}) => {
           <Typography sx={{ fontSize: "30px", fontWeight: 600 }}>
             Suggestions
           </Typography>
-          <CarouselButton pageHandle={setPage} currentPage={page} />
+          <CarouselButton
+            pageHandle={setPage}
+            currentPage={page}
+            totalPage={Math.ceil(items.length / 4)}
+          />
         </Box>
         <Carousel
           items={items}
