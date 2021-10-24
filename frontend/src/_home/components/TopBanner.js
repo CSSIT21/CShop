@@ -4,7 +4,7 @@ import Carousel from "../../common/components/Carousel";
 import LazyImage from "../../common/components/LazyImage/LazyImage";
 import { makeStyles } from '@mui/styles';
 import CustomDot from "../../common/components/CarouselBase/CustomDot";
-import Banner1 from "../../common/assets/images/Banner1.png";
+import Banner1 from "../../common/assets/images/Banner1.png"
 
 const useStyles = makeStyles({
   bannerWrapper: {
@@ -43,6 +43,7 @@ const Banner = () => {
   ];
 
   const [items, setItems] = useState(bannerItems);
+  console.log("banner", items);
   const [page, setPage] = useState(0);
   const classes = useStyles();
 
