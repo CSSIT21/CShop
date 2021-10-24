@@ -1,7 +1,6 @@
 import { Avatar, Box, Divider, Rating, Typography } from "@mui/material";
 import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
 import RatingStars from "./RatingStars";
-const comments = [1, 2, 3, 4, 5];
 
 const Comments = ({ imageURL, username, rating, comment }) => {
   return (
@@ -38,8 +37,7 @@ const Comments = ({ imageURL, username, rating, comment }) => {
           ></RatingStars>
           <Typography sx={{ marginTop: 1, fontSize: "1rem" }}>
             {comment}
-          </Typography>{" "}
-          {/* Array + Map */}
+          </Typography>
         </Box>
       </Box>
       <Divider sx={{ alignSelf: "stretch", marginTop: 3 }} />
