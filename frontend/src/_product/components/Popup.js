@@ -6,51 +6,59 @@ import Typography from "@mui/material/Typography";
 
 const Popup = (props) => {
   return (
-    <Box
-      className="container"
-      sx={{
-        width: 572,
-        height: 300,
-        borderRadius: "20px",
-        position: "relative",
-      }}
-    >
+    <>
       <Box
+        className="container"
         sx={{
-          width: "86px",
-          height: "86px",
-          left: "244px",
-          top: "81px",
-          display: "flex",
-          flexDirection: "column",
+          width: 572,
+          height: 300,
+          borderRadius: "20px",
+          position: "absolute",
+          backgroundColor: "#ffffff",
         }}
       >
-        <Added
+        <Box
           sx={{
-            color: "#00BF9D",
-            padding: "8.33%",
-            width: "71.67px",
-            height: "71.67px",
-            left: "244px",
-          }}
-        />
-        <Typography
-          sx={{
-            width: "420px",
+            width: "320px",
             height: "36px",
             left: "76px",
             top: "183px",
-            fontStyle: "normal",
-            fontWeight: "500",
-            fontSize: "24px",
-            lineHeight: "36px",
+            // display: "flex",
+            // flexDirection: "column",
+            // justifyContent: "center",
+            // alignItems: "center",
+            // position: "absolute",
           }}
         >
-          The item already added in the cart
-        </Typography>
-        {props.content}
+          <Added
+            sx={{
+              color: "#00BF9D",
+              padding: "8.33%",
+              width: "86px",
+              height: "86px",
+              left: "244px",
+              position: "absolute",
+            }}
+          />
+          <Typography
+            sx={{
+              width: "420px",
+              height: "36px",
+              left: "76px",
+              top: "183px",
+              fontStyle: "normal",
+              fontWeight: "500",
+              fontSize: "24px",
+              lineHeight: "36px",
+              position: "absolute",
+            }}
+          >
+            The item already added in the cart
+          </Typography>
+          {props.content}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

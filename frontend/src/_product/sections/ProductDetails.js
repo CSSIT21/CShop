@@ -27,72 +27,74 @@ const ProductDetails = () => {
 
   const classes = useStyles();
   return (
-    <div className={classes.productDetail}>
-      <div className={classes.thumbImg}>
-        <ImageDetail img={img1} />
-        <ImageDetail img={img2} />
-        <ImageDetail img={img3} />
-        <ImageDetail img={img4} />
-      </div>
-      <Mainpic img={img1} />
-      <div className={classes.productName}>
-        <Typography
-          sx={{
-            width: "261px",
-            height: "54px",
-            fontStyle: "normal",
-            fontWeight: "500",
-            fontSize: "36px",
-            lineHeight: "54px",
-          }}
-        >
-          Product Name
-        </Typography>
-        <Typography
-          sx={{
-            width: "169px",
-            height: "36px",
-            left: "0px",
-            top: "54px",
-            fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "24px",
-            lineHeight: "36px",
-            color: "#A0A3BD",
-          }}
-        >
-          Product Detail
-        </Typography>
-        <Typography
-          sx={{
-            width: "108px",
-            height: "54px",
-            left: "0px",
-            top: "106px",
-            fontFamily: "Poppins",
-            fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "36px",
-            lineHeight: "54px",
-            color: "#FD6637",
-          }}
-        >
-          500 B.
-        </Typography>
-        <div className={classes.amountAndCart}>
-          <Amount />
-          <AddToCartButton
-            title="Add to cart"
-            icon={<ShoppingCartOutlinedIcon />}
-            width="211px"
-            height="44px"
-            onClick={togglePopup}
-          />
-          {/* {isOpen && <Popup />} */}
+    <>
+      <div className={classes.productDetail}>
+        <div className={classes.thumbImg}>
+          <ImageDetail img={img1} />
+          <ImageDetail img={img2} />
+          <ImageDetail img={img3} />
+          <ImageDetail img={img4} />
         </div>
+        <Mainpic img={img1} />
+        <div className={classes.productName}>
+          <Typography
+            sx={{
+              width: "261px",
+              height: "54px",
+              fontStyle: "normal",
+              fontWeight: "500",
+              fontSize: "36px",
+              lineHeight: "54px",
+            }}
+          >
+            Product Name
+          </Typography>
+          <Typography
+            sx={{
+              width: "169px",
+              height: "36px",
+              left: "0px",
+              top: "54px",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "24px",
+              lineHeight: "36px",
+              color: "#A0A3BD",
+            }}
+          >
+            Product Detail
+          </Typography>
+          <Typography
+            sx={{
+              width: "108px",
+              height: "54px",
+              left: "0px",
+              top: "106px",
+              fontFamily: "Poppins",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "36px",
+              lineHeight: "54px",
+              color: "#FD6637",
+            }}
+          >
+            500 B.
+          </Typography>
+          <div className={classes.amountAndCart}>
+            <Amount />
+            <AddToCartButton
+              title="Add to cart"
+              icon={<ShoppingCartOutlinedIcon />}
+              width="211px"
+              height="44px"
+              onClick={togglePopup}
+            />
+            {/* {isOpen && <Popup />} */}
+          </div>
+        </div>
+        {isOpen && <Popup />}
       </div>
-      {isOpen && <Popup />}
-    </div>
+    </>
   );
 };
 
