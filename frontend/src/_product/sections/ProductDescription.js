@@ -17,7 +17,7 @@ const ProductDescription = (props) => {
     setOpen(!open);
   };
   const description =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis minima dolor labore quam, temporibus repellendus sequi deserunt pariatur nulla praesentium laboriosam incidunt, quae expedita maiores distinctio iste. Error, impedit eveniet.";
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis minima dolor labore quam, temporibus repellendus sequi deserunt pariatur nulla praesentium laboriosam incidunt, quae expedita maiores distinctio iste. Error, impedit eveniet. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis minima dolor labore quam, temporibus repellendus sequi deserunt pariatur nulla praesentium laboriosam incidunt, quae expedita maiores distinctio iste. Error, impedit eveniet.Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis minima dolor labore quam, temporibus repellendus sequi deserunt pariatur nulla praesentium laboriosam incidunt, quae expedita maiores distinctio iste. Error, impedit eveniet.";
 
   const classes = useStyles();
 
@@ -25,12 +25,11 @@ const ProductDescription = (props) => {
     <>
       <Box
         sx={{
-          padding: "50px 0px",
+          margin: "50px 0px",
         }}
       >
         <Accordion
           className={classes.accordion}
-          TransitionComponent={Fade}
           TransitionProps={{ onExited: () => setOpen(false), timeout: 700 }}
           disableGutters
           sx={{
@@ -43,7 +42,8 @@ const ProductDescription = (props) => {
             id="expand-detail"
             onClick={handleClick}
             sx={{
-              padding: "0px 0px 40px 0px",
+              padding: 0,
+              margin: "0px 0px 45px 0px",
             }}
           >
             <Box className={classes.head}>
@@ -57,7 +57,9 @@ const ProductDescription = (props) => {
               padding: 0,
             }}
           >
-            {open && <typography>{description}</typography>}
+            <Fade in={open} timeout={500}>
+              <typography>{description}</typography>
+            </Fade>
           </AccordionDetails>
         </Accordion>
         {!open && (

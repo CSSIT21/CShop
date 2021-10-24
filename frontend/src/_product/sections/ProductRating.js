@@ -1,7 +1,6 @@
 import React from "react";
 import RatingStars from "../components/RatingStars";
 import ShowMoreButton from "../../common/components/CButton";
-
 import Comments from "../components/Comments";
 import { makeStyles } from "@mui/styles";
 import {
@@ -138,12 +137,11 @@ const ProductRating = (props) => {
   return (
     <Box
       sx={{
-        padding: "50px 0px",
+        margin: "50px 0px",
       }}
     >
       <Accordion
         className={classes.accordion}
-        TransitionComponent={Fade}
         TransitionProps={{ onExited: () => setOpen(false), timeout: 700 }}
         disableGutters
         sx={{
@@ -166,7 +164,7 @@ const ProductRating = (props) => {
             <RatingStars
               value={avgRating}
               iconStyle={iconStyle}
-              padding={padding}
+              padding={paddingStar}
             ></RatingStars>
           </Box>
         </AccordionSummary>
@@ -175,7 +173,7 @@ const ProductRating = (props) => {
             padding: 0,
           }}
         >
-          {open && (
+          <Fade in={open} timeout={500}>
             <Box
               sx={{
                 display: "flex",
@@ -202,7 +200,7 @@ const ProductRating = (props) => {
                 )}
               </Box>
             </Box>
-          )}
+          </Fade>
         </AccordionDetails>
       </Accordion>
       {!open && (
@@ -233,11 +231,11 @@ const useStyles = makeStyles({
   },
 });
 const iconStyle = {
-  width: "40px",
-  height: "40px",
+  width: "38px",
+  height: "38px",
   color: "#FD6637",
 };
-const padding = {
-  padding: "0 25px 0 50px",
+const paddingStar = {
+  padding: "0 16px 0 50px",
 };
 export default ProductRating;

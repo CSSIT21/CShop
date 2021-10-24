@@ -22,6 +22,7 @@ const ShopDetails = (props) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        margin: "100px 0 50px 0",
       }}
     >
       <Box

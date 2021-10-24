@@ -7,7 +7,6 @@ const Comments = ({ imageURL, username, rating, comment }) => {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
           alignSelf: "self-start",
           marginTop: 3,
         }}
@@ -15,7 +14,12 @@ const Comments = ({ imageURL, username, rating, comment }) => {
         <Avatar
           alt={username.toUpperCase()}
           src={imageURL}
-          sx={{ width: 72, height: 72, marginRight: 3 }}
+          sx={{
+            width: 64,
+            height: 64,
+            marginRight: 3,
+            alignSelf: "self-start",
+          }}
         />
         <Box
           sx={{
@@ -25,7 +29,9 @@ const Comments = ({ imageURL, username, rating, comment }) => {
             flexDirection: "column",
           }}
         >
-          <Typography sx={{ fontSize: "1rem", fontWeight: "800" }} gutterBottom>
+          <Typography
+            sx={{ fontSize: "1rem", fontWeight: "500", marginBottom: 0.5 }}
+          >
             {username}
           </Typography>
           <RatingStars
@@ -33,7 +39,9 @@ const Comments = ({ imageURL, username, rating, comment }) => {
             iconStyle={iconStyle}
             isComment
           ></RatingStars>
-          <Typography sx={{ marginTop: 1, fontSize: "0.8rem" }}>
+          <Typography
+            sx={{ marginTop: 1.5, fontSize: "0.8rem", fontWeight: "400" }}
+          >
             {comment}
           </Typography>
         </Box>
