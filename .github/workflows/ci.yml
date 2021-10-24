@@ -1,0 +1,53 @@
+name: Deployment Preview CI
+
+on:
+  push:
+    branches:
+      - main
+      - rc-*
+      - infra-*
+
+jobs:
+  frontend-build:
+    name: Build React.js Frontend
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 5
+    container: node:lts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Compile React.js production build
+        run: |
+          cd ./frontend
+          npm i
+          npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-build-artifact
+          path: ./react/build
+
+  upload:
+    name: Preview Server Uploading
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 2
+    container: alpine
+    needs: [frontend-build]
+    env:
+      REMOTE_SFTP_LOGIN: ${{ secrets.REMOTE_SFTP_LOGIN }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: .
+
+      - name: Install packages
+        run: |
+          apk add openssh-client sshpass lftp
+
+      - name: Upload artifacts to server
+        run: |
+          echo Branch ${GITHUB_REF##*/}
+          lftp -e "set sftp:auto-confirm yes; open $REMOTE_SFTP_LOGIN; mirror -X .* -X .*/ --reverse --delete ./react-build-artifact /mnt/builds/${GITHUB_REF##*/}; bye"
