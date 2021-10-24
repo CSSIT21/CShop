@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 
 	navbarMiddle: {
 		padding: '0 20px',
-		marginRight: 3,
+		margin: 20,
 	},
 
 	navbarRight: {
