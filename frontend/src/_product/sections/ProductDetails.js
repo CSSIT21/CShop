@@ -4,43 +4,70 @@ import img1 from "../../img/iphone-black.png";
 import img2 from "../../img/iphone-blue.png";
 import img3 from "../../img/iphone-pink.png";
 import img4 from "../../img/iphone-red.png";
+import Typography from "@mui/material/Typography";
+import ImageDetail from "../components/SideImg.js";
+import Mainpic from "../components/mainImage";
+import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/AmountField";
-import { borderRadius } from "@mui/system";
 
 const ProductDetails = () => {
   const classes = useStyles();
   return (
     <div className={classes.productDetail}>
       <div className={classes.thumbImg}>
-        <div className={classes.sideImage} onClick={changeImage1()}>
-          <img className={classes.imgProduct} src={img1} alt="thumb"></img>
-        </div>
-        <div className={classes.sideImage} onClick={changeImage1()}>
-          <img className={classes.imgProduct} src={img2} alt="thumb"></img>
-        </div>
-        <div className={classes.sideImage} onClick={changeImage1()}>
-          <img className={classes.imgProduct} src={img3} alt="thumb"></img>
-        </div>
-        <div className={classes.sideImage} onClick={changeImage1()}>
-          <img className={classes.imgProduct} src={img4} alt="thumb"></img>
-        </div>
+        <ImageDetail img={img1} />
+        <ImageDetail img={img2} />
+        <ImageDetail img={img3} />
+        <ImageDetail img={img4} />
       </div>
-      <div className={classes.mainImage}>
-        <img
-          className={classes.mainImgProduct}
-          src={img1}
-          id="photo"
-          class="pro-img"
-          alt="product"
-        ></img>
-      </div>
+      <Mainpic img={img1} />
       <div className={classes.productName}>
-        <div className={classes.name}>Product Name</div>
-        <div className={classes.detail}>Product Detail</div>
-        <div className={classes.price}>500 B.</div>
+        <Typography
+          sx={{
+            width: "261px",
+            height: "54px",
+            fontStyle: "normal",
+            fontWeight: "500",
+            fontSize: "36px",
+            lineHeight: "54px",
+          }}
+        >
+          Product Name
+        </Typography>
+        <Typography
+          sx={{
+            width: "169px",
+            height: "36px",
+            left: "0px",
+            top: "54px",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "24px",
+            lineHeight: "36px",
+            color: "#A0A3BD",
+          }}
+        >
+          Product Detail
+        </Typography>
+        <Typography
+          sx={{
+            width: "108px",
+            height: "54px",
+            left: "0px",
+            top: "106px",
+            fontFamily: "Poppins",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "36px",
+            lineHeight: "54px",
+            color: "#FD6637",
+          }}
+        >
+          500 B.
+        </Typography>
         <div className={classes.amountAndCart}>
-          {/* <Amount /> */}
-          <div className={classes.cart}>Add to cart</div>
+          <Amount />
+          <AddToCartButton />
         </div>
       </div>
     </div>
@@ -53,37 +80,6 @@ const changeImage1 = (event) => {
 };
 
 const useStyles = makeStyles({
-  sideImage: {
-    width: "116px",
-    height: "116px",
-    border: "1px solid #EFF0F6",
-    margin: "12px",
-    borderRadius: "10px",
-    backgroundColor: "#EFF0F6",
-    cursor: "pointer",
-  },
-  imgProduct: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    paddingLeft: "8px",
-    display: "block",
-  },
-  thumbImg: {
-    top: "-0.9px",
-  },
-  mainImage: {
-    width: "512px",
-    height: "512px",
-    border: "1px solid #EFF0F6",
-    borderRadius: "10px",
-    backgroundColor: "#EFF0F6",
-    left: "132px",
-    top: "8px",
-  },
-  mainImgProduct: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-  },
   productDetail: {
     display: "flex",
     flexDirection: "row",
@@ -93,39 +89,6 @@ const useStyles = makeStyles({
     height: "568px",
     left: "100px",
     top: "195px",
-  },
-  name: {
-    width: "261px",
-    height: "54px",
-    fontFamily: "Poppins",
-    fontStyle: "normal",
-    fontWeight: "500",
-    fontSize: "36px",
-    lineHeight: "54px",
-  },
-  detail: {
-    width: "169px",
-    height: "36px",
-    left: "0px",
-    top: "54px",
-    fontFamily: "Poppins",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: "24px",
-    lineHeight: "36px",
-    color: "#A0A3BD",
-  },
-  price: {
-    width: "108px",
-    height: "54px",
-    left: "0px",
-    top: "106px",
-    fontFamily: "Poppins",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: "36px",
-    lineHeight: "54px",
-    color: "#FD6637",
   },
   productName: {
     width: "347px",

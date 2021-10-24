@@ -1,6 +1,13 @@
 import React from "react";
-import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
-import { Accordion, AccordionDetails, AccordionSummary, Divider, Fade, Typography } from "@mui/material";
+import ExpandLessRoundedIcon from "@mui/icons-material/ExpandLessRounded";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+  Fade,
+  Typography,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 
@@ -9,10 +16,10 @@ const ProductDescription = (props) => {
   const handleClick = () => {
     setOpen(!open);
   };
-  
+
   const classes = useStyles();
- 
-  return ( 
+
+  return (
     <>
       <Box
         sx={{
@@ -37,8 +44,9 @@ const ProductDescription = (props) => {
               </Typography>
             </Box>
           </AccordionSummary>
-          <AccordionDetails>{open && <typography>test</typography>}  
-           </AccordionDetails>
+          <AccordionDetails>
+            {open && <typography>test</typography>}
+          </AccordionDetails>
         </Accordion>
         {!open && (
           <Fade in={!open} timeout={500}>
