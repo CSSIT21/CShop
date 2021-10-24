@@ -49,11 +49,7 @@ const ProductDescription = (props) => {
               </Typography>
             </Box>
           </AccordionSummary>
-          <AccordionDetails
-            sx={{
-              padding: 0,
-            }}
-          >
+          <AccordionDetails>
             {open && <typography>{description}</typography>}
           </AccordionDetails>
         </Accordion>
