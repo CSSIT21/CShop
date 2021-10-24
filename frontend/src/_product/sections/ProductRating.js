@@ -8,15 +8,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Collapse,
   Divider,
   Fade,
-  FormControlLabel,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Switch,
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -163,7 +156,7 @@ const ProductRating = (props) => {
           id="expand-comment"
           onClick={handleClick}
           sx={{
-            padding: 0,
+            padding: "0px 0px 40px 0px",
           }}
         >
           <Box className={classes.head}>
@@ -225,7 +218,6 @@ const useStyles = makeStyles({
   head: {
     display: "flex",
     alignItems: "center",
-    padding: "0px 0px 40px 0px",
     margin: 0,
   },
   accordion: {

@@ -33,6 +33,9 @@ const ProductDescription = (props) => {
           TransitionComponent={Fade}
           TransitionProps={{ onExited: () => setOpen(false), timeout: 700 }}
           disableGutters
+          sx={{
+            boxShadow: "none",
+          }}
         >
           <AccordionSummary
             expandIcon={<ExpandLessRoundedIcon />}
@@ -40,16 +43,20 @@ const ProductDescription = (props) => {
             id="expand-detail"
             onClick={handleClick}
             sx={{
-              padding: 0,
+              padding: "0px 0px 40px 0px",
             }}
           >
-            <Box className={classes.box}>
+            <Box className={classes.head}>
               <Typography sx={{ fontWeight: 600, fontSize: "30px" }}>
                 Product Detail
               </Typography>
             </Box>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails
+            sx={{
+              padding: 0,
+            }}
+          >
             {open && <typography>{description}</typography>}
           </AccordionDetails>
         </Accordion>
@@ -63,14 +70,21 @@ const ProductDescription = (props) => {
   );
 };
 const useStyles = makeStyles({
-  box: {
+  head: {
     display: "flex",
     alignItems: "center",
-    padding: "0px 0px 50px 0px",
-    margin: "0px",
+    margin: 0,
   },
   accordion: {
-    boxShadow: "none !important",
+    "& .MuiAccordionSummary-content": {
+      margin: 0,
+    },
+    "& .MuiAccordionSummary-expandIconWrapper": {
+      color: "black",
+    },
+    "& .MuiSvgIcon-root": {
+      fontSize: "2rem",
+    },
   },
 });
 export default ProductDescription;

@@ -22,7 +22,7 @@ const RatingStars = ({ value, iconStyle, isComment, padding }) => {
           <Box>
             {value !== null && (
               <Typography
-                sx={{ marginTop: 1 }}
+                sx={{ marginTop: 0.5 }}
                 fontSize="1.4rem"
                 color="#FD6637"
               >

@@ -6,7 +6,7 @@ import img3 from "../../img/iphone-pink.png";
 import img4 from "../../img/iphone-red.png";
 import Typography from "@mui/material/Typography";
 import ImageDetail from "../components/SideImg.js";
-import Mainpic from "../components/mainImage";
+import Mainpic from "../components/MainImage";
 import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/AmountField";
 

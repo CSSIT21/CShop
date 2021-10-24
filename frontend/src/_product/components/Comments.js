@@ -1,5 +1,4 @@
-import { Avatar, Box, Divider, Rating, Typography } from "@mui/material";
-import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
+import { Avatar, Box, Divider, Typography } from "@mui/material";
 import RatingStars from "./RatingStars";
 
 const Comments = ({ imageURL, username, rating, comment }) => {
@@ -20,7 +19,6 @@ const Comments = ({ imageURL, username, rating, comment }) => {
         />
         <Box
           sx={{
-            width: "100%",
             display: "flex",
             alignItems: "start",
             justifyContent: "space-between",
@@ -44,9 +42,11 @@ const Comments = ({ imageURL, username, rating, comment }) => {
     </>
   );
 };
+
 const iconStyle = {
   width: "21.31px",
   height: "21.31px",
   color: "#FD6637",
 };
+
 export default Comments;
