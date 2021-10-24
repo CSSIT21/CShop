@@ -4,33 +4,29 @@ import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
-import Logo from "../assets/images/Outline.png";
+import Logo from "../assets/images/Logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faBan,
-    faCashRegister,
-    faUser,
-    faUserSlash,
+    faCalendarDay,
+    faLuggageCart,
+    faMoneyCheckAlt,
+    faPercent,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
-// let icon = [faUser, faCashRegister, faUserSlash, faBan];
-// let route = ["users", "sellers", "bannedusers", "bannedsellers"];
-// ["Users", "Sellers", "Banned users", "Banned sellers"]
-const generateLink = (icon, title="", path="/") => ({ icon, title, path});
+const generateLink = (icon, title = "", path = "/") => ({ icon, title, path });
 
-let links = [ 
-    generateLink(faUser, "Users", '/manage/users'),
-    generateLink(faCashRegister, "Sellers",'/manage/sellers'),
-    generateLink(faUserSlash, "Banned users",'/manage/bannedusers'),
-    generateLink(faBan, "Banned sellers",'/manage/bannedsellers'),
+let links = [
+    generateLink(faCalendarDay, "Dashboard", "/console/dashboard"),
+    generateLink(faLuggageCart, "Products Settings", "/console/products"),
+    generateLink(faPercent, "Discount", "/console/discounts"),
+    generateLink(faMoneyCheckAlt, "Income", "/console/income"),
 ];
 
 const openedMixin = (theme) => ({
@@ -71,30 +67,19 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
-export default function SidebarLayout(props) {
+export default function SellerConsoleSidebarLayout(props) {
     const classes = useStyles();
 
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <Drawer variant="permanent" open={true}>
-                {/* <DrawerHeader>
-                    <Box></Box>
-                </DrawerHeader> */}
                 <Box className={classes.logo}>
-                    <img src={Logo} alt="logo" width="50px" />
-                    <Typography variant="h5" fontWeight={700} marginLeft="10px">
-                        CShop
-                    </Typography>
+                    <img src={Logo} alt="logo" width="140px" />
                 </Box>
                 <List>
-                    {links.map(({icon, title, path}, index) => (
-                        <ListItem
-                            button
-                            key={index}
-                            to={path}
-                            component={Link}
-                        >
+                    {links.map(({ icon, title, path }, index) => (
+                        <ListItem button key={index} to={path} component={Link}>
                             <ListItemIcon>
                                 <FontAwesomeIcon
                                     icon={icon}
@@ -104,28 +89,9 @@ export default function SidebarLayout(props) {
                             <ListItemText primary={title} />
                         </ListItem>
                     ))}
-
-                    {/* {["Users", "Sellers", "Banned users", "Banned sellers"].map(
-                        (text, index) => (
-                            <ListItem
-                                button
-                                key={text}
-                                to={`/manage/${route[index]}`}
-                                component={Link}
-                            >
-                                <ListItemIcon>
-                                    <FontAwesomeIcon
-                                        icon={icon[index]}
-                                        className={classes.icon}
-                                    />
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        )
-                    )} */}
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }} margin="15px 30px">
                 {props.children}
             </Box>
         </Box>
