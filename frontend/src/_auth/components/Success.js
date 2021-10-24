@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import CButton from "../../common/components/CButton";
@@ -6,7 +6,10 @@ import { useHistory } from "react-router";
 const Success = () => {
   const classes = useStyles();
   const router = useHistory();
-
+  useEffect(() => {
+    document.body.style.backgroundColor = "#f3f4f5";
+    return () => (document.body.style.backgroundColor = "white");
+  }, []);
   return (
     <Fragment>
       <Box className={classes.header}>Successfully Registeration</Box>
