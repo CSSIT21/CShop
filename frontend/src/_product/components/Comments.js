@@ -25,7 +25,7 @@ const Comments = ({ imageURL, username, rating, comment }) => {
             flexDirection: "column",
           }}
         >
-          <Typography sx={{ fontSize: "1.2rem" }} gutterBottom>
+          <Typography sx={{ fontSize: "1rem", fontWeight: "800" }} gutterBottom>
             {username}
           </Typography>
           <RatingStars
@@ -33,7 +33,7 @@ const Comments = ({ imageURL, username, rating, comment }) => {
             iconStyle={iconStyle}
             isComment
           ></RatingStars>
-          <Typography sx={{ marginTop: 1, fontSize: "1rem" }}>
+          <Typography sx={{ marginTop: 1, fontSize: "0.8rem" }}>
             {comment}
           </Typography>
         </Box>

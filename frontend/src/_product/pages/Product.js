@@ -16,7 +16,7 @@ const ProductPage = (props) => {
     >
       <Box
         sx={{
-          maxWidth: "1280px",
+          maxWidth: "1200px",
         }}
       >
         <ProductDetails />
@@ -28,4 +28,5 @@ const ProductPage = (props) => {
     </Box>
   );
 };
+
 export default ProductPage;
