@@ -2,14 +2,14 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-const BannedUserPage = () => {
+const SellerDiscounts = () => {
     return (
         <Box>
             <Typography variant="h4" fontWeight="600">
-                Banned Users
+                Discounts
             </Typography>
         </Box>
     );
 };
 
-export default BannedUserPage;
+export default SellerDiscounts;
