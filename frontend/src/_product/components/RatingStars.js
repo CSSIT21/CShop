@@ -3,7 +3,6 @@ import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-function IconContainer(props) {
 
 const RatingStars = ({ value = null }) => {
   return (

@@ -128,7 +128,6 @@ const useStyles = makeStyles({
     color: "#FD6637",
   },
   productName: {
-    position: "static",
     width: "347px",
     height: "314px",
     left: "734px",
