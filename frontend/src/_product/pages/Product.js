@@ -9,7 +9,6 @@ const ProductPage = (props) => {
     <>
       <div className="navbar"></div> {/*From Ann*/}
       <div className="contents">
-        This is ProductPage.
         <ProductDetails />
         <ShopDetails />
         {/*<ProductSuggestion /> From Ann*/}
