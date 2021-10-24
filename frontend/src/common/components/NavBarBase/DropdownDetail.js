@@ -1,9 +1,26 @@
-import { styled, alpha } from '@mui/material/styles';
-import { Menu, MenuItem, Button } from '@mui/material';
-import { Store as StoreIcon, Person as PersonIcon, Restore as RestoreIcon, Favorite as FavoriteIcon, ExitToApp as ExitToAppIcon, KeyboardArrowDown as KeyboardArrowDownIcon } from '@mui/icons-material';
+import {
+	styled,
+	alpha,
+} from '@mui/material/styles';
+import {
+	Menu,
+	MenuItem,
+	Button,
+} from '@mui/material';
+import {
+	Store as StoreIcon,
+	Person as PersonIcon,
+	Restore as RestoreIcon,
+	Favorite as FavoriteIcon,
+	ExitToApp as ExitToAppIcon,
+	KeyboardArrowDown as KeyboardArrowDownIcon,
+} from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { For } from '../../utils';
+import {
+	useHistory,
+} from 'react-router-dom';
 
 const StyledMenu = styled((props) => (
 	<Menu
@@ -24,7 +41,9 @@ const StyledMenu = styled((props) => (
 		marginTop: theme.spacing(1),
 		minWidth: 180,
 		color:
-			theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+			theme.palette.mode === 'light'
+				? 'rgb(55, 65, 81)'
+				: theme.palette.grey[300],
 		boxShadow:
 			'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
 		'& .MuiMenu-list': {
@@ -48,38 +67,45 @@ const StyledMenu = styled((props) => (
 
 const DropdownDetail = ({ children }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
+	const router = useHistory();
 	const open = Boolean(anchorEl);
-
+	
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 	const handleClose = () => {
-		setAnchorEl(null);
+		router.push(Menu.to);
+		setAnchorEl(false);
 	};
-
+	
 	const menuLists = [
 		{
-			title: "My Account",
+			title: 'My Account',
 			icon: PersonIcon,
+			to: '/profile',
 		},
 		{
-			title: "My Shop",
+			title: 'My Shop',
 			icon: StoreIcon,
+			to: '/profile/shop',
 		},
 		{
-			title: "Order History",
+			title: 'Order History',
 			icon: RestoreIcon,
+			to: '/profile/history',
 		},
 		{
-			title: "Favorite",
+			title: 'Favorite',
 			icon: FavoriteIcon,
+			to: '/profile/favourite',
 		},
 		{
-			title: "Log Out",
+			title: 'Log Out',
 			icon: ExitToAppIcon,
-		}
+			to: '/logout',
+		},
 	];
-
+	
 	return (
 		<Box>
 			<Button
@@ -90,8 +116,11 @@ const DropdownDetail = ({ children }) => {
 				variant="contained"
 				disableElevation
 				onClick={handleClick}
-				endIcon={<KeyboardArrowDownIcon sx={{ color: "black" }} />}
-				sx={{ backgroundColor: "white", '&:hover': { backgroundColor: "#f5f5f5", }, }}
+				endIcon={<KeyboardArrowDownIcon sx={{ color: 'black' }} />}
+				sx={{
+					backgroundColor: 'white',
+					'&:hover': { backgroundColor: '#F5F5F5' },
+				}}
 			>
 				{children}
 			</Button>
@@ -104,15 +133,22 @@ const DropdownDetail = ({ children }) => {
 				open={open}
 				onClose={handleClose}
 			>
-				<For each={menuLists} >{(Menu, index) =>
-					<MenuItem onClick={handleClose} disableRipple sx={{ fontSize: 14, margin: '5px 0' }} key={index}>
-						<Menu.icon />
-						{Menu.title}
-					</MenuItem>}
+				<For each={menuLists}>
+					{(Menu, index) => (
+						<MenuItem
+							onClick={handleClose}
+							disableRipple
+							sx={{ fontSize: 14, margin: '5px 0' }}
+							key={index}
+						>
+							<Menu.Icon />
+							{Menu.title}
+						</MenuItem>
+					)}
 				</For>
 			</StyledMenu>
 		</Box>
-	)
-}
+	);
+};
 
 export default DropdownDetail;

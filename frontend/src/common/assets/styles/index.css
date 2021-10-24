@@ -1,13 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700&display=swap");
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
 
 * {
-	font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
-.MuiBadge-badge .MuiBadge-standard{
-	background-color: #FD6637 !important;
+.MuiBadge-badge .MuiBadge-standard {
+  background-color: #fd6637 !important;
 }

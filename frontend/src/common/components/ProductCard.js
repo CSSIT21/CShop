@@ -4,7 +4,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import BottomCardContent from "./ProductCardBase/BottomCardContent";
 import TopCardContent from "./ProductCardBase/TopCardContent";
-import Link from "@mui/material/Link";
 
 const ProductCard = ({
   image = "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg",

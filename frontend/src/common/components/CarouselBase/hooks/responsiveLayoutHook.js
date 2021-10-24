@@ -24,7 +24,6 @@ const useResponsiveLayout = (breakpointList = []) => {
                 return true;
             }
             return false;
-
         });
 
         setCurrentBreakpointSetting(matchedSetting);
