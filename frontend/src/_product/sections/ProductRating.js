@@ -1,5 +1,6 @@
 import React from "react";
 import RatingStars from "../components/RatingStars";
+import ShowMoreButton from "../../common/components/CButton";
 
 import Comments from "../components/Comments";
 import { makeStyles } from "@mui/styles";
@@ -22,61 +23,229 @@ import Box from "@mui/material/Box";
 import { ExpandLessRounded } from "@mui/icons-material";
 
 const ProductRating = (props) => {
+  const classes = useStyles();
+
+  const avgRating = 4.5;
+
   const [open, setOpen] = React.useState(false);
+  const [commentOffset, setCommentOffset] = React.useState(5);
+  const [commentsList, setCommentsList] = React.useState([
+    {
+      imageURL: "1",
+      username: "patiphon",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "1",
+      username: "patiphon",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "1",
+      username: "patiphon",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "1",
+      username: "patiphon",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "1",
+      username: "patiphon",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "1",
+      username: "patiphon",
+      rating: 3,
+      comment:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+    {
+      imageURL: "2",
+      username: "Thanawan",
+      rating: 3.5,
+      comment: "Good :)",
+    },
+  ]);
+
   const handleClick = () => {
     setOpen(!open);
   };
 
-  const classes = useStyles();
+  const handleSeeMore = () => {
+    setCommentOffset(commentOffset + 5);
+  };
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        padding: "50px 0px",
+      }}
+    >
+      <Accordion
+        className={classes.accordion}
+        TransitionComponent={Fade}
+        TransitionProps={{ onExited: () => setOpen(false), timeout: 700 }}
+        disableGutters
         sx={{
-          padding: "50px 0px",
+          boxShadow: "none",
         }}
       >
-        <Accordion
-          className={classes.accordion}
-          TransitionComponent={Fade}
-          TransitionProps={{ onExited: () => setOpen(false), timeout: 700 }}
-          disableGutters
+        <AccordionSummary
+          expandIcon={<ExpandLessRounded />}
+          aria-controls="expand-comment"
+          id="expand-comment"
+          onClick={handleClick}
+          sx={{
+            padding: 0,
+          }}
         >
-          <AccordionSummary
-            expandIcon={<ExpandLessRounded />}
-            aria-controls="expand-comment"
-            id="expand-comment"
-            onClick={handleClick}
-          >
-            <Box className={classes.box}>
-              <Typography sx={{ fontWeight: 600, fontSize: "30px" }}>
-                Product Rating
-              </Typography>
-              <RatingStars value={5}></RatingStars>
+          <Box className={classes.head}>
+            <Typography sx={{ fontWeight: 600, fontSize: "30px" }}>
+              Product Rating
+            </Typography>
+            <RatingStars
+              value={avgRating}
+              iconStyle={iconStyle}
+              padding={padding}
+            ></RatingStars>
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails
+          sx={{
+            padding: 0,
+          }}
+        >
+          {open && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              {commentsList.slice(0, commentOffset).map((val) => (
+                <Comments
+                  imageURL={val.imageURL}
+                  username={val.username}
+                  rating={val.rating}
+                  comment={val.comment}
+                ></Comments>
+              ))}
+              <Box sx={{ marginTop: "50px" }}>
+                {commentOffset > commentsList.length ? (
+                  <Typography>No more comment.</Typography>
+                ) : (
+                  <ShowMoreButton
+                    title="Show more comments"
+                    onClick={handleSeeMore}
+                  ></ShowMoreButton>
+                )}
+              </Box>
             </Box>
-          </AccordionSummary>
-          <AccordionDetails>{open && <Comments></Comments>}</AccordionDetails>
-        </Accordion>
-        {!open && (
-          <Fade in={!open} timeout={500}>
-            <Divider />
-          </Fade>
-        )}
-      </Box>
-    </>
+          )}
+        </AccordionDetails>
+      </Accordion>
+      {!open && (
+        <Fade in={!open} timeout={500}>
+          <Divider />
+        </Fade>
+      )}
+    </Box>
   );
 };
 
 const useStyles = makeStyles({
-  box: {
+  head: {
     display: "flex",
     alignItems: "center",
-    padding: "0px 0px 50px 0px",
-    margin: "0px",
+    padding: "0px 0px 40px 0px",
+    margin: 0,
   },
   accordion: {
-    boxShadow: "none !important",
+    "& .MuiAccordionSummary-content": {
+      margin: 0,
+    },
+    "& .MuiAccordionSummary-expandIconWrapper": {
+      color: "black",
+    },
+    "& .MuiSvgIcon-root": {
+      fontSize: "2rem",
+    },
   },
 });
-
+const iconStyle = {
+  width: "40px",
+  height: "40px",
+  color: "#FD6637",
+};
+const padding = {
+  padding: "0 25px 0 50px",
+};
 export default ProductRating;

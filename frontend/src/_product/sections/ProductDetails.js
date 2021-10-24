@@ -28,7 +28,7 @@ const ProductDetails = () => {
       <div className={classes.mainImage}>
         <img
           className={classes.mainImgProduct}
-          src={img1}
+          src={img2}
           id="photo"
           class="pro-img"
           alt="product"
@@ -128,7 +128,6 @@ const useStyles = makeStyles({
     color: "#FD6637",
   },
   productName: {
-    position: "static",
     width: "347px",
     height: "314px",
     left: "734px",
