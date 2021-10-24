@@ -7,7 +7,6 @@ const CarouselButton = ({ pageHandle, currentPage }) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Fab
-        size="medium"
         aria-label="prev"
         sx={{
           backgroundColor: "#FFFF",
@@ -22,7 +21,6 @@ const CarouselButton = ({ pageHandle, currentPage }) => {
         <ChevronLeft style={iconStyle} />
       </Fab>
       <Fab
-        size="medium"
         color="primary"
         aria-label="next"
         sx={{
