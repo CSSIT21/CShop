@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import BottomCardContent from "./ProductCardBase/BottomCardContent";
 import TopCardContent from "./ProductCardBase/TopCardContent";
+import { noop } from "../utils";
 
 const ProductCard = ({
   image = "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg",
@@ -13,15 +14,9 @@ const ProductCard = ({
   favourite = false,
   margin = 10,
   to,
+  onFavourite=noop,
   ...rest
 }) => {
-  const onFavourite = (idx) => {
-    setItems((items) => {
-      items[idx].favourite = !items[idx].favourite;
-      return [...items];
-    });
-  };
-
   return (
     <Card
       sx={{

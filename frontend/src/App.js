@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 /** layouts */
-import SidebarLayout from "./common/layouts/SidebarLayout";
+import SidebarLayout from "./common/layouts/ManageAccountSidebarLayout";
 import MainLayout from "./common/layouts/MainLayout";
 
 /** pages */

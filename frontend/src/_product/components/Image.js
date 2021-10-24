@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-const sideImage = ({ img }) => {
+const Image = ({ img }) => {
   return (
     <Box
       sx={{
@@ -26,4 +26,4 @@ const sideImage = ({ img }) => {
   );
 };
 
-export default sideImage;
+export default Image;

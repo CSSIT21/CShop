@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
 import React, { useState } from "react";
+import CustomDot from "../../common/components/CarouselBase/CustomDot";
 import Carousel from "../../common/components/Carousel";
 import ProductCard from "../../common/components/ProductCard";
 import CarouselButton from "../../common/components/CarouselButton";
@@ -119,6 +120,7 @@ const ProductSuggestion = ({}) => {
             />
           )}
         </Carousel>
+          <CustomDot currentPage={page} totalPage={Math.ceil(items.length / 4)} setPageState={setPage} width="75px" />
       </Box>
     </Box>
   );

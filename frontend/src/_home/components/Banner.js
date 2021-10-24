@@ -47,24 +47,6 @@ const Banner = () => {
   };
   return (
     <>
-      {/* <Carousel
-        items={items}
-        pageState={page}
-        itemsPerRow={4}
-        setPageState={setPage}
-        gap={10}>
-        {(item, idx) => <div
-          style={{
-            padding: '10px',
-            borderRadius: '10px',
-            width: '100%',
-            aspectRatio: '1',
-            background: 'grey',
-            boxSizing: 'border-box'
-          }}>
-          {item.id}. {item.title} {item.description}
-        </div>}
-      </Carousel> */}
 
       <Carousel
         items={items}
@@ -78,7 +60,7 @@ const Banner = () => {
             title={item.title}
             favourite={item.favourite}
             onFavourite={() => {
-              onFavouriteHandler(idx);
+              onFavouriteHandler(idx)
             }}
             to={`/product/${item.id}`}
           />
