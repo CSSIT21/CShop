@@ -3,13 +3,6 @@ import { useRecoilState } from "recoil";
 import qs from "qs";
 
 export const noop = () => {};
-export const isObj = t => typeof t === 'object';
-export const isDef = t => typeof t === 'undefined';
-export const isArray = t => Array.isArray(t);
-export const isUndef = t => !isDef(t);
-export const isFunc = t => typeof t === 'function';
-export const isNull = t => t === null;
-export const isEmpty = t => t === '';
 
 export function For(props) {
   const each = props.each || [];
