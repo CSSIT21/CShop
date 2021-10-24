@@ -229,4 +229,4 @@ class PriceRange extends React.Component {
   }
 }
 
-export default PriceTest;
+export default PriceRange;

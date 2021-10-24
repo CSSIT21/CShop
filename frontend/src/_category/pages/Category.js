@@ -3,7 +3,7 @@ import Avaicheck from './availability/AvaiCheck';
 import './Category.css';
 import PriceRange from './price-filter/PriceRange';
 import RateStar from './rate-filter/RateStar';
-import ServiceCheck from './Service/serviceCheck';
+import ServiceCheck from './Service/ServiceCheck';
 
 const CategoryPage = () => {
   return (
