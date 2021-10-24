@@ -37,7 +37,7 @@ const ProductRating = (props) => {
     },
     {
       imageURL: "1",
-      username: "patiphon",
+      username: "Pw-a02",
       rating: 3,
       comment:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
@@ -50,20 +50,20 @@ const ProductRating = (props) => {
     },
     {
       imageURL: "1",
-      username: "patiphon",
+      username: "Pw-a02",
       rating: 3,
       comment:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
     },
     {
       imageURL: "2",
-      username: "Thanawan",
+      username: "cympati",
       rating: 3.5,
       comment: "Good :)",
     },
     {
       imageURL: "1",
-      username: "patiphon",
+      username: "YOK",
       rating: 3,
       comment:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",

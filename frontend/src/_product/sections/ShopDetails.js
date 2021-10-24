@@ -25,33 +25,53 @@ const ShopDetails = (props) => {
         margin: "100px 0 50px 0",
       }}
     >
+      {/* Left-part */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "flex-start",
         }}
       >
+        {/* element-left */}
         <Avatar
           alt="Shop"
           src="/static/images/avatar/1.jpg"
-          sx={{ width: 95, height: 95, marginRight: "25px" }}
+          sx={{
+            width: 95,
+            height: 95,
+            marginRight: "30px",
+            alignSelf: "self-start",
+          }}
         />
-        <div className="">
-          <div className="shopName">{shopName}</div>
-          <Typography
-            sx={{
-              minWidth: 200,
-              fontSize: "14px",
-              lineHeight: "21px",
-              color: "#A0A3BD",
-            }}
-          >
-            Active {activeTime}
-          </Typography>
-          <Box
-            sx={{ display: "flex", alignItems: "center", marginTop: "17px" }}
-          >
+        <Box
+          className="element-right"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "110px",
+          }}
+        >
+          {/* Top */}
+          <Box>
+            <Typography
+              sx={{ fontSize: "18px", fontWeight: 500 }}
+              className="shopName"
+            >
+              {shopName}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "14px",
+                color: "#A0A3BD",
+              }}
+            >
+              Active {activeTime}
+            </Typography>
+          </Box>
+
+          {/* Buttom */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <CButton
               title="Chat now"
               icon={<ShoppingCartOutlinedIcon />}
@@ -67,58 +87,80 @@ const ShopDetails = (props) => {
               style={text}
             />
           </Box>
-        </div>
+        </Box>
       </Box>
-      <div className="right-part">
-        <Box sx={{ display: "flex", alignItems: "center", textAlign: "left" }}>
+
+      {/* Right-part */}
+      <Box
+        sx={{
+          height: "75px",
+          width: "420px",
+          display: "flex",
+          alignItems: "start",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Top */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             sx={{
-              minWidth: 100,
               fontSize: "18px",
-              lineHeight: "27px",
               color: "#A0A3BD",
             }}
           >
             Rating
           </Typography>
-          <Typography sx={{ minWidth: 100 }}>{rating}</Typography>
+          <Typography sx={{ fontSize: "18px", marginLeft: "2.7rem" }}>
+            {rating}
+          </Typography>
           <Typography
             sx={{
-              minWidth: 100,
               fontSize: "18px",
-              lineHeight: "27px",
               color: "#A0A3BD",
+              marginLeft: "4rem",
             }}
           >
             Followers
           </Typography>
-          <Typography sx={{ minWidth: 100 }}>{followers}</Typography>
+          <Typography sx={{ fontSize: "18px", marginLeft: "1.3rem" }}>
+            {followers}
+          </Typography>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", textAlign: "left" }}>
+
+        {/* Buttom */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "18px",
+          }}
+        >
           <Typography
             sx={{
-              minWidth: 100,
               fontSize: "18px",
-              lineHeight: "27px",
               color: "#A0A3BD",
             }}
           >
             Products
           </Typography>
-          <Typography sx={{ minWidth: 100 }}>{products}</Typography>
+          <Typography sx={{ fontSize: "18px", marginLeft: "1.4rem" }}>
+            {products}
+          </Typography>
           <Typography
             sx={{
-              minWidth: 100,
               fontSize: "18px",
-              lineHeight: "27px",
               color: "#A0A3BD",
+              marginLeft: "2.7rem",
             }}
           >
             Joined
           </Typography>
-          <Typography sx={{ minWidth: 100 }}>{joined}</Typography>
+          <Typography sx={{ fontSize: "18px", marginLeft: "2.7rem" }}>
+            {joined}
+          </Typography>
         </Box>
-      </div>
+      </Box>
     </Box>
   );
 };

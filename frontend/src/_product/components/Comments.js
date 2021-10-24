@@ -30,7 +30,7 @@ const Comments = ({ imageURL, username, rating, comment }) => {
           }}
         >
           <Typography
-            sx={{ fontSize: "1rem", fontWeight: "500", marginBottom: 0.5 }}
+            sx={{ fontSize: "18px", fontWeight: "500", marginBottom: 0.5 }}
           >
             {username}
           </Typography>
@@ -40,7 +40,7 @@ const Comments = ({ imageURL, username, rating, comment }) => {
             isComment
           ></RatingStars>
           <Typography
-            sx={{ marginTop: 1.5, fontSize: "0.8rem", fontWeight: "400" }}
+            sx={{ marginTop: 1.5, fontSize: "16px", fontWeight: "400" }}
           >
             {comment}
           </Typography>
@@ -52,8 +52,8 @@ const Comments = ({ imageURL, username, rating, comment }) => {
 };
 
 const iconStyle = {
-  width: "21.31px",
-  height: "21.31px",
+  width: "24px",
+  height: "24px",
   color: "#FD6637",
 };
 
