@@ -68,7 +68,6 @@ const HomePage = () => {
     },
   ];
   const [items, setItems] = useState(itemsData);
-  console.log(items);
   const onFavourite = (e, idx) => {
     e.preventDefault();
     setItems((items) => {

@@ -19,7 +19,6 @@ const cardStyle = {
 };
 
 const ProductCard = ({ product, to, onFavourite = noop }) => {
-  console.log(product);
   return (
     <Link to={to}>
       <Card
