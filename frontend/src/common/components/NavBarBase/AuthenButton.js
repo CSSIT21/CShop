@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import CButton from '../CButton';
 import { Link } from 'react-router-dom';
- 
+
 const useStyles = makeStyles({
 	authenWrapper: {
 		display: 'flex',
@@ -13,15 +13,15 @@ const useStyles = makeStyles({
 });
 
 const authenProps = {
-	component:Link,
-	width:"90px",
-	height:"38px",
-	fontSize:"14px"
+	component: Link,
+	width: '90px',
+	height: '38px',
+	fontSize: '14px',
 };
-const style = { 
-	border: "1px solid #FD6637",
-	backgroundColor: "white",
-	color: "#FD6637"
+const style = {
+	border: '1px solid #FD6637',
+	backgroundColor: 'white',
+	color: '#FD6637',
 };
 
 const AuthenButton = () => {
@@ -29,18 +29,19 @@ const AuthenButton = () => {
 	
 	return (
 		<Box className={classes.authenWrapper}>
-			<CButton 
+			<CButton
 				to="/login"
 				title="Sign In"
 				{...authenProps}
-				style={style} />
+				style={style}
+			/>
 			<CButton
-				to="/register/info"
+				to="/register"
 				title="Sign Up"
-				{...authenProps}/>
+				{...authenProps} />
 		</Box>
-	)
-}
+	);
+};
 
 export default AuthenButton;
 

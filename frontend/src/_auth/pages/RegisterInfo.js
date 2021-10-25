@@ -32,7 +32,6 @@ const RegisterInfoPage = () => {
   return (
     <Fragment>
       <Box className={classes.container}>
-        <Box style={{ margin: "3% 0" }}>This is for navbar</Box>
         <Box className={classes.body}>
           <Box className={classes.box}>
             <Stepper

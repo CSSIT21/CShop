@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CButton from "../../common/components/CButton";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
@@ -130,7 +130,9 @@ const RegisterAddress = ({
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
                 fullWidth
-                select
+                InputProps={{
+                  readOnly: true,
+                }}
                 value={address.postalCode}
                 onChange={(e) => {
                   setAddress({ ...address, postalCode: e.target.value });
@@ -158,6 +160,7 @@ const RegisterAddress = ({
             width: "300px",
             height: "55px",
             color: "#FD6637",
+            textTransform: "capitalize",
           }}
         >
           Back
@@ -178,7 +181,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     fontSize: "32px",
     fontWeight: 600,
-    margin: "7% 0%",
+    margin: "5% 0%",
   },
   context: {
     padding: "0 12%",
@@ -188,7 +191,7 @@ const useStyles = makeStyles({
     marginBottom: "40px",
   },
   textFieldBox: {
-    marginBottom: "40px",
+    marginBottom: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
     width: "100%",

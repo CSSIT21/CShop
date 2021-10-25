@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 /** layouts */
-import SidebarLayout from "./common/layouts/SidebarLayout";
+import SidebarLayout from "./common/layouts/ManageAccountSidebarLayout";
 import MainLayout from "./common/layouts/MainLayout";
 
 /** pages */
@@ -24,12 +24,14 @@ import ChatPage from "./_chat/pages/Chat";
 import RegisterPage from "./_auth/pages/Register";
 import RegisterInfoPage from "./_auth/pages/RegisterInfo";
 import ProfilePage from "./_profile/pages/Profile";
+import InformationPage from "./_profile/pages/Information";
 import HistoryPage from "./_profile/pages/History";
 import VoucherPage from "./_profile/pages/Voucher";
 import AddressPage from "./_profile/pages/Address";
 import LoginPage from "./_auth/pages/Login";
+import NotFoundPage from "./common/pages/404";
 import { ThemeContextProvider } from "./common/contexts/ThemeContexts";
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from "recoil";
 
 function App() {
   return (
@@ -89,7 +91,7 @@ function App() {
                   <ChatPage />
                 </MainLayout>
               </Route>
-              
+
               {/* LOGIN PAGE */}
               <Route path="/login" exact>
                 <MainLayout>
@@ -113,10 +115,15 @@ function App() {
                   <RegisterInfoPage />
                 </MainLayout>
               </Route>
+              <Route path="/profile" exact>
+                <MainLayout>
+                  <ProfilePage />
+                </MainLayout>
+              </Route>
               <Route path="/profile/:path?" exact>
                 <MainLayout>
                   <Route path="/profile/information">
-                    <SugggestionPage />
+                    <InformationPage />
                   </Route>
                   <Route path="/profile/address">
                     <AddressPage />
@@ -128,6 +135,9 @@ function App() {
                     <HistoryPage />
                   </Route>
                 </MainLayout>
+              </Route>
+              <Route path="*">
+                <NotFoundPage />
               </Route>
             </Switch>
           </Router>
