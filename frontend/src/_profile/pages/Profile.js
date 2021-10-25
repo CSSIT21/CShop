@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import TopProfile from "../components/ProfileBase/TopProfile";
-import ProfileArea from "../components/ProfileBase/ProfileArea";
+import AccordionCommon from "~/common/components/AccordionCommon";
 import ProfileBox from "../components/ProfileBase/ProfileBox";
 import {
   Person as PersonIcon,
@@ -21,8 +21,9 @@ const ProfilePage = (props) => {
       <TopProfile />
       <Box className={classes.container}>
         <Box style={{ width: "70%" }}>
-          <ProfileArea
+          <AccordionCommon
             title="Profile"
+            col
             open={openProfile}
             setOpen={setOpenProfile}
           >
@@ -36,8 +37,8 @@ const ProfilePage = (props) => {
               icon={<AddressIcon style={iconStyles} />}
               to="/profile/address"
             />
-          </ProfileArea>
-          <ProfileArea
+          </AccordionCommon>
+          <AccordionCommon
             title="Voucher & Coupon"
             open={openVoucher}
             setOpen={setOpenVoucher}
@@ -47,8 +48,8 @@ const ProfilePage = (props) => {
               icon={<CouponIcon style={iconStyles} />}
               to="/profile/voucher"
             />
-          </ProfileArea>
-          <ProfileArea
+          </AccordionCommon>
+          <AccordionCommon
             title="Shopping Information"
             open={openShopping}
             setOpen={setOpenShopping}
@@ -58,7 +59,7 @@ const ProfilePage = (props) => {
               icon={<HistoryIcon style={iconStyles} />}
               to="/profile/history"
             />
-          </ProfileArea>
+          </AccordionCommon>
         </Box>
       </Box>
     </>
@@ -72,6 +73,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     marginTop: "20px",
+    marginBottom: "50px",
   },
 });
 
