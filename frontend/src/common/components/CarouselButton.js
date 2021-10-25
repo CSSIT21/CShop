@@ -3,9 +3,12 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Fab } from "@mui/material";
 import { Box } from "@mui/system";
 
-// ถ้าแปะtotalPageมา Carouselจะไม่loop
-
-const CarouselButton = ({ pageHandle, currentPage, totalPage = false }) => {
+const CarouselButton = ({
+  pageHandle,
+  currentPage,
+  totalPage,
+  loop = false,
+}) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Fab
@@ -16,9 +19,13 @@ const CarouselButton = ({ pageHandle, currentPage, totalPage = false }) => {
           width: "50px",
           height: "50px",
         }}
-        disabled={totalPage && currentPage == 0}
+        disabled={!loop && currentPage === 0}
         onClick={() => {
-          pageHandle(currentPage - 1);
+          if (currentPage === 0) {
+            pageHandle(totalPage - 1);
+          } else {
+            pageHandle(currentPage - 1);
+          }
         }}
       >
         <ChevronLeft style={iconStyle} />
@@ -33,9 +40,13 @@ const CarouselButton = ({ pageHandle, currentPage, totalPage = false }) => {
         }}
         color="primary"
         aria-label="next"
-        disabled={currentPage == totalPage - 1}
+        disabled={!loop && currentPage === totalPage - 1}
         onClick={() => {
-          pageHandle(currentPage + 1);
+          if (totalPage - 1 === currentPage) {
+            pageHandle(0);
+          } else {
+            pageHandle(currentPage + 1);
+          }
         }}
       >
         <ChevronRight style={iconStyle} />

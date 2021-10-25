@@ -45,8 +45,6 @@ const CButton = ({
                 </Box>
             </Button>
         </Box>
-      </Button>
-    </Box>
   );
 };
 
