@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import authState from '../store/authState';
+import qs from "qs";
+import { useLocation } from "react-router";
+
 import { isArray, isFunc, isObj } from '../utils';
-import { useCallback } from 'react';
 
 export const useStateFlush = (init=null,flush=false) => {
     const [state, setState] = useState(init);
@@ -42,3 +42,8 @@ export const useForm = (init={}) => {
     }
     return form;
 };
+
+export function useQuery() {
+    return qs.parse(useLocation().search, { ignoreQueryPrefix: true });
+  }
+  
