@@ -37,13 +37,15 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 	const [items, setItems] = useState(bestsellerItems);
 	const [page, setPage] = useState(0);
 	const classes = useStyles();
+	const itemsPerRow = 4;
+	const totalPage = Math.ceil(items.length / itemsPerRow);
 
 	return (
 		<Box className={classes.bestsellerWrapper}>
 			<Box className={classes.bestsellerContent}>
 				<Box className={classes.bestsellerHeader}>
 					<Typography component="span" color="#FD6637" fontSize="30px" fontWeight="bold">Best Seller</Typography>
-					<CarouselButton pageHandle={setPage} currentPage={page} totalPage={2} />
+					<CarouselButton pageHandle={setPage} currentPage={page} totalPage={totalPage} />
 				</Box>
 
 				<Box className={classes.bestsellerCarousel}>
@@ -61,7 +63,7 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 				</Box>
 			</Box >
 
-			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={2} />
+			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
 		</Box>
 	)
 }
