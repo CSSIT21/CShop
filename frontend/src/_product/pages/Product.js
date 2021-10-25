@@ -92,7 +92,7 @@ const ProductPage = (props) => {
       >
         <ProductDetails />
         <ShopDetails />
-        <ProductSuggestion bestsellerItems={items} onFavourite={onFavourite} />
+        <ProductSuggestion suggestionItems={items} onFavourite={onFavourite} />
         <ProductDescription />
         <ProductRating />
       </Box>

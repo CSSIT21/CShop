@@ -9,46 +9,46 @@ import ProductCard from "../../common/components/ProductCard";
 import CarouselButton from "../../common/components/CarouselButton";
 
 const useStyles = makeStyles({
-  bestsellerWrapper: {
+  suggestionWrapper: {
     width: "100%",
-    margin: "20px 0",
+    margin: "100px 0",
   },
 
-  bestsellerContent: {
+  suggestionContent: {
     maxWidth: "1000px",
-    margin: "0 auto",
-    padding: "40px 80px",
+    margin: "0 0 40 0",
+    padding: "40px 100px 80px 100px",
 
-    backgroundColor: "#FDF4DD",
+    backgroundColor: "#EFEFF1B2",
     borderRadius: "20px",
     marginBottom: "40px",
   },
 
-  bestsellerHeader: {
+  suggestionHeader: {
     display: "flex",
     justifyContent: "space-between",
     marginBottom: "25px",
   },
 });
-
-const ProductSuggestion = ({ bestsellerItems, onFavourite }) => {
-  const [items, setItems] = useState(bestsellerItems);
+//พอแก้ตรง bestsellerItems เป็น suggestionItems แล้ว error 
+const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
+  const [items, setItems] = useState(suggestionItems);
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const itemsPerRow = 4;
   const totalPage = Math.ceil(items.length / itemsPerRow);
 
   return (
-    <Box className={classes.bestsellerWrapper}>
-      <Box className={classes.bestsellerContent}>
-        <Box className={classes.bestsellerHeader}>
+    <Box className={classes.suggestionWrapper}>
+      <Box className={classes.suggestionContent}>
+        <Box className={classes.suggestionHeader}>
           <Typography
             component="span"
-            color="#FD6637"
+            color="#000000"
             fontSize="30px"
             fontWeight="bold"
           >
-            Best Seller
+            Suggestions
           </Typography>
           <CarouselButton
             pageHandle={setPage}
@@ -57,7 +57,7 @@ const ProductSuggestion = ({ bestsellerItems, onFavourite }) => {
           />
         </Box>
 
-        <Box className={classes.bestsellerCarousel}>
+        <Box className={classes.suggestionCarousel}>
           <Carousel
             items={items}
             pageState={page}
