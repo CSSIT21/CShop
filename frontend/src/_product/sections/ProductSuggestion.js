@@ -13,7 +13,6 @@ const useStyles = makeStyles({
     width: "100%",
     margin: "100px 0",
   },
-
   suggestionContent: {
     maxWidth: "1000px",
     margin: "0 0 40 0",
@@ -22,15 +21,23 @@ const useStyles = makeStyles({
     backgroundColor: "#EFEFF1B2",
     borderRadius: "20px",
     marginBottom: "40px",
-  },
 
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   suggestionHeader: {
     display: "flex",
     justifyContent: "space-between",
+
+    width: "100%",
     marginBottom: "25px",
   },
+  suggestionCarousel: {
+    width: "100%",
+  },
 });
-//พอแก้ตรง bestsellerItems เป็น suggestionItems แล้ว error 
+
 const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
   const [items, setItems] = useState(suggestionItems);
   const [page, setPage] = useState(0);
@@ -46,7 +53,7 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
             component="span"
             color="#000000"
             fontSize="30px"
-            fontWeight="bold"
+            fontWeight={600}
           >
             Suggestions
           </Typography>
