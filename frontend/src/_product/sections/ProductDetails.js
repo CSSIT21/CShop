@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import img1 from "../../img/iphone-black.png";
 import img2 from "../../img/iphone-blue.png";
@@ -9,8 +9,45 @@ import ImageDetail from "../components/SideImg.js";
 import Mainpic from "../components/Image";
 import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/AmountField";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { Box, style } from "@mui/system";
 
-const ProductDetails = () => {
+import { CSSTransition } from "react-transition-group";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import DialogPop from "../components/Dialog";
+import Dialog from "@mui/material/Dialog";
+import Slide from "@mui/material/Slide";
+
+const ProductDetails = (props) => {
+  const ProductName = "Product Name";
+  const ProductDetail = "Product Detail";
+  const Price = "500 B.";
+  const Stock = "25";
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+    setTimeout(() => {
+      setShow(true);
+    }, 3000);
+  };
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   const classes = useStyles();
   return (
     <div className={classes.productDetail}>
@@ -32,7 +69,7 @@ const ProductDetails = () => {
             lineHeight: "54px",
           }}
         >
-          Product Name
+          {ProductName}
         </Typography>
         <Typography
           sx={{
@@ -47,7 +84,7 @@ const ProductDetails = () => {
             color: "#A0A3BD",
           }}
         >
-          Product Detail
+          {ProductDetail}
         </Typography>
         <Typography
           sx={{
@@ -63,12 +100,45 @@ const ProductDetails = () => {
             color: "#FD6637",
           }}
         >
-          500 B.
+          {Price}
         </Typography>
-        <div className={classes.amountAndCart}>
+        <div className={classes.containButton}>
           <Amount />
-          <AddToCartButton />
+          <div className={classes.amountAndCart}>
+            <AddToCartButton
+              title="Add to cart"
+              icon={<ShoppingCartOutlinedIcon />}
+              width="211px"
+              height="44px"
+              onClick={handleClickOpen}
+            />
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogPop />
+            </Dialog>
+          </div>
         </div>
+        <Box sx={{ display: "flex", marginTop: "10px" }}>
+          <Typography
+            sx={{
+              fontSize: "18px",
+              color: "#A0A3BD",
+              marginLeft: "4px",
+            }}
+          >
+            Stock:
+          </Typography>
+          <Typography
+            sx={{ fontSize: "18px", marginLeft: "5px", color: "#A0A3BD" }}
+          >
+            {Stock}
+          </Typography>
+        </Box>
       </div>
     </div>
   );
@@ -100,8 +170,13 @@ const useStyles = makeStyles({
     flexGrow: "0",
     margin: "0px 90px",
   },
-  amountAndCart: {
+  containButton: {
+    width: "500px",
+    height: "44px",
     display: "flex",
+  },
+  amountAndCart: {
+    left: "136px",
   },
   cart: {
     width: "211px",

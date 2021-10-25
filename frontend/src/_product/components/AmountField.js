@@ -1,33 +1,85 @@
-import * as React from "react";
+import React, { useState } from "react";
+import Increase from "@mui/icons-material/KeyboardArrowUpRounded";
+import Decrease from "@mui/icons-material/KeyboardArrowDownRounded";
+import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import { Button, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { width } from "@mui/system";
 
-export default function BasicSelect() {
-  const [age, setAge] = React.useState("");
+const Products = () => {
+  const [products, setProducts] = useState({
+    count: 1,
+  });
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleChange = (e) => {
+    setProducts({ count: e.target.value || 1 });
   };
 
+  const decrease = (e) => {
+    if (products.count <= 1) {
+      return;
+    }
+    setProducts({ count: products.count - 1 });
+  };
+
+  const classes = useStyles();
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
+    <Box
+      // component="form"
+      sx={{
+        "& > :not(style)": { width: "116px", height: "44px" },
+      }}
+      // noValidate
+      // autoComplete="off"
+    >
+      <input
+        type="text"
+        value={products.count}
+        onChange={handleChange}
+        className={classes.show}
+        style={{
+          width: "116px",
+          height: "44px",
+          border: "1px solid  #C4C4C4",
+          borderRadius: "10px",
+        }}
+      />
+      <input
+        type="button"
+        onClick={() => setProducts({ count: products.count + 1 })}
+        style={{
+          width: "20px",
+          height: "15px",
+          backgroundColor: "green",
+        }}
+      />
+      <input
+        type="button"
+        onClick={decrease}
+        style={{
+          width: "20px",
+          height: "15px",
+          backgroundColor: "red",
+        }}
+      />
     </Box>
   );
-}
+};
+
+const useStyles = makeStyles({
+  show: {
+    width: 20,
+    height: 30,
+  },
+});
+
+export default Products;
+
+//  <input type="button" onClick={decrease} />
+//         <input type="text" value={products.count} onChange={handleChange} />
+//         <input
+//           type="button"
+//           onClick={() => setProducts({ count: products.count + 1 })}
+//         />

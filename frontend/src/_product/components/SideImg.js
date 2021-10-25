@@ -28,7 +28,7 @@ const sideImage = ({ img }) => {
             paddingLeft: "8px",
             display: "block",
           }}
-        ></image>
+        />
       </Box>
     </Box>
   );

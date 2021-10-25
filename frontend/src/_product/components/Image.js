@@ -20,8 +20,9 @@ const Image = ({ img }) => {
           maxWidth: "100%",
           maxHeight: "100%",
           display: "block",
+          position: "relative",
         }}
-      ></image>
+      />
     </Box>
   );
 };
