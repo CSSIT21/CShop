@@ -106,12 +106,14 @@ const CategoriesSection = () => {
 	const [items, setItems] = useState(categoriesItems);
 	const [page, setPage] = useState(0);
 	const classes = useStyles();
+	const itemsPerRow = 6;
+	const totalPage = Math.ceil(items.length / itemsPerRow);
 
 	return (
 		<Box className={classes.categoriesWrapper}>
 			<Box className={classes.categoriesHeader}>
 				<Typography component="span" color="#12131c" fontSize="30px" fontWeight="bold" >Categories</Typography>
-				<CarouselButton pageHandle={setPage} currentPage={page} totalPage={2} />
+				<CarouselButton pageHandle={setPage} currentPage={page} totalPage={totalPage} />
 			</Box >
 
 			<Box className={classes.categoriesContent}>
@@ -130,7 +132,7 @@ const CategoriesSection = () => {
 				</Carousel>
 			</Box >
 
-			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={2} />
+			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
 		</Box >
 
 	);
