@@ -15,6 +15,17 @@ const actionStyle = {
   padding: "0 0 0 5px",
 };
 
+const titleStyle = {
+  flex: 1,
+  height: 48,
+
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 2, /* number of lines to show */
+  WebkitBoxOrient: 'vertical',
+};
+
 const ProductContent = ({
   product,
   onFavourite
@@ -23,8 +34,8 @@ const ProductContent = ({
     <>
       <CardContent
         sx={contentStyle}>
-        <Typography gutterBottom fontWeight="bold" component="span">{product.title}</Typography>
-        <Typography gutterBottom fontWeight="bold" component="span">{product.price} B.</Typography>
+        <Typography gutterBottom fontWeight="bold" component="span" sx={titleStyle}>{product.title}</Typography>
+        <Typography gutterBottom fontWeight="bold" component="span" sx={{ marginLeft: 2 }}>{product.price} B.</Typography>
       </CardContent >
 
       <CardActions sx={actionStyle}>

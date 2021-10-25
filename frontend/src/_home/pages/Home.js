@@ -12,7 +12,7 @@ const HomePage = () => {
   const itemsData = [
     {
       id: 0,
-      title: "Cheese Pizza",
+      title: "Cheese Pizza very อร่อย มากๆๆๆ",
       price: "500",
       status: "Hot sale",
       favourite: true,
