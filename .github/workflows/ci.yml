@@ -49,5 +49,8 @@ jobs:
 
       - name: Upload artifacts to server
         run: |
-          echo Branch ${GITHUB_REF##*/}
-          lftp -e "set sftp:auto-confirm yes; open $REMOTE_SFTP_LOGIN; mirror -X .* -X .*/ --reverse --delete ./react-build-artifact /mnt/builds/${GITHUB_REF##*/}; bye"
+          lftp -e "set sftp:auto-confirm yes; open $REMOTE_SFTP_LOGIN; mirror -X .* -X .*/ --reverse --delete ./frontend-build-artifact /mnt/builds/${GITHUB_REF##*/}; bye"
+
+      - name: Trigger server reload
+        run: |
+          sshpass -p $REMOTE_SSH_PASSWORD ssh $REMOTE_SSH_ARGS -o StrictHostKeyChecking=no "nohup /mnt/data/branch.sh add ${GITHUB_REF##*/} > /dev/null"
