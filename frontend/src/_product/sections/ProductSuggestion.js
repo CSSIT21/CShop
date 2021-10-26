@@ -1,143 +1,96 @@
+import React from "react";
+import { useState } from "react";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
-import CustomDot from "../../common/components/CarouselBase/CustomDot";
-import Carousel from "../../common/components/Carousel";
-import ProductCard from "../../common/components/ProductCard";
-import CarouselButton from "../../common/components/CarouselButton";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
+import Carousel from "../../common/components/Carousel";
+import CustomDot from "../../common/components/CarouselBase/CustomDot";
+import ProductCard from "../../common/components/ProductCard";
+import CarouselButton from "../../common/components/CarouselButton";
 
-const ProductSuggestion = ({}) => {
-  const classes = useStyles();
+const useStyles = makeStyles({
+  suggestionWrapper: {
+    width: "100%",
+    margin: "100px 0",
+  },
+  suggestionContent: {
+    maxWidth: "1000px",
+    margin: "0 0 40 0",
+    padding: "40px 100px 80px 100px",
 
-  const itemsAxios = [
-    {
-      id: 0,
-      title: "item1",
-      favourite: false,
-      description: "werewrwerwe",
-    },
-    {
-      id: 1,
-      title: "item2",
-      favourite: true,
-      description: "pytuiui",
-    },
-    {
-      id: 2,
-      title: "item3",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 3,
-      title: "item4",
-      favourite: true,
-      description: "pytuiui",
-    },
-    {
-      id: 4,
-      title: "item5",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 5,
-      title: "item6",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 6,
-      title: "item7",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 7,
-      title: "item8",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 8,
-      title: "item9",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 9,
-      title: "item10",
-      favourite: false,
-      description: "pytuiui",
-    },
-    {
-      id: 10,
-      title: "item11",
-      favourite: false,
-      description: "pytuiui",
-    },
-  ];
+    backgroundColor: "#EFEFF1B2",
+    borderRadius: "20px",
+    marginBottom: "40px",
 
-  const [items, setItems] = useState(itemsAxios);
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  suggestionHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+
+    width: "100%",
+    marginBottom: "25px",
+  },
+  suggestionCarousel: {
+    width: "100%",
+  },
+});
+
+const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
+  const [items, setItems] = useState(suggestionItems);
   const [page, setPage] = useState(0);
-
-  const onFavouriteHandler = (idx) => {
-    setItems((items) => {
-      items[idx].favourite = !items[idx].favourite;
-      return [...items];
-    });
-  };
+  const classes = useStyles();
+  const itemsPerRow = 4;
+  const totalPage = Math.ceil(items.length / itemsPerRow);
 
   return (
-    <Box sx={{ margin: "50px 0px" }}>
-      <Box className={classes.frame}>
-        <Box className={classes.container}>
-          <Typography sx={{ fontSize: "30px", fontWeight: 600 }}>
+    <Box className={classes.suggestionWrapper}>
+      <Box className={classes.suggestionContent}>
+        <Box className={classes.suggestionHeader}>
+          <Typography
+            component="span"
+            color="#000000"
+            fontSize="30px"
+            fontWeight={600}
+          >
             Suggestions
           </Typography>
           <CarouselButton
             pageHandle={setPage}
             currentPage={page}
-            totalPage={Math.ceil(items.length / 4)}
+            totalPage={totalPage}
           />
         </Box>
-        <Carousel
-          items={items}
-          pageState={page}
-          setPageState={setPage}
-          loop={true}
-          itemsPerRow={4}
-        >
-          {(item, idx) => (
-            <ProductCard
-              title={item.title}
-              favourite={item.favourite}
-              onFavourite={() => {
-                onFavouriteHandler(idx);
-              }}
-              to={`/product/${item.id}`}
-            />
-          )}
-        </Carousel>
-          <CustomDot currentPage={page} totalPage={Math.ceil(items.length / 4)} setPageState={setPage} width="75px" />
+
+        <Box className={classes.suggestionCarousel}>
+          <Carousel
+            items={items}
+            pageState={page}
+            setPageState={setPage}
+            itemsPerRow={4}
+          >
+            {(item, idx) => (
+              <ProductCard
+                product={item}
+                onFavourite={onFavourite}
+                to="/product/1"
+                key={item.id}
+              />
+            )}
+          </Carousel>
+        </Box>
       </Box>
+
+      <CustomDot
+        width={50}
+        setPageState={setPage}
+        currentPage={page}
+        totalPage={totalPage}
+      />
     </Box>
   );
 };
-
-const useStyles = makeStyles({
-  frame: {
-    width: "100%",
-    height: "483px",
-    borderRadius: "20px",
-    background: "rgba(239, 239, 241, 0.7)",
-  },
-  container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-});
 
 export default ProductSuggestion;
