@@ -1,5 +1,6 @@
 import { FavoriteRounded as FavoriteRoundedIcon, FavoriteBorderRounded as FavoriteBorderRoundedIcon } from "@mui/icons-material";
 import { CardContent, Typography, IconButton, Box, CardActions } from "@mui/material";
+import { isFunc, isUndef } from './../../utils/index';
 
 const contentStyle = {
   display: "flex",
@@ -28,7 +29,9 @@ const titleStyle = {
 
 const ProductContent = ({
   product,
-  onFavourite
+  status,
+  onFavourite,
+  statusProps={}
 }) => {
   return (
     <>
@@ -39,9 +42,11 @@ const ProductContent = ({
       </CardContent >
 
       <CardActions sx={actionStyle}>
-        <Typography variant="caption" fontSize=".65rem" color="#A0A3BD">
+        {
+          (!isUndef(status)) ? <Typography variant="caption" fontSize=".65rem" color="#A0A3BD">
           {product.status}
-        </Typography>
+          </Typography> : (isFunc(status) ? status(statusProps) : <>{status}</>)
+        }
 
         <IconButton
           onClick={(e) => onFavourite(e, product.id)}
