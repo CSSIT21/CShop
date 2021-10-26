@@ -6,10 +6,10 @@ import CategoryHeader from '../components/CategoryHeader';
 import { padding } from '@mui/system';
 import CategoryFilterPrice from '../components/CategoryFilterPrice';
 import CategoryFilterRate from '../components/CategoryFilterRate';
+import CateGoryFilterService from '../components/CategoryFilterService';
+import CategoryFilterAvailability from '../components/CategoryFilterAvailability';
 
 const CategoryPage = () => {
- 
-
   return (
     <Box sx={{ padding: '25px 50px' }}>
       <Box>
@@ -31,6 +31,8 @@ const CategoryPage = () => {
           <Divider />
           <CategoryFilterPrice />
           <CategoryFilterRate />
+          <CateGoryFilterService/>
+          <CategoryFilterAvailability/>
         </Box>
       </Box>
     </Box>

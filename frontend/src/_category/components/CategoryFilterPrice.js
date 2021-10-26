@@ -1,14 +1,14 @@
 import { Box, Slider, TextField, Divider } from '@mui/material';
 import { useState } from 'react';
 const CategoryFilterPrice = () => {
-    const [value, setValue] = useState([0, 500000]);
-    function valuetext(value) {
-      return `${value}°C`;
-    }
+  const [value, setValue] = useState([0, 500000]);
+  function valuetext(value) {
+    return `${value}°C`;
+  }
 
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <Box>
