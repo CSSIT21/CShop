@@ -28,11 +28,11 @@ export default function AlertDialogSlide() {
         <DialogContentText
           id="alert-dialog-slide-description"
           //   sx={{
-          //     fontWeight: "500",
+          //    fontWeight: "500",
           //     fontSize: "24px",
           //     lineHeight: "36px",
           //     position: "absolute",
-          //     color: "black",
+          //     color: "black", 
           //   }}
         >
           The item already added in the cart

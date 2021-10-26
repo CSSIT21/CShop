@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-const sideImage = ({ img }) => {
+const sideImage = ({ img, ...rest }) => {
   return (
     <Box
       sx={{
@@ -18,22 +18,19 @@ const sideImage = ({ img }) => {
           backgroundColor: "#EFF0F6",
           cursor: "pointer",
         }}
+        {...rest}
       >
-        <image
-          src={img}
-          onClick={changeImage1()}
-          sx={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            paddingLeft: "8px",
-            display: "block",
-          }}
-        />
+        <img src={img} style={imgStyle} />
       </Box>
     </Box>
   );
 };
 
-const changeImage1 = (event) => {};
+const changeImage = (e) => {};
 
 export default sideImage;
+
+const imgStyle = {
+  width: "100%",
+  height: "100%",
+};

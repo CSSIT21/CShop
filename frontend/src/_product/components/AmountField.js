@@ -4,7 +4,7 @@ import Decrease from "@mui/icons-material/KeyboardArrowDownRounded";
 import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button, Typography } from "@mui/material";
+import { Button, ButtonGroup, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { width } from "@mui/system";
 
@@ -24,55 +24,62 @@ const Products = () => {
     setProducts({ count: products.count - 1 });
   };
 
+  const IncreaseButton = () => (
+    <IconButton sx={{ width: "10px", height: "10px" }}>
+      <Increase
+        style={{ fontSize: "22px" }}
+        onClick={() => setProducts({ count: products.count + 1 })}
+      />
+    </IconButton>
+  );
+
+  const DecreaseButton = () => (
+    <IconButton sx={{ width: "10px", height: "10px" }}>
+      <Decrease style={{ fontSize: "22px" }} onClick={decrease} />
+    </IconButton>
+  );
+
   const classes = useStyles();
   return (
     <Box
       // component="form"
       sx={{
-        "& > :not(style)": { width: "116px", height: "44px" },
+        width: "116px",
+        height: "56px",
+        position: "relative",
       }}
       // noValidate
       // autoComplete="off"
     >
-      <input
+      <TextField
         type="text"
         value={products.count}
         onChange={handleChange}
         className={classes.show}
-        style={{
-          width: "116px",
-          height: "44px",
-          border: "1px solid  #C4C4C4",
-          borderRadius: "10px",
+        //
+      ></TextField>
+      <Box
+        sx={{
+          position: "absolute",
+          display: "flex",
+          flexDirection: "column",
+          top: "11px",
+          right: "5px",
         }}
-      />
-      <input
-        type="button"
-        onClick={() => setProducts({ count: products.count + 1 })}
-        style={{
-          width: "20px",
-          height: "15px",
-          backgroundColor: "green",
-        }}
-      />
-      <input
-        type="button"
-        onClick={decrease}
-        style={{
-          width: "20px",
-          height: "15px",
-          backgroundColor: "red",
-        }}
-      />
+      >
+        <IncreaseButton />
+        <DecreaseButton />
+      </Box>
     </Box>
   );
 };
 
 const useStyles = makeStyles({
   show: {
-    width: 20,
-    height: 30,
+    position: "absolute",
+    width: "116px",
   },
+  buttonStyle: {},
 });
 
 export default Products;
