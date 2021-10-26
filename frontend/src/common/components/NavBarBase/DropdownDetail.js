@@ -11,7 +11,7 @@ import {
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { For } from "../../utils";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -65,7 +65,7 @@ const DropdownDetail = ({ children }) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(false);
   };
 
   const menuLists = [
@@ -109,7 +109,7 @@ const DropdownDetail = ({ children }) => {
         endIcon={<KeyboardArrowDownIcon sx={{ color: "black" }} />}
         sx={{
           backgroundColor: "white",
-          "&:hover": { backgroundColor: "#f5f5f5" },
+          "&:hover": { backgroundColor: "#F5F5F5" },
         }}
       >
         {children}
@@ -126,14 +126,13 @@ const DropdownDetail = ({ children }) => {
         <For each={menuLists}>
           {(Menu, index) => (
             <MenuItem
-              onClick={handleClose}
+              onClick={() => {
+                router.push(Menu.to);
+				handleClose();
+              }}
               disableRipple
               sx={{ fontSize: 14, margin: "5px 0" }}
               key={index}
-              onClick={() => {
-                router.push(Menu.to);
-                setAnchorEl(false);
-              }}
             >
               <Menu.icon />
               {Menu.title}

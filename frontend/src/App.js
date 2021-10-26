@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 /** layouts */
-import SidebarLayout from "./common/layouts/SidebarLayout";
+import SidebarLayout from "./common/layouts/ManageAccountSidebarLayout";
 import MainLayout from "./common/layouts/MainLayout";
 
 /** pages */
@@ -63,11 +63,13 @@ function App() {
                   </Route>
                 </SidebarLayout>
               </Route>
+              <Route path="/home" exact>
+                <MainLayout>
+                  <HomePage />
+                </MainLayout>
+              </Route>
               <Route path="/home/:path?" exact>
                 <MainLayout>
-                  <Route path="/home">
-                    <HomePage />
-                  </Route>
                   <Route path="/home/suggest">
                     <SugggestionPage />
                   </Route>
@@ -76,6 +78,7 @@ function App() {
                   </Route>
                 </MainLayout>
               </Route>
+              
               <Route path="/search/category/:id" exact>
                 <MainLayout>
                   <CategoryPage />
