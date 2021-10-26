@@ -18,7 +18,15 @@ const cardStyle = {
   },
 };
 
-const ProductCard = ({ product, to, onFavourite = noop }) => {
+const productTemplate = {
+  title: 'fake product',
+  image: "https://via.placeholder.com/410x360",
+  price: 0,
+  favourite: false,
+};
+
+const ProductCard = (props) => {
+  const { product=productTemplate, to="/product/1", onFavourite = noop, status=undefined } = props;
   return (
     <Link to={to}>
       <Card
@@ -26,7 +34,10 @@ const ProductCard = ({ product, to, onFavourite = noop }) => {
         sx={cardStyle}
       >
         <ProductMedia image={product.image} title={product.title} />
-        <ProductContent product={product} onFavourite={onFavourite} />
+        <ProductContent product={product} status={status} statusProps={props} onFavourite={function(e){
+          e.preventDefault();
+          onFavourite.apply(this, arguments);
+        }} />
       </Card>
     </Link>
   );

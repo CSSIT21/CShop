@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { Box, Divider, Grid, Pagination } from '@mui/material';
 import { FilterAltOutlined } from '@mui/icons-material';
 import CategoryHeader from '../components/CategoryHeader';
+
 import CategoryFilterPrice from '../components/CategoryFilterPrice';
 import CategoryFilterRate from '../components/CategoryFilterRate';
 import CateGoryFilterService from '../components/CategoryFilterService';
 import CategoryFilterAvailability from '../components/CategoryFilterAvailability';
+
 import ProductCard from '../../common/components/ProductCard';
 import { For } from '~/common/utils';
 
@@ -81,7 +83,7 @@ const CategoryPage = () => {
       return [...items];
     });
   };
-
+  
   return (
     <Box sx={{ padding: '25px 50px' }}>
       <Box>

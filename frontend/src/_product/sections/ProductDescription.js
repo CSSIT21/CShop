@@ -58,7 +58,7 @@ const ProductDescription = (props) => {
             }}
           >
             <Fade in={open} timeout={500}>
-              <typography>{description}</typography>
+              <Typography>{description}</Typography>
             </Fade>
           </AccordionDetails>
         </Accordion>

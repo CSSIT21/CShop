@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import ConfirmDialogs from "./ConfirmDialogs";
+import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
 const ButtonWrapper = ({ isEdit, setIsEdit }) => {
   const [open, setOpen] = React.useState(false);

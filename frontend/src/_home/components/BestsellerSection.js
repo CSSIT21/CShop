@@ -2,11 +2,11 @@ import React from 'react'
 import { useState } from "react";
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
-import { Typography } from '@mui/material';
-import Carousel from '../../common/components/Carousel';
-import CustomDot from "../../common/components/CarouselBase/CustomDot";
-import ProductCard from '../../common/components/ProductCard';
-import CarouselButton from '../../common/components/CarouselButton';
+import { Typography,Rating } from '@mui/material';
+import Carousel from '~/common/components/Carousel';
+import CustomDot from "~/common/components/CarouselBase/CustomDot";
+import ProductCard from '~/common/components/ProductCard';
+import CarouselButton from '~/common/components/CarouselButton';
 
 const useStyles = makeStyles({
 
@@ -54,10 +54,9 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 						pageState={page}
 						setPageState={setPage}
 						itemsPerRow={4}
-
 					>
 						{(item, idx) => (
-							< ProductCard product={item} onFavourite={onFavourite} to="/product/1" key={item.id} />
+							<ProductCard product={item} onFavourite={onFavourite} status={() => <Rating name="read-only" value={4.2} readOnly />} to="/product/1" key={item.id} />
 						)}
 					</Carousel>
 				</Box>
