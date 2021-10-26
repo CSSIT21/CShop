@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     alignItems: "center",
 
     width: "100%",
-    padding: "0px 50px",
+    padding: "20px 50px 0 50px",
     marginBottom: "15px",
 
     boxSizing: "border-box",
