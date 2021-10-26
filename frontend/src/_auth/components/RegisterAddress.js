@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CButton from "../../common/components/CButton";
+import CButton from "~/common/components/CButton";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
