@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: frontend-build-artifact
-          path: ./react/build
+          path: ./frontend/build
 
   upload:
     name: Preview Server Uploading
@@ -37,6 +37,8 @@ jobs:
     needs: [frontend-build]
     env:
       REMOTE_SFTP_LOGIN: ${{ secrets.REMOTE_SFTP_LOGIN }}
+      REMOTE_SSH_ARGS: ${{ secrets.REMOTE_SSH_ARGS }}
+      REMOTE_SSH_PASSWORD: ${{ secrets.REMOTE_SSH_PASSWORD }}
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
