@@ -181,12 +181,13 @@ const ProductRating = (props) => {
                 flexDirection: "column",
               }}
             >
-              {commentsList.slice(0, commentOffset).map((val) => (
+              {commentsList.slice(0, commentOffset).map((val, key) => (
                 <Comments
                   imageURL={val.imageURL}
                   username={val.username}
                   rating={val.rating}
                   comment={val.comment}
+                  key={key}
                 ></Comments>
               ))}
               <Box sx={{ marginTop: "50px" }}>

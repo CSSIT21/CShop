@@ -30,6 +30,11 @@ const Image = ({ img }) => {
             border: "1px solid #EFF0F6",
             borderRadius: "10px",
             backgroundColor: "#EFF0F6",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+            position: "relative",
           }}
         >
           <img src={main} style={imgStyle} />
@@ -39,9 +44,12 @@ const Image = ({ img }) => {
   );
 };
 
-export default Image;
-
 const imgStyle = {
   width: "100%",
-  height: "100%",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
 };
+
+export default Image;

@@ -17,6 +17,10 @@ const sideImage = ({ img, ...rest }) => {
           borderRadius: "10px",
           backgroundColor: "#EFF0F6",
           cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
         }}
         {...rest}
       >
@@ -26,11 +30,12 @@ const sideImage = ({ img, ...rest }) => {
   );
 };
 
-const changeImage = (e) => {};
-
-export default sideImage;
-
 const imgStyle = {
   width: "100%",
-  height: "100%",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
 };
+
+export default sideImage;

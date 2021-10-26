@@ -6,9 +6,8 @@ import Mainpic from "../components/Image";
 import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/AmountField";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Box, style } from "@mui/system";
+import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
-import Slide from "@mui/material/Slide";
 
 const ProductDetails = (props) => {
   const ProductName = "Product Name";
@@ -84,7 +83,7 @@ const ProductDetails = (props) => {
               width="211px"
               height="56px"
               onClick={handleClickOpen}
-              marginLeft="20px"
+              style={{ marginLeft: "20px" }}
             />
             <ConfirmDialogs
               text="The item already added in the cart"
