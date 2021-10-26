@@ -8,21 +8,20 @@ import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import { useForm, useInput } from '../../common/hooks';
 
 const LoginPage = () => {
 	const classes = useStyles();
 	const router = useHistory();
+	const phone = useInput("");
+	const password = useInput("");
+	const form = useForm({phone, password});
 
-	const [userPhoneNum, setUserPhoneNum] = useState({
-		phoneNumber: "",
-	});
-	const [userPassword, setUserPassword] = useState({
-		password: "",
-	});
 	useEffect(() => {
 		document.body.style.backgroundColor = "#f3f4f5";
 		return () => (document.body.style.backgroundColor = "white");
 	}, []);
+
 	return (
 		<Fragment>
 			<Box className={classes.container}>
@@ -34,14 +33,9 @@ const LoginPage = () => {
 							placeholder="Phone Number"
 							variant="outlined"
 							sx={{ borderRadius: "10px" }}
-							value={userPhoneNum.phoneNumber}
 							fullWidth
-							onChange={(e) => {
-								setUserPhoneNum({
-									...userPhoneNum,
-									phoneNumber: e.target.value,
-								});
-							}}
+							autoComplete="off"
+							{...phone}
 						/>
 					</Box>
 					<Box className={classes.textFieldBox}>
@@ -52,13 +46,8 @@ const LoginPage = () => {
 							type="password"
 							sx={{ borderRadius: "10px" }}
 							fullWidth
-							value={userPassword.password}
-							onChange={(e) => {
-								setUserPassword({
-									...userPassword,
-									password: e.target.value,
-								});
-							}}
+							autoComplete="off"
+							{...password}
 						/>
 					</Box>
 					<Box className={classes.button}>
@@ -67,6 +56,7 @@ const LoginPage = () => {
 							width="500px"
 							height="50px"
 							onClick={() => {
+								console.log(form)
 								router.push("/home");
 							}}
 						></CButton>
