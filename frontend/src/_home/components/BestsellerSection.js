@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
-import { Typography,Rating } from '@mui/material';
+import { Typography } from '@mui/material';
 import Carousel from '~/common/components/Carousel';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import ProductCard from '~/common/components/ProductCard';
@@ -59,7 +59,6 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 							<ProductCard 
 							product={product} 
 							onFavourite={onFavourite} 
-							status={() => <Rating name="read-only" value={4.2} readOnly />} 
 							to="/product/1" 
 							key={product.id} />
 						)}

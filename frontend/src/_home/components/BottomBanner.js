@@ -72,7 +72,7 @@ const BottomBanner = () => {
 				/>
 			</Box>
 
-			<img className={classes.bottomBannerPic} src={BannerImage} />
+			<img className={classes.bottomBannerPic} src={BannerImage} alt="Banner" />
 		</Box >
 	)
 }
