@@ -1,5 +1,4 @@
-import TopProfile from "../components/ProfileBase/TopProfile";
-
+import TopProfile from "../components/TopProfile";
 import Content from "../components/InformationBase/Content";
 
 const InformationPage = () => {

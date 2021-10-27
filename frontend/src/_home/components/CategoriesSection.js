@@ -124,9 +124,9 @@ const CategoriesSection = () => {
 					itemsPerRow={6}
 				>
 					{(item) => (
-						<Box className={classes.categoriesItem}>
+						<Box className={classes.categoriesItem} key={item.id}>
 							<Typography component="h3" color="black" fontWeight="bold" mb={2} >{item.title}</Typography>
-							<img src={item.url} />
+							<img src={item.url} alt={item.title} />
 						</Box>
 					)}
 				</Carousel>

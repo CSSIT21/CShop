@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
 
 const SuggestionSection = ({ suggestItems, onFavourite }) => {
-	const [items, setItems] = useState(suggestItems);
+	const [products, setProducts] = useState(suggestItems);
 	const classes = useStyles();
 
 	return (
@@ -39,9 +39,9 @@ const SuggestionSection = ({ suggestItems, onFavourite }) => {
 			</Box>
 
 			<Grid container spacing={2} mb={5}>
-				<For each={items} children={(item) => (
-					<Grid item xs={6} md={3} mb={3}>
-						<ProductCard product={item} onFavourite={onFavourite} to="/product/1" />
+				<For each={products} children={(product) => (
+					<Grid item xs={6} md={3} mb={3} key={product.id}>
+						<ProductCard product={product} onFavourite={onFavourite} to="/product/1" />
 					</Grid>
 				)} />
 			</Grid>
