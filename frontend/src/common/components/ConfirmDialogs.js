@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Typography, Dialog } from "@mui/material";
 import DialogContent from "@mui/material/DialogContent";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
@@ -13,16 +13,16 @@ const ConfirmDialogs = ({
   handleClose,
   text,
   slide = false,
-  timeOut = 3000, 
+  timeOut = 3000,
   ...rest
 }) => {
   useEffect(() => {
-  if(open){
+    if (open) {
       setTimeout(() => {
-          handleClose()
-      }, timeOut); 
+        handleClose();
+      }, timeOut);
     }
-  }, [open]);
+  });
 
   return (
     <div>
