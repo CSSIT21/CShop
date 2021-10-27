@@ -30,18 +30,9 @@ const ProductDetails = (props) => {
     setOpen(false);
   };
 
-<<<<<<< Updated upstream
-  const handleClickOpen = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000);
-  };
-=======
     const handleClickOpen = () => {
         setOpen(true);
     };
->>>>>>> Stashed changes
 
   return (
     <Box

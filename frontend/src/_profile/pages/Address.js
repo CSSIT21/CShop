@@ -6,7 +6,7 @@ import AddressForm from "../components/AddressBase/AddressForm";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Box } from "@mui/system";
-import ConfirmDialogs from "../components/InformationBase/ConfirmDialogs";
+import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
 const provinces = ["Bangkok", "Mixko", "Chonburi", "Hat Yai"];
 const districts = ["Thung Kru", "Sathorn", "Bang Khun Tian", "Phayatha"];
