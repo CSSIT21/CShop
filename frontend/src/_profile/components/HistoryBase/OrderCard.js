@@ -6,32 +6,31 @@ import { For } from "~/common/utils";
 const OrderCard = ({ data }) => {
   const classes = useStyles();
   const getColor = () => {
-    if (data.status == "waiting") {
-      return "#F4AF54";
-    } else if (data.status == "success") {
-      return "#B3E24B";
-    } else if (data.status == "cancel") {
-      return "#F25044";
-    }
+    return (
+      {
+        waiting: "#F4AF54",
+        success: "#B3E24B",
+        cancel: "#F25044",
+      }[data.status] || "primary"
+    );
   };
   const getBackgroundColor = () => {
-    if (data.status == "waiting") {
-      return "#F4AF5433";
-    } else if (data.status == "success") {
-      return "#B3E24B33";
-    } else if (data.status == "cancel") {
-      return "#F2504433";
-    }
+    return (
+      {
+        waiting: "#F4AF5433",
+        success: "#B3E24B33",
+        cancel: "#F2504433",
+      }[data.status] || "primary"
+    );
   };
-  //#F4807033
   const getChipColor = () => {
-    if (data.status == "waiting") {
-      return "#D28C40";
-    } else if (data.status == "success") {
-      return "#5B8125";
-    } else if (data.status == "cancel") {
-      return "#F25044";
-    }
+    return (
+      {
+        waiting: "#D28C40",
+        success: "#5B8125",
+        cancel: "#F25044",
+      }[data.status] || "primary"
+    );
   };
 
   return (
