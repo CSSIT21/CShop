@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import TopProfile from "../components/ProfileBase/TopProfile";
-import ProfileArea from "../components/ProfileBase/ProfileArea";
+import AccordionCommon from "~/common/components/AccordionCommon";
 import ProfileBox from "../components/ProfileBase/ProfileBox";
 import {
   Person as PersonIcon,
@@ -18,13 +18,12 @@ const ProfilePage = (props) => {
   const [openShopping, setOpenShopping] = useState(true);
   return (
     <>
-      <Box className={classes.topProfile}>
-        <TopProfile />
-      </Box>
+      <TopProfile />
       <Box className={classes.container}>
         <Box style={{ width: "70%" }}>
-          <ProfileArea
+          <AccordionCommon
             title="Profile"
+            col
             open={openProfile}
             setOpen={setOpenProfile}
           >
@@ -38,8 +37,8 @@ const ProfilePage = (props) => {
               icon={<AddressIcon style={iconStyles} />}
               to="/profile/address"
             />
-          </ProfileArea>
-          <ProfileArea
+          </AccordionCommon>
+          <AccordionCommon
             title="Voucher & Coupon"
             open={openVoucher}
             setOpen={setOpenVoucher}
@@ -49,8 +48,8 @@ const ProfilePage = (props) => {
               icon={<CouponIcon style={iconStyles} />}
               to="/profile/voucher"
             />
-          </ProfileArea>
-          <ProfileArea
+          </AccordionCommon>
+          <AccordionCommon
             title="Shopping Information"
             open={openShopping}
             setOpen={setOpenShopping}
@@ -60,7 +59,7 @@ const ProfilePage = (props) => {
               icon={<HistoryIcon style={iconStyles} />}
               to="/profile/history"
             />
-          </ProfileArea>
+          </AccordionCommon>
         </Box>
       </Box>
     </>
@@ -70,15 +69,11 @@ const ProfilePage = (props) => {
 export default ProfilePage;
 
 const useStyles = makeStyles({
-  topProfile: {
-    padding: "20px 120px",
-    marginTop: "20px",
-    boxShadow: " 0px 4px 4px rgba(196, 196, 196, 0.25)",
-  },
   container: {
     display: "flex",
     justifyContent: "center",
     marginTop: "20px",
+    marginBottom: "50px",
   },
 });
 

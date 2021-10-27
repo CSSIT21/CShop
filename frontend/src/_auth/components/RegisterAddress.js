@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CButton from "../../common/components/CButton";
+import CButton from "~/common/components/CButton";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
@@ -130,7 +130,9 @@ const RegisterAddress = ({
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
                 fullWidth
-                select
+                InputProps={{
+                  readOnly: true,
+                }}
                 value={address.postalCode}
                 onChange={(e) => {
                   setAddress({ ...address, postalCode: e.target.value });
