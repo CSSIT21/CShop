@@ -41,11 +41,11 @@ const Banner = () => {
       url: Banner1,
     },
   ];
+  
+  const classes = useStyles();
 
   const [items, setItems] = useState(bannerItems);
-  console.log("banner", items);
   const [page, setPage] = useState(0);
-  const classes = useStyles();
 
   return (
     <Box className={classes.bannerWrapper}>

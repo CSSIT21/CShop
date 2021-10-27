@@ -4,13 +4,14 @@ import { Box } from "@mui/system";
 
 const useStyles = makeStyles({
   topBarWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor:'white',
 
     width: "100%",
-    padding: "20px 50px 0 50px",
-    marginBottom: "15px",
+    padding: "20px 50px 10px 50px",
+   
 
     boxSizing: "border-box",
     fontSize: 12,

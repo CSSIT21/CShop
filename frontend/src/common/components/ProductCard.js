@@ -26,7 +26,7 @@ const productTemplate = {
 };
 
 const ProductCard = (props) => {
-  const { product=productTemplate, to="/product/1", onFavourite = noop, status=undefined } = props;
+  const { product=productTemplate, to="/product/1", onFavourite = noop, status=undefined, addToCart = false } = props;
   return (
     <Link to={to}>
       <Card
@@ -34,10 +34,13 @@ const ProductCard = (props) => {
         sx={cardStyle}
       >
         <ProductMedia image={product.image} title={product.title} />
-        <ProductContent product={product} status={status} statusProps={props} onFavourite={function(e){
-          e.preventDefault();
-          onFavourite.apply(this, arguments);
-        }} />
+        <ProductContent 
+          product={product} 
+          status={status} 
+          statusProps={props} 
+          addToCart={addToCart} 
+          onFavourite={onFavourite}
+        />
       </Card>
     </Link>
   );
