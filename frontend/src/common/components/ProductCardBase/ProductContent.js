@@ -19,7 +19,7 @@ const actionStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: "0 0 20px 5px",
+  padding: '0 0 0 5px',
 };
 
 const titleStyle = {
