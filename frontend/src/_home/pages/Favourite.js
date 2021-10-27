@@ -26,7 +26,6 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
       favoriteHeader: {
         display:'flex',
         justifyContent: 'center',

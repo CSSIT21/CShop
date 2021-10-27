@@ -1,11 +1,11 @@
-import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
-import CShopLogo from '../../assets/images/Logo.svg';
-import Search from './Search';
-import ActionMenu from './ActionMenu';
-import AccountDropdown from './AccountDropdown';
-import AuthenButton from './AuthenButton';
-import { Link } from 'react-router-dom';
+import { makeStyles } from "@mui/styles";
+import { Box } from "@mui/system";
+import CShopLogo from "../../assets/images/Logo.svg";
+import Search from "./Search";
+import ActionMenu from "./ActionMenu";
+import AccountDropdown from "./AccountDropdown";
+import AuthenButton from "./AuthenButton";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
 	navbarWrapper: {
@@ -32,26 +32,32 @@ const useStyles = makeStyles({
 });
 
 const NavbarContent = ({ isLogin }) => {
-	const classes = useStyles();
+  const classes = useStyles();
 
-	return (
-		<Box className={classes.navbarWrapper}>
-			<Box style={{ width: isLogin ? '10%' : '12%' }}>
-				<Link to="/home">
-					<img className={classes.logo} src={CShopLogo} alt="Logo" />
-				</Link>
-			</Box>
+  return (
+    <Box className={classes.navbarWrapper}>
+      <Box style={{ width: isLogin ? "10%" : "12%" }}>
+        <Link to="/home">
+          <img className={classes.logo} src={CShopLogo} alt="Logo" />
+        </Link>
+      </Box>
 
-			<Box className={classes.navbarMiddle} style={{ width: isLogin ? '70%' : '60%' }}>
-				<Search />
-			</Box>
+      <Box
+        className={classes.navbarMiddle}
+        style={{ width: isLogin ? "70%" : "60%" }}
+      >
+        <Search />
+      </Box>
 
-			<Box className={classes.navbarRight} style={{ width: isLogin ? '20%' : '28%' }}>
-				<ActionMenu />
-				{isLogin ? <AccountDropdown /> : <AuthenButton />}
-			</Box>
-		</Box>
-	);
+      <Box
+        className={classes.navbarRight}
+        style={{ width: isLogin ? "20%" : "28%" }}
+      >
+        <ActionMenu />
+        {isLogin ? <AccountDropdown /> : <AuthenButton />}
+      </Box>
+    </Box>
+  );
 };
 
 export default NavbarContent;

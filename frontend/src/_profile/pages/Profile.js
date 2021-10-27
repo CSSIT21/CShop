@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
-import TopProfile from "../components/ProfileBase/TopProfile";
+import TopProfile from "../components/TopProfile";
 import AccordionCommon from "~/common/components/AccordionCommon";
 import ProfileBox from "../components/ProfileBase/ProfileBox";
 import {

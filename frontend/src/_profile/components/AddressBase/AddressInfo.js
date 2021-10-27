@@ -66,7 +66,9 @@ const AddressInfo = () => {
         </Grid>
 
         <Grid container className={classes.info} style={{}}>
-          <For each={data}>{(item) => <AddressDetail data={item} />}</For>
+          <For each={data}>
+            {(item, idx) => <AddressDetail key={idx} data={item} />}
+          </For>
         </Grid>
       </Box>
     </Box>

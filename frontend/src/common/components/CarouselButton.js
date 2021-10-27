@@ -3,7 +3,12 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Fab } from "@mui/material";
 import { Box } from "@mui/system";
 
-const CarouselButton = ({ pageHandle, currentPage, totalPage, loop = false }) => {
+const CarouselButton = ({
+  pageHandle,
+  currentPage,
+  totalPage,
+  loop = false,
+}) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Fab
@@ -18,8 +23,7 @@ const CarouselButton = ({ pageHandle, currentPage, totalPage, loop = false }) =>
         onClick={() => {
           if (currentPage === 0) {
             pageHandle(totalPage - 1);
-          }
-          else {
+          } else {
             pageHandle(currentPage - 1);
           }
         }}
@@ -40,8 +44,7 @@ const CarouselButton = ({ pageHandle, currentPage, totalPage, loop = false }) =>
         onClick={() => {
           if (totalPage - 1 === currentPage) {
             pageHandle(0);
-          }
-          else {
+          } else {
             pageHandle(currentPage + 1);
           }
         }}

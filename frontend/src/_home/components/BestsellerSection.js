@@ -59,6 +59,7 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 							<ProductCard 
 							product={product} 
 							onFavourite={onFavourite} 
+							status={() => <Rating name="read-only" value={4.2} readOnly />} 
 							to="/product/1" 
 							key={product.id} />
 						)}

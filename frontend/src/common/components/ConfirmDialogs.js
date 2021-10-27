@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Dialog } from "@mui/material";
 import DialogContent from "@mui/material/DialogContent";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import Slide from "@mui/material/Slide";
 
-const ConfirmDialogs = ({ open, handleClose, text }) => {
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const ConfirmDialogs = ({
+  open,
+  handleClose,
+  text,
+  slide = false,
+  timeOut = 3000,
+  ...rest
+}) => {
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        handleClose();
+      }, timeOut);
+    }
+  });
+
   return (
     <div>
       <Dialog
@@ -11,6 +31,8 @@ const ConfirmDialogs = ({ open, handleClose, text }) => {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        TransitionComponent={Transition}
+        {...rest}
       >
         <DialogContent
           sx={{
