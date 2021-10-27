@@ -1,7 +1,8 @@
 import { fk } from './faker';
 import { interval } from './../utils/index';
 
-const fakeUsers = interval(100).map((user, id) => fk`
+// generate 100 faker users from id 0-99
+const fakeUsers = interval(99).map(id => fk`
     id ${id}
     first_name firstName
     last_name lastName
