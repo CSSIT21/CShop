@@ -2,14 +2,13 @@ import { Box } from "@mui/system";
 import React, { Fragment, useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
-import Radio from "@mui/material/Radio";
 import Button from "@mui/material/Button";
 import CButton from "../../common/components/CButton";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-
+import Checkbox from "@mui/material/Checkbox";
 //data
 const RegisterPage = () => {
   //function
@@ -22,11 +21,6 @@ const RegisterPage = () => {
   const [userPhoneNum, setUserPhoneNum] = useState({
     phoneNumber: "",
   });
-  const [check, setcheck] = useState(false);
-
-  const handleChange = (event) => {
-    setcheck(event.target.checked);
-  };
 
   return (
     <Fragment>
@@ -50,17 +44,7 @@ const RegisterPage = () => {
             />
           </Box>
           <Box className={classes.condition}>
-            <Radio
-              checked={check === true}
-              onChange={handleChange}
-              value={check}
-              sx={{
-                color: "#FD6637",
-                "&.Mui-checked": {
-                  color: "#FD6637",
-                },
-              }}
-            />
+            <Checkbox />
             <Box className={classes.text}>
               Accept all{"\u00A0"}
               <span className={classes.textOrange}>CShop Conditions</span>

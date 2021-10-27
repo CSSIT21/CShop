@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import { Avatar, Typography } from "@mui/material";
 import { useRecoilValue } from "recoil";
-import authState from "../../../common/store/authState";
+import authState from "../../common/store/authState";
 import Button from "@mui/material/Button";
 import { useHistory } from "react-router";
 import StoreIcon from "@mui/icons-material/Store";
@@ -52,12 +52,12 @@ export default TopProfile;
 
 const useStyles = makeStyles({
   container: {
-    color: "white",
+    backgroundColor: "white",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "20px 120px",
-    marginTop: "20px",
+    padding: "40px 120px",
+
     boxShadow: " 0px 4px 4px rgba(196, 196, 196, 0.25)",
   },
   profile: {

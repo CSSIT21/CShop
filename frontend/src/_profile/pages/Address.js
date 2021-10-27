@@ -1,6 +1,6 @@
 import { Typography, Button } from "@mui/material";
 import AddressInfo from "../components/AddressBase/AddressInfo";
-import TopProfile from "../components/ProfileBase/TopProfile";
+import TopProfile from "../components/TopProfile";
 import AccordionCommon from "~/common/components/AccordionCommon";
 import AddressForm from "../components/AddressBase/AddressForm";
 import { makeStyles } from "@mui/styles";
