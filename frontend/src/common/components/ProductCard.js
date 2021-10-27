@@ -5,9 +5,9 @@ import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
 
 const cardStyle = {
-  minWidth: 200,
-  maxWidth: 210,
+  width: 200,
   padding: '8px',
+  margin: '0 auto',
 
   borderRadius: "15px",
   border: 'none',

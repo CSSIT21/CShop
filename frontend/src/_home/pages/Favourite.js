@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {makeStyles} from "@mui/styles";
 import { Box } from "@mui/system";
-import { Typography, Grid} from '@mui/material';
+import { Typography, Grid, Pagination} from '@mui/material';
 import { Favorite as FavoriteIcon } from '@mui/icons-material';
 import ProductCard from "~/common/components/ProductCard";
 import { For } from "~/common/utils";
@@ -10,32 +10,33 @@ import fakeProducts from "~/common/faker/fakeProducts";
 const useStyles = makeStyles({
     favoritepageWrapper: {
         width: '100%',
-        boxSizing: 'border-box',
-        padding:'50px 200px',
+        minHeight: '100vh',
+
+        display: 'flex',
+        justifyContent: 'center',
+        
+        backgroundColor:'#FDF4DD',
+    },
+    favoriteContent:{
+        maxWidth: '1200px',
+        padding:'50px 0',
 
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-
-        backgroundColor: '#FDF4DD',
     },
-    favoriteHeader: {
-       display:'flex',
+      favoriteHeader: {
+        display:'flex',
         justifyContent: 'center',
         alignItems: 'center',
-
-        marginBottom:'50px',
-        
-        
-
     },
 });
 
 const FavouritePage = props => {
     const classes = useStyles();
 
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [products, setProducts] = useState(fakeProducts);
 
     const onFavourite = (index) => {
@@ -47,12 +48,18 @@ const FavouritePage = props => {
         });
     };
 
+    const onPageChange = (e, value) => {
+        setPage(value)
+    };
+ 
     return(
         <Box className={classes.favoritepageWrapper}>
-            <Typography component="span"
-                fontSize="30px"
-                fontWeight={600}
-                className={ classes.favoriteHeader}
+            <Box className ={classes.favoriteContent}>
+                <Typography component="span"
+                    fontSize="30px"
+                    fontWeight={600}
+                    mb={6}
+                    className={classes.favoriteHeader}
             >
                 <FavoriteIcon sx={{marginRight: '10px', color: "#FD6637"}}  />
                 Favorite
@@ -60,11 +67,14 @@ const FavouritePage = props => {
 
              <Grid container spacing={2} mb={5} mx='auto'>
 				<For each={products} children={(product) => (
-					<Grid item xs={6} md={3} mb={3}>
+					<Grid item xs={6} md={3} mb={3} key={product.id}>
 						<ProductCard product={product} onFavourite={onFavourite} to="/product/1" key={product.id} addToCart />
 					</Grid>
 				)} />
 			</Grid>
+
+                <Pagination count={10} shape="rounded" color="primary" page={page} onChange={onPageChange } />
+            </Box>
         </Box>
     )
 };

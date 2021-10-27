@@ -3,7 +3,7 @@ import {
   FavoriteBorderRounded as FavoriteBorderRoundedIcon,
   ShoppingCart as ShoppingCartIcon
 } from "@mui/icons-material";
-import { CardContent, Typography, IconButton, Box, CardActions } from "@mui/material";
+import { CardContent, Typography, IconButton, CardActions } from "@mui/material";
 import { isFunc, isUndef } from './../../utils/index';
 import CButton from "~/common/components/CButton";
 
@@ -11,7 +11,7 @@ const contentStyle = {
   display: "flex",
   alignContent: "center",
   justifyContent: "space-between",
-  padding: '15px 5px 5px 5px',
+  padding: '15px 5px 0px 5px',
 };
 
 const actionStyle = {
@@ -43,8 +43,8 @@ const ProductContent = ({
     <>
       <CardContent
         sx={contentStyle}>
-        <Typography gutterBottom fontWeight={600} component="span" sx={titleStyle}>{product.title}</Typography>
-        <Typography gutterBottom fontWeight={600} component="span" sx={{ marginLeft: 2 }}>{product.price} B.</Typography>
+        <Typography fontWeight={600} component="span" sx={titleStyle}>{product.title}</Typography>
+        <Typography fontWeight={600} component="span" sx={{ marginLeft: 2 }}>{product.price} B.</Typography>
       </CardContent >
 
       <CardActions sx={actionStyle}>

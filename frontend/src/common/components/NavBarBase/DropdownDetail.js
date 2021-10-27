@@ -124,18 +124,18 @@ const DropdownDetail = ({ children }) => {
         onClose={handleClose}
       >
         <For each={menuLists}>
-          {(Menu, index) => (
+          {(Dropdown, index) => (
             <MenuItem
               onClick={() => {
-                router.push(Menu.to);
+                router.push(Dropdown.to);
 				handleClose();
               }}
               disableRipple
               sx={{ fontSize: 14, margin: "5px 0" }}
               key={index}
             >
-              <Menu.icon />
-              {Menu.title}
+              <Dropdown.icon />
+              {Dropdown.title}
             </MenuItem>
           )}
         </For>
