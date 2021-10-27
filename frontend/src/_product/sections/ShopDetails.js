@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import CButton from "../../common/components/CButton";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
-import { makeStyles } from "@mui/styles";
 
 const ShopDetails = (props) => {
   const shopName = "Shop Name";
@@ -15,7 +14,6 @@ const ShopDetails = (props) => {
   const products = "6666";
   const joined = "4 years ago";
 
-  const classes = useStyles();
   return (
     <Box
       sx={{
@@ -74,17 +72,19 @@ const ShopDetails = (props) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <CButton
               title="Chat now"
-              icon={<ShoppingCartOutlinedIcon />}
+              icon={<ShoppingCartOutlinedIcon sx={{ fontSize: "12px"}} />}
               width="120px"
               height="45px"
+              fontSize = "13px"
             />
             <CButton
               title="Go to shop"
-              icon={<StoreOutlinedIcon />}
+              icon={<StoreOutlinedIcon sx={{ fontSize: "12px"}}/>}
               width="120px"
               height="45px"
+              fontSize = "13px"
               backgroundColor="#FFFFFF"
-              style={text}
+              style={goToShopStyle}
             />
           </Box>
         </Box>
@@ -165,10 +165,10 @@ const ShopDetails = (props) => {
   );
 };
 
-const useStyles = makeStyles({});
-const text = {
+const goToShopStyle = {
   color: "#FD6637",
   border: "1px solid #FD6637",
+  padding: "11px",
   marginLeft: "17px",
 };
 

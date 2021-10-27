@@ -2,6 +2,7 @@ import {
   useRecoilState
 } from "recoil";
 
+export const noot = <></>;
 export const noop = () => {};
 export const isObj = t => typeof t === 'object';
 export const isDef = t => typeof t === 'undefined';
