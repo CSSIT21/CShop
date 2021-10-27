@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
   logo: {
     width: "150px",
-  },
+  }
 });
 
 const NavbarContent = ({ isLogin }) => {
