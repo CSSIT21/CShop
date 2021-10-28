@@ -122,13 +122,22 @@ const CategoryPage = () => {
                   <ProductCard
                     product={item}
                     onFavourite={onFavourite}
+                    status={() => (
+                      <Rating name='read-only' value={4.2} readOnly />
+                    )}
                     to='/product/1'
                   />
                 </Grid>
               )}
             />
           </Grid>
-          <Box sx={{ display: 'flex', justifyContent: 'center', padding:'20px 0px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '20px 0px',
+            }}
+          >
             <Pagination count={10} shape='rounded' size='large' />
           </Box>
         </Box>
