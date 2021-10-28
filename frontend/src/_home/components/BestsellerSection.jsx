@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
-import { Typography,Rating } from '@mui/material';
+import { Typography, Rating } from '@mui/material';
 import Carousel from '~/common/components/Carousel';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import ProductCard from '~/common/components/ProductCard';

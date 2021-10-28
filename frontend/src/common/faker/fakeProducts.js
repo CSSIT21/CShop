@@ -1,4 +1,16 @@
+// import { faker, Faking } from './faker';
+
 const Bestseller1 = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg";
+
+// const products = faker(10)((el,id) => ({
+// 	id: id,
+// 	title: Faking.commerce.productName(),
+// 	price: ~~Faking.commerce.price(10,2500),
+// 	status: "Hot sale",
+// 	favourite: false,
+// 	image: Faking.image.avatar(),
+// }))
+
 const products = [
 	{
 		id: 0,

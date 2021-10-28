@@ -9,9 +9,10 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   navbarWrapper: {
-    padding: "0px 50px",
+    padding: "0px 50px 10px 50px",
     display: "flex",
     alignItems: "center",
+    backgroundColor: "white",
   },
 
   navbarMiddle: {
