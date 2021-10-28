@@ -6,32 +6,31 @@ import { For } from "~/common/utils";
 const OrderCard = ({ data }) => {
   const classes = useStyles();
   const getColor = () => {
-    if (data.status == "waiting") {
-      return "#F4AF54";
-    } else if (data.status == "success") {
-      return "#B3E24B";
-    } else if (data.status == "cancel") {
-      return "#F25044";
-    }
+    return (
+      {
+        waiting: "#F4AF54",
+        success: "#B3E24B",
+        cancel: "#F25044",
+      }[data.status] || "primary"
+    );
   };
   const getBackgroundColor = () => {
-    if (data.status == "waiting") {
-      return "#F4AF5433";
-    } else if (data.status == "success") {
-      return "#B3E24B33";
-    } else if (data.status == "cancel") {
-      return "#F2504433";
-    }
+    return (
+      {
+        waiting: "#F4AF5433",
+        success: "#B3E24B33",
+        cancel: "#F2504433",
+      }[data.status] || "primary"
+    );
   };
-  //#F4807033
   const getChipColor = () => {
-    if (data.status == "waiting") {
-      return "#D28C40";
-    } else if (data.status == "success") {
-      return "#5B8125";
-    } else if (data.status == "cancel") {
-      return "#F25044";
-    }
+    return (
+      {
+        waiting: "#D28C40",
+        success: "#5B8125",
+        cancel: "#F25044",
+      }[data.status] || "primary"
+    );
   };
 
   return (
@@ -48,7 +47,7 @@ const OrderCard = ({ data }) => {
         <Box className={classes.cardDetail}>
           <Grid container>
             <Grid item xs={7}>
-              <Box>
+              <Box sx={{ paddingTop: "20px" }}>
                 <Box className={classes.orderTitle}>
                   <Typography
                     sx={{
@@ -80,7 +79,13 @@ const OrderCard = ({ data }) => {
                 <Box className={classes.orderTitle}>
                   <For each={data.pic}>
                     {(item, idx) => (
-                      <img src={item} alt={idx} className={classes.pic} />
+                      <img
+                        src={item}
+                        alt={idx}
+                        className={classes.pic}
+                        width="84"
+                        height="84"
+                      />
                     )}
                   </For>
                 </Box>
@@ -88,7 +93,11 @@ const OrderCard = ({ data }) => {
             </Grid>
             <Grid item xs={1}>
               <Box
-                sx={{ borderRight: "2px solid #D9DBE9", height: "90%" }}
+                sx={{
+                  borderRight: "2px solid #D9DBE9",
+                  height: "90%",
+                  marginTop: "8%",
+                }}
               ></Box>
             </Grid>
 
@@ -129,6 +138,7 @@ const useStyles = makeStyles({
     marginBottom: "64px",
     display: "flex",
     flexDirection: "row",
+    width: "100%",
   },
   orderTitle: {
     display: "flex",
@@ -136,11 +146,11 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   cardDetail: {
-    padding: "20px 0 0 0",
     width: "100%",
   },
   pic: {
     marginRight: "10px",
+    borderRadius: "10px",
   },
 });
 export default OrderCard;
