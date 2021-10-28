@@ -1,6 +1,6 @@
 const ChatPage = props => {
     return <div>
-        Hello, this is ChatPage
+        This is a ChatPage
     </div>;
 };
 

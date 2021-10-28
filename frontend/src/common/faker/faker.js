@@ -1,5 +1,5 @@
 import * as Faking from 'faker/locale/en';
-import { assign, interval, isFunc, isStr, noop } from './../utils/index';
+import { assign, interval, isFunc, isStr, noop } from '../utils/index';
 
 /**
  * 
