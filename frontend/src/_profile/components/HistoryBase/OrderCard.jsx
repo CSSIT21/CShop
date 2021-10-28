@@ -47,7 +47,7 @@ const OrderCard = ({ data }) => {
         <Box className={classes.cardDetail}>
           <Grid container>
             <Grid item xs={7}>
-              <Box>
+              <Box sx={{ paddingTop: "20px" }}>
                 <Box className={classes.orderTitle}>
                   <Typography
                     sx={{
@@ -79,7 +79,13 @@ const OrderCard = ({ data }) => {
                 <Box className={classes.orderTitle}>
                   <For each={data.pic}>
                     {(item, idx) => (
-                      <img src={item} alt={idx} className={classes.pic} />
+                      <img
+                        src={item}
+                        alt={idx}
+                        className={classes.pic}
+                        width="84"
+                        height="84"
+                      />
                     )}
                   </For>
                 </Box>
@@ -87,7 +93,11 @@ const OrderCard = ({ data }) => {
             </Grid>
             <Grid item xs={1}>
               <Box
-                sx={{ borderRight: "2px solid #D9DBE9", height: "90%" }}
+                sx={{
+                  borderRight: "2px solid #D9DBE9",
+                  height: "90%",
+                  marginTop: "8%",
+                }}
               ></Box>
             </Grid>
 
@@ -136,11 +146,11 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   cardDetail: {
-    padding: "20px 0 0 0",
     width: "100%",
   },
   pic: {
     marginRight: "10px",
+    borderRadius: "10px",
   },
 });
 export default OrderCard;

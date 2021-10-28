@@ -9,15 +9,13 @@ import { Typography } from "@mui/material";
 const CardWrapper = ({ items = [], status }) => {
   const [page, setPage] = useState(1);
   const filteredItems = items.filter((item) => item.status === status);
-  const [order, setOrder] = useState(
-    filteredItems.slice(10 * (page - 1), 10 * page)
-  );
+  const [order, setOrder] = useState(filteredItems.slice(0, 10));
   const handleChange = (event, value) => {
     setPage(value);
-    window.scrollTo(0, 0);
   };
   useEffect(() => {
     setOrder(filteredItems.slice(10 * (page - 1), 10 * page));
+    window.scrollTo(0, 0);
   }, [page]);
 
   if (filteredItems.length !== 0) {

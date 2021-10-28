@@ -8,32 +8,34 @@ import Search from "~/common/components/NavBarBase/Search";
 import OrderPic1 from "../assets/order-1.png";
 import OrderPic2 from "../assets/order-2.png";
 import OrderPic3 from "../assets/order-3.png";
-const orders = [
-  {
-    orderNumber: "1",
-    address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
-    pic: [OrderPic1, OrderPic2, OrderPic3],
-    date: "October 22, 2021",
-    amount: "1234567",
-    status: "waiting",
-  },
-  {
-    orderNumber: "2",
-    address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
-    pic: [OrderPic1, OrderPic2, OrderPic3],
-    date: "March 21, 2021",
-    amount: "73294394",
-    status: "waiting",
-  },
-  {
-    orderNumber: "3",
-    address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
-    pic: [OrderPic1, OrderPic2, OrderPic3],
-    date: "October 28, 2021",
-    amount: "34344",
-    status: "waiting",
-  },
-];
+import orders from "../components/HistoryBase/fakeOrder";
+
+// const orders = [
+//   {
+//     orderNumber: "1",
+//     address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
+//     pic: [OrderPic1, OrderPic2, OrderPic3],
+//     date: "October 22, 2021",
+//     amount: "1234567",
+//     status: "waiting",
+//   },
+//   {
+//     orderNumber: "2",
+//     address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
+//     pic: [OrderPic1, OrderPic2, OrderPic3],
+//     date: "March 21, 2021",
+//     amount: "73294394",
+//     status: "waiting",
+//   },
+//   {
+//     orderNumber: "3",
+//     address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
+//     pic: [OrderPic1, OrderPic2, OrderPic3],
+//     date: "October 28, 2021",
+//     amount: "34344",
+//     status: "waiting",
+//   },
+// ];
 
 const HistoryPage = () => {
   const classes = useStyles();
@@ -41,6 +43,7 @@ const HistoryPage = () => {
     document.body.style.backgroundColor = "#f3f4f5";
     return () => (document.body.style.backgroundColor = "white");
   }, []);
+
   return (
     <>
       <TopProfile />
