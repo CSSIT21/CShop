@@ -10,7 +10,7 @@ import OrderPic2 from "../assets/order-2.png";
 import OrderPic3 from "../assets/order-3.png";
 const orders = [
   {
-    orderNumber: "114409999",
+    orderNumber: "1",
     address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
     pic: [OrderPic1, OrderPic2, OrderPic3],
     date: "October 22, 2021",
@@ -18,7 +18,7 @@ const orders = [
     status: "waiting",
   },
   {
-    orderNumber: "114410000",
+    orderNumber: "2",
     address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
     pic: [OrderPic1, OrderPic2, OrderPic3],
     date: "March 21, 2021",
@@ -26,24 +26,16 @@ const orders = [
     status: "waiting",
   },
   {
-    orderNumber: "114410001",
+    orderNumber: "3",
     address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
     pic: [OrderPic1, OrderPic2, OrderPic3],
     date: "October 28, 2021",
     amount: "34344",
-    status: "success",
-  },
-  {
-    orderNumber: "114410002",
-    address: "126 Pracha Uthit Rd, Bang Mot, Thung Khru, Bangkok 10140",
-    pic: [OrderPic1, OrderPic2, OrderPic3],
-    date: "December 31, 2022",
-    amount: "242434343",
-    status: "cancel",
+    status: "waiting",
   },
 ];
 
-const HistoryPage = (props) => {
+const HistoryPage = () => {
   const classes = useStyles();
   useEffect(() => {
     document.body.style.backgroundColor = "#f3f4f5";

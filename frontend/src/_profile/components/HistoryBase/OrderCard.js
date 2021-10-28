@@ -128,6 +128,7 @@ const useStyles = makeStyles({
     marginBottom: "64px",
     display: "flex",
     flexDirection: "row",
+    width: "100%",
   },
   orderTitle: {
     display: "flex",
