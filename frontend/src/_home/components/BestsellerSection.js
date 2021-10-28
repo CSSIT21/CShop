@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
-import { Typography,Rating } from '@mui/material';
+import { Typography, Rating } from '@mui/material';
 import Carousel from '~/common/components/Carousel';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import ProductCard from '~/common/components/ProductCard';
@@ -34,11 +34,11 @@ const useStyles = makeStyles({
 
 const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 
-	const [items, setItems] = useState(bestsellerItems);
+	const [products, setProducts] = useState(bestsellerItems);
 	const [page, setPage] = useState(0);
 	const classes = useStyles();
-	const itemsPerRow = 4;
-	const totalPage = Math.ceil(items.length / itemsPerRow);
+	const productsPerRow = 4;
+	const totalPage = Math.ceil(products.length / productsPerRow);
 
 	return (
 		<Box className={classes.bestsellerWrapper}>
@@ -50,13 +50,18 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 
 				<Box className={classes.bestsellerCarousel}>
 					<Carousel
-						items={items}
+						items={products}
 						pageState={page}
 						setPageState={setPage}
 						itemsPerRow={4}
 					>
-						{(item, idx) => (
-							<ProductCard product={item} onFavourite={onFavourite} status={() => <Rating name="read-only" value={4.2} readOnly />} to="/product/1" key={item.id} />
+						{(product, idx) => (
+							<ProductCard 
+							product={product} 
+							onFavourite={onFavourite} 
+							status={() => <Rating name="read-only" value={4.2} readOnly />} 
+							to="/product/1" 
+							key={product.id} />
 						)}
 					</Carousel>
 				</Box>

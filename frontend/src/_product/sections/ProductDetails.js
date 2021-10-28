@@ -30,12 +30,9 @@ const ProductDetails = (props) => {
     setOpen(false);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000);
-  };
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
   return (
     <Box

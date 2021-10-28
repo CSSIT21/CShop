@@ -1,12 +1,12 @@
 import { Typography, Button } from "@mui/material";
 import AddressInfo from "../components/AddressBase/AddressInfo";
-import TopProfile from "../components/ProfileBase/TopProfile";
+import TopProfile from "../components/TopProfile";
 import AccordionCommon from "~/common/components/AccordionCommon";
 import AddressForm from "../components/AddressBase/AddressForm";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Box } from "@mui/system";
-import ConfirmDialogs from "../components/InformationBase/ConfirmDialogs";
+import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
 const provinces = ["Bangkok", "Mixko", "Chonburi", "Hat Yai"];
 const districts = ["Thung Kru", "Sathorn", "Bang Khun Tian", "Phayatha"];
