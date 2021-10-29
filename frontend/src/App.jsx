@@ -38,6 +38,8 @@ import HistoryPage from "./_profile/pages/History";
 import VoucherPage from "./_profile/pages/Voucher";
 import AddressPage from "./_profile/pages/Address";
 import LoginPage from "./_auth/pages/Login";
+import SellerShop from "./_shop/pages/SellerShop";
+import ShopCategory from "./_shop/pages/ShopCategory";
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -184,6 +186,20 @@ function App() {
                     <Route path="/profile/history">
                       <HistoryPage />
                     </Route>
+                  </Suspense>
+                </MainLayout>
+              </Route>
+              <Route path="/shop/:id/:cateId" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <ShopCategory />
+                  </Suspense>
+                </MainLayout>
+              </Route>
+              <Route path="/shop/:id" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <SellerShop />
                   </Suspense>
                 </MainLayout>
               </Route>
