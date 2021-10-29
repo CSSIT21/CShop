@@ -1,0 +1,30 @@
+body.error{
+    background-color: red;
+    color: white;
+}
+
+.error a{
+    text-decoration: none;
+    color: red;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all .25s ease-in-out;
+}
+.error a:hover{
+    color: white;
+    background-color: rgba(255, 255, 255, 0.575);
+}
+.error span{
+    padding: 5px;
+    background-color: #ffffff5b;
+    border-radius: 5px;
+}
+
+.error .naenam{
+    display: flex;
+    padding: 5px;
+    background-color: #ffffff5b;
+    margin-top: 20px;
+    border-radius: 5px;
+}

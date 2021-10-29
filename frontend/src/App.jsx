@@ -60,10 +60,13 @@ import NotFoundPage from "./common/pages/404";
 // const AddressPage =  lazy(() => import("./_profile/pages/Address"));
 // const LoginPage =  lazy(() => import("./_auth/pages/Login"));
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
+import Catch from './common/utils/catch';
+import ErrorPage from "./common/utils/error";
 
 function App() {
   return (
     <div className="App">
+      <Catch onError={() => {}} fallback={({state}) => <ErrorPage error={state.error} errorInfo={state.errorInfo}/>}>
       <RecoilRoot>
         <ThemeContextProvider>
           <Router>
@@ -193,6 +196,7 @@ function App() {
           </Router>
         </ThemeContextProvider>
       </RecoilRoot>
+      </Catch>
     </div>
   );
 }
