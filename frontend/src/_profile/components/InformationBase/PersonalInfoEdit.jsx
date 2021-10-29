@@ -1,10 +1,7 @@
-import { useState } from "react";
 import { Grid, Typography, TextField, MenuItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React from "react";
-import authState from "../../../common/store/authState";
-import { useRecoilState } from "recoil";
+import React, { useState } from "react";
 import {
   years,
   months,
@@ -12,13 +9,8 @@ import {
   genders,
 } from "../../../common/constants/register";
 
-const PersonalInfoEdit = () => {
+const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
   const classes = useStyles();
-  const [userInfo, setUserInfo] = useRecoilState(authState);
-  const [first_name, setFirst_name] = useState(userInfo.user.first_name);
-  const [last_name, setLast_name] = useState(userInfo.user.last_name);
-  const [gender, setGender] = useState(userInfo.user.gender);
-
   return (
     <>
       <Box className={classes.container}>
@@ -43,9 +35,12 @@ const PersonalInfoEdit = () => {
               variant="outlined"
               placeholder="Firstname"
               sx={{ width: "48%" }}
-              value={first_name}
+              value={editInfo.first_name}
               onChange={(e) => {
-                setFirst_name(e.target.value);
+                seteditInfo({
+                  ...editInfo,
+                  first_name: e.target.value,
+                });
               }}
             />
             <TextField
@@ -53,9 +48,12 @@ const PersonalInfoEdit = () => {
               variant="outlined"
               placeholder="Lastname"
               sx={{ width: "48%" }}
-              value={last_name}
+              value={editInfo.last_name}
               onChange={(e) => {
-                setLast_name(e.target.value);
+                seteditInfo({
+                  ...editInfo,
+                  last_name: e.target.value,
+                });
               }}
             />
           </Box>
@@ -69,9 +67,9 @@ const PersonalInfoEdit = () => {
             variant="outlined"
             select
             sx={{ width: "13.5%" }}
-            value={gender}
+            value={editInfo.gender}
             onChange={(e) => {
-              setGender(e.target.value);
+              seteditInfo({ ...editInfo, gender: e.target.value });
             }}
           >
             {genders.map((gender) => (
@@ -93,10 +91,10 @@ const PersonalInfoEdit = () => {
                 variant="outlined"
                 sx={textField}
                 select
-                value={days[0]}
-                // onChange={(e) => {
-                //   setUserInfo({ ...userInfo, day: e.target.value });
-                // }}
+                value={editInfo.day}
+                onChange={(e) => {
+                  seteditInfo({ ...editInfo, day: e.target.value });
+                }}
               >
                 {days.map((day) => (
                   <MenuItem key={day} value={day}>
@@ -111,10 +109,10 @@ const PersonalInfoEdit = () => {
                 variant="outlined"
                 sx={textField}
                 select
-                value={months[0].id}
-                // onChange={(e) => {
-                //   setUserInfo({ ...userInfo, month: e.target.value });
-                // }}
+                value={editInfo.month}
+                onChange={(e) => {
+                  seteditInfo({ ...editInfo, month: e.target.value });
+                }}
               >
                 {months.map((month) => (
                   <MenuItem key={month.id} value={month.id}>
@@ -129,10 +127,10 @@ const PersonalInfoEdit = () => {
                 variant="outlined"
                 sx={textField}
                 select
-                value={years[0]}
-                // onChange={(e) => {
-                //   setUserInfo({ ...userInfo, year: e.target.value });
-                // }}
+                value={editInfo.year}
+                onChange={(e) => {
+                  seteditInfo({ ...editInfo, year: e.target.value });
+                }}
               >
                 {years.map((year) => (
                   <MenuItem key={year} value={year}>

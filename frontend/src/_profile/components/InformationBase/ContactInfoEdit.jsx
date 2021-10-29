@@ -1,43 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Grid, Typography, TextField, MenuItem } from "@mui/material";
-import authState from "../../../common/store/authState";
-import { useRecoilState } from "recoil";
+import axios from "axios";
 
-const address = [
-  {
-    subDistrict: "Select Sub District",
-    district: "Select District",
-    province: "Select Province",
-    postalCode: "Postal Code",
-  },
-  {
-    subDistrict: "Bang Mot",
-    district: "Thung Khru",
-    province: "Bangkok",
-    postalCode: 10140,
-  },
-  {
-    subDistrict: "Pak Nam",
-    district: "Mueang Samut Prakan",
-    province: "Samut Prakarn",
-    postalCode: 10270,
-  },
-  {
-    subDistrict: "Tha Din Daeng",
-    district: "Phak Hai",
-    province: "Phra Nakhon Si Ayutthaya",
-    Zipcode: 13120,
-  },
-];
-
-const ContactInfoEdit = () => {
+const ContactInfoEdit = ({
+  editInfo,
+  confirmPassword,
+  seteditInfo = () => {},
+  setConfirmPassword = () => {},
+}) => {
   const classes = useStyles();
-  const [userInfo, setUserInfo] = useRecoilState(authState);
-  const [phoneNumber, setPhoneNumber] = useState(userInfo.user.contact);
-  const [email, setEmail] = useState(userInfo.user.email);
-  const [confirmEmail, setConfirmEmail] = useState();
+
+  const [addressData, setAddressData] = useState([]);
+  const [province, setProvince] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [subDistrict, setSubDistrict] = useState([]);
+  const [postalCode, setPostalCode] = useState([]);
+  const getData = async () => {
+    const fetchedData = await axios.get(
+      "https://cshop-mock.mixkoap.com/thailand.json"
+    );
+    setAddressData(fetchedData.data);
+    setProvince([...new Set(fetchedData.data.map((el) => el.province))].sort());
+    setDistrict(
+      [
+        ...new Set(
+          fetchedData.data
+            .filter((el) => el.province === editInfo.province)
+            .map((el) => el.district)
+        ),
+      ].sort()
+    );
+    setSubDistrict(
+      [
+        ...new Set(
+          fetchedData.data
+            .filter((el) => el.district === editInfo.district)
+            .map((el) => el.subDistrict)
+        ),
+      ].sort()
+    );
+    setPostalCode(
+      [
+        ...new Set(
+          fetchedData.data
+            .filter((el) => el.subDistrict == editInfo.subDistrict)
+            .map((el) => "" + el.Zipcode)
+        ),
+      ].sort()
+    );
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  useEffect(() => {
+    setDistrict(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.province === editInfo.province)
+            .map((el) => el.district)
+        ),
+      ].sort()
+    );
+    seteditInfo({ ...editInfo, district: "" });
+  }, [editInfo.province]);
+  useEffect(() => {
+    setSubDistrict(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.district === editInfo.district)
+            .map((el) => el.subDistrict)
+        ),
+      ].sort()
+    );
+    seteditInfo({ ...editInfo, subDistrict: "" });
+  }, [editInfo.district]);
+  useEffect(() => {
+    setPostalCode(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.subDistrict === editInfo.subDistrict)
+            .map((el) => el.Zipcode)
+        ),
+      ].sort()
+    );
+    seteditInfo({ ...editInfo });
+  }, [editInfo.subDistrict]);
+
   return (
     <>
       <Box className={classes.container}>
@@ -54,9 +108,12 @@ const ContactInfoEdit = () => {
             id="phoneNumber"
             variant="outlined"
             sx={textField}
-            value={phoneNumber}
+            value={editInfo.phoneNumber}
             onChange={(e) => {
-              setPhoneNumber(e.target.value);
+              seteditInfo({
+                ...editInfo,
+                phoneNumber: e.target.value,
+              });
             }}
           />
         </Grid>
@@ -65,26 +122,29 @@ const ContactInfoEdit = () => {
             <Typography sx={infoTitle}>Email</Typography>
           </Grid>
           <TextField
-            id="phoneNumber"
+            id="email"
             variant="outlined"
             sx={textField}
-            value={email}
+            value={editInfo.email}
             onChange={(e) => {
-              setEmail(e.target.value);
+              seteditInfo({
+                ...editInfo,
+                email: e.target.value,
+              });
             }}
           />
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
-            <Typography sx={infoTitle}>Confirm Email</Typography>
+            <Typography sx={infoTitle}>Confirm Password</Typography>
           </Grid>
           <TextField
-            id="phoneNumber"
+            id="confirmPassword"
             variant="outlined"
             sx={textField}
-            value={confirmEmail}
+            value={confirmPassword}
             onChange={(e) => {
-              setConfirmEmail(e.target.value);
+              setConfirmPassword(e.target.value);
             }}
           />
         </Grid>
@@ -97,27 +157,33 @@ const ContactInfoEdit = () => {
               id="addressLine"
               variant="outlined"
               placeholder="Address"
-              value="126 Pracha Uthit Rd 126 Pracha Uthit Rd 126 Pracha Uthit Rd 126 Pracha Uthit Rd "
+              value={editInfo.addressLine}
               multiline
               rows={5}
               sx={addressTextField}
-              // onChange={(e) => {
-              //   setAddress({ ...address, addressLine: e.target.value });
-              // }}
+              onChange={(e) => {
+                seteditInfo({
+                  ...editInfo,
+                  addressLine: e.target.value,
+                });
+              }}
             />
             <TextField
               id="province"
               variant="outlined"
               select
               sx={addressTextField}
-              value={address[0].province}
-              // onChange={(e) => {
-              //   setAddress({ ...address, province: e.target.value });
-              // }}
+              value={editInfo.province}
+              onChange={(e) => {
+                seteditInfo({
+                  ...editInfo,
+                  province: e.target.value,
+                });
+              }}
             >
-              {address.map((address) => (
-                <MenuItem key={address.postalCode} value={address.province}>
-                  {address.province}
+              {province.map((data, idx) => (
+                <MenuItem key={idx} value={data}>
+                  {data}
                 </MenuItem>
               ))}
             </TextField>
@@ -126,14 +192,17 @@ const ContactInfoEdit = () => {
               variant="outlined"
               select
               sx={addressTextField}
-              value={address[0].district}
-              // onChange={(e) => {
-              //   setAddress({ ...address, district: e.target.value });
-              // }}
+              value={editInfo.district}
+              onChange={(e) => {
+                seteditInfo({
+                  ...editInfo,
+                  district: e.target.value,
+                });
+              }}
             >
-              {address.map((address) => (
-                <MenuItem key={address.postalCode} value={address.district}>
-                  {address.district}
+              {district.map((data, idx) => (
+                <MenuItem key={idx} value={data}>
+                  {data}
                 </MenuItem>
               ))}
             </TextField>
@@ -142,14 +211,17 @@ const ContactInfoEdit = () => {
               variant="outlined"
               select
               sx={addressTextField}
-              value={address[0].subDistrict}
-              // onChange={(e) => {
-              //   setAddress({ ...address, subDistrict: e.target.value });
-              // }}
+              value={editInfo.subDistrict}
+              onChange={(e) => {
+                seteditInfo({
+                  ...editInfo,
+                  subDistrict: e.target.value,
+                });
+              }}
             >
-              {address.map((address) => (
-                <MenuItem key={address.postalCode} value={address.subDistrict}>
-                  {address.subDistrict}
+              {subDistrict.map((data, idx) => (
+                <MenuItem key={idx} value={data}>
+                  {data}
                 </MenuItem>
               ))}
             </TextField>
@@ -157,17 +229,18 @@ const ContactInfoEdit = () => {
               id="postalCode"
               variant="outlined"
               sx={addressTextField}
-              InputProps={{
-                readOnly: true,
+              select
+              value={editInfo.postalCode}
+              onChange={(e) => {
+                seteditInfo({
+                  ...editInfo,
+                  postalCode: e.target.value,
+                });
               }}
-              value={address[0].postalCode}
-              // onChange={(e) => {
-              //   setAddress({ ...address, postalCode: e.target.value });
-              // }}
             >
-              {address.map((address) => (
-                <MenuItem key={address.postalCode} value={address.postalCode}>
-                  {address.postalCode}
+              {postalCode.map((data, idx) => (
+                <MenuItem key={idx} value={data}>
+                  {data}
                 </MenuItem>
               ))}
             </TextField>
@@ -179,6 +252,7 @@ const ContactInfoEdit = () => {
 };
 
 export default ContactInfoEdit;
+
 const useStyles = makeStyles({
   container: {
     fontSize: "24px",
@@ -193,6 +267,7 @@ const useStyles = makeStyles({
     width: "60%",
   },
 });
+
 const infoTitle = {
   fontSize: "24px",
   fontWeight: "500",

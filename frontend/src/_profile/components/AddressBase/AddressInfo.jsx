@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
@@ -38,7 +38,10 @@ const data = [
 ];
 const AddressInfo = () => {
   const classes = useStyles();
-
+  const [address, setAddress] = useState(data);
+  const handleDeleteAddress = (id) => {
+    setAddress(address.filter((e) => e.id !== id));
+  };
   return (
     <Box sx={{ width: "100%", marginTop: "50px", paddingBottom: "170px" }}>
       <Box sx={{ width: "98%", padding: "0px 16px" }}>
@@ -48,9 +51,8 @@ const AddressInfo = () => {
           Delivery Address
         </Typography>
         <Grid container className={classes.header}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={2}>
             Recipient's Name
           </Grid>
           <Grid item xs={1}></Grid>
@@ -63,11 +65,19 @@ const AddressInfo = () => {
           <Grid item xs={2}>
             Phone Number
           </Grid>
+          <Grid item xs={1}></Grid>
         </Grid>
 
         <Grid container className={classes.info} style={{}}>
-          <For each={data}>
-            {(item, idx) => <AddressDetail key={idx} data={item} />}
+          <For each={address}>
+            {(item, idx) => (
+              <AddressDetail
+                key={idx}
+                data={item}
+                index={idx}
+                handleDeleteAddress={() => handleDeleteAddress(item.id)}
+              />
+            )}
           </For>
         </Grid>
       </Box>
@@ -80,13 +90,13 @@ const useStyles = makeStyles({
     fontWeight: "600",
     color: "white",
     padding: "15px 15px",
-    textAlign: "end",
+    textAlign: "start",
     borderRadius: "10px 10px 0px 0px",
   },
   info: {
     fontWeight: "400",
     fontSize: "14px",
-    textAlign: "end",
+    textAlign: "start",
     boxShadow: "0px 3.55484px 3.55484px rgba(196, 196, 196, 0.26)",
     borderRadius: "0px 0px 10px 10px",
   },
