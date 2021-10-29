@@ -37,18 +37,18 @@ const CustomDot = ({
 
   return (
     <div style={wrapper}>
-      <div style={active}></div>    
+      <div style={active}></div>
       {
-          [...Array(totalPage)].map((item, idx) => {
-            const stepper = {
-                width: Math.ceil(100 / totalPage) + "%",
-                height,
-                borderRadius: "15px",
-                position: "absolute",
-                left: (100 * idx) / totalPage + "%",
-            };
-              return <div style={stepper} onClick={() => setPageHandler(idx)}></div>
-          })
+        [...Array(totalPage)].map((item, idx) => {
+          const stepper = {
+            width: Math.ceil(100 / totalPage) + "%",
+            height,
+            borderRadius: "15px",
+            position: "absolute",
+            left: (100 * idx) / totalPage + "%",
+          };
+          return <div style={stepper} onClick={() => setPageHandler(idx)} key={idx}></div>
+        })
       }
     </div>
   );
