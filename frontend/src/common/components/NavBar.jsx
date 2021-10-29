@@ -3,11 +3,11 @@ import NavbarContent from "./NavBarBase/NavBarContent";
 
 
 
-const NavBar = ({ isLogin = true }) => {
+const NavBar = () => {
   return (
     <>
       <TopBar />
-      <NavbarContent isLogin={isLogin} />
+      <NavbarContent />
     </>
   )
 }
