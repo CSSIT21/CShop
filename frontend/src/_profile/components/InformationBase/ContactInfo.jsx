@@ -2,12 +2,19 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Grid, Typography } from "@mui/material";
-import authState from "../../../common/store/authState";
-import { useRecoilValue } from "recoil";
 
-const ContactInfo = () => {
+const ContactInfo = ({ userInfo }) => {
   const classes = useStyles();
-  const auth = useRecoilValue(authState);
+  const address =
+    userInfo.addressLine +
+    ", " +
+    userInfo.subDistrict +
+    ", " +
+    userInfo.district +
+    ", " +
+    userInfo.province +
+    " " +
+    userInfo.postalCode;
   return (
     <>
       <Box className={classes.container}>
@@ -20,19 +27,19 @@ const ContactInfo = () => {
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Phone Number</Typography>
           </Grid>
-          <Typography sx={infoDetail}>{auth.user.contact}</Typography>
+          <Typography sx={infoDetail}>{userInfo.phoneNumber}</Typography>
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Email</Typography>
           </Grid>
-          <Typography sx={infoDetail}>{auth.user.email}</Typography>
+          <Typography sx={infoDetail}>{userInfo.email}</Typography>
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Primary Address</Typography>
           </Grid>
-          <Typography sx={infoDetail}>This mock address</Typography>
+          <Typography sx={infoDetail}>{address}</Typography>
         </Grid>
       </Box>
     </>

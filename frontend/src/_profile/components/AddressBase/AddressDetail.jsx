@@ -1,26 +1,22 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
+import { Typography, IconButton } from "@mui/material";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+const AddressDetail = ({ data, index, handleDeleteAddress = () => {} }) => {
+  const bgColor = index % 2 === 1 ? "#EFEFF1" : "white";
 
-const AddressDetail = ({ data }) => {
-  const bgColor = data.id % 2 === 0 ? "#EFEFF1" : "white";
   return (
     <>
       <Grid
         item
-        xs={1}
-        sx={{ color: "#FD6637", padding: "20px 0px" }}
+        xs={2}
+        sx={{ color: "#FD6637", padding: "20px 0px", textAlign: "center" }}
         style={{ backgroundColor: bgColor }}
       >
         {data.primary && <Typography>Primary</Typography>}
       </Grid>
-      <Grid
-        item
-        xs={1}
-        sx={gridPadding}
-        style={{ backgroundColor: bgColor }}
-      ></Grid>
-      <Grid item xs={3} sx={gridPadding} style={{ backgroundColor: bgColor }}>
+
+      <Grid item xs={2} sx={gridPadding} style={{ backgroundColor: bgColor }}>
         {data.name}
       </Grid>
       <Grid
@@ -45,6 +41,18 @@ const AddressDetail = ({ data }) => {
         style={{ backgroundColor: bgColor, paddingRight: "15px" }}
       >
         {data.phoneNumber}
+      </Grid>
+      <Grid
+        item
+        xs={1}
+        sx={gridPadding}
+        style={{ backgroundColor: bgColor, paddingRight: "15px" }}
+      >
+        {!data.primary && (
+          <IconButton color="primary" onClick={handleDeleteAddress}>
+            <DeleteRoundedIcon />
+          </IconButton>
+        )}
       </Grid>
     </>
   );
