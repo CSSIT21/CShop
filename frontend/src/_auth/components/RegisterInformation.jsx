@@ -12,10 +12,14 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
   const [userInfo, setUserInfo] = useRecoilState(registerState);
   const checkPassword = () => {
-    if (userInfo.password === userInfo.confirmPassword) {
-      handleNext();
+    if (userInfo.password != "" && checkPassword != "") {
+      if (userInfo.password === userInfo.confirmPassword) {
+        handleNext();
+      } else {
+        alert("Check korn i sus");
+      }
     } else {
-      alert("Check korn i sus");
+      alert("Mueng forget password i sus");
     }
   };
   return (
