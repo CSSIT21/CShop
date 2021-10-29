@@ -87,7 +87,7 @@ const DropdownDetail = ({ children }) => {
     {
       title: "Favorite",
       icon: FavoriteIcon,
-      to: "/profile/favourite",
+      to: "/home/favourite",
     },
     {
       title: "Log Out",
@@ -128,7 +128,7 @@ const DropdownDetail = ({ children }) => {
             <MenuItem
               onClick={() => {
                 router.push(Dropdown.to);
-				handleClose();
+                handleClose();
               }}
               disableRipple
               sx={{ fontSize: 14, margin: "5px 0" }}

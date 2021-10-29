@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Box } from "@mui/system";
 import { makeStyles } from '@mui/styles';
 import { Typography } from "@mui/material";
@@ -64,12 +65,14 @@ const BottomBanner = () => {
 					sed do eiusmod tempor incide et dolore magna aliqua.
 				</Typography>
 
-				<CButton
-					title="Register Now"
-					width="150px"
-					height="50px"
-					fontSize="17px"
-				/>
+				<Link to="/register">
+					<CButton
+						title="Register Now"
+						width="150px"
+						height="50px"
+						fontSize="17px"
+					/>
+				</Link>
 			</Box>
 
 			<img className={classes.bottomBannerPic} src={BannerImage} alt="Banner" />
