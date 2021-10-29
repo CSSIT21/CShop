@@ -14,7 +14,7 @@ const subdistricts = ["Bang Mod", "Bang Rak", "Mixko", "Samphathawong"];
 
 const AddressPage = () => {
   const classes = useStyles();
-  const [openShopping, setopenShopping] = useState(true);
+  const [openShopping, setopenShopping] = useState(false);
   const [open, setOpen] = useState(false);
   return (
     <>

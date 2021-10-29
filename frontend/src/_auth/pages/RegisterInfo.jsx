@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from 'react';
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -14,7 +14,7 @@ import Success from "../components/Success";
 const steps = ["Information", "Address"];
 
 const RegisterInfoPage = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const classes = useStyles();
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

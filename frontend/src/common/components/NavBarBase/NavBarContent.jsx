@@ -8,27 +8,27 @@ import AuthenButton from "./AuthenButton";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-	navbarWrapper: {
-		padding: '0px 50px 10px 50px',
-		display: 'flex',
-		alignItems: 'center',
-		backgroundColor: 'white',
-	},
+  navbarWrapper: {
+    padding: '0px 50px 10px 50px',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
 
-	navbarMiddle: {
-		padding: '0 20px',
-		margin: 20,
-	},
+  navbarMiddle: {
+    padding: '0 20px',
+    margin: 20,
+  },
 
-	navbarRight: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'space-around',
-	},
+  navbarRight: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
 
-	logo: {
-		width: '150px',
-	},
+  logo: {
+    width: '150px',
+  },
 });
 
 const NavbarContent = ({ isLogin }) => {

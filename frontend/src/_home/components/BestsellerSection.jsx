@@ -56,12 +56,12 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 						itemsPerRow={4}
 					>
 						{(product, idx) => (
-							<ProductCard 
-							product={product} 
-							onFavourite={onFavourite} 
-							status={() => <Rating name="read-only" value={4.2} readOnly />} 
-							to="/product/1" 
-							key={product.id} />
+							<ProductCard
+								product={product}
+								onFavourite={onFavourite}
+								status={() => <Rating name="read-only" value={4.2} readOnly />}
+								to="/product/1"
+								key={product.id} />
 						)}
 					</Carousel>
 				</Box>
