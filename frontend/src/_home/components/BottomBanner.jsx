@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { makeStyles } from '@mui/styles';
 import { Typography } from "@mui/material";
 import CButton from "../../common/components/CButton";
-import BannerImage from "../assets/images/BannerBottom.png";
+import BannerImage from "../assets/images/BottomBanner.png";
 
 const useStyles = makeStyles({
 	bottomBannerWrapper: {
