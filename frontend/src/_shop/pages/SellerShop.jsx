@@ -14,9 +14,10 @@ const SellerShop = () => {
         <Box className={classes.container}>
           <Header />
           <TabsController />
-            <Box>
-              <Voucher />
-            </Box>
+          <Voucher />
+          <Box className={classes.hi.hello}>
+            
+          </Box>
         </Box>
       </Box>
     </>
@@ -33,8 +34,7 @@ const useStyles = makeStyles({
   container:{
     flexDirection:"column",
     alignItems:"center",
-
-    width:"92%",
+    width:"90%",
   }
 })
 export default SellerShop;
