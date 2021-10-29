@@ -9,7 +9,7 @@ import fakeProducts from "~/common/faker/fakeProducts";
 
 const useStyles = makeStyles({
 
-    suggestionpageWrapper: {
+    suggestionWrapper: {
         width: '100%',
         minHeight: '100vh',
         display: 'flex',
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     },
 });
 
-const SugggestionPage = props => {
+const SuggestionPage = props => {
     const classes = useStyles();
 
     const [page, setPage] = useState(1);
@@ -53,7 +53,7 @@ const SugggestionPage = props => {
     };
 
     return (
-        <Box className={classes.suggestionpageWrapper}>
+        <Box className={classes.suggestionWrapper}>
             <Box className={classes.suggestionContent}>
                 <Typography component="span"
                     fontSize='30px'
@@ -79,4 +79,4 @@ const SugggestionPage = props => {
     )
 };
 
-export default SugggestionPage;
+export default SuggestionPage;

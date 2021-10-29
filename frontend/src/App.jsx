@@ -74,7 +74,7 @@ function App() {
               {/* ROUTES FOR Sidebar Layout ATTACHED */}
               <Route path="/manage/:path?" exact>
                 <SidebarLayout>
-                  <Suspense fallback={<SkeletonLoading/>} >
+                  <Suspense fallback={<SkeletonLoading />} >
                     <Route exact path="/manage">
                       <Redirect exact path="/manage" to="/manage/users" />
                     </Route>
@@ -95,41 +95,41 @@ function App() {
               </Route>
               <Route path="/home" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <HomePage />
                   </Suspense>
                 </MainLayout>
               </Route>
               <Route path="/home/:path?" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
-                      <Route path="/home/suggest">
-                        <SugggestionPage />
-                      </Route>
-                      <Route path="/home/favourite">
-                        <FavouritePage />
-                      </Route>
-                    </Suspense>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <Route path="/home/suggest">
+                      <SugggestionPage />
+                    </Route>
+                    <Route path="/home/favourite">
+                      <FavouritePage />
+                    </Route>
+                  </Suspense>
                 </MainLayout>
               </Route>
-              
+
               <Route path="/search/category/:id" exact>
                 <MainLayout>
-              <Suspense fallback={<SkeletonLoading/>}>
-                  <CategoryPage />
-                </Suspense>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <CategoryPage />
+                  </Suspense>
                 </MainLayout>
               </Route>
               <Route path="/product/:id" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <ProductPage />
                   </Suspense>
                 </MainLayout>
               </Route>
               <Route path="/chat" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <ChatPage />
                   </Suspense>
                 </MainLayout>
@@ -138,7 +138,7 @@ function App() {
               {/* LOGIN PAGE */}
               <Route path="/login" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <LoginPage />
                   </Suspense>
                 </MainLayout>
@@ -147,35 +147,28 @@ function App() {
               {/* Register Page */}
               <Route path="/register" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
-                    <RegisterPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/register" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <RegisterPage />
                   </Suspense>
                 </MainLayout>
               </Route>
               <Route path="/register/info" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <RegisterInfoPage />
                   </Suspense>
                 </MainLayout>
               </Route>
               <Route path="/profile" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <ProfilePage />
                   </Suspense>
                 </MainLayout>
               </Route>
               <Route path="/profile/:path?" exact>
                 <MainLayout>
-                  <Suspense fallback={<SkeletonLoading/>}>
+                  <Suspense fallback={<SkeletonLoading />}>
                     <Route path="/profile/information">
                       <InformationPage />
                     </Route>
@@ -192,7 +185,7 @@ function App() {
                 </MainLayout>
               </Route>
               <Route path="*">
-                <Suspense fallback={<SkeletonLoading/>}>
+                <Suspense fallback={<SkeletonLoading />}>
                   <NotFoundPage />
                 </Suspense>
               </Route>

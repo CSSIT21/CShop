@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { For } from "../../utils";
+import { For } from "~/common//utils";
 import { useHistory } from "react-router-dom";
 
 const StyledMenu = styled((props) => (
@@ -87,7 +87,7 @@ const DropdownDetail = ({ children }) => {
     {
       title: "Favorite",
       icon: FavoriteIcon,
-      to: "/profile/favourite",
+      to: "/home/favourite",
     },
     {
       title: "Log Out",
@@ -128,7 +128,7 @@ const DropdownDetail = ({ children }) => {
             <MenuItem
               onClick={() => {
                 router.push(Dropdown.to);
-				handleClose();
+                handleClose();
               }}
               disableRipple
               sx={{ fontSize: 14, margin: "5px 0" }}

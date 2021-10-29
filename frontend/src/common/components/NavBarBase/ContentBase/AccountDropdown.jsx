@@ -1,9 +1,9 @@
 import { makeStyles } from '@mui/styles';
 import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
-import DropdownDetail from './DropdownDetail';
 import { useRecoilValue } from 'recoil';
-import authState from '../../store/authState';
+import authState from '~/common/store/authState';
+import DropdownDetail from './DropdownDetail';
 
 const AccountDropdown = () => {
 	const classes = useStyles();

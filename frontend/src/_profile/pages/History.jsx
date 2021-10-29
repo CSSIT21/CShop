@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import TopProfile from "../components/TopProfile";
-import Search from "~/common/components/NavBarBase/Search";
+import Search from "~/common/components/NavBarBase/ContentBase/Search";
 import OrderPic1 from "../assets/order-1.png";
 import OrderPic2 from "../assets/order-2.png";
 import OrderPic3 from "../assets/order-3.png";
