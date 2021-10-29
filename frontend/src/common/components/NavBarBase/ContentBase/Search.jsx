@@ -1,7 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import CButton from "../CButton";
+import CButton from "../../CButton";
 
 const Search = ({
   showButton = true,

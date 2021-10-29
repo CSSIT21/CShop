@@ -1,34 +1,34 @@
+import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import CShopLogo from "../../assets/images/Logo.svg";
-import Search from "./Search";
-import ActionMenu from "./ActionMenu";
-import AccountDropdown from "./AccountDropdown";
-import AuthenButton from "./AuthenButton";
-import { Link } from "react-router-dom";
+import CShopLogo from "~/common/assets/images/Logo.svg";
+import Search from "./ContentBase/Search";
+import ActionMenu from "./ContentBase/ActionMenu";
+import AccountDropdown from "./ContentBase/AccountDropdown";
+import AuthenButton from "./ContentBase/AuthenButton";
 
 const useStyles = makeStyles({
-	navbarWrapper: {
-		padding: '0px 50px 10px 50px',
-		display: 'flex',
-		alignItems: 'center',
-		backgroundColor: 'white',
-	},
+  navbarWrapper: {
+    padding: '0px 50px 10px 50px',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
 
-	navbarMiddle: {
-		padding: '0 20px',
-		margin: 20,
-	},
+  navbarMiddle: {
+    padding: '0 20px',
+    margin: 20,
+  },
 
-	navbarRight: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'space-around',
-	},
+  navbarRight: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
 
-	logo: {
-		width: '150px',
-	},
+  logo: {
+    width: '150px',
+  },
 });
 
 const NavbarContent = ({ isLogin }) => {

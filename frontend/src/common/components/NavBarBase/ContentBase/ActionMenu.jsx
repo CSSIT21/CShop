@@ -3,7 +3,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Badge, Fab } from '@mui/material';
 import { Box } from '@mui/system';
-import { For } from '../../utils';
+import { For } from '~/common/utils';
 
 const buttonStyle = {
 	background: 'none',
@@ -34,7 +34,7 @@ const ActionMenu = () => {
 	return (
 		<>
 			<Box display="flex">
-				<For each={actionLists}>{({label, icon: ActionIcon, value}, index) =>
+				<For each={actionLists}>{({ label, icon: ActionIcon, value }, index) =>
 					<Fab size="small" sx={buttonStyle} aria-label={label} key={index}>
 						<Badge badgeContent={value} color="primary">
 							<ActionIcon />
