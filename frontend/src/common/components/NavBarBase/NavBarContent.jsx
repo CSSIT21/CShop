@@ -6,58 +6,62 @@ import Search from "./ContentBase/Search";
 import ActionMenu from "./ContentBase/ActionMenu";
 import AccountDropdown from "./ContentBase/AccountDropdown";
 import AuthenButton from "./ContentBase/AuthenButton";
+import { useRecoilValue } from 'recoil';
+import authState from '~/common/store/authState';
 
-const useStyles = makeStyles({
-  navbarWrapper: {
-    padding: '0px 50px 10px 50px',
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-
-  navbarMiddle: {
-    padding: '0 20px',
-    margin: 20,
-  },
-
-  navbarRight: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-
-  logo: {
-    width: '150px',
-  },
-});
-
-const NavbarContent = ({ isLogin }) => {
+const NavbarContent = () => {
   const classes = useStyles();
+  const { isLoggedIn } = useRecoilValue(authState);
 
   return (
     <Box className={classes.navbarWrapper}>
-      <Box style={{ width: isLogin ? "10%" : "12%" }}>
+      <Box className={classes.navbarLeft} style={{ width: isLoggedIn ? "12%" : "12%" }}>
         <Link to="/home">
-          <img className={classes.logo} src={CShopLogo} alt="Logo" />
+          <img width="150px" src={CShopLogo} alt="Logo" />
         </Link>
       </Box>
 
       <Box
         className={classes.navbarMiddle}
-        style={{ width: isLogin ? "70%" : "60%" }}
+        style={{ width: isLoggedIn ? "65%" : "60%" }}
       >
         <Search />
       </Box>
 
       <Box
         className={classes.navbarRight}
-        style={{ width: isLogin ? "20%" : "28%" }}
+        style={{ width: isLoggedIn ? "23%" : "28%" }}
       >
         <ActionMenu />
-        {isLogin ? <AccountDropdown /> : <AuthenButton />}
+        {isLoggedIn ? <AccountDropdown /> : <AuthenButton />}
       </Box>
     </Box>
   );
 };
+
+const useStyles = makeStyles({
+  navbarWrapper: {
+    padding: '0px 20px 10px 20px',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+
+  navbarLeft: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  navbarMiddle: {
+    // margin: '0 20px',
+  },
+
+  navbarRight: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+});
 
 export default NavbarContent;
