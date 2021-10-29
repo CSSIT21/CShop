@@ -1,21 +1,90 @@
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, TextField, MenuItem, Grid } from "@mui/material";
 import AddressInfo from "../components/AddressBase/AddressInfo";
 import TopProfile from "../components/TopProfile";
 import AccordionCommon from "~/common/components/AccordionCommon";
-import AddressForm from "../components/AddressBase/AddressForm";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
-
-const provinces = ["Bangkok", "Mixko", "Chonburi", "Hat Yai"];
-const districts = ["Thung Kru", "Sathorn", "Bang Khun Tian", "Phayatha"];
-const subdistricts = ["Bang Mod", "Bang Rak", "Mixko", "Samphathawong"];
+import axios from "axios";
+import { For } from "~/common/utils";
+import GridTitle from "../components/AddressBase/GridTitle";
 
 const AddressPage = () => {
   const classes = useStyles();
-  const [openShopping, setopenShopping] = useState(false);
+  const [openShopping, setopenShopping] = useState(true);
   const [open, setOpen] = useState(false);
+  const addNewAddress = () => {
+    setOpen(true);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+  const [addressData, setAddressData] = useState([]);
+  const [province, setProvince] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [subDistrict, setSubDistrict] = useState([]);
+  const [postalCode, setPostalCode] = useState([]);
+  const [userAddress, setuserAddress] = useState({
+    name: "",
+    phoneNumber: "",
+    addressLine: "",
+    province: "",
+    district: "",
+    subDistrict: "",
+    postalCode: "",
+  });
+
+  const getData = async () => {
+    const fetchedData = await axios.get(
+      "https://cshop-mock.mixkoap.com/thailand.json"
+    );
+    setAddressData(fetchedData.data);
+    setProvince([...new Set(fetchedData.data.map((el) => el.province))].sort());
+  };
+
+  useEffect(() => {
+    setDistrict(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.province === userAddress.province)
+            .map((el) => el.district)
+        ),
+      ].sort()
+    );
+    setuserAddress({
+      ...userAddress,
+      district: "",
+      subDistrict: "",
+      postalCode: "",
+    });
+  }, [userAddress.province]);
+
+  useEffect(() => {
+    setSubDistrict(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.district === userAddress.district)
+            .map((el) => el.subDistrict)
+        ),
+      ].sort()
+    );
+    setuserAddress({ ...userAddress, subDistrict: "", postalCode: "" });
+  }, [userAddress.district]);
+
+  useEffect(() => {
+    setPostalCode(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.subDistrict === userAddress.subDistrict)
+            .map((el) => el.Zipcode)
+        ),
+      ].sort()
+    );
+  }, [userAddress.subDistrict]);
   return (
     <>
       <ConfirmDialogs
@@ -44,17 +113,177 @@ const AddressPage = () => {
             open={openShopping}
             setOpen={setopenShopping}
           >
-            <AddressForm title="Recipient's Name" />
-            <AddressForm title="Address" />
-            <AddressForm title="Province" select data={provinces}></AddressForm>
-            <AddressForm title="District" select data={districts}></AddressForm>
-            <AddressForm
-              title="Sub District"
-              select
-              data={subdistricts}
-            ></AddressForm>
-            <AddressForm title="Postal Code" readOnly />
-            <AddressForm title="Phone Number" />
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="Recipient's Name" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    value={userAddress.name}
+                    placeholder="Recipient's Name"
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        name: e.target.value,
+                      });
+                    }}
+                  ></TextField>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="Address" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    placeholder="Address"
+                    multiline
+                    rows={5}
+                    value={userAddress.addressLine}
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        addressLine: e.target.value,
+                      });
+                    }}
+                  ></TextField>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="Select Province" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    select
+                    label="Select Province"
+                    value={userAddress.province}
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        province: e.target.value,
+                      });
+                    }}
+                  >
+                    {province.map((data, idx) => {
+                      return (
+                        <MenuItem key={idx} value={data}>
+                          {data}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="District" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    select
+                    label="Select District"
+                    value={userAddress.district}
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        district: e.target.value,
+                      });
+                    }}
+                  >
+                    {district.map((data, idx) => {
+                      return (
+                        <MenuItem key={idx} value={data}>
+                          {data}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="Sub District" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    select
+                    label="Select Sub District"
+                    value={userAddress.subDistrict}
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        subDistrict: e.target.value,
+                      });
+                    }}
+                  >
+                    {subDistrict.map((data, idx) => {
+                      return (
+                        <MenuItem key={idx} value={data}>
+                          {data}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="Postal Code" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    select
+                    label="Select Postal Code"
+                    value={userAddress.postalCode}
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        postalCode: e.target.value,
+                      });
+                    }}
+                  >
+                    {postalCode.map((data, idx) => {
+                      return (
+                        <MenuItem key={idx} value={data}>
+                          {data}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{ marginBottom: "24px" }}>
+              <Grid container>
+                <GridTitle title="Phone Number" />
+                <Grid item xs={8}>
+                  <TextField
+                    sx={textField}
+                    variant="outlined"
+                    value={userAddress.phoneNumber}
+                    placeholder="Phone Number"
+                    onChange={(e) => {
+                      setuserAddress({
+                        ...userAddress,
+                        phoneNumber: e.target.value,
+                      });
+                    }}
+                  ></TextField>
+                </Grid>
+              </Grid>
+            </Box>
             <Box className={classes.buttonGroup}>
               <Button
                 className={classes.button}
@@ -64,7 +293,7 @@ const AddressPage = () => {
                   textTransform: "capitalize",
                   fontSize: "16px",
                 }}
-                onClick={() => setOpen(true)}
+                onClick={addNewAddress}
               >
                 Add
               </Button>
@@ -112,3 +341,6 @@ const useStyles = makeStyles({
 });
 
 export default AddressPage;
+const textField = {
+  width: "60%",
+};

@@ -56,7 +56,6 @@ const LoginPage = () => {
               width="500px"
               height="50px"
               onClick={() => {
-                console.log(form);
                 router.push("/home");
               }}
             ></CButton>

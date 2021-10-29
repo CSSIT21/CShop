@@ -5,13 +5,25 @@ import { makeStyles } from "@mui/styles";
 import PersonalInfo from "./PersonalInfo";
 import PersonalInfoEdit from "./PersonalInfoEdit";
 import ContactInfo from "./ContactInfo";
-
 import ContactInfoEdit from "./ContactInfoEdit";
 import ButtonWrapper from "./ButtonWrapper";
+import authState from "~/common/store/authState";
+import { useRecoilState } from "recoil";
 
 const Content = () => {
   const classes = useStyles();
   const [isEdit, setIsEdit] = useState(false);
+  const [userInfo, setUserInfo] = useRecoilState(authState);
+  const [editInfo, seteditInfo] = useState(userInfo.user);
+  const [confirmPassword, setConfirmPassword] = useState();
+
+  const newUserInfo = () => {
+    if (userInfo.user.password === confirmPassword) {
+      setUserInfo(editInfo);
+    } else {
+      alert("Go check your fking password again");
+    }
+  };
   return (
     <Box className={classes.body}>
       <Box className={classes.container}>
@@ -21,11 +33,28 @@ const Content = () => {
           Information
         </Typography>
         <Box className={classes.personalInfo}>
-          {!isEdit ? <PersonalInfo /> : <PersonalInfoEdit />}
+          {!isEdit ? (
+            <PersonalInfo userInfo={userInfo.user} />
+          ) : (
+            <PersonalInfoEdit editInfo={editInfo} seteditInfo={seteditInfo} />
+          )}
           <Divider />
-          {!isEdit ? <ContactInfo /> : <ContactInfoEdit />}
+          {!isEdit ? (
+            <ContactInfo userInfo={userInfo.user} />
+          ) : (
+            <ContactInfoEdit
+              confirmPassword={confirmPassword}
+              editInfo={editInfo}
+              seteditInfo={seteditInfo}
+              setConfirmPassword={setConfirmPassword}
+            />
+          )}
           <Divider />
-          <ButtonWrapper isEdit={isEdit} setIsEdit={setIsEdit} />
+          <ButtonWrapper
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+            newUserInfo={newUserInfo}
+          />
         </Box>
       </Box>
     </Box>

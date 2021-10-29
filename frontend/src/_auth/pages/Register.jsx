@@ -9,6 +9,8 @@ import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
+import { useRecoilState } from "recoil";
+import registerState from "../../common/store/registerState";
 //data
 const RegisterPage = () => {
   //function
@@ -18,10 +20,15 @@ const RegisterPage = () => {
     document.body.style.backgroundColor = "#f3f4f5";
     return () => (document.body.style.backgroundColor = "white");
   }, []);
-  const [userPhoneNum, setUserPhoneNum] = useState({
-    phoneNumber: "",
-  });
 
+  const [userInfo, setUserInfo] = useRecoilState(registerState);
+  const checkIfPhoneNumIsNull = () => {
+    if (userInfo.phoneNumber != "") {
+      router.push("/register/info");
+    } else {
+      alert("Check korn i sus");
+    }
+  };
   return (
     <Fragment>
       <Box className={classes.container}>
@@ -33,11 +40,11 @@ const RegisterPage = () => {
               placeholder="Phone Number"
               variant="outlined"
               sx={{ borderRadius: "10px" }}
-              value={userPhoneNum.phoneNumber}
+              value={userInfo.phoneNumber}
               fullWidth
               onChange={(e) => {
-                setUserPhoneNum({
-                  ...userPhoneNum,
+                setUserInfo({
+                  ...userInfo,
                   phoneNumber: e.target.value,
                 });
               }}
@@ -55,9 +62,7 @@ const RegisterPage = () => {
               title="Sign Up"
               width="500px"
               height="55px"
-              onClick={() => {
-                router.push("/register/info");
-              }}
+              onClick={checkIfPhoneNumIsNull}
             ></CButton>
           </Box>
           <Box className={classes.divider}>OR</Box>
