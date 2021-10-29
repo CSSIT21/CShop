@@ -8,9 +8,8 @@ import SuggestionSection from "../components/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
 
 const HomePage = () => {
-  console.log(fakeProducts);
   const [products, setProducts] = useState(fakeProducts);
-  
+
   const onFavourite = (index) => {
     setProducts((products) => {
       const target = products[index];

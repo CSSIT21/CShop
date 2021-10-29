@@ -47,7 +47,7 @@ const SuggestionSection = ({ suggestItems, onFavourite }) => {
 			</Grid>
 
 			<Box display="flex" justifyContent="center">
-				<CButton title="Show more products" height={40} />
+				<CButton title="Show more products" height='40px' />
 			</Box>
 		</Box>
 	);

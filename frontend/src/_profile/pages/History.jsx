@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import TopProfile from "../components/TopProfile";
-import Search from "~/common/components/NavBarBase/Search";
+import Search from "~/common/components/NavbarBase/ContentBase/Search";
 import orders from "../components/HistoryBase/fakeOrder";
 
 const HistoryPage = () => {

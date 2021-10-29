@@ -9,20 +9,17 @@ import fakeProducts from "~/common/faker/fakeProducts";
 
 const useStyles = makeStyles({
 
-    suggestionpageWrapper: {
+    suggestionWrapper: {
         width: '100%',
         minHeight: '100vh',
-
         display: 'flex',
         justifyContent: 'center',
-        
         backgroundColor: '#FDF4DD',
     },
-    
+
     suggestionContent: {
         maxWidth: '1200px',
-        padding:'50px 0',
-
+        padding: '50px 0',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -30,13 +27,13 @@ const useStyles = makeStyles({
     },
 
     suggestionHeader: {
-        display:'flex',
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
     },
 });
 
-const SugggestionPage = props => {
+const SuggestionPage = props => {
     const classes = useStyles();
 
     const [page, setPage] = useState(1);
@@ -56,30 +53,30 @@ const SugggestionPage = props => {
     };
 
     return (
-        <Box className={classes.suggestionpageWrapper}>
-            <Box className={ classes.suggestionContent}>
-            <Typography component="span"  
-                fontSize='30px'
-                fontWeight={600}
-                mb={6}
-                className={classes.suggestionHeader}
-            >
-                <HighlightIcon sx={{marginRight: '10px', color: "#FD6637"}} />
-                Suggestions
-            </Typography>
+        <Box className={classes.suggestionWrapper}>
+            <Box className={classes.suggestionContent}>
+                <Typography component="span"
+                    fontSize='30px'
+                    fontWeight={600}
+                    mb={6}
+                    className={classes.suggestionHeader}
+                >
+                    <HighlightIcon sx={{ marginRight: '10px', color: "#FD6637" }} />
+                    Suggestions
+                </Typography>
 
-             <Grid container spacing={2} mb={5}>
-				<For each={products.slice(0, )} children={(product) => (
-					<Grid item xs={6} md={3} mb={3} key={product.id}>
-						<ProductCard product={product} onFavourite={onFavourite} to="/product/1" key={product.id} addToCart />
-					</Grid>
-				)} />
-			</Grid>
+                <Grid container spacing={2} mb={5}>
+                    <For each={products.slice(0,)} children={(product) => (
+                        <Grid item xs={6} md={3} mb={3} key={product.id}>
+                            <ProductCard product={product} onFavourite={onFavourite} to="/product/1" key={product.id} addToCart />
+                        </Grid>
+                    )} />
+                </Grid>
 
-            <Pagination count={10} shape="rounded" color="primary" page={page} onChange={onPageChange} />
+                <Pagination count={10} shape="rounded" color="primary" page={page} onChange={onPageChange} />
             </Box>
         </Box>
     )
 };
 
-export default SugggestionPage;
+export default SuggestionPage;
