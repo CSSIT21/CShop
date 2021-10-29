@@ -6,6 +6,10 @@ const viteConfig = defineConfig({
     plugins: [
         reactJsx(),
     ],
+    build: {
+		outDir: 'build',
+		chunkSizeWarningLimit: '2M',
+	},
     esbuild: {
         jsxInject: "import { createElement as h } from 'react'",
         jsxFactory: 'h'
