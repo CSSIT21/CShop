@@ -130,7 +130,7 @@ const ProductRating = (props) => {
     setOpen(!open);
   };
 
-  const handleSeeMore = () => {
+  const d = () => {
     setCommentOffset(commentOffset + 5);
   };
 
@@ -158,7 +158,7 @@ const ProductRating = (props) => {
           }}
         >
           <Box className={classes.head}>
-            <Typography sx={{ fontWeight: 600, fontSize: "30px" }}>
+            <Typography fontWeight={600} fontSize= "30px" >
               Product Rating
             </Typography>
             <RatingStars
@@ -196,7 +196,7 @@ const ProductRating = (props) => {
                 ) : (
                   <ShowMoreButton
                     title="Show more comments"
-                    onClick={handleSeeMore}
+                    onClick={d}
                   ></ShowMoreButton>
                 )}
               </Box>
@@ -234,6 +234,7 @@ const useStyles = makeStyles({
 const iconStyle = {
   width: "38px",
   height: "38px",
+  
   color: "#FD6637",
 };
 const paddingStar = {

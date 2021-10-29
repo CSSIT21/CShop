@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@mui/styles";
-import pic1 from "../../common/assets/images/iphone-black.png";
 import Typography from "@mui/material/Typography";
 import Mainpic from "../components/Image";
 import AddToCartButton from "../../common/components/CButton";
@@ -10,34 +8,25 @@ import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
 const ProductDetails = (props) => {
-  const ProductName = "Product Name";
-  const ProductDetail = "Product Detail";
-  const Price = "500 B.";
-  const Stock = "25";
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [show, setShow] = useState(false);
-
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-    setTimeout(() => {
-      setShow(true);
-    }, 3000);
-  };
+  const productName = "Product Name";
+  const productDetail = "Product Detail";
+  const price = "500";
+  const stock = "20";
 
   const [open, setOpen] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
   };
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+  const handleClickOpen = () => {
+      setOpen(true);
+  };
 
   return (
     <Box
       sx={{
         display: "flex",
+        marginTop: "50px"
       }}
     >
       {/*displayImage*/}
@@ -49,7 +38,7 @@ const ProductDetails = (props) => {
         <Typography
           sx={{ fontWeight: "500", fontSize: "36px", lineHeight: "54px" }}
         >
-          {ProductName}
+          {productName}
         </Typography>
         <Typography
           sx={{
@@ -58,7 +47,7 @@ const ProductDetails = (props) => {
             color: "#A0A3BD",
           }}
         >
-          {ProductDetail}
+          {productDetail}
         </Typography>
         <Typography
           sx={{
@@ -68,19 +57,19 @@ const ProductDetails = (props) => {
             marginTop: "20px",
           }}
         >
-          {Price}
+          {price} B.
         </Typography>
         {/*Button*/}
         <Box sx={{ display: "flex", alignItems: "center", marginTop: "70px" }}>
-          <Amount />
+          <Amount stock={stock} />
           <Box sx={{ marginLeft: "20px" }}>
             <AddToCartButton
               title="Add to cart"
               icon={<ShoppingCartOutlinedIcon />}
-              width="211px"
+              width="200px"
               height="56px"
               onClick={handleClickOpen}
-              style={{ marginLeft: "20px" }}
+              sx={{ marginLeft: "0px" }}
             />
             <ConfirmDialogs
               text="The item already added in the cart"
@@ -102,7 +91,7 @@ const ProductDetails = (props) => {
           <Typography
             sx={{ fontSize: "18px", marginLeft: "5px", color: "#A0A3BD" }}
           >
-            {Stock}
+            {stock}
           </Typography>
         </Box>
       </Box>
@@ -110,9 +99,6 @@ const ProductDetails = (props) => {
   );
 };
 
-var proImg = document.getElementById("photo");
-const changeImage1 = (event) => {
-  proImg = { pic1 };
-};
+
 
 export default ProductDetails;

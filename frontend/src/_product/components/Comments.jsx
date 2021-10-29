@@ -25,8 +25,8 @@ const Comments = ({ imageURL, username, rating, comment }) => {
           sx={{
             display: "flex",
             alignItems: "start",
-            justifyContent: "space-between",
             flexDirection: "column",
+            justifyContent: "space-between",
           }}
         >
           <Typography

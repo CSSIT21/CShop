@@ -8,6 +8,62 @@ import CustomDot from "../../common/components/CarouselBase/CustomDot";
 import ProductCard from "../../common/components/ProductCard";
 import CarouselButton from "../../common/components/CarouselButton";
 
+const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
+  const [products, setProducts] = useState(suggestionItems);
+  const [page, setPage] = useState(0);
+  
+	const classes = useStyles();
+	const productsPerRow = 4;
+	const totalPage = Math.ceil(products.length / productsPerRow);
+
+  return (
+    <Box className={classes.suggestionWrapper}>
+      <Box className={classes.suggestionContent}>
+        <Box className={classes.suggestionHeader}>
+          <Typography
+            component="span"
+            color="#000000"
+            fontSize="30px"
+            fontWeight={600}
+          >
+            Suggestions
+          </Typography>
+          <CarouselButton
+            pageHandle={setPage}
+            currentPage={page}
+            totalPage={totalPage}
+          />
+        </Box>
+
+        <Box className={classes.suggestionCarousel}>
+          <Carousel
+            items={products}
+            pageState={page}
+            setPageState={setPage}
+            itemsPerRow={4}
+          >
+            {(item, idx) => (
+              <ProductCard
+                product={item}
+                onFavourite={onFavourite}
+                to="/product/2"
+                key={item.id}
+              />
+            )}
+          </Carousel>
+        </Box>
+      </Box>
+
+      <CustomDot
+        width={50}
+        setPageState={setPage}
+        currentPage={page}
+        totalPage={totalPage}
+      />
+    </Box>
+  );
+};
+
 const useStyles = makeStyles({
   suggestionWrapper: {
     width: "100%",
@@ -37,60 +93,5 @@ const useStyles = makeStyles({
     width: "100%",
   },
 });
-
-const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
-  const [items, setItems] = useState(suggestionItems);
-  const [page, setPage] = useState(0);
-  const classes = useStyles();
-  const itemsPerRow = 4;
-  const totalPage = Math.ceil(items.length / itemsPerRow);
-
-  return (
-    <Box className={classes.suggestionWrapper}>
-      <Box className={classes.suggestionContent}>
-        <Box className={classes.suggestionHeader}>
-          <Typography
-            component="span"
-            color="#000000"
-            fontSize="30px"
-            fontWeight={600}
-          >
-            Suggestions
-          </Typography>
-          <CarouselButton
-            pageHandle={setPage}
-            currentPage={page}
-            totalPage={totalPage}
-          />
-        </Box>
-
-        <Box className={classes.suggestionCarousel}>
-          <Carousel
-            items={items}
-            pageState={page}
-            setPageState={setPage}
-            itemsPerRow={4}
-          >
-            {(item, idx) => (
-              <ProductCard
-                product={item}
-                onFavourite={onFavourite}
-                to="/product/1"
-                key={item.id}
-              />
-            )}
-          </Carousel>
-        </Box>
-      </Box>
-
-      <CustomDot
-        width={50}
-        setPageState={setPage}
-        currentPage={page}
-        totalPage={totalPage}
-      />
-    </Box>
-  );
-};
 
 export default ProductSuggestion;

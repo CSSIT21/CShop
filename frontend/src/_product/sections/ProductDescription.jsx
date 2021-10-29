@@ -46,8 +46,8 @@ const ProductDescription = (props) => {
               margin: "0px 0px 45px 0px",
             }}
           >
-            <Box className={classes.head}>
-              <Typography sx={{ fontWeight: 600, fontSize: "30px" }}>
+            <Box className={classes.title}>
+              <Typography fontWeight= {600} fontSize= "30px">
                 Product Detail
               </Typography>
             </Box>
@@ -72,7 +72,7 @@ const ProductDescription = (props) => {
   );
 };
 const useStyles = makeStyles({
-  head: {
+  title: {
     display: "flex",
     alignItems: "center",
     margin: 0,

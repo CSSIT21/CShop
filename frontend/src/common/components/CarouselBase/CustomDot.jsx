@@ -36,7 +36,7 @@ const CustomDot = ({
   };
 
   return (
-    <div style={wrapper}>
+    <div style={wrapper} >
       <div style={active}></div>    
       {
           [...Array(totalPage)].map((item, idx) => {
@@ -47,7 +47,7 @@ const CustomDot = ({
                 position: "absolute",
                 left: (100 * idx) / totalPage + "%",
             };
-              return <div style={stepper} onClick={() => setPageHandler(idx)}></div>
+            return <div key={ idx} style={stepper} onClick={() => setPageHandler(idx)}></div>
           })
       }
     </div>
