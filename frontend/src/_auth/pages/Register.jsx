@@ -26,7 +26,7 @@ const RegisterPage = () => {
     if (userInfo.phoneNumber != "") {
       router.push("/register/info");
     } else {
-      alert("Check korn i sus");
+      alert("Mueng forget phone number i sus");
     }
   };
   return (
