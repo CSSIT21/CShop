@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { For } from "../../utils";
+import { For } from "~/common//utils";
 import { useHistory } from "react-router-dom";
 
 const StyledMenu = styled((props) => (

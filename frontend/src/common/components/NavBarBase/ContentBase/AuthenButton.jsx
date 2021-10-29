@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import CButton from '../CButton';
+import CButton from '../../CButton';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -26,7 +26,7 @@ const style = {
 
 const AuthenButton = () => {
 	const classes = useStyles();
-	
+
 	return (
 		<Box className={classes.authenWrapper}>
 			<CButton
