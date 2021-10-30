@@ -77,7 +77,7 @@ const DropdownDetail = ({ children }) => {
     {
       title: "My Shop",
       icon: StoreIcon,
-      to: "/profile/shop",
+      to: "/shop/1",
     },
     {
       title: "Order History",

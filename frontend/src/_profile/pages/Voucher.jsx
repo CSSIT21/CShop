@@ -75,7 +75,6 @@ const useStyles = makeStyles({
   backgroud: {
     backgroundColor: "#FDF4DD",
     width: "100%",
-    padding: "10px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

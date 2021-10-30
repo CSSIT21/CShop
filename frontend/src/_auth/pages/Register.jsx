@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useLayoutEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -16,9 +16,9 @@ const RegisterPage = () => {
   //function
   const classes = useStyles();
   const router = useHistory();
-  useEffect(() => {
-    document.body.style.backgroundColor = "#f3f4f5";
-    return () => (document.body.style.backgroundColor = "white");
+  useLayoutEffect(() => {
+    document.body.classList.add('gray');
+    return () => document.body.classList.remove('gray');
   }, []);
 
   const [userInfo, setUserInfo] = useRecoilState(registerState);
@@ -26,7 +26,7 @@ const RegisterPage = () => {
     if (userInfo.phoneNumber != "") {
       router.push("/register/info");
     } else {
-      alert("Check korn i sus");
+      alert("Mueng forget phone number i sus");
     }
   };
   return (
