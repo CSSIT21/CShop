@@ -2,6 +2,8 @@ import {
   useRecoilState
 } from "recoil";
 
+export const EMPTY_ARR = [];
+export const EMPTY_OBJ = {};
 export const noot = <></>;
 export const noop = () => {};
 export const isObj = t => typeof t === 'object';

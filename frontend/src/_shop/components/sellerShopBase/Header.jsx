@@ -1,14 +1,14 @@
-import React from 'react';
-import HeaderLeft from './HeaderLeft';
-import HeaderRight from './HeaderRight';
+import React from "react";
+import HeaderLeft from "./HeaderLeft";
+import HeaderRight from "./HeaderRight";
 
 const Header = () => {
-    return (
-        <div>
-            <HeaderLeft />
-            <HeaderRight />
-        </div>
-    )
-}
+  return (
+    <>
+      <HeaderLeft />
+      <HeaderRight />
+    </>
+  );
+};
 
-export default Header
+export default Header;

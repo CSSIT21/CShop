@@ -15,6 +15,7 @@ background-size: 1800% 1800%;
     background-color: white;
     padding: 5px;
     border-radius: 5px;
+    margin: 0px 10px;
     transition: all .25s ease-in-out;
 }
 .error a:hover{

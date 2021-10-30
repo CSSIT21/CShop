@@ -1,8 +1,10 @@
 import { WarningRounded } from '@mui/icons-material';
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import './error.css';
 
 const ErrorPage = ({error, errorInfo}) => {
+    const router = useHistory();
     var urlRegex = /(https?:\/\/[^ ]*)/;
     var getLocation = function(href) {
         var l = document.createElement("a");
@@ -33,7 +35,8 @@ const ErrorPage = ({error, errorInfo}) => {
             {componentStack && <b>{componentStack.toString().split("\n").filter(e => e.trim() !== "").map(e => <li>{e}</li>)}</b> }
     
            </ul>
-            <a href="/">Go home now!</a>
+           <a onClick={e => {e.preventDefault(); router.goBack();}}>Go Back!</a>
+            <a onClick={e => {e.preventDefault(); router.push('/');}}>Go home now!</a>
         </div>
     )
 }

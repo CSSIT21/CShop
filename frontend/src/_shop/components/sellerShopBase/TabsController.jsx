@@ -9,6 +9,19 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Link } from "react-router-dom";
+import { styled } from '@mui/material/styles';
+
+
+const StyledTabs = styled((props) => (
+  <Tabs
+    {...props}
+  />
+))({
+  "& .MuiTabs-flexContainer":{
+    display: "flex",
+    justifyContent: "space-between"
+  }
+});
 
 const TabsController = ({ orders = [], ...rest }) => {
   const { id } = useParams();
@@ -29,14 +42,7 @@ const TabsController = ({ orders = [], ...rest }) => {
       cateId: 6,
       title: "Umbar",
     },
-    {
-      cateId: 5,
-      title: "Fan",
-    },
-    {
-      cateId: 6,
-      title: "Umbar",
-    },
+    
   ];
 
   const filterMenus = menus.slice(0, 2);
@@ -55,17 +61,15 @@ const TabsController = ({ orders = [], ...rest }) => {
   };
   return (
     <Box sx={{ width: "100%", marginBottom: "60px" }} {...rest}>
-      <Tabs
+      <StyledTabs
         value={value}
         onChange={handleChange}
-        className={classes.tabs}
-        centered
         sx={{
           bgcolor: "background.paper",
           width: "100%",
         }}
       >
-        <Link>
+        <Link to={`/shop/${id}`}>
           <Tab
             className={classes.tabStyle}
             sx={{
@@ -78,7 +82,7 @@ const TabsController = ({ orders = [], ...rest }) => {
             label="Store"
           />
         </Link>
-        <Link>
+        <Link to={`/shop/${id}/allproduct`}>
           <Tab
             className={classes.tabStyle}
             sx={{
@@ -92,9 +96,8 @@ const TabsController = ({ orders = [], ...rest }) => {
           />
         </Link>
         {filterMenus.map((menu, idx) => (
-          <Link to={`/shop/${id}/${menu.cateId}`}>
+          <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
             <Tab
-              key={idx}
               className={classes.tabStyle}
               sx={{
                 color: "#323232",
@@ -156,7 +159,7 @@ const TabsController = ({ orders = [], ...rest }) => {
             </Menu>
           </Box>
         )}
-      </Tabs>
+      </StyledTabs>
     </Box>
   );
 };
@@ -164,8 +167,4 @@ const TabsController = ({ orders = [], ...rest }) => {
 export default TabsController;
 
 const useStyles = makeStyles({
-  tabs: {
-    // width: "90%"
-  },
-  tabStyle: {},
 });

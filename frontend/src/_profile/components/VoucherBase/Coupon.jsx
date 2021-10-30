@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import CouponPic from "../../assets/voucher-pic.png";
+import CouponPic from '~/common/assets/images/voucher-pic.png';
 
 const Coupon = ({ coupon }) => {
   const classes = useStyles();
