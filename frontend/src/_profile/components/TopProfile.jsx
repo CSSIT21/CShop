@@ -38,7 +38,7 @@ const TopProfile = () => {
             height: "45px",
           }}
           onClick={() => {
-            router.push("*");
+            router.push("/shop/1");
           }}
         >
           <Typography sx={{ fontSize: "12px" }}>My Shop</Typography>

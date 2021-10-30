@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useLayoutEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -17,9 +17,9 @@ const LoginPage = () => {
   const password = useInput("");
   const form = useForm({ phone, password });
 
-  useEffect(() => {
-    document.body.style.backgroundColor = "#f3f4f5";
-    return () => (document.body.style.backgroundColor = "white");
+  useLayoutEffect(() => {
+    document.body.classList.add('gray');
+    return () => document.body.classList.remove('gray');
   }, []);
 
   return (

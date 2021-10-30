@@ -2,10 +2,10 @@ import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
-
+import { useHistory } from "react-router";
 const NotFoundPage = () => {
   const classes = useStyles();
-
+  const router = useHistory();
   return (
     <>
       <Box className={classes.container}>
@@ -23,7 +23,23 @@ const NotFoundPage = () => {
         >
           404 PAGE NOT FOUND
         </Typography>
-        <Link to="/">
+        <Box>
+        <Button
+            variant="contained"
+            sx={{
+              textTransform: "capitalize",
+              width: "200px",
+              height: "70px",
+              fontSize: "20px",
+              borderRadius: "12px",
+              marginRight:"30px",
+            }}
+            onClick={() => {
+                router.goBack();
+              }}
+          >
+            Back
+          </Button>
           <Button
             variant="contained"
             sx={{
@@ -33,10 +49,13 @@ const NotFoundPage = () => {
               fontSize: "20px",
               borderRadius: "12px",
             }}
+            onClick={() => {
+                router.push("/home");
+              }}
           >
             Back to Home Page
           </Button>
-        </Link>
+          </Box>
       </Box>
     </>
   );
