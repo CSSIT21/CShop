@@ -38,6 +38,12 @@ export const assign = (obj, props) => {
   return (obj);
 };
 
+export const define = (obj, props) => {
+  const newObj = {...obj};
+  for (let i in props) newObj[i] = props[i];
+  return (newObj);
+}
+
 
 export const interval = (start = 1, end = 0) => {
   return [...Array(max(start, end) - min(start, end) + 1)].map((_, idx) => min(start, end) + idx);
