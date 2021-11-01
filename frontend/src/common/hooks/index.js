@@ -3,8 +3,11 @@ import qs from "qs";
 import { useLocation } from "react-router";
 import SecureLS from 'secure-ls';
 import { isArray, isFunc, isNull, isObj } from '../utils';
-export let lsEffects = [];
-var persistStateIdx = 0;
+import persist from '../constants/persistent';
+let lsEffects = [];
+let lsKeys = [];
+
+let persistStateIdx = 0;
 
 export const ls = new SecureLS({
     encodingType: 'rc4',
@@ -58,7 +61,11 @@ export function useQuery() {
 export function useLsEffect(fn){
     return useEffect(() => {
         lsEffects.push(fn);
-        return () => lsEffects = [];
+        return () => { 
+            lsEffects = [];
+            lsKeys = [];
+            persistStateIdx = 0
+        };
     },[]);
 }
 
@@ -66,14 +73,18 @@ export function emitLsEffect(){
     return lsEffects.forEach(ev => ev());
 }
 
-export function usePersistState(init, key=null){
-    if(isNull(key)) key = `_persist_state_${persistStateIdx++}`;
-    let myInit = ls.get(key) ? JSON.parse(ls.get(key)) : (() => { ls.set(key,JSON.stringify(init)); return init})();
+export function usePersistState(init, mkey=null){
+    // const ls = useLocalStorage();
+    const key = isNull(mkey) ? `${persist.prefix}${persistStateIdx++}` : `${persist.prefix}${mkey}`;
+    let myInit = init;
     const [state, setState] = useState(myInit);
-    
+
     useLayoutEffect(() => {
-        persistStateIdx = 0;
-    });
+        if(!ls.get(key))
+            ls.set(key, myInit);
+        else setState(JSON.parse(ls.get(key)));
+        lsKeys.push(key);
+    },[]);
 
     useLsEffect(() => {
         var data = init;
@@ -84,10 +95,22 @@ export function usePersistState(init, key=null){
             setState(init);
         }
     });
+
     useEffect(() => {
+        /** reset hooks */
+        persistStateIdx = 0;
+        /** remove other persist */
+        for(let k of ls.getAllKeys()){
+            if(k.startsWith(`${persist.prefix}`)){
+                if(!lsKeys.includes(k)) ls.remove(k);
+            }
+        }
+        /** recieve  */
         ls.set(key, JSON.stringify(state));
         const handler = ev => {
+            try{
             setState(JSON.parse(ls.get(key)));
+            }catch(e){}
         };
         window.addEventListener('storage', handler ,false);
         return () => window.removeEventListener('storage', handler ,false);
