@@ -1,6 +1,6 @@
 import React from "react";
-import HeaderLeft from "./HeaderLeft";
-import HeaderRight from "./HeaderRight";
+import HeaderLeft from "./HeaderBase/HeaderLeft";
+import HeaderRight from "./HeaderBase/HeaderRight";
 
 const Header = () => {
   return (

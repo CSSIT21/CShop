@@ -2,8 +2,8 @@ import { Box } from "@mui/system";
 import React, {useState} from "react";
 import { noot } from "~/common/utils";
 import { makeStyles } from "@mui/styles";
-import CarouselBanner from "./CarouselBanner";
-import CarouselProduct from "./CarouselProduct";
+import CarouselBanner from "./ContentBase/CarouselBanner";
+import CarouselProduct from "./ContentBase/CarouselProduct";
 
 const Content = ({ section = {}}) => {
   const classes = useStyles();
