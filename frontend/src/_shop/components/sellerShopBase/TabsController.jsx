@@ -9,43 +9,19 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Link } from "react-router-dom";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-
-const StyledTabs = styled((props) => (
-  <Tabs
-    {...props}
-  />
-))({
-  "& .MuiTabs-flexContainer":{
+const StyledTabs = styled((props) => <Tabs {...props} />)({
+  "& .MuiTabs-flexContainer": {
     display: "flex",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 });
 
-const TabsController = ({ orders = [], ...rest }) => {
+const TabsController = ({ categories = [], ...rest }) => {
   const { id } = useParams();
-  const menus = [
-    {
-      cateId: 3,
-      title: "Games",
-    },
-    {
-      cateId: 4,
-      title: "PC",
-    },
-    {
-      cateId: 5,
-      title: "Fan",
-    },
-    {
-      cateId: 6,
-      title: "Umbar",
-    },
-    
-  ];
 
-  const filterMenus = menus.slice(0, 2);
+  const filterMenus = categories.slice(0, 2);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -72,26 +48,13 @@ const TabsController = ({ orders = [], ...rest }) => {
         <Link to={`/shop/${id}`}>
           <Tab
             className={classes.tabStyle}
-            sx={{
-              color: "#323232",
-              fontSize: "18px",
-              textTransform: "capitalize",
-              height: "75px",
-              width: "250px",
-            }}
             label="Store"
           />
         </Link>
         <Link to={`/shop/${id}/allproduct`}>
           <Tab
             className={classes.tabStyle}
-            sx={{
-              color: "#323232",
-              fontSize: "18px",
-              textTransform: "capitalize",
-              height: "75px",
-              width: "250px",
-            }}
+            
             label="All Products"
           />
         </Link>
@@ -99,18 +62,11 @@ const TabsController = ({ orders = [], ...rest }) => {
           <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
             <Tab
               className={classes.tabStyle}
-              sx={{
-                color: "#323232",
-                fontSize: "18px",
-                textTransform: "capitalize",
-                height: "75px",
-                width: "250px",
-              }}
               label={menu.title}
             />
           </Link>
         ))}
-        {menus.length > 2 && (
+        {categories.length > 2 && (
           <Box>
             <Button
               id="demo-positioned-button"
@@ -144,7 +100,7 @@ const TabsController = ({ orders = [], ...rest }) => {
               }}
               sx={{ color: "black" }}
             >
-              {menus.slice(3, menus.length).map((menu, idx) => {
+              {categories.slice(3, categories.length).map((menu, idx) => {
                 return (
                   <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
                     <MenuItem
@@ -167,4 +123,11 @@ const TabsController = ({ orders = [], ...rest }) => {
 export default TabsController;
 
 const useStyles = makeStyles({
+  tabStyle: {
+    color: "#323232 !important",
+    fontSize: "18px !important",
+    textTransform: "capitalize !important",
+    height: "75px !important",
+    width: "250px !important"
+  },
 });

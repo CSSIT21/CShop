@@ -50,7 +50,7 @@ const Coupon = ({
 const useStyles = makeStyles({
   couponbox: {
     margin: '0px auto',
-    width: "600px",
+    maxWidth: "80%",
     padding: "15px",
 
     display: "flex",

@@ -9,6 +9,7 @@ import CategoryPic1 from "~/common/assets/images/category-1.png";
 import CategoryPic2 from "~/common/assets/images/category-2.png";
 import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
+import Filter from "../components/sellerShopBase/Filter";
 
 const sections = [
   {
@@ -79,6 +80,24 @@ const sections = [
   
 ];
 
+const menus = [
+  {
+    cateId: 3,
+    title: "Games",
+  },
+  {
+    cateId: 4,
+    title: "PC",
+  },
+  {
+    cateId: 5,
+    title: "Fan",
+  },
+  {
+    cateId: 6,
+    title: "Umbar",
+  },
+]
 
 const SellerShop = () => {
   const classes = useStyles();
@@ -88,10 +107,10 @@ const SellerShop = () => {
       <Box className={classes.body}>
         <Box className={classes.container}>
           <Box className={classes.containerWhite}>
-            <Box sx={{ marginBottom: "30px" }}>
+            <Box sx={{ marginBottom: "30px", padding: "50px 100px" }}>
               <Header />
             </Box>
-            <TabsController />
+            <TabsController categories={menus} />
             <Voucher />
           </Box>
           <Box className={classes.categoryBox}>
@@ -101,7 +120,9 @@ const SellerShop = () => {
               })}
             </Box>
           </Box>
-          <Box className={classes.containerWhite}></Box>
+          <Box className={classes.containerWhite}>
+              <Filter categories={menus} />
+          </Box>
         </Box>
       </Box>
     </>
