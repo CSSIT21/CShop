@@ -107,7 +107,7 @@ const SellerShop = () => {
       <Box className={classes.body}>
         <Box className={classes.container}>
           <Box className={classes.containerWhite}>
-            <Box sx={{ marginBottom: "30px" }}>
+            <Box sx={{ marginBottom: "30px", padding: "50px 100px" }}>
               <Header />
             </Box>
             <TabsController categories={menus} />
