@@ -21,6 +21,7 @@ export const int = t => parseInt(t);
 export const str = t => String(t);
 export const bool = t => !!t;
 export const float = t => parseFloat(t);
+
 export const {
   min,
   max,
@@ -33,14 +34,18 @@ export const {
 
 export const shuffle = arr => arr.sort((a, b) => 0.5 - Math.random());
 
-export const assign = (obj, props) => {
-  for (let i in props) obj[i] = props[i];
+export const assign = (obj, ...sources) => {
+  for(let props of sources){
+    for (let i in props) obj[i] = props[i];
+  }
   return (obj);
 };
 
-export const define = (obj, props) => {
+export const define = (obj, ...sources) => {
   const newObj = {...obj};
-  for (let i in props) newObj[i] = props[i];
+  for(let props of sources){
+    for (let i in props) newObj[i] = props[i];
+  }
   return (newObj);
 }
 
@@ -53,6 +58,10 @@ export function For(props) {
   const each = isArray(props.each) ? props.each : interval(int(props.each));
   const cb = isFunc(props.children) ? props.children : () => props.children;
   return <>{each.map(cb)}</>;
+}
+
+export function Json({children}){
+  return JSON.stringify(children);
 }
 
 export function debounce(func, wait, immediate) {
