@@ -12,8 +12,12 @@ const ErrorPage = ({error, errorInfo}) => {
         return l;
     };
     function getUrl(errorMessage){
-        var url = errorMessage.match(urlRegex)[1];
-        return '~'+ getLocation(url.split('?')[0]).pathname;
+        try{
+            var url = errorMessage.match(urlRegex)[1];
+            return '~'+ getLocation(url.split('?')[0]).pathname;
+        }catch(e){
+            return "แต่กูก็ไม่รู้เหมือนกันว่าพังตรงไหน";
+        }
     }
 
     const componentStack = errorInfo?.componentStack;
