@@ -2,14 +2,13 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Typography, Button } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Box, margin } from "@mui/system";
+import { Box } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 import AvatarImage from "~/common/assets/images/profileshop.png";
 
 const useStyles = makeStyles({
   HeaderLeftShop: {
     display: "flex",
-    alignItems: "center",
     height: "220px",
     width: "50%",
   },
