@@ -67,7 +67,7 @@ const sections = [
       ],
     },
   },
-  
+
   {
     id: "4",
     page: {
@@ -77,7 +77,6 @@ const sections = [
       content: fakeProducts,
     },
   },
-  
 ];
 
 const menus = [
@@ -97,7 +96,7 @@ const menus = [
     cateId: 6,
     title: "Umbar",
   },
-]
+];
 
 const SellerShop = () => {
   const classes = useStyles();
@@ -106,10 +105,22 @@ const SellerShop = () => {
     <>
       <Box className={classes.body}>
         <Box className={classes.container}>
+          <Box
+            sx={{
+              marginBottom: "30px",
+              padding: "25px 75px",
+            }}
+          >
+            <Header />
+          </Box>
+          <Box
+            sx={{
+              width: "100vw",
+              height: "1px",
+              backgroundColor: "#D9DBE9",
+            }}
+          />
           <Box className={classes.containerWhite}>
-            <Box sx={{ marginBottom: "30px", padding: "50px 100px" }}>
-              <Header />
-            </Box>
             <TabsController categories={menus} />
             <Voucher />
           </Box>
@@ -121,7 +132,7 @@ const SellerShop = () => {
             </Box>
           </Box>
           <Box className={classes.containerWhite}>
-              <Filter categories={menus} />
+            <Filter categories={menus} />
           </Box>
         </Box>
       </Box>
