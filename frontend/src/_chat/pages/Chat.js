@@ -28,6 +28,8 @@ const ChatPage = props => {
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
 
+    const classes = useStyles();
+
     return <Box className={classes.chatLayout}>
         <ChatList />
         <ChatFeed />
