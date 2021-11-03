@@ -27,11 +27,13 @@ const useStyles = makeStyles({
   },
   chatFeed: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "flex-start",
     width: "inherit",
     height: "80vh",
     background: "#FDF4DD",
+    overflowX: "hidden",
+    overflowY: "scroll",
   },
   chatFeedButtom: {
     display: "flex",

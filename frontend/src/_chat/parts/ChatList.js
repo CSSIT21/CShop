@@ -24,10 +24,12 @@ const useStyles = makeStyles({
   },
   chatList: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "flex-start",
     width: "inherit",
     height: "80vh",
+    overflowX: "hidden",
+    overflowY: "scroll",
   },
   chatListButtom: {
     display: "flex",
