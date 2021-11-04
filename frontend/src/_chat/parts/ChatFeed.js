@@ -46,11 +46,26 @@ const useStyles = makeStyles({
 
 const ChatFeed = (props) => {
   const classes = useStyles();
+  const contentType= ['notification', 'text', 'image', 'video']
+
   return (
     <Box className={classes.chatFeedContainer}>
       {/* ChatFeed on the right shows all messages between two users */}
       <Box className={classes.chatFeedTitle}></Box>
-      <Box className={classes.chatFeed}></Box>
+      <Box className={classes.chatFeed}>
+        {
+          props.messages.map(m => 
+            <ChatBubble
+              variant={m.sender === props.user_id ? 'right' : 'left'}
+              read={m.seen}
+              time={m.message_datetime}
+              contentType={contentType[m.content_type]}
+              content={m.content}
+              contentExtra={m.content_extra}
+            />
+          )
+        }
+      </Box>
       <Box className={classes.chatFeedButtom}></Box>
     </Box>
   );
