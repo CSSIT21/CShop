@@ -1,1 +1,3 @@
-export class CreatePaymentDto {}
+export class CreatePaymentDto {
+    qrRawData: string
+}
