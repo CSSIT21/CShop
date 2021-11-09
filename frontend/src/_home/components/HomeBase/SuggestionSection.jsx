@@ -7,6 +7,7 @@ import GridCard from "../commonBase/GridCard";
 
 const useStyles = makeStyles({
 	suggestionWrapper: {
+		width: '100%',
 		backgroundColor: '#F4F5F6',
 		padding: '50px 245px',
 	},

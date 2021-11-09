@@ -15,8 +15,8 @@ const useStyles = makeStyles({
 	},
 
 	categoriesItem: {
-		width: '140px',
-		padding: '20px 5px',
+		width: "100%",
+		padding: '20px 10px',
 
 		backgroundColor: '#EFEFF1',
 		borderRadius: '20px',

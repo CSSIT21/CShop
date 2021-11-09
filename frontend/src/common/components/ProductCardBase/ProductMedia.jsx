@@ -9,8 +9,7 @@ const ProductMedia = ({ image, title }) => {
 
 			sx={{
 				margin: "0 auto",
-				maxWidth: "205px",
-				height: "180px",
+				aspectRatio: '1',
 				borderRadius: "15px",
 			}}
 		/>

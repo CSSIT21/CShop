@@ -14,8 +14,7 @@ const useStyles = makeStyles({
 	},
 
 	bestsellerContent: {
-		maxWidth: '1000px',
-		margin: '0 auto',
+		margin: '0 160px',
 		marginBottom: '40px',
 		padding: '40px 80px',
 
