@@ -9,6 +9,7 @@ import CategoryPic1 from "~/common/assets/images/category-1.png";
 import CategoryPic2 from "~/common/assets/images/category-2.png";
 import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
+import Filter from "../components/sellerShopBase/Filter";
 
 const sections = [
   {
@@ -66,7 +67,7 @@ const sections = [
       ],
     },
   },
-  
+
   {
     id: "4",
     page: {
@@ -76,9 +77,26 @@ const sections = [
       content: fakeProducts,
     },
   },
-  
 ];
 
+const menus = [
+  {
+    cateId: 3,
+    title: "Games",
+  },
+  {
+    cateId: 4,
+    title: "PC",
+  },
+  {
+    cateId: 5,
+    title: "Fan",
+  },
+  {
+    cateId: 6,
+    title: "Umbar",
+  },
+];
 
 const SellerShop = () => {
   const classes = useStyles();
@@ -87,11 +105,23 @@ const SellerShop = () => {
     <>
       <Box className={classes.body}>
         <Box className={classes.container}>
+          <Box
+            sx={{
+              marginBottom: "30px",
+              padding: "25px 75px",
+            }}
+          >
+            <Header />
+          </Box>
+          <Box
+            sx={{
+              width: "100vw",
+              height: "1px",
+              backgroundColor: "#D9DBE9",
+            }}
+          />
           <Box className={classes.containerWhite}>
-            <Box sx={{ marginBottom: "30px" }}>
-              <Header />
-            </Box>
-            <TabsController />
+            <TabsController categories={menus} />
             <Voucher />
           </Box>
           <Box className={classes.categoryBox}>
@@ -101,7 +131,9 @@ const SellerShop = () => {
               })}
             </Box>
           </Box>
-          <Box className={classes.containerWhite}></Box>
+          <Box className={classes.containerWhite}>
+            <Filter categories={menus} />
+          </Box>
         </Box>
       </Box>
     </>
