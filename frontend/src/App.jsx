@@ -38,6 +38,8 @@ import HistoryPage from "./_profile/pages/History";
 import VoucherPage from "./_profile/pages/Voucher";
 import AddressPage from "./_profile/pages/Address";
 import LoginPage from "./_auth/pages/Login";
+import SellerShop from "./_shop/pages/SellerShop";
+import ShopCategory from "./_shop/pages/ShopCategory";
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -60,10 +62,13 @@ import NotFoundPage from "./common/pages/404";
 // const AddressPage =  lazy(() => import("./_profile/pages/Address"));
 // const LoginPage =  lazy(() => import("./_auth/pages/Login"));
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
+import Catch from './common/utils/catch';
+import ErrorPage from "./common/utils/error";
 
 function App() {
   return (
     <div className="App">
+      <Catch onError={() => {}} fallback={({state}) => <ErrorPage error={state.error} errorInfo={state.errorInfo}/>}>
       <RecoilRoot>
         <ThemeContextProvider>
           <Router>
@@ -184,6 +189,20 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
+              <Route path="/shop/:id/:cateId" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <ShopCategory />
+                  </Suspense>
+                </MainLayout>
+              </Route>
+              <Route path="/shop/:id" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <SellerShop />
+                  </Suspense>
+                </MainLayout>
+              </Route>
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
                   <NotFoundPage />
@@ -193,6 +212,7 @@ function App() {
           </Router>
         </ThemeContextProvider>
       </RecoilRoot>
+      </Catch>
     </div>
   );
 }
