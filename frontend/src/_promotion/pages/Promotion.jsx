@@ -7,7 +7,7 @@ const Promotion = () => {
     const classes = useStyles();
   return (
     <>
-
+    <div></div>
     <div class="main-content">
         <div class="slide">
             <figure>
