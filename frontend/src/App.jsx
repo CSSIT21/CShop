@@ -40,6 +40,14 @@ import AddressPage from "./_profile/pages/Address";
 import LoginPage from "./_auth/pages/Login";
 import SellerShop from "./_shop/pages/SellerShop";
 import ShopCategory from "./_shop/pages/ShopCategory";
+import SellerDashboard from "./_seller/pages/SellerDashboard";
+import SellerStock from "./_seller/pages/SellerStock";
+import SellerFlashsell from "./_seller/pages/SellerFlashsell";
+import SellerStockLog from "./_seller/pages/SellerStockLog";
+import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
+import SellerRefundLog from "./_seller/pages/SellerRefundLog";
+import SellerOrderLog from "./_seller/pages/SellerOrderLog";
+
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -189,6 +197,7 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
+
               <Route path="/shop/:id/:cateId" exact>
                 <MainLayout>
                   <Suspense fallback={<SkeletonLoading />}>
@@ -203,6 +212,38 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
+              {/* <Route path="/seller/:id?" exact>
+                <Redirect to="stock"/>
+              </Route> */}
+              <Route path="/seller/:id/:path?" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <Route path="/seller/:id/dashboard">
+                      <SellerDashboard />
+                    </Route>
+                    <Route path="/seller/:id/stock">
+                      <SellerStock />
+                    </Route>
+                    <Route path="/seller/:id/flashsell">
+                      <SellerFlashsell />
+                    </Route>
+                    <Route path="/seller/:id/orderlog">
+                      <SellerOrderLog />
+                    </Route>
+                    <Route path="/seller/:id/refundlog">
+                      <SellerRefundLog />
+                    </Route>
+                    <Route path="/seller/:id/stocklog">
+                      <SellerStockLog />
+                    </Route>
+                    <Route path="/seller/:id/discountlog">
+                      <SellerDiscountLog />
+                    </Route>
+                  </Suspense>
+                </MainLayout>
+              </Route>
+
+
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
                   <NotFoundPage />
