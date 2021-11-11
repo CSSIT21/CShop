@@ -77,6 +77,13 @@ const sections = [
       content: fakeProducts,
     },
   },
+  {
+    id: "5",
+    page: {
+      type: 4,
+      content: 'https://www.youtube.com/embed/F5tSoaJ93ac'
+    },
+  },
 ];
 
 const menus = [

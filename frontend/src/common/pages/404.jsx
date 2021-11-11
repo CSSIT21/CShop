@@ -10,7 +10,7 @@ const NotFoundPage = () => {
     <>
       <Box className={classes.container}>
         <img
-          src="https://cdn.discordapp.com/attachments/681542997946794044/888113518182805614/unknown.png"
+          // src="https://cdn.discordapp.com/attachments/681542997946794044/888113518182805614/unknown.png"
           alt="Image"
           className={classes.pic}
         />
