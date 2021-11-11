@@ -29,7 +29,7 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 
 	const [products, setProducts] = useState(bestsellerItems);
 	const [page, setPage] = useState(0);
-	const productsPerRow = 4;
+	const productsPerRow = 5;
 	const totalPage = Math.ceil(products.length / productsPerRow);
 
 	return (
@@ -48,7 +48,7 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 						items={products}
 						pageState={page}
 						setPageState={setPage}
-						itemsPerRow={4}
+						itemsPerRow={productsPerRow}
 					>
 						{(product, idx) => (
 							<ProductCard
