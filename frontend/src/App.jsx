@@ -214,7 +214,11 @@ function App() {
                 </MainLayout>
               </Route>
               <Route exact path="/promotion">
-                      <Promotion/>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <Promotion/>
+                  </Suspense>
+                </MainLayout>
               </Route>
               {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
