@@ -11,8 +11,8 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import { For } from "~/common//utils";
 import { useHistory } from "react-router-dom";
-import StyledMenu from "../../StyledMenu";
 
+import StyledMenu from "../../StyledMenu";
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);

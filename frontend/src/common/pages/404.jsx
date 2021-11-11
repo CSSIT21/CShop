@@ -4,7 +4,6 @@ import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { nanoid } from 'nanoid';
-
 const NotFoundPage = () => {
   const classes = useStyles();
   const router = useHistory();
@@ -12,6 +11,7 @@ const NotFoundPage = () => {
     <>
       <Box className={classes.container}>
         <img
+          src="https://cdn.discordapp.com/attachments/681542997946794044/888113518182805614/unknown.png"
           src={`https://avatars.dicebear.com/api/micah/${nanoid()}.svg`}
           alt="Image"
           className={classes.pic}
