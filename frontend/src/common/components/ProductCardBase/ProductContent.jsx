@@ -1,5 +1,5 @@
-import { 
-  FavoriteRounded as FavoriteRoundedIcon, 
+import {
+  FavoriteRounded as FavoriteRoundedIcon,
   FavoriteBorderRounded as FavoriteBorderRoundedIcon,
   ShoppingCart as ShoppingCartIcon
 } from "@mui/icons-material";
@@ -68,11 +68,10 @@ const ProductContent = ({
         </IconButton>
 
       </CardActions>
-      
-      {addToCart && 
-        <CButton 
-          icon={<ShoppingCartIcon sx={{fontSize: '18px'}} />} 
-          title="Add to cart" 
+      {addToCart &&
+        <CButton
+          icon={<ShoppingCartIcon sx={{ fontSize: '18px' }} />}
+          title="Add to cart"
           fontSize='14px'
           width="100%"
           height='38px'

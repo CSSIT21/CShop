@@ -5,7 +5,7 @@ import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
 
 const cardStyle = {
-  width: 200,
+  width: '100%',
   padding: '8px',
   margin: '0 auto',
 
@@ -26,7 +26,7 @@ const productTemplate = {
 };
 
 const ProductCard = (props) => {
-  const { product=productTemplate, to="/product/1", onFavourite = noop, status=undefined, addToCart = false } = props;
+  const { product = productTemplate, to = "/product/1", onFavourite = noop, status = undefined, addToCart = false } = props;
   return (
     <Link to={to}>
       <Card
@@ -34,11 +34,11 @@ const ProductCard = (props) => {
         sx={cardStyle}
       >
         <ProductMedia image={product.image} title={product.title} />
-        <ProductContent 
-          product={product} 
-          status={status} 
-          statusProps={props} 
-          addToCart={addToCart} 
+        <ProductContent
+          product={product}
+          status={status}
+          statusProps={props}
+          addToCart={addToCart}
           onFavourite={onFavourite}
         />
       </Card>

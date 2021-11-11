@@ -29,9 +29,9 @@ const useStyles = makeStyles({
 		width: '100%',
 		paddingRight: 10,
 		color: 'black',
-    textTransform: "capitalize",
-    fontWeight: 500,
-  },
+		textTransform: "capitalize",
+		fontWeight: 500,
+	},
 });
 
 export default AccountDropdown;
