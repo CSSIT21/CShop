@@ -1,5 +1,6 @@
 import { Injectable, Req, Res } from '@nestjs/common';
 import Axios from 'axios'
+import { stringify } from 'querystring';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 
 @Injectable()
@@ -29,8 +30,7 @@ export class PaymentService {
       });
   }
 
-    getQR(@Req() req, @Res() res): any{
-        let str: CreatePaymentDto;
+  async getQR(): Promise<string>{
         const data = {
             'qrType': 'PP',
             'ppType': 'BILLERID',
@@ -39,7 +39,8 @@ export class PaymentService {
             'ref1': '000',
             'ref3': process.env.ref3
         };
-        Axios({
+    let str: string;
+       await Axios({
             method: 'post',
             url: 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create',
             headers: {
@@ -47,19 +48,18 @@ export class PaymentService {
                 'Accept-Language': 'EN',
                 'Authorization': process.env.authToken,
                 'RequestUId': process.env.uuid,
-                'ResourceOwnerId': process.env.uuid,
+                'ResourceOwnerId': process.env.API_Key,
             },
             data: JSON.stringify(data),
         })
         .then((response) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            str = response.data.data.qrRawData;
-            res.send(str.qrRawData);
-            console.log(str.qrRawData);
+          str = response.data.data.qrRawData;
+          console.log(str);
       })
       .catch((error) => {
         console.error(error);
       });
+    console.log(str);
+      return str;
     }
-
 }
