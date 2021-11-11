@@ -36,7 +36,7 @@ const ProductContent = ({
   product,
   status,
   onFavourite,
-  statusProps = {},
+  statusProps={},
   addToCart
 }) => {
   return (
@@ -50,7 +50,7 @@ const ProductContent = ({
       <CardActions sx={actionStyle}>
         {
           (!isUndef(status)) ? <Typography variant="caption" fontSize=".68rem" color="#A0A3BD">
-            {product.status}
+          {product.status}
           </Typography> : (isFunc(status) ? status(statusProps) : <>{status}</>)
         }
 
@@ -68,7 +68,6 @@ const ProductContent = ({
         </IconButton>
 
       </CardActions>
-
       {addToCart &&
         <CButton
           icon={<ShoppingCartIcon sx={{ fontSize: '18px' }} />}

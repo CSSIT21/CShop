@@ -47,6 +47,7 @@ import SellerStockLog from "./_seller/pages/SellerStockLog";
 import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
+import Promotion from "./_promotion/pages/Promotion";
 
 import NotFoundPage from "./common/pages/404";
 
@@ -72,6 +73,7 @@ import NotFoundPage from "./common/pages/404";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
+
 
 function App() {
   return (
@@ -197,7 +199,6 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
-
               <Route path="/shop/:id/:cateId" exact>
                 <MainLayout>
                   <Suspense fallback={<SkeletonLoading />}>
@@ -211,6 +212,9 @@ function App() {
                     <SellerShop />
                   </Suspense>
                 </MainLayout>
+              </Route>
+              <Route exact path="/promotion">
+                      <Promotion/>
               </Route>
               {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
@@ -242,8 +246,6 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
-
-
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
                   <NotFoundPage />
