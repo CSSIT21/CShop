@@ -28,11 +28,14 @@ const ChatPage = props => {
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
     const [currentChatUserId, setCurrentChatUserId] = useState(4)
+    function currentChat(num){
+        setCurrentChatUserId(num)
+    }
 
     const classes = useStyles();
 
     return <Box className={classes.chatLayout}>
-        <ChatList />
+        <ChatList latest={latest} user_id={user_id} currentChatUserId={currentChatUserId} currentChat={currentChat}/>
         <ChatFeed messages={ChatService.messagesBetween(currentChatUserId)} user_id={user_id} />
     </Box>
 }

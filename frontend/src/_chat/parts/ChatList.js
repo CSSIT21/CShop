@@ -1,9 +1,10 @@
 import React from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
-
 import { AddChatModal, ChatBox } from "../components";
-import { Button } from "@mui/material";
+import { Avatar, Button, Card } from "@mui/material";
+
+import _ChatService from "../services/ChatService";
 
 const useStyles = makeStyles({
   chatListContainer: {
@@ -24,12 +25,14 @@ const useStyles = makeStyles({
   },
   chatList: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "flex-start",
     width: "inherit",
     height: "80vh",
     overflowX: "hidden",
     overflowY: "scroll",
+    flexWrap: "wrap",
+    alignContent: "flex-start",
   },
   chatListButtom: {
     display: "flex",
@@ -39,17 +42,51 @@ const useStyles = makeStyles({
     background: "#FDF4DD",
     height: "10vh",
   },
+  addNewChatButton: {
+    backgroundColor: "white",
+  },
 });
 
+
 const ChatList = (props) => {
+  const ChatService = new _ChatService(props.user_id);
+
   const classes = useStyles();
+
+  console.log(props.latest)
   return (
     <Box className={classes.chatListContainer}>
       {/* ChatList on the left lists all users that have a conversation */}
-      <Box className={classes.chatListTitle}></Box>
-      <Box className={classes.chatList}></Box>
+      <Box className={classes.chatListTitle} />
+      <Box className={classes.chatList}>
+        {props.latest.map((message) => (
+          <ChatBox
+            displayName={
+              message.sender === props.user_id
+                ? ChatService.userWithId(message.recipient).displayname
+                : ChatService.userWithId(message.sender).displayname
+            }
+            lastMessage={message.content}
+            pic={
+              message.sender === props.user_id
+                ? ChatService.userWithId(message.recipient).pic
+                : ChatService.userWithId(message.sender).pic
+            }
+            isFilled={props.currentChatUserId === message.sender || props.currentChatUserId === message.recipient}
+            currentChat={props.currentChat}
+            sender={(message.sender === props.user_id)?message.recipient:message.sender}
+            read={message.seen}
+          />
+        ))}
+      </Box>
       <Box className={classes.chatListButtom}>
-        <Button variant="contained">Add New Chat</Button>
+        <Button
+          variant="contained"
+          className={classes.addNewChatButton}
+          sx={{ backgroundColor: "#FD6637", width: "90%", height: "65%" }}
+        >
+          Add New Chat
+        </Button>
       </Box>
     </Box>
   );

@@ -1,9 +1,5 @@
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles({
-    container: {
-        // styles here
-    }
-});
+const useStyles = makeStyles();
 
 export default useStyles;
