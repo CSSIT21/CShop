@@ -64,6 +64,7 @@ import NotFoundPage from "./common/pages/404";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
+import Promotion from "./_promotion/Promotion";
 
 function App() {
   return (
@@ -203,6 +204,9 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
+              <Route exact path="/promotion">
+                      <Promotion />
+                    </Route>
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
                   <NotFoundPage />
