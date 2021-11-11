@@ -34,11 +34,6 @@ const NotFoundPage = () => {
               height: "70px",
               fontSize: "20px",
               borderRadius: "12px",
-              marginRight:"30px",
-            }}
-            onClick={() => {
-                router.goBack();
-              }}
               marginRight: "30px",
             }}
             onClick={() => {
