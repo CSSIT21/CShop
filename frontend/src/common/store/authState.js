@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { nanoid } from 'nanoid';
 
 const authState = atom({
   key: "authState",
@@ -11,7 +12,7 @@ const authState = atom({
       gender: "female",
       email: "test@gmail.com",
       password: "123456789",
-      url: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
+      url: `https://avatars.dicebear.com/api/micah/${nanoid()}.svg`,
       day: "31",
       month: "2",
       year: "2021",
