@@ -205,8 +205,8 @@ function App() {
                 </MainLayout>
               </Route>
               <Route exact path="/promotion">
-                      <Promotion />
-                    </Route>
+                      <Promotion/>
+              </Route>
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
                   <NotFoundPage />
