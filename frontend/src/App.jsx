@@ -64,7 +64,7 @@ import NotFoundPage from "./common/pages/404";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
-import Promotion from "./_promotion/Promotion";
+import Promotion from "./_promotion/pages/Promotion";
 
 function App() {
   return (
