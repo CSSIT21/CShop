@@ -2,14 +2,14 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-const SellerIncome = () => {
+const SellerRefundLog = () => {
     return (
         <Box>
             <Typography variant="h4" fontWeight="600">
-                Income
+                Products SellerRefundLog
             </Typography>
         </Box>
     );
 };
 
-export default SellerIncome;
+export default SellerRefundLog;
