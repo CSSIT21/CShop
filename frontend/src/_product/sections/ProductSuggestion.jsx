@@ -70,7 +70,7 @@ const useStyles = makeStyles({
     margin: "100px 0",
   },
   suggestionContent: {
-    maxWidth: "1000px",
+
     margin: "0 0 40 0",
     padding: "40px 100px 80px 100px",
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-import Mainpic from "../components/Image";
+import DisplayImage from "../components/Image";
 import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/AmountField";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -31,7 +31,7 @@ const ProductDetails = (props) => {
     >
       {/*displayImage*/}
       <Box>
-        <Mainpic />
+        <DisplayImage />
       </Box>
       {/*ProductDetail*/}
       <Box sx={{ margin: "0 90px" }}>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Sideimg from "./SideImg";
+import SideImg from "./SideImg";
 import {
   Fade
 } from "@mui/material";
@@ -10,9 +10,10 @@ import pic3 from "~/common/assets/images/iphone-pink.png";
 import pic4 from "~/common/assets/images/iphone-red.png";
 
 const Image = ({ img }) => {
-  const [main, setMain] = useState(pic1);
   const [fade, setFade] = React.useState(true);
-
+  // const [pictureList, setPictureList] = useState([{ title: "pic1", link: "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg" }, { title: "pic2", link: "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg" }, { title: "pic3", link: "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg" }, { title: "pic4", link: "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg" }]);
+  const [main, setMain] = useState(pic1);
+  // const [main, setMain] = useState(pictureList[0].link);
   const changeImage = (img) => {
     setFade(false);
     setTimeout(() => {
@@ -26,10 +27,11 @@ const Image = ({ img }) => {
       <Box sx={{
         height: "512px",
       }}>
-        <Sideimg img={pic1} onClick={() => changeImage(pic1)} />
-        <Sideimg img={pic2} onClick={() => changeImage(pic2)} />
-        <Sideimg img={pic3} onClick={() => changeImage(pic3)} />
-        <Sideimg img={pic4} onClick={() => changeImage(pic4)} />
+        {/* {pictureList.map((pic, key) => (<SideImg img={pic.link} onClick={() => changeImage(pic.link)} key={ key}></SideImg>))} */}
+        <SideImg img={pic1} onClick={() => changeImage(pic1)} />
+        <SideImg img={pic2} onClick={() => changeImage(pic2)} />
+        <SideImg img={pic3} onClick={() => changeImage(pic3)} />
+        <SideImg img={pic4} onClick={() => changeImage(pic4)} />
       </Box>
 
       {/*displayImage*/}
@@ -51,15 +53,17 @@ const Image = ({ img }) => {
             position: "relative",
           }}
         >
-        <Fade in={fade} >
+          <Fade in={fade} >
             <img src={main} style={imgStyle} alt="mainImage" />
           </Fade>
+        </Box>
+        </Box>
         </Box>
     );
 };
 
 const imgStyle = {
-  width: "100%",
+  width:"100%",
 
   position: "absolute",
   top: "50%",
