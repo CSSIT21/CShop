@@ -16,7 +16,11 @@ const useStyles = makeStyles({
     },
     statusText: {
         display: 'flex',
-        flexFlow: 'column wrap'
+        flexFlow: 'column wrap',
+        color: '#A0A3BD',
+        '& span': {
+            fontSize: 10
+        }
     }
 });
 

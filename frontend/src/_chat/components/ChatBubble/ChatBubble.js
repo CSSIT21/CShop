@@ -29,8 +29,8 @@ const ChatBubble = props => {
     return <Box className={[classes.chatBubble, classes[props.variant]].join(' ')}>
         {bubble}
         <Box className={classes.statusText}>
-            <Typography variant='caption'>{ props.read ? 'Read' : '' }</Typography>
-            <Typography variant='caption'>{ formatTime(props.time) }</Typography>
+            <Typography variant='caption' component='span'>{ props.read ? 'Read' : '' }</Typography>
+            <Typography variant='caption' component='span'>{ formatTime(props.time) }</Typography>
         </Box>
     </Box>;
 };
