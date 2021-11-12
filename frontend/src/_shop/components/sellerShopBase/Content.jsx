@@ -7,7 +7,7 @@ import CarouselProduct from "./ContentBase/CarouselProduct";
 
 const Content = ({ section = {} }) => {
   const classes = useStyles();
-  const [items, setitems] = useState(section.page);
+  const [items, setitems] = useState(section.page.content);
   const onFavourite = (index) => {
     setitems((items) => {
       const target = items[index];
@@ -18,25 +18,25 @@ const Content = ({ section = {} }) => {
   };
   const sections = [
     <img
-      src={items.content.img}
-      alt={items.type}
+      src={section.page.content.img}
+      alt={section.page.type}
       width="100%"
       className={classes.img}
     />,
-    <CarouselBanner bannerItems={items.content} />,
+    <CarouselBanner bannerItems={section.page.content} />,
     <CarouselProduct
-      filterName={items.filter}
-      items={items.content}
+      filterName={section.page.filter}
+      items={items}
       onFavourite={onFavourite}
     />,
     <iframe
       width="1120"
       height="630"
-      src={items.content}
+      src={section.page.content}
     ></iframe>,
   ];
   return (
-    <Box sx={{ width: "100%", display:"flex", justifyContent:"center" }}>{sections[items.type - 1] || noot}</Box>
+    <Box sx={{ width: "100%", display:"flex", justifyContent:"center" }}>{sections[section.page.type - 1] || noot}</Box>
   );
 };
 const useStyles = makeStyles({
