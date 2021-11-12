@@ -2,41 +2,6 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 
-const useStyles = makeStyles({
-  topBarWrapper: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      backgroundColor:'white',
-
-    width: "100%",
-    padding: "20px 50px 10px 50px",
-   
-
-    boxSizing: "border-box",
-    fontSize: 12,
-
-    "& a": {
-      color: "#A0A3BD",
-    },
-  },
-
-  topBarLeft: {
-    display: "flex",
-    width: "auto",
-  },
-
-  topBarRight: {
-    display: "flex",
-    width: "auto",
-    justifyContent: "flex-end",
-  },
-
-  sellerCenter: {
-    marginRight: 50,
-  },
-});
-
 const SellerTopBar = ({ isSeller = false }) => {
   const classes = useStyles();
 
@@ -48,7 +13,7 @@ const SellerTopBar = ({ isSeller = false }) => {
         </Box>
 
         {!isSeller && (
-          <Box>
+          <Box className={classes.sellerRegister}>
             <Link to={"/login"}>Seller Register</Link>
           </Box>
         )}
@@ -60,5 +25,60 @@ const SellerTopBar = ({ isSeller = false }) => {
     </Box>
   );
 };
+
+const useStyles = makeStyles({
+  topBarWrapper: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: 'white',
+
+    width: "100%",
+    padding: "20px 40px 10px 40px",
+
+
+    boxSizing: "border-box",
+    fontSize: 12,
+
+    "& a": {
+      color: "#A0A3BD",
+      transition: "all .07s ease-in-out",
+
+      '&:hover': {
+        color: "#5c5c5c",
+      },
+    },
+  },
+
+  topBarLeft: {
+    display: "flex",
+    width: "auto",
+  },
+
+  sellerCenter: {
+    marginRight: 50,
+
+    '&:active': {
+      transform: "scale(0.9)",
+    }
+  },
+
+  sellerRegister: {
+    '&:active': {
+      transform: "scale(0.9)",
+    }
+  },
+
+  topBarRight: {
+    display: "flex",
+    width: "auto",
+    justifyContent: "flex-end",
+
+    '&:active': {
+      transform: "scale(0.9)",
+    }
+  },
+
+});
 
 export default SellerTopBar;

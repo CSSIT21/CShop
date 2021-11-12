@@ -1,16 +1,15 @@
-import TopBanner from "../components/TopBanner";
-import CategoriesSection from "../components/CategoriesSection";
-import BestsellerSection from "../components/BestsellerSection";
-import BottomBanner from "../components/BottomBanner";
+import TopBanner from "../components/HomeBase/TopBanner";
+import CategoriesSection from "../components/HomeBase/CategoriesSection";
+import BestsellerSection from "../components/HomeBase/BestsellerSection";
+import BottomBanner from "../components/HomeBase/BottomBanner";
 import Footer from "../../common/components/Footer";
 import { useState } from "react";
-import SuggestionSection from "../components/SuggestionSection";
+import SuggestionSection from "../components/HomeBase/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
 
 const HomePage = () => {
-  console.log(fakeProducts);
   const [products, setProducts] = useState(fakeProducts);
-  
+
   const onFavourite = (index) => {
     setProducts((products) => {
       const target = products[index];

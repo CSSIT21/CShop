@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import CouponPic from "../../assets/voucher-pic.png";
-import Button from "@mui/material/Button";
+import CouponPic from '~/common/assets/images/voucher-pic.png';
 
 const Coupon = ({ coupon }) => {
   const classes = useStyles();
@@ -19,17 +18,6 @@ const Coupon = ({ coupon }) => {
           <Box className={classes.text5}>{coupon.valid}</Box>
         </Box>
       </Box>
-      <Button
-        style={{
-          backgroundColor: "#FD6637",
-          color: "white",
-          height: "45px",
-          width: "140px",
-          marginRight: "20px",
-        }}
-      >
-        add voucher
-      </Button>
     </Box>
   );
 };
@@ -42,7 +30,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: "15px",
     borderRadius: "10px",
-    width: "60%",
+    width: "50%",
     justifyContent: "space-between",
   },
   box: {

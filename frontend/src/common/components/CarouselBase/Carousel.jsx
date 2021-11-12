@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   useMemo,
+  useLayoutEffect,
 } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -304,20 +305,18 @@ const Carousel = ({
     setPageState(page);
   }, [setPageState]);
 
-  useEffect(() => {
-    setCurrentPage((p) => {
-      const nextPage = pageState;
-      if (nextPage >= page) {
-        if (typeof setPageState !== 'undefined') setPageState(loop ? 0 : pageState);
-        return loop ? 0 : pageState;
-      }
-      if (nextPage < 0) {
-        if (typeof setPageState !== 'undefined') setPageState(loop ? page - 1 : 0);
-        return loop ? page - 1 : 0;
-      }
-      setPageState(nextPage);
-      return nextPage;
-    });
+  useLayoutEffect(() => {
+    const nextPage = pageState;
+    if (nextPage >= page) {
+      if (typeof setPageState !== 'undefined') setPageState(loop ? 0 : pageState);
+      return loop ? 0 : pageState;
+    }
+    if (nextPage < 0) {
+      if (typeof setPageState !== 'undefined') setPageState(loop ? page - 1 : 0);
+      return loop ? page - 1 : 0;
+    }
+    setCurrentPage(nextPage);
+    setPageState(nextPage);
   }, [pageState, setPageState, loop, page]);
 
   const handleHover = useCallback(() => {

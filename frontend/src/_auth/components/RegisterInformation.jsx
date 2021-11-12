@@ -8,11 +8,20 @@ import { years, months, days, genders } from "../../common/constants/register";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 
-const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
+const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
-
   const [userInfo, setUserInfo] = useRecoilState(registerState);
-
+  const checkPassword = () => {
+    if (userInfo.password != "" && checkPassword != "") {
+      if (userInfo.password === userInfo.confirmPassword) {
+        handleNext();
+      } else {
+        alert("Check korn i sus");
+      }
+    } else {
+      alert("Mueng forget password i sus");
+    }
+  };
   return (
     <Fragment>
       <Box>
@@ -26,7 +35,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
                 placeholder="Phone Number"
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
-                readonly
+                readOnly
                 fullWidth
                 value={userInfo.phoneNumber}
               />
@@ -197,7 +206,7 @@ const RegisterInformation = ({ activeStep, handleNext = () => {} }) => {
         <Box className={classes.button}>
           <CButton
             title="Next"
-            onClick={handleNext}
+            onClick={checkPassword}
             width="470px"
             height="55px"
           />

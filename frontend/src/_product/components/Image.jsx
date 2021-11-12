@@ -55,9 +55,7 @@ const Image = ({ img }) => {
             <img src={main} style={imgStyle} alt="mainImage" />
           </Fade>
         </Box>
-      </Box>
-    </Box>
-  );
+    );
 };
 
 const imgStyle = {

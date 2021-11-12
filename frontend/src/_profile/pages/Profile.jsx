@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material/";
 import { Box } from "@mui/system";
 
-const ProfilePage = (props) => {
+const ProfilePage = () => {
   const classes = useStyles();
   const [openProfile, setOpenProfile] = useState(true);
   const [openVoucher, setOpenVoucher] = useState(true);
