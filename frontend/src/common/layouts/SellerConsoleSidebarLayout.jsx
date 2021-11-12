@@ -18,6 +18,9 @@ import {
   faBolt,
   faBoxes,
   faCoins,
+  faWrench,
+  faList,
+  faPercentage
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useParams } from "react-router-dom";
 
@@ -74,15 +77,18 @@ export default function SellerConsoleSidebarLayout(props) {
       "/seller/" + params.id + "/dashboard"
     ),
     generateLink(faLuggageCart, "Stock", "/seller/" + params.id + "/stock"),
-    generateLink(faBolt, "FlashSales", "/seller/" + params.id + "/flashsell"),
+    generateLink(faBolt, "FlashSale", "/seller/" + params.id + "/flashsell"),
+    generateLink(faWrench, "Page customization", "/seller/" + params.id + "/sellercustomize"),
+    generateLink(faPercentage, "FlashSale Log", "/seller/" + params.id + "/flashsalelog"),
     generateLink(faBoxes, "Stock Log", "/seller/" + params.id + "/stocklog"),
-    generateLink(faReceipt, "Order Log", "/seller/" + params.id + "/orderlog"),
+    generateLink(faList, "Order Status", "/seller/" + params.id + "/orderstatus"),
+    generateLink(faReceipt, "Order History", "/seller/" + params.id + "/orderlog"),
     generateLink(
       faMoneyCheckAlt,
-      "Discount Log",
+      "Discount History",
       "/seller/" + params.id + "/discountlog"
     ),
-    generateLink(faCoins, "Refund Log", "/seller/" + params.id + "/refundlog"),
+    generateLink(faCoins, "Refund History", "/seller/" + params.id + "/refundlog"),
   ];
 
   return (
