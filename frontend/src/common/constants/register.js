@@ -35,4 +35,5 @@ export const genders = [
   { id: 1, value: "male", label: "Male" },
   { id: 2, value: "female", label: "Female" },
   { id: 3, value: "others", label: "Others" },
+  { id: 4, value: "preferNotToSay", label: "Prefer not to say" },
 ];
