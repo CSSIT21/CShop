@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { Box } from "@mui/system";
-import { makeStyles } from "@mui/styles";
-import ChatFeed from "../parts/ChatFeed";
-import ChatList from "../parts/ChatList";
+import React, { useState } from 'react'
+import { Box } from '@mui/system'
+import { makeStyles } from '@mui/styles'
+import ChatFeed from '../parts/ChatFeed'
+import ChatList from '../parts/ChatList'
 
 import { default as _ChatService } from '../services/ChatService'
 
 const useStyles = makeStyles({
-
     chatLayout: {
-        display: "flex",
-        flexDirection: "row",
-        height: "100vh",
-        width: "100vw",
-        position: "absolute",
-        top: "0px",
-        right: "0px"
-    },
+        display: 'flex',
+        flexDirection: 'row',
+        height: '100vh',
+        width: '100vw',
+        position: 'absolute',
+        top: '0px',
+        right: '0px'
+    }
 })
 
 const ChatPage = props => {
@@ -28,16 +27,22 @@ const ChatPage = props => {
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
     const [currentChatUserId, setCurrentChatUserId] = useState(4)
-    function currentChat(num){
-        setCurrentChatUserId(num)
-    }
 
-    const classes = useStyles();
+    const classes = useStyles()
 
     return <Box className={classes.chatLayout}>
-        <ChatList latest={latest} user_id={user_id} currentChatUserId={currentChatUserId} currentChat={currentChat} ChatService={ChatService} />
-        <ChatFeed messages={ChatService.messagesBetween(currentChatUserId)} user_id={user_id} />
+        <ChatList
+            latest={latest}
+            user_id={user_id}
+            currentChatUserId={currentChatUserId}
+            setCurrent={setCurrentChatUserId}
+            ChatService={ChatService}
+        />
+        <ChatFeed
+            messages={ChatService.messagesBetween(currentChatUserId)}
+            user_id={user_id}
+        />
     </Box>
 }
 
-export default ChatPage;
+export default ChatPage

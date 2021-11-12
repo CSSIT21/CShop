@@ -1,53 +1,53 @@
-import React from "react";
-import { Box } from "@mui/system";
-import { makeStyles } from "@mui/styles";
-import { AddChatModal, ChatBox } from "../components";
-import { Avatar, Button, Card } from "@mui/material";
+import React from 'react'
+import { Box } from '@mui/system'
+import { makeStyles } from '@mui/styles'
+import { AddChatModal, ChatBox } from '../components'
+import { Button } from '@mui/material'
 
 const useStyles = makeStyles({
   chatListContainer: {
-    height: "100vh",
-    width: "30vw",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    padding: "0px",
+    height: '100vh',
+    width: '30vw',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    padding: '0px',
   },
   chatListTitle: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    width: "inherit",
-    background: "#FDF4DD",
-    height: "10vh",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    width: 'inherit',
+    background: '#FDF4DD',
+    height: '10vh',
   },
   chatList: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    width: "inherit",
-    height: "80vh",
-    overflowX: "hidden",
-    overflowY: "scroll",
-    flexWrap: "wrap",
-    alignContent: "flex-start",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    width: 'inherit',
+    height: '80vh',
+    overflowX: 'hidden',
+    overflowY: 'scroll',
+    flexWrap: 'wrap',
+    alignContent: 'flex-start',
   },
   chatListButtom: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "inherit",
-    background: "#FDF4DD",
-    height: "10vh",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 'inherit',
+    background: '#FDF4DD',
+    height: '10vh',
   },
   addNewChatButton: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
-});
+})
 
 
 const ChatList = (props) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   console.log(props.latest)
   return (
@@ -69,23 +69,22 @@ const ChatList = (props) => {
                 : props.ChatService.userWithId(message.sender).pic
             }
             isFilled={props.currentChatUserId === message.sender || props.currentChatUserId === message.recipient}
-            currentChat={props.currentChat}
-            sender={(message.sender === props.user_id)?message.recipient:message.sender}
+            setCurrent={() => props.setCurrent(message.sender === props.user_id ? message.recipient : message.sender)}
             read={message.seen}
           />
         ))}
       </Box>
       <Box className={classes.chatListButtom}>
         <Button
-          variant="contained"
+          variant='contained'
           className={classes.addNewChatButton}
-          sx={{ backgroundColor: "#FD6637", width: "90%", height: "65%" }}
+          sx={{ backgroundColor: '#FD6637', width: '90%', height: '65%' }}
         >
           Add New Chat
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default ChatList;
+export default ChatList
