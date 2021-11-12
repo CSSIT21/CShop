@@ -12,6 +12,31 @@ import { MenuItem, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { For } from "~/common//utils";
 import StyledMenu from "../../StyledMenu";
+import { useRecoilState } from 'recoil';
+import authState from '~/common/store/authState';
+
+const menuLists = [
+  {
+    title: "My Account",
+    icon: PersonIcon,
+    to: "/profile",
+  },
+  {
+    title: "My Shop",
+    icon: StoreIcon,
+    to: "/shop/1",
+  },
+  {
+    title: "Order History",
+    icon: RestoreIcon,
+    to: "/profile/history",
+  },
+  {
+    title: "Favorite",
+    icon: FavoriteIcon,
+    to: "/home/favourite",
+  },
+];
 
 const menuLists = [
   {
@@ -45,12 +70,18 @@ const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useHistory();
   const open = Boolean(anchorEl);
+  const [auth, setAuth] = useRecoilState(authState);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(false);
+  };
+
+  const onLogOut = () => {
+    router.push("/home");
+    return setAuth({ ...auth, isLoggedIn: false });
   };
 
   return (
@@ -95,6 +126,17 @@ const DropdownDetail = ({ children }) => {
             </MenuItem>
           )}
         </For>
+
+        <MenuItem
+          onClick={() => {
+            onLogOut();
+            handleClose();
+          }}
+          disableRipple
+        >
+          <ExitToAppIcon />
+          Log Out
+        </MenuItem>
       </StyledMenu>
     </Box>
   );
