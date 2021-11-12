@@ -38,34 +38,6 @@ const menuLists = [
   },
 ];
 
-const menuLists = [
-  {
-    title: "My Account",
-    icon: PersonIcon,
-    to: "/profile",
-  },
-  {
-    title: "My Shop",
-    icon: StoreIcon,
-    to: "/shop/1",
-  },
-  {
-    title: "Order History",
-    icon: RestoreIcon,
-    to: "/profile/history",
-  },
-  {
-    title: "Favorite",
-    icon: FavoriteIcon,
-    to: "/home/favourite",
-  },
-  {
-    title: "Log Out",
-    icon: ExitToAppIcon,
-    to: "/logout",
-  },
-];
-
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useHistory();
