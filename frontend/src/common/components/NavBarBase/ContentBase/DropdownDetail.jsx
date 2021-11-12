@@ -12,6 +12,8 @@ import { MenuItem, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { For } from "~/common//utils";
 import StyledMenu from "../../StyledMenu";
+import { useRecoilState } from 'recoil';
+import authState from '~/common/store/authState';
 
 const menuLists = [
   {
@@ -34,23 +36,24 @@ const menuLists = [
     icon: FavoriteIcon,
     to: "/home/favourite",
   },
-  {
-    title: "Log Out",
-    icon: ExitToAppIcon,
-    to: "/logout",
-  },
 ];
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useHistory();
   const open = Boolean(anchorEl);
+  const [auth, setAuth] = useRecoilState(authState);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(false);
+  };
+
+  const onLogOut = () => {
+    router.push("/home");
+    return setAuth({ ...auth, isLoggedIn: false });
   };
 
   return (
@@ -95,6 +98,17 @@ const DropdownDetail = ({ children }) => {
             </MenuItem>
           )}
         </For>
+
+        <MenuItem
+          onClick={() => {
+            onLogOut();
+            handleClose();
+          }}
+          disableRipple
+        >
+          <ExitToAppIcon />
+          Log Out
+        </MenuItem>
       </StyledMenu>
     </Box>
   );
