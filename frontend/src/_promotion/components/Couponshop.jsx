@@ -32,6 +32,8 @@ const couponshops = [
 const Couponshop = () => {
   const classes = useStyles();
   const [currentCoupon, setCurrentCoupon] = useState(4);
+  const [page, setPage] = useState(0);
+  const couponsPerRow = 2;
   const handleClaim = () => {
     setCurrentCoupon(currentCoupon - 1);
   };

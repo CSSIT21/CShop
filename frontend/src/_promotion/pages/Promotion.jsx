@@ -10,8 +10,9 @@ const Promotion = () => {
       {/* <Showpic/> */}
       <Nametype name="Shop" color="orange" />
 
-      <Couponshop />
-      <Couponshop />
+      <Coupon/>
+      <Coupon/>
+      <Coupon/>
 
    
     </Box>
