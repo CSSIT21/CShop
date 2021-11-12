@@ -14,6 +14,7 @@ import { ThemeContextProvider } from "./common/contexts/ThemeContexts";
 /** layouts */
 import SidebarLayout from "./common/layouts/ManageAccountSidebarLayout";
 import MainLayout from "./common/layouts/MainLayout";
+import SellerConsoleSidebarLayout from "./common/layouts/SellerConsoleSidebarLayout";
 
 /** loader */
 import SkeletonLoading from '~/common/components/SkeletonLoading';
@@ -48,7 +49,6 @@ import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
 import Promotion from "./_promotion/pages/Promotion";
-
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -73,6 +73,7 @@ import NotFoundPage from "./common/pages/404";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
+
 
 
 function App() {
@@ -224,7 +225,7 @@ function App() {
                 <Redirect to="stock"/>
               </Route> */}
               <Route path="/seller/:id/:path?" exact>
-                <MainLayout>
+                <SellerConsoleSidebarLayout>
                   <Suspense fallback={<SkeletonLoading />}>
                     <Route path="/seller/:id/dashboard">
                       <SellerDashboard />
@@ -248,7 +249,7 @@ function App() {
                       <SellerDiscountLog />
                     </Route>
                   </Suspense>
-                </MainLayout>
+                </SellerConsoleSidebarLayout>
               </Route>
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
