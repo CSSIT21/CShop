@@ -19,6 +19,9 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   const [monthError, setmonthError] = useState("");
   const [yearError, setyearError] = useState("");
   const checkInfo = () => {
+    if (userInfo.password != userInfo.confirmPassword) {
+      setconfirmPasswordError("Password does not match");
+    }
     if (userInfo.password == "") {
       setpasswordError("This field is required");
     }
@@ -40,12 +43,24 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
     if (userInfo.day == "Select Day") {
       setdayError("This field is required");
     }
-    if (userInfo.month == "0") {
+    if (userInfo.month == 0) {
       setmonthError("This field is required");
     }
     if (userInfo.year == "Select Year") {
       setyearError("This field is required");
-    } else {
+    }
+    if (
+      userInfo.email != "" &&
+      userInfo.password != "" &&
+      userInfo.confirmPassword != "" &&
+      userInfo.firstname != "" &&
+      userInfo.lastname != "" &&
+      userInfo.phoneNumber != "" &&
+      userInfo.gender != "Select Gender" &&
+      userInfo.day != "Select Day" &&
+      userInfo.month != 0 &&
+      userInfo.year != "Select Year"
+    ) {
       handleNext();
     }
   };
@@ -146,7 +161,13 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 />
               </Box>
             </Box>
-            <Box sx={{ display: "flex" }}>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               {fnError.length != 0 && (
                 <Box className={classes.error} style={{ marginRight: "3%" }}>
                   {fnError}
@@ -184,6 +205,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 sx={{ borderRadius: "10px" }}
                 fullWidth
                 select
+                error={genderError.length === 0 ? false : true}
                 value={userInfo.gender}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, gender: e.target.value });
@@ -213,6 +235,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   sx={{ borderRadius: "10px" }}
                   fullWidth
                   select
+                  error={dayError.length === 0 ? false : true}
                   value={userInfo.day}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, day: e.target.value });
@@ -233,6 +256,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   sx={{ borderRadius: "10px" }}
                   fullWidth
                   select
+                  error={monthError.length === 0 ? false : true}
                   value={userInfo.month}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, month: e.target.value });
@@ -253,6 +277,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   sx={{ borderRadius: "10px" }}
                   fullWidth
                   select
+                  error={yearError.length === 0 ? false : true}
                   value={userInfo.year}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, year: e.target.value });
@@ -274,20 +299,26 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 justifyContent: "space-between",
               }}
             >
-              {dayError.length != 0 && (
+              {dayError.length != 0 ? (
                 <Box className={classes.error} sx={{ width: "30%" }}>
                   {dayError}
                 </Box>
+              ) : (
+                <Box sx={{ width: "30%" }}></Box>
               )}
-              {monthError.length != 0 && (
+              {monthError.length != 0 ? (
                 <Box className={classes.error} sx={{ width: "30%" }}>
                   {monthError}
                 </Box>
+              ) : (
+                <Box sx={{ width: "30%" }}></Box>
               )}
-              {yearError.length != 0 && (
+              {yearError.length != 0 ? (
                 <Box className={classes.error} sx={{ width: "30%" }}>
                   {yearError}
                 </Box>
+              ) : (
+                <Box sx={{ width: "30%" }}></Box>
               )}
             </Box>
           </Box>
