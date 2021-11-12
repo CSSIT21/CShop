@@ -68,7 +68,6 @@ const ProductContent = ({
         </IconButton>
 
       </CardActions>
-
       {addToCart &&
         <CButton
           icon={<ShoppingCartIcon sx={{ fontSize: '18px' }} />}

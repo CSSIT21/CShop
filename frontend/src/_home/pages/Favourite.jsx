@@ -25,7 +25,6 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
 });
 
 const Header = {

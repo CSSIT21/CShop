@@ -4,7 +4,6 @@ import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { nanoid } from 'nanoid';
-
 const NotFoundPage = () => {
   const classes = useStyles();
   const router = useHistory();
