@@ -18,6 +18,7 @@ import {
   faBolt,
   faBoxes,
   faCoins,
+  faWrench
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useParams } from "react-router-dom";
 
@@ -75,6 +76,7 @@ export default function SellerConsoleSidebarLayout(props) {
     ),
     generateLink(faLuggageCart, "Stock", "/seller/" + params.id + "/stock"),
     generateLink(faBolt, "FlashSales", "/seller/" + params.id + "/flashsell"),
+    generateLink(faWrench, "Page customization", "/seller/" + params.id + "/sellercustomize"),
     generateLink(faBoxes, "Stock Log", "/seller/" + params.id + "/stocklog"),
     generateLink(faReceipt, "Order Log", "/seller/" + params.id + "/orderlog"),
     generateLink(
