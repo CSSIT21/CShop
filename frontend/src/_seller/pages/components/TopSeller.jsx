@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Typography, Modal } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import authState from "../../../common/store/authState";
 import Button from "@mui/material/Button";
 import { useHistory } from "react-router";
 import StoreIcon from "@mui/icons-material/Store";
+import Popup  from "./Popup";
+
 const userType = "seller";
 const TopSeller = () => {
   const classes = useStyles();
   const auth = useRecoilValue(authState);
   const router = useHistory();
+  const [open,setOpen] = useState(false);
 
   return (
-    <Box className={classes.container}>
+    <Box className={classes.container}><Popup open={open} setOpen = {setOpen} title = "" description = "" />
       <Box className={classes.profile}>
         <Avatar
           src={auth.user.url}
@@ -37,11 +40,15 @@ const TopSeller = () => {
             textTransform: "capitalize",
             height: "45px",
           }}
-          onClick={() => {
-            router.push("/shop/1");
+          // onClick={() => {
+          //   router.push("/shop/1");
+          
+          // }}
+          onClick = {() =>{
+            setOpen(true)
           }}
         >
-          <Typography sx={{ fontSize: "12px" }}>Edit</Typography>
+          <Typography sx={{ fontSize: "12px" }} onClick= {setOpen} > Edit</Typography>
         </Button>
       )}
     </Box>
