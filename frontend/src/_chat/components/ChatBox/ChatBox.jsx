@@ -3,9 +3,11 @@ import useStyles from './ChatBox.styles'
 import CircleIcon from '@mui/icons-material/Circle'
 import {
   Avatar,
+  Box,
   Card,
   CardHeader,
-  CardActionArea
+  CardActionArea,
+  Typography
 } from '@mui/material'
 
 const ChatBox = (props) => {
@@ -14,17 +16,39 @@ const ChatBox = (props) => {
   const foreground = props.isFilled ? '#FFFFFF' : '#000000'
   const classes = {
     card: {
-      width: 1,
-      marginBottom: 0.5,
-      border: 0,
-      borderRadius: 3,
-      background: background
+      width: '100%',
+      height: '72px',
+      marginBottom: '10px',
+      border: 'none',
+      borderRadius: '10px',
+      backgroundColor: background
     },
     cardAction: {
       display: 'flex',
-      width: 1,
+      width: '100%',
+      height: '100%',
       justifyContent: 'space-between',
       alignItems: 'center'
+    },
+    avatar: {
+      width: '48px',
+      height: '48px',
+      marginLeft: '12px'
+    },
+    cardText: {
+      width: '100%',
+      height: 'calc(100% - 24px)',
+      margin: '0px 12px'
+    },
+    typography: {
+      height: '50%',
+      lineHeight: '24px',
+      '&:first-child': {
+        color: props.isFilled ? 'white' : 'black',
+      },
+      '&:last-child': {
+        color: props.isFilled ? 'white' : '#A0A3BD',
+      }
     },
     circle: {
       color: '#FD6637',
@@ -36,17 +60,15 @@ const ChatBox = (props) => {
   return (
     <Card sx={classes.card} variant='outlined' onClick={props.setCurrent}>
       <CardActionArea sx={classes.cardAction}>
-        <CardHeader sx={{color: foreground}}
-          avatar={
-            <Avatar
-              alt='User Pic'
-              src={props.pic}
-              sx={{ width: 56, height: 56 }}
-            />
-          }
-          title={props.displayName}
-          subheader={props.lastMessage}
+        <Avatar
+          alt='User Pic'
+          src={props.pic}
+          sx={classes.avatar}
         />
+        <Box sx={classes.cardText}>
+          <Typography variant='h6' sx={classes.typography}>{props.displayName}</Typography>
+          <Typography variant='body2' sx={classes.typography}>{props.lastMessage}</Typography>
+        </Box>
           
         {props.read && <CircleIcon sx={classes.circle}/>}
       

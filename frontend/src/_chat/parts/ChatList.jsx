@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     alignItems: 'flex-start',
     width: '100%',
     background: '#FDF4DD',
-    height: '60px',
+    height: '72px',
   },
   chatList: {
     display: 'flex',
@@ -30,6 +30,7 @@ const useStyles = makeStyles({
     height: '100%',
     overflowX: 'hidden',
     overflowY: 'scroll',
+    padding: '8px',
     flexWrap: 'wrap',
     alignContent: 'flex-start',
   },
@@ -39,7 +40,8 @@ const useStyles = makeStyles({
     alignItems: 'center',
     width: '100%',
     background: '#FDF4DD',
-    height: '60px',
+    height: '72px',
+    padding: '8px'
   },
   addNewChatButton: {
     backgroundColor: 'white',
@@ -79,7 +81,7 @@ const ChatList = (props) => {
         <Button
           variant='contained'
           className={classes.addNewChatButton}
-          sx={{ backgroundColor: '#FD6637', width: '90%', height: '65%' }}
+          sx={{ backgroundColor: '#FD6637', width: '100%', height: '100%' }}
         >
           Add New Chat
         </Button>

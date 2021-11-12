@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     flexDirection: "row",
     alignItems: "flex-start",
     width: "100%",
-    height: "60px",
+    height: "72px",
   },
   chatFeed: {
     display: "flex",
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     flexDirection: "row",
     alignItems: "flex-start",
     width: "100%",
-    height: "60px",
+    height: "72px",
   },
 });
 
