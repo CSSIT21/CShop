@@ -49,7 +49,7 @@ const ProductContent = ({
 
       <CardActions sx={actionStyle}>
         {
-          (!isUndef(status)) ? <Typography variant="caption" fontSize=".68rem" color="#A0A3BD">
+          (!isUndef(status)) ? <Typography variant="caption" fontSize=".7rem" color="#A0A3BD">
             {product.status}
           </Typography> : (isFunc(status) ? status(statusProps) : <>{status}</>)
         }
@@ -68,7 +68,6 @@ const ProductContent = ({
         </IconButton>
 
       </CardActions>
-
       {addToCart &&
         <CButton
           icon={<ShoppingCartIcon sx={{ fontSize: '18px' }} />}

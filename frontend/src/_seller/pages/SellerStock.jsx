@@ -1,15 +1,15 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import TopSeller from "./components/TopSeller";
-import Card from "@mui/material/Card";
+import Indicator from "./components/Indicator";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import Indicator from "./components/Indicator";
-
-const SellerDashboard = () => {
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+const SellerStock = () => {
   const indicatorData = [
     {
       id: 0,
@@ -46,7 +46,6 @@ const SellerDashboard = () => {
   ];
   return (
     <Box>
-      <TopSeller />
       <Box
         sx={{
           alignContent: "center",
@@ -66,8 +65,28 @@ const SellerDashboard = () => {
           />
         ))}
       </Box>
+      <Divider />
+      <Typography variant="h4" fontWeight="600" sx={{ m: 1,}}>
+        Stock
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          p: 1,
+          m: 1,
+        }}
+      >
+        <Box>
+          <TextField id="standard-basic" label="Standard" variant="standard" />
+        </Box>
+        <Button variant="contained" size="large">
+          Medium
+        </Button>
+      </Box>
     </Box>
   );
 };
 
-export default SellerDashboard;
+export default SellerStock;

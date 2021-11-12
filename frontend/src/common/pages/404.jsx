@@ -4,7 +4,6 @@ import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { nanoid } from 'nanoid';
-
 const NotFoundPage = () => {
   const classes = useStyles();
   const router = useHistory();
@@ -34,7 +33,8 @@ const NotFoundPage = () => {
               height: "70px",
               fontSize: "20px",
               borderRadius: "12px",
-              marginRight: "30px",
+              marginRight:"30px",
+           
             }}
             onClick={() => {
               router.goBack();

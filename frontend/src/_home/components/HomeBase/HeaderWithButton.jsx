@@ -21,7 +21,7 @@ const HeaderWithButton = ({ colors = "black",
 
 	return (
 		<Box className={classes.header}>
-			<Typography component="span" color={colors} fontSize="30px" fontWeight="bold" >{headerName}</Typography>
+			<Typography component="span" color={colors} fontSize="30px" fontWeight={600} >{headerName}</Typography>
 			<CarouselButton pageHandle={setPage} currentPage={page} totalPage={totalPage} />
 		</Box >
 	);
