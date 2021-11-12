@@ -11,6 +11,7 @@ const Promotion = () => {
       <Nametype name="Shop" color="orange" />
 
       <Couponshop />
+      <Couponshop />
 
    
     </Box>
