@@ -29,6 +29,9 @@ const StyledMenu = styled((props) => (
 			padding: "4px 0",
 		},
 		"& .MuiMenuItem-root": {
+			fontSize: 14,
+			margin: "5px 0",
+
 			"& .MuiSvgIcon-root": {
 				fontSize: 18,
 				color: theme.palette.text.secondary,
@@ -40,6 +43,15 @@ const StyledMenu = styled((props) => (
 					theme.palette.action.selectedOpacity
 				),
 			},
+
+			"&:hover": {
+				backgroundColor: "#ffc2af37",
+				color: "#FD6637",
+
+				"& svg": {
+					color: "#FD6637",
+				}
+			}
 		},
 	},
 }));
