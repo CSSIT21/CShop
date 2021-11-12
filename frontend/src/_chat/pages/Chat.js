@@ -35,7 +35,7 @@ const ChatPage = props => {
     const classes = useStyles();
 
     return <Box className={classes.chatLayout}>
-        <ChatList latest={latest} user_id={user_id} currentChatUserId={currentChatUserId} currentChat={currentChat}/>
+        <ChatList latest={latest} user_id={user_id} currentChatUserId={currentChatUserId} currentChat={currentChat} ChatService={ChatService} />
         <ChatFeed messages={ChatService.messagesBetween(currentChatUserId)} user_id={user_id} />
     </Box>
 }

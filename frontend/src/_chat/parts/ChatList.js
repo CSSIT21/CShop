@@ -4,8 +4,6 @@ import { makeStyles } from "@mui/styles";
 import { AddChatModal, ChatBox } from "../components";
 import { Avatar, Button, Card } from "@mui/material";
 
-import _ChatService from "../services/ChatService";
-
 const useStyles = makeStyles({
   chatListContainer: {
     height: "100vh",
@@ -49,8 +47,6 @@ const useStyles = makeStyles({
 
 
 const ChatList = (props) => {
-  const ChatService = new _ChatService(props.user_id);
-
   const classes = useStyles();
 
   console.log(props.latest)
@@ -63,14 +59,14 @@ const ChatList = (props) => {
           <ChatBox
             displayName={
               message.sender === props.user_id
-                ? ChatService.userWithId(message.recipient).displayname
-                : ChatService.userWithId(message.sender).displayname
+                ? props.ChatService.userWithId(message.recipient).displayname
+                : props.ChatService.userWithId(message.sender).displayname
             }
             lastMessage={message.content}
             pic={
               message.sender === props.user_id
-                ? ChatService.userWithId(message.recipient).pic
-                : ChatService.userWithId(message.sender).pic
+                ? props.ChatService.userWithId(message.recipient).pic
+                : props.ChatService.userWithId(message.sender).pic
             }
             isFilled={props.currentChatUserId === message.sender || props.currentChatUserId === message.recipient}
             currentChat={props.currentChat}
