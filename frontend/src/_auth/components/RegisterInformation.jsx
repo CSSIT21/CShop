@@ -1,8 +1,6 @@
-import React, { Fragment } from "react";
-import TextField from "@mui/material/TextField";
+import React, { Fragment, useState } from "react";
+import { TextField, MenuItem, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import MenuItem from "@mui/material/MenuItem";
-import CButton from "../../common/components/CButton";
 import { Box } from "@mui/system";
 import { years, months, days, genders } from "../../common/constants/register";
 import { useRecoilState } from "recoil";
@@ -11,33 +9,63 @@ import registerState from "../../common/store/registerState";
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
   const [userInfo, setUserInfo] = useRecoilState(registerState);
-  const checkPassword = () => {
-    if (userInfo.password != "" && checkPassword != "") {
-      if (userInfo.password === userInfo.confirmPassword) {
-        handleNext();
-      } else {
-        alert("Check korn i sus");
-      }
+  const [passwordError, setpasswordError] = useState("");
+  const [confirmPasswordError, setconfirmPasswordError] = useState("");
+  const [fnError, setfnError] = useState("");
+  const [lnError, setlnError] = useState("");
+  const [phoneNumError, setphoneNumError] = useState("");
+  const [genderError, setgenderError] = useState("");
+  const [dayError, setdayError] = useState("");
+  const [monthError, setmonthError] = useState("");
+  const [yearError, setyearError] = useState("");
+  const checkInfo = () => {
+    if (userInfo.password == "") {
+      setpasswordError("This field is required");
+    }
+    if (userInfo.confirmPassword == "") {
+      setconfirmPasswordError("This field is required");
+    }
+    if (userInfo.firstname == "") {
+      setfnError("This field is required");
+    }
+    if (userInfo.lastname == "") {
+      setlnError("This field is required");
+    }
+    if (userInfo.phoneNumber == "") {
+      setphoneNumError("This field is required");
+    }
+    if (userInfo.gender == "Select Gender") {
+      setgenderError("This field is required");
+    }
+    if (userInfo.day == "Select Day") {
+      setdayError("This field is required");
+    }
+    if (userInfo.month == "0") {
+      setmonthError("This field is required");
+    }
+    if (userInfo.year == "Select Year") {
+      setyearError("This field is required");
     } else {
-      alert("Mueng forget password i sus");
+      handleNext();
     }
   };
+
   return (
     <Fragment>
       <Box>
         <Box className={classes.header}>Information</Box>
         <Box className={classes.context}>
-          <Box className={classes.genInfo}>
+          <Box className={classes.genInfo} component="form">
             <Box className={classes.contextHeader}>General Information</Box>
             <Box className={classes.textFieldBox}>
               <TextField
-                id="phoneNumber"
-                placeholder="Phone Number"
+                id="email"
+                placeholder="Email"
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
                 readOnly
                 fullWidth
-                value={userInfo.phoneNumber}
+                value={userInfo.email}
               />
             </Box>
             <Box className={classes.textFieldBox}>
@@ -47,13 +75,17 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 type="password"
                 placeholder="Password"
                 fullWidth
+                error={passwordError.length === 0 ? false : true}
                 value={userInfo.password}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, password: e.target.value });
+                  setpasswordError("");
                 }}
               />
             </Box>
-
+            {passwordError.length != 0 && (
+              <Box className={classes.error}>{passwordError}</Box>
+            )}
             <Box className={classes.textFieldBox}>
               <TextField
                 id="confirmPassword"
@@ -61,12 +93,16 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 variant="outlined"
                 placeholder="Confirm your password"
                 fullWidth
+                error={confirmPasswordError.length === 0 ? false : true}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, confirmPassword: e.target.value });
+                  setconfirmPasswordError("");
                 }}
               />
             </Box>
-
+            {confirmPasswordError.length != 0 && (
+              <Box className={classes.error}>{confirmPasswordError}</Box>
+            )}
             <Box
               style={{
                 display: "flex",
@@ -82,12 +118,16 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   variant="outlined"
                   placeholder="Firstname"
                   fullWidth
+                  required
+                  error={fnError.length === 0 ? false : true}
                   value={userInfo.firstname}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, firstname: e.target.value });
+                    setfnError("");
                   }}
                 />
               </Box>
+
               <Box
                 className={classes.textFieldBox}
                 style={{ marginLeft: "10px" }}
@@ -98,25 +138,42 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   placeholder="Lastname"
                   value={userInfo.lastname}
                   fullWidth
+                  error={lnError.length === 0 ? false : true}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, lastname: e.target.value });
+                    setlnError("");
                   }}
                 />
               </Box>
             </Box>
+            <Box sx={{ display: "flex" }}>
+              {fnError.length != 0 && (
+                <Box className={classes.error} style={{ marginRight: "3%" }}>
+                  {fnError}
+                </Box>
+              )}
+              {lnError.length != 0 && (
+                <Box className={classes.error}>{lnError}</Box>
+              )}
+            </Box>
 
             <Box className={classes.textFieldBox}>
               <TextField
-                id="email"
+                id="phoneNumber"
                 variant="outlined"
-                placeholder="Email"
+                placeholder="Phone Number"
                 fullWidth
-                value={userInfo.email}
+                error={phoneNumError.length === 0 ? false : true}
+                value={userInfo.phoneNumber}
                 onChange={(e) => {
-                  setUserInfo({ ...userInfo, email: e.target.value });
+                  setUserInfo({ ...userInfo, phoneNumber: e.target.value });
+                  setphoneNumError("");
                 }}
               />
             </Box>
+            {phoneNumError.length != 0 && (
+              <Box className={classes.error}>{phoneNumError}</Box>
+            )}
           </Box>
           <Box className={classes.gender}>
             <Box className={classes.contextHeader}>Gender</Box>
@@ -130,6 +187,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 value={userInfo.gender}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, gender: e.target.value });
+                  setgenderError("");
                 }}
               >
                 {genders.map((gender) => (
@@ -139,6 +197,11 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 ))}
               </TextField>
             </Box>
+            {genderError.length != 0 && (
+              <Box className={classes.error} sx={{ width: "30%" }}>
+                {genderError}
+              </Box>
+            )}
           </Box>
           <Box className={classes.birthdate}>
             <Box className={classes.contextHeader}>Birthdate</Box>
@@ -153,6 +216,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   value={userInfo.day}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, day: e.target.value });
+                    setdayError("");
                   }}
                 >
                   {days.map((day) => (
@@ -172,6 +236,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   value={userInfo.month}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, month: e.target.value });
+                    setmonthError("");
                   }}
                 >
                   {months.map((month) => (
@@ -191,6 +256,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                   value={userInfo.year}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, year: e.target.value });
+                    setyearError("");
                   }}
                 >
                   {years.map((year) => (
@@ -201,15 +267,43 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 </TextField>
               </Box>
             </Box>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              {dayError.length != 0 && (
+                <Box className={classes.error} sx={{ width: "30%" }}>
+                  {dayError}
+                </Box>
+              )}
+              {monthError.length != 0 && (
+                <Box className={classes.error} sx={{ width: "30%" }}>
+                  {monthError}
+                </Box>
+              )}
+              {yearError.length != 0 && (
+                <Box className={classes.error} sx={{ width: "30%" }}>
+                  {yearError}
+                </Box>
+              )}
+            </Box>
           </Box>
         </Box>
         <Box className={classes.button}>
-          <CButton
-            title="Next"
-            onClick={checkPassword}
-            width="470px"
-            height="55px"
-          />
+          <Button
+            variant="contained"
+            style={{
+              width: "470px",
+              height: "55px",
+              textTransform: "capitalize",
+            }}
+            onClick={checkInfo}
+          >
+            Next
+          </Button>
         </Box>
       </Box>
     </Fragment>
@@ -229,13 +323,13 @@ const useStyles = makeStyles({
   },
   contextHeader: {
     fontSize: "24px",
-    marginBottom: "40px",
+    marginTop: "40px",
   },
   textField: {
     marginBottom: "40px",
   },
   textFieldBox: {
-    marginBottom: "35px",
+    marginTop: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
     width: "100%",
@@ -251,6 +345,13 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     margin: "70px 0 180px 0",
+  },
+  error: {
+    fontSize: "14px",
+    color: "#FD3737",
+    textAlign: "right",
+    width: "100%",
+    marginTop: "6px",
   },
 });
 

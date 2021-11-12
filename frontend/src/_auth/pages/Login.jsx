@@ -18,8 +18,8 @@ const LoginPage = () => {
   const form = useForm({ phone, password });
 
   useLayoutEffect(() => {
-    document.body.classList.add('gray');
-    return () => document.body.classList.remove('gray');
+    document.body.classList.add("gray");
+    return () => document.body.classList.remove("gray");
   }, []);
 
   return (
@@ -30,7 +30,7 @@ const LoginPage = () => {
           <Box className={classes.textFieldBox}>
             <TextField
               id="phoneNumber"
-              placeholder="Phone Number"
+              placeholder="Email"
               variant="outlined"
               sx={{ borderRadius: "10px" }}
               fullWidth
@@ -136,7 +136,7 @@ const useStyles = makeStyles({
   },
   divider: {
     color: "#A0A3BD",
-    margin: "40px 0px",
+    margin: "30px 0px",
   },
 });
 
