@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import HighlightIcon from "@mui/icons-material/Highlight";
 import fakeProducts from "~/common/faker/fakeProducts";
 import CardAndPagination from "../components/commonBase/CardAndPagination";
@@ -18,7 +17,7 @@ const useStyles = makeStyles({
         backgroundColor: '#FDF4DD',
     },
     content: {
-        maxWidth: '1200px',
+        maxWidth: '1100px',
         padding: '50px 0',
 
         display: 'flex',

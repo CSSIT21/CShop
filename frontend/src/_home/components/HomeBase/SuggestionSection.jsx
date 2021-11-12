@@ -33,7 +33,7 @@ const SuggestionSection = ({ suggestItems, onFavourite }) => {
 	return (
 		<Box className={classes.suggestionWrapper}>
 			<Box className={classes.suggestionHeader}>
-				<Typography component="h3" fontSize="30px" fontWeight="bold">Suggestions</Typography>
+				<Typography component="h3" fontSize="30px" fontWeight={600}>Suggestions</Typography>
 				<Button href="/home/suggest" className={classes.suggestionButton} color="primary" >Show all </Button>
 			</Box>
 
