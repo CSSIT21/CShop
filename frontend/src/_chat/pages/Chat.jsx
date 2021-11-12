@@ -6,15 +6,15 @@ import ChatList from '../parts/ChatList'
 
 import { default as _ChatService } from '../services/ChatService'
 
+/* Navbar height is not fixed, adjust this to preserve page's layout */
+const __NAVBAR_HEIGHT = '135px'
+
 const useStyles = makeStyles({
     chatLayout: {
         display: 'flex',
         flexDirection: 'row',
-        height: '100vh',
-        width: '100vw',
-        position: 'absolute',
-        top: '0px',
-        right: '0px'
+        height: `calc(100vh - ${__NAVBAR_HEIGHT})`,
+        width: '100%'
     }
 })
 

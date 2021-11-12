@@ -11,8 +11,8 @@ import {
 
 const useStyles = makeStyles({
   chatFeedContainer: {
-    width: "70vw",
-    height: "100vh",
+    width: "70%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
@@ -22,15 +22,15 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-start",
-    width: "inherit",
-    height: "10vh",
+    width: "100%",
+    height: "60px",
   },
   chatFeed: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    width: "inherit",
-    height: "80vh",
+    width: "100%",
+    height: "100%",
     background: "#FDF4DD",
     overflowX: "hidden",
     overflowY: "scroll",
@@ -39,8 +39,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-start",
-    width: "inherit",
-    height: "10vh",
+    width: "100%",
+    height: "60px",
   },
 });
 
