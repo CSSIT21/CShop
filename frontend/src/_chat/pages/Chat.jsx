@@ -53,6 +53,7 @@ const ChatPage = props => {
             setInputText={setInputText}
             handleSubmitMessage={handleSubmitMessage}
             user_id={user_id}
+            currentChatUserId={currentChatUserId}
             ChatService={ChatService}
         />
     </Box>

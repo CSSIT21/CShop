@@ -2,6 +2,7 @@ import React from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 
+
 import {
   ChatBubble,
   ChatMediaModal,
@@ -48,11 +49,12 @@ const ChatFeed = (props) => {
   const classes = useStyles();
   const contentType= ['notification', 'text', 'image', 'video']
 
+  console.log(props.displayName)
   return (
     <Box className={classes.chatFeedContainer}>
       {/* ChatFeed on the right shows all messages between two users */}
       <Box className={classes.chatFeedTitle}>
-        <ProfileBar />
+        <ProfileBar displayName={props.ChatService.userWithId(props.currentChatUserId).displayname} status="active" pic={props.ChatService.userWithId(props.currentChatUserId).pic } currentChatUserId={props.currentChatUserId} notification={false}/>
       </Box>
       <Box className={classes.chatFeed}>
         {
