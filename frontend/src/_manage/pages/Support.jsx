@@ -1,18 +1,17 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-
-const BannedUserPage = () => {
+const Support = () => {
     return (
         <Box>
             <Typography variant="h3" fontWeight="600">
-                Banned Users
+                Support
             </Typography>
             <Typography variant="h4" fontWeight="600">
-                Waiting for prototype..?
+                Ticketing System
             </Typography>
         </Box>
     );
 };
 
-export default BannedUserPage;
+export default Support;

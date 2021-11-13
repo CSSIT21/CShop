@@ -1,17 +1,18 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-const BannedSellerPage = () => {
+
+const Products = () => {
     return (
         <Box>
             <Typography variant="h3" fontWeight="600">
-                Banned Sellers
+                Products
             </Typography>
             <Typography variant="h4" fontWeight="600">
-                Waiting for prototype..?
+                Products Page
             </Typography>
         </Box>
     );
 };
 
-export default BannedSellerPage;
+export default Products;

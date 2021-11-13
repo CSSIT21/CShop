@@ -18,8 +18,8 @@ const generateLink = (icon, title = "", path = "/") => ({ icon, title, path });
 let links = [
     generateLink((<Person/>), "Users", "/manage/users"),
     generateLink((<Store/>), "Sellers", "/manage/sellers"),
-    generateLink((<CardGiftcard/>), "Products", "/manage/bannedusers"),
-    generateLink((<Help/>), "Support Tickets", "/manage/bannedsellers")
+    generateLink((<CardGiftcard/>), "Products", "/manage/products"),
+    generateLink((<Help/>), "Support Tickets", "/manage/support")
 ];
 
 const openedMixin = (theme) => ({
@@ -95,7 +95,7 @@ const useStyles = makeStyles({
         alignItems: "center",
     },
     icon: {
-        marginLeft: "15px",
+        marginLeft: "12px",
         marginRight: "-15px",
         height: 28,
         fontSize: 25,
