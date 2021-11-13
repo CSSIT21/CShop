@@ -7,7 +7,7 @@ const Indicator = (props) => {
     <Box
       sx={{
         bgcolor: "background.paper",
-        boxShadow: 1,
+        boxShadow: 0,
         borderRadius: 1,
         p: 2,
         m: 3,
