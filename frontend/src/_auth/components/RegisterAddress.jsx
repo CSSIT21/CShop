@@ -77,7 +77,6 @@ const RegisterAddress = ({
   const [districtError, setdistrictError] = useState("");
   const [subDistrictError, setsubDistrictError] = useState("");
   const [postalCodeError, setpostalCodeError] = useState("");
-
   const register = () => {
     if (userInfo.addressLine == "") {
       setaddressLineError("This field is required");

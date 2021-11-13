@@ -75,6 +75,7 @@ import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
 import CoinHistoryPage from "./_coin/pages/coinHistory";
 import CoinRedeemPage from "./_coin/pages/coinRedeem";
+import ShoppingCartPage from './_cart/pages/ShoppingCartPage';
 
 
 
@@ -234,6 +235,13 @@ function App() {
                 <MainLayout>
                   <Suspense fallback={<SkeletonLoading />}>
                     <CoinRedeemPage/>
+                  </Suspense>
+                </MainLayout>
+              </Route>
+              <Route exact path="/cart">
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <ShoppingCartPage/>
                   </Suspense>
                 </MainLayout>
               </Route>
