@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     padding: '8px',
     flexWrap: 'wrap',
     alignContent: 'flex-start',

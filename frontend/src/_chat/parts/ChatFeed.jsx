@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     height: "100%",
     background: "#FDF4DD",
     overflowX: "hidden",
-    overflowY: "scroll",
+    overflowY: "auto",
   },
   chatFeedButtom: {
     display: "flex",
@@ -51,7 +51,9 @@ const ChatFeed = (props) => {
   return (
     <Box className={classes.chatFeedContainer}>
       {/* ChatFeed on the right shows all messages between two users */}
-      <Box className={classes.chatFeedTitle}></Box>
+      <Box className={classes.chatFeedTitle}>
+        <ProfileBar />
+      </Box>
       <Box className={classes.chatFeed}>
         {
           props.messages.map(m => 
@@ -66,7 +68,9 @@ const ChatFeed = (props) => {
           )
         }
       </Box>
-      <Box className={classes.chatFeedButtom}></Box>
+      <Box className={classes.chatFeedButtom}>
+        <MessageBar {...props}/>
+      </Box>
     </Box>
   );
 };
