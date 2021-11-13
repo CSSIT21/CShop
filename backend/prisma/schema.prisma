@@ -1,17 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
-model User {
-  id         Int       @id @default(autoincrement())
-  username   String?   @unique @db.VarChar
-  password   String?   @db.VarChar
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @default(now()) @db.Timestamptz(6)
-  type       Int       @default(1)
+enum Gender {
+    Male
+    Female
+    Others
+    PreferNotToSay
+}
+
+//Customer
+
+model customer {
+    id               Int                @id @default(autoincrement())
+    email            String             @db.VarChar(60)
+    password         String             @db.VarChar(255)
+    join_date        DateTime           @default(now())
+    customer_info    customer_info[]
+    customer_picture customer_picture[]
+    customer_address customer_address[]
+    old_password     old_password[]
+    wishlist         wishlist[]
+    followed_shop    followed_shop[]
+}
+
+model customer_info {
+    customer_id       Int       @id
+    customer_relation customer  @relation(fields: [customer_id], references: [id])
+    firstname         String    @db.VarChar(20)
+    lastname          String    @db.VarChar(20)
+    phone_number      String    @db.VarChar(10)
+    gender            Gender
+    birthdate         DateTime?
+}
+
+model customer_picture {
+    customer_id         Int          @id
+    customer_relation   customer     @relation(fields: [customer_id], references: [id])
+    picture_id          Int
+    customer_picture_id picture_file @relation(fields: [picture_id], references: [id])
+}
+
+model picture_file {
+    id               Int                @id @default(autoincrement())
+    title            String             @db.VarChar(50)
+    path             String             @db.Text
+    thumbnail        String             @db.Text
+    mime_type        String             @db.VarChar(20)
+    primary          Boolean            @default(false)
+    customer_picture customer_picture[]
+}
+
+model address {
+    id               Int                @id @default(autoincrement())
+    address_line     String             @db.VarChar(200)
+    province         String             @db.VarChar(20)
+    district         String             @db.VarChar(20)
+    sub_district     String             @db.VarChar(20)
+    postal_code      String             @db.VarChar(5)
+    customer_address customer_address[]
+}
+
+model customer_address {
+    customer_id        Int      @id
+    customer_address   customer @relation(fields: [customer_id], references: [id])
+    address_id         Int
+    address_id_address address  @relation(fields: [address_id], references: [id])
+    primary            Boolean  @default(false)
+}
+
+model old_password {
+    customer_id          Int      @id
+    customer_id_password customer @relation(fields: [customer_id], references: [id])
+    password             String   @db.VarChar(255)
+    changed_date         DateTime @db.Timestamp
+}
+
+model wishlist {
+    customer_id          Int      @id
+    customer_id_wishlist customer @relation(fields: [customer_id], references: [id])
+    product_id           Int
+    added_date           DateTime @default(now())
+}
+
+model followed_shop {
+    customer_id               Int      @id
+    customer_id_followed_shop customer @relation(fields: [customer_id], references: [id])
+    shop_id                   Int
+    added_date                DateTime @default(now())
+}
+
+model email_verification {
+    id          Int      @id @default(autoincrement())
+    email       String   @db.VarChar(60)
+    token       String   @db.Text
+    expire_date DateTime @db.Timestamp
 }
