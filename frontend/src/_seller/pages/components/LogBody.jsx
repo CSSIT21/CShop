@@ -29,9 +29,9 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
             {row.status} */}
             <Box>
               {row.status == "success" ? (
-                <Chip label="success" color="success" variant="outlined" />
+                <Chip label="Success" sx={{backgroundColor: '#f3ffd9', color:'#84ad28',fontWeight:'bold'}}/>
               ) : (
-                <Chip label="error" color="error" variant="outlined" />
+                <Chip label="Cancel" color="error"  />
               )}
             </Box>
           </TableCell>
