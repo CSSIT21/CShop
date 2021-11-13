@@ -1,38 +1,39 @@
 export const MONTHS = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 export const YEARS = [...Array(100)]
-	.map((year, idx) => new Date().getFullYear() - 99 + idx)
-	.reverse();
+  .map((year, idx) => new Date().getFullYear() - 99 + idx)
+  .reverse();
 
 export const DAYS = [...Array(31)];
 
 export const years = ["Select Year", ...YEARS];
 
 export const months = [
-	{
-		id: 0,
-		label: "Select Month",
-	},
-	...MONTHS.map((label, id) => ({ id: id + 1, label })),
+  {
+    id: 0,
+    label: "Select Month",
+  },
+  ...MONTHS.map((label, id) => ({ id: id + 1, label })),
 ];
 
 export const days = ["Select Day", ...DAYS.map((day, idx) => 1 + idx)];
 
 export const genders = [
-	{ id: 0, value: "Select Gender" },
-	{ id: 1, value: "Male" },
-	{ id: 2, value: "Female" },
-	{ id: 3, value: "Others" },
+  { id: 0, value: "Select Gender", label: "Select Gender" },
+  { id: 1, value: "male", label: "Male" },
+  { id: 2, value: "female", label: "Female" },
+  { id: 3, value: "others", label: "Others" },
+  { id: 4, value: "preferNotToSay", label: "Prefer not to say" },
 ];
