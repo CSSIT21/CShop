@@ -32,7 +32,8 @@ import LogHeader from "./components/LogHeader";
 import LogBody from "./components/LogBody";
 import LogFooter from "./components/LogFooter";
 import AddProduct from "./components/AddProduct";
-
+import SellerSearch from "./components/SellerSearch";
+import AddIcon from "@mui/icons-material/Add";
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -385,6 +386,8 @@ const SellerStock = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const Pagename = "Stock";
   return (
     <>
       <Box>
@@ -407,39 +410,30 @@ const SellerStock = () => {
             />
           ))}
         </Box>
-        <Divider />
-        <Typography variant="h4" fontWeight="600" sx={{ m: 1 }}>
-          Stock
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            p: 1,
-            m: 1,
-          }}
-        >
-          <Box>
-            <TextField
-              id="standard-basic"
-              label="Product name"
-              variant="standard"
-            />
-          </Box>
-          <AddProduct
-            product={product}
-            setProduct={setProduct}
-            title=""
-            description=""
-          />
-          <Button variant="contained" size="large" onClick={setProduct}>
-            Add product
-          </Button>
-        </Box>
       </Box>
+      <Box sx={{ mt: "4rem" }} />
+      <AddProduct
+        product={product}
+        setProduct={setProduct}
+        title=""
+        description=""
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          p: 1,
+          m: 1,
+        }}
+      >
+        <SellerSearch Pagename={Pagename} />
+        <Button variant="contained" size="large" onClick={setProduct}>
+          {<AddIcon fontSize="24" />}&nbsp;New Product
+        </Button>
+      </Box>
+      <Box sx={{ mt: "4rem" }} />
       <Box>
-        {" "}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <LogHeader />
