@@ -6,6 +6,10 @@ import Amount from "../components/AmountField";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
+import ShareIcon from "@mui/icons-material/ShareRounded";
+import IconButton from "@mui/material/IconButton";
+// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavouriteIcon from "../components/Favorite";
 
 const ProductDetails = (props) => {
   const productName = "Product Name";
@@ -19,14 +23,14 @@ const ProductDetails = (props) => {
     setOpen(false);
   };
   const handleClickOpen = () => {
-      setOpen(true);
+    setOpen(true);
   };
 
   return (
     <Box
       sx={{
         display: "flex",
-        marginTop: "50px"
+        marginTop: "50px",
       }}
     >
       {/*displayImage*/}
@@ -40,6 +44,16 @@ const ProductDetails = (props) => {
         >
           {productName}
         </Typography>
+        <Box sx={{ display: "flex", width:"400px", justifyContent:"flex-end" }}>
+          <Box >
+            <IconButton>
+              <ShareIcon />
+            </IconButton>
+            <IconButton>
+              <FavouriteIcon />
+            </IconButton>
+          </Box>
+        </Box>
         <Typography
           sx={{
             fontSize: "24px",
@@ -98,7 +112,5 @@ const ProductDetails = (props) => {
     </Box>
   );
 };
-
-
 
 export default ProductDetails;
