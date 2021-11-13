@@ -8,24 +8,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
 import Logo from "../assets/images/Logo.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faBan,
-    faCashRegister,
-    faUser,
-    faUserSlash,
-} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { Person, Store, CardGiftcard, Help } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = 222;
 
 const generateLink = (icon, title = "", path = "/") => ({ icon, title, path });
 
 let links = [
-    generateLink(faUser, "Users", "/manage/users"),
-    generateLink(faCashRegister, "Sellers", "/manage/sellers"),
-    generateLink(faUserSlash, "Banned users", "/manage/bannedusers"),
-    generateLink(faBan, "Banned sellers", "/manage/bannedsellers"),
+    generateLink((<Person/>), "Users", "/manage/users"),
+    generateLink((<Store/>), "Sellers", "/manage/sellers"),
+    generateLink((<CardGiftcard/>), "Products", "/manage/bannedusers"),
+    generateLink((<Help/>), "Support Tickets", "/manage/bannedsellers")
 ];
 
 const openedMixin = (theme) => ({
@@ -79,11 +73,8 @@ export default function SidebarLayout(props) {
                 <List>
                     {links.map(({ icon, title, path }, index) => (
                         <ListItem button key={index} to={path} component={Link}>
-                            <ListItemIcon>
-                                <FontAwesomeIcon
-                                    icon={icon}
-                                    className={classes.icon}
-                                />
+                            <ListItemIcon className={classes.icon}>
+                                {icon}
                             </ListItemIcon>
                             <ListItemText primary={title} />
                         </ListItem>
@@ -104,8 +95,9 @@ const useStyles = makeStyles({
         alignItems: "center",
     },
     icon: {
-        marginLeft: "10px",
-        height: 40,
+        marginLeft: "15px",
+        marginRight: "-15px",
+        height: 28,
         fontSize: 25,
     },
 });
