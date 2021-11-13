@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 
 const authState = atom({
   key: "authState",
