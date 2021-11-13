@@ -14,6 +14,7 @@ const TopSeller = () => {
   const classes = useStyles();
   const auth = useRecoilValue(authState);
   const router = useHistory();
+  
   const [open,setOpen] = useState(false);
 
   return (

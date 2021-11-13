@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import Indicator from "./components/Indicator";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -28,6 +28,8 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import LogHeader from "./components/LogHeader";
 import LogBody from "./components/LogBody";
 import LogFooter from "./components/LogFooter";
+import AddProduct from "./components/AddProduct";
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -49,8 +51,10 @@ function TablePaginationActions(props) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
+  const [product,setProduct] = useState(true);
+
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}> <AddProduct product = {product} setProduct = {setProduct} title = "" description = "" />
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
@@ -362,6 +366,7 @@ const SellerStock = () => {
   ];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -376,7 +381,7 @@ const SellerStock = () => {
     setPage(0);
   };
   return (
-    <Box>
+    <Box> 
       <Box
         sx={{
           alignContent: "center",
@@ -416,7 +421,7 @@ const SellerStock = () => {
             variant="standard"
           />
         </Box>
-        <Button variant="contained" size="large">
+        <Button variant="contained" size="large"  >
           Add product
         </Button>
       </Box>

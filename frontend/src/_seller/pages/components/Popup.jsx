@@ -8,7 +8,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
- 
 export default function Popup({open = false , setOpen = () => {},title = "",description = "" }) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
