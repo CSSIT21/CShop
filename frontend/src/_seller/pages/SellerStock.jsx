@@ -54,13 +54,6 @@ function TablePaginationActions(props) {
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      {" "}
-      <AddProduct
-        product={product}
-        setProduct={setProduct}
-        title=""
-        description=""
-      />
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
@@ -374,6 +367,7 @@ const SellerStock = () => {
   ];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [product, setProduct] = useState(false);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -388,49 +382,57 @@ const SellerStock = () => {
     setPage(0);
   };
   return (
-    <Box>
-      <Box
-        sx={{
-          alignContent: "center",
-          position: "relative",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        {indicatorData.map((indicator) => (
-          <Indicator
-            value={indicator.value}
-            name={indicator.name}
-            color={indicator.color}
-            fontColor={indicator.fontColor}
-            icon={indicator.icon}
-            key={indicator.id}
-          />
-        ))}
-      </Box>
-      <Divider />
-      <Typography variant="h4" fontWeight="600" sx={{ m: 1 }}>
-        Stock
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          p: 1,
-          m: 1,
-        }}
-      >
-        <Box>
-          <TextField
-            id="standard-basic"
-            label="Product name"
-            variant="standard"
-          />
+    <>
+      <Box>
+        <Box
+          sx={{
+            alignContent: "center",
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          {indicatorData.map((indicator) => (
+            <Indicator
+              value={indicator.value}
+              name={indicator.name}
+              color={indicator.color}
+              fontColor={indicator.fontColor}
+              icon={indicator.icon}
+              key={indicator.id}
+            />
+          ))}
         </Box>
-        <Button variant="contained" size="large">
-          Add product
-        </Button>
+        <Divider />
+        <Typography variant="h4" fontWeight="600" sx={{ m: 1 }}>
+          Stock
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            p: 1,
+            m: 1,
+          }}
+        >
+          <Box>
+            <TextField
+              id="standard-basic"
+              label="Product name"
+              variant="standard"
+            />
+          </Box>
+          <AddProduct
+            product={product}
+            setProduct={setProduct}
+            title=""
+            description=""
+          />
+          <Button variant="contained" size="large" onClick={setProduct}>
+            Add product
+          </Button>
+        </Box>
       </Box>
       <Box>
         {" "}
@@ -454,7 +456,7 @@ const SellerStock = () => {
           </Table>
         </TableContainer>
       </Box>
-    </Box>
+    </>
   );
 };
 
