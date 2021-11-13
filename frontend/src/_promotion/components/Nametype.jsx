@@ -1,12 +1,10 @@
-import { orange } from '@mui/material/colors'
-import { Box } from '@mui/system'
 import React from 'react'
 
-function Nametype({name, color}) {
+function Nametype({name}) {
     return (
-        <Box sx={{backgroundColor: 'orange', width: '100px' , pading: '100px', marginright: '50px'}}>
-            <h2 sx={{ pading: '100px', marginright: '50px'}}>{name}</h2>
-        </Box>
+        <div>
+            <h2 >{name}</h2>
+        </div>
     )
 }
 

@@ -73,8 +73,6 @@ import NotFoundPage from "./common/pages/404";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
-import CoinHistoryPage from "./_coin/pages/coinHistory";
-import CoinRedeemPage from "./_coin/pages/coinRedeem";
 
 
 
@@ -220,20 +218,6 @@ function App() {
                 <MainLayout>
                   <Suspense fallback={<SkeletonLoading />}>
                     <Promotion/>
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route exact path="/coin/history">
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <CoinHistoryPage/>
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route exact path="/coin">
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <CoinRedeemPage/>
                   </Suspense>
                 </MainLayout>
               </Route>
