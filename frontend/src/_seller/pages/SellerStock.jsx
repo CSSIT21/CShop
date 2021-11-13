@@ -364,7 +364,7 @@ const SellerStock = () => {
   ];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [product,setProduct] = useState(true);
+  const [product,setProduct] = useState(false);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
