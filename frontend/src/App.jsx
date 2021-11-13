@@ -49,6 +49,7 @@ import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
 import Promotion from "./_promotion/pages/Promotion";
+import SellerShopCustomizationPage from './_seller/pages/SellerShopCustomization';
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -245,6 +246,9 @@ function App() {
                   <Suspense fallback={<SkeletonLoading />}>
                     <Route path="/seller/:id/dashboard">
                       <SellerDashboard />
+                    </Route>
+                    <Route path="/seller/:id/customize">
+                      <SellerShopCustomizationPage />
                     </Route>
                     <Route path="/seller/:id/stock">
                       <SellerStock />
