@@ -5,6 +5,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 import AvatarImage from "~/common/assets/images/profileshop.png";
+import FollowButton from "~/common/components/FollowButton";
 
 const useStyles = makeStyles({
   HeaderLeftShop: {
@@ -49,7 +50,13 @@ const HeaderLeft = () => {
             Necessitatibus eius quas tempora accusamus maxime error distinctio
             iusto
           </Typography>
-
+          <FollowButton
+            sx={{ margin: "24px 24px 0 0", padding: "10px 20px" }}
+            width="120px"
+            height="45px"
+            fontSize="14px"
+            fontWeight="500"
+          />
           <Button
             sx={{ margin: "24px 0 0 0", padding: "10px 20px" }}
             width="120px"

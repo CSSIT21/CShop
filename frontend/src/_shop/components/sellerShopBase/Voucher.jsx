@@ -83,7 +83,7 @@ const Voucher = () => {
 
 const useStyles = makeStyles({
   wrapper: {
-    marginBottom: "40px",
+    margin: "100px",
   },
 
   header: {

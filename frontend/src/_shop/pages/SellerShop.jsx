@@ -10,6 +10,8 @@ import CategoryPic2 from "~/common/assets/images/category-2.png";
 import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
+import FlashSale from "../components/sellerShopBase/FlashSale";
+import CarouselProduct from "../components/sellerShopBase/ContentBase/CarouselProduct";
 
 const sections = [
   {
@@ -81,7 +83,7 @@ const sections = [
     id: "5",
     page: {
       type: 4,
-      content: 'https://www.youtube.com/embed/F5tSoaJ93ac'
+      content: "https://www.youtube.com/embed/F5tSoaJ93ac",
     },
   },
 ];
@@ -105,6 +107,8 @@ const menus = [
   },
 ];
 
+const flashSaleItem = fakeProducts;
+
 const SellerShop = () => {
   const classes = useStyles();
 
@@ -123,14 +127,20 @@ const SellerShop = () => {
           <Box
             sx={{
               width: "100vw",
-              height: "1px",
+              height: "2px",
               backgroundColor: "#D9DBE9",
             }}
           />
           <Box className={classes.containerWhite}>
             <TabsController categories={menus} />
+          </Box>
+          {flashSaleItem && (
+            <FlashSale items={flashSaleItem} filterName="Flash Sale" />
+          )}
+          <Box className={classes.containerWhite}>
             <Voucher />
           </Box>
+
           <Box className={classes.categoryBox}>
             <Box className={classes.category}>
               {sections.map((section, idx) => {

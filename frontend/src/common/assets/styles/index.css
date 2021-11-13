@@ -21,3 +21,19 @@ a {
 .gray{
   background-color: #F3F4F5;
 }
+
+.spin{
+  animation: spinning ease-in-out forwards .25s;
+  animation-iteration-count: 1;
+  display: inline-block;
+  background-color: red;
+}
+
+@keyframes spinning{
+  0%{
+      background-color: red;
+  }
+  100%{
+    background-color: transparent;
+  }
+}
