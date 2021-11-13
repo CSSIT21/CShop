@@ -8,6 +8,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Indicator from "./components/Indicator";
+
 const SellerDashboard = () => {
   const indicatorData = [
     {
