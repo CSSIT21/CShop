@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+
 import React, { useState } from "react";
+
 import Indicator from "./components/Indicator";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -9,6 +11,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
+
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -30,7 +33,6 @@ import LogBody from "./components/LogBody";
 import LogFooter from "./components/LogFooter";
 import AddProduct from "./components/AddProduct";
 
-
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -51,8 +53,10 @@ function TablePaginationActions(props) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
+  const [product, setProduct] = useState(true);
+
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}> 
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
@@ -109,7 +113,8 @@ function createData(
   totalprice,
   status,
   stdate,
-  endate
+  endate,
+  actions
 ) {
   return {
     id,
@@ -121,6 +126,7 @@ function createData(
     status,
     stdate,
     endate,
+    actions,
   };
 }
 
@@ -362,9 +368,10 @@ const SellerStock = () => {
       icon: MonetizationOnIcon,
     },
   ];
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [product,setProduct] = useState(false);
+  const [product, setProduct] = useState(false);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -379,49 +386,57 @@ const SellerStock = () => {
     setPage(0);
   };
   return (
-    <Box> 
-      <Box
-        sx={{
-          alignContent: "center",
-          position: "relative",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        {indicatorData.map((indicator) => (
-          <Indicator
-            value={indicator.value}
-            name={indicator.name}
-            color={indicator.color}
-            fontColor={indicator.fontColor}
-            icon={indicator.icon}
-            key={indicator.id}
+    <>
+      <Box>
+        <Box
+          sx={{
+            alignContent: "center",
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          {indicatorData.map((indicator) => (
+            <Indicator
+              value={indicator.value}
+              name={indicator.name}
+              color={indicator.color}
+              fontColor={indicator.fontColor}
+              icon={indicator.icon}
+              key={indicator.id}
+            />
+          ))}
+        </Box>
+        <Divider />
+        <Typography variant="h4" fontWeight="600" sx={{ m: 1 }}>
+          Stock
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            p: 1,
+            m: 1,
+          }}
+        >
+          <Box>
+            <TextField
+              id="standard-basic"
+              label="Product name"
+              variant="standard"
+            />
+          </Box>
+          <AddProduct
+            product={product}
+            setProduct={setProduct}
+            title=""
+            description=""
           />
-        ))}
-      </Box>
-      <Divider />
-      <Typography variant="h4" fontWeight="600" sx={{ m: 1 }}>
-        Stock
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          p: 1,
-          m: 1,
-        }}
-      >
-        <Box>
-          <TextField
-            id="standard-basic"
-            label="Product name"
-            variant="standard"
-          />
-        </Box><AddProduct product = {product} setProduct = {setProduct} title = "" description = "" />
-        <Button variant="contained" size="large" onClick = {setProduct}>
-          Add product
-        </Button>
+          <Button variant="contained" size="large" onClick={setProduct}>
+            Add product
+          </Button>
+        </Box>
       </Box>
       <Box>
         {" "}
@@ -445,7 +460,7 @@ const SellerStock = () => {
           </Table>
         </TableContainer>
       </Box>
-    </Box>
+    </>
   );
 };
 
