@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+
 import React, { useState } from "react";
+
 import Indicator from "./components/Indicator";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -9,6 +11,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
+
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -365,6 +368,7 @@ const SellerStock = () => {
       icon: MonetizationOnIcon,
     },
   ];
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [product, setProduct] = useState(false);

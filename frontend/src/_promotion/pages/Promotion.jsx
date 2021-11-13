@@ -1,62 +1,43 @@
+import { Box } from "@mui/system";
 import React, { Fragment } from "react";
 import Coupon from "../components/Coupon";
 import Nametype from "../components/Nametype";
-import { makeStyles } from "@mui/styles";
-
+import Couponshop from "../components/Couponshop";
+// import Showpic from "../components/Showpic";
 const Promotion = () => {
-    const classes = useStyles();
   return (
-    <>
-    <div></div>
-    <div class="main-content">
-        <div class="slide">
-            <figure>
+    <Box sx={{ backgroundColor: "wheat" }}>
+      {/* <Showpic/> */}
+      <Nametype name="Shop" color="orange" />
 
-          <h1>image</h1>
-            
-            </figure>
-        </div>
-    </div>
+      <Coupon/>
+      <Coupon/>
+      <Coupon/>
 
- 
-      <Nametype name="Shop" />
-      <Coupon
-        namepro="50% save for new user!!"
-        detail="This coupon can be use to have 50% discount"
-        date="31/12/2021"
-      />
-
-      <Coupon
-        namepro="50% save for new user!!"
-        detail="This coupon can be use to have 50% discount"
-        date="31/12/2021"
-      />
-
-      <Nametype name="App" />
-      <Coupon
-        namepro="50% save for new user!!"
-        detail="This coupon can be use to have 50% discount"
-        date="31/12/2021"
-      />
-
-      <Coupon
-        namepro="50% save for new user!!"
-        detail="This coupon can be use to have 50% discount"
-        date="31/12/2021"
-      />
-
-      <Nametype name="Event" />
-      <Coupon
-        namepro="50% save for new user!!"
-        detail="This coupon can be use to have 50% discount"
-        date="31/12/2021"
-      />
-    </>
+   
+    </Box>
   );
 };
 
-const useStyles = makeStyles({
-  
-  });
+// const useStyles = makeStyles({
+//   wrapper: {
+//     marginBottom: "40px",
+//   },
+
+//   header: {
+//     display: "flex",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     marginBottom: "40px",
+//   },
+
+//   content: {
+//     width: "100%",
+//     padding: "30px",
+//     boxSizing: "border-box",
+//     backgroundColor: "#FDF4DD",
+//     borderRadius: "15px",
+//   },
+// });
 
 export default Promotion;
