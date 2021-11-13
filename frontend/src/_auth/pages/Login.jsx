@@ -3,12 +3,13 @@ import React, { Fragment, useEffect, useLayoutEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import CButton from "../../common/components/CButton";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useForm, useInput } from "../../common/hooks";
+import { useRecoilState } from "recoil";
+import authState from "~/common/store/authState";
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -16,6 +17,12 @@ const LoginPage = () => {
   const phone = useInput("");
   const password = useInput("");
   const form = useForm({ phone, password });
+  const [auth, setAuth] = useRecoilState(authState);
+
+  const onLogin = () => {
+    router.push("/home");
+    return setAuth({ ...auth, isLoggedIn: true });
+  };
 
   useLayoutEffect(() => {
     document.body.classList.add("gray");
@@ -51,14 +58,17 @@ const LoginPage = () => {
             />
           </Box>
           <Box className={classes.button}>
-            <CButton
-              title="Sign In"
-              width="500px"
-              height="50px"
-              onClick={() => {
-                router.push("/home");
+            <Button
+              variant="contained"
+              style={{
+                width: "500px",
+                height: "50px",
+                textTransform: "capitalize",
               }}
-            ></CButton>
+              onClick={onLogin}
+            >
+              Sign In
+            </Button>
           </Box>
           <Box className={classes.text}>Forgot your password?</Box>
           <Box className={classes.divider}>OR</Box>

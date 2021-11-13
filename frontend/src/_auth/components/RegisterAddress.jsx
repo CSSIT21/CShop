@@ -9,6 +9,8 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import { assign } from "~/common/utils/";
+import authState from "~/common/store/authState";
+
 const RegisterAddress = ({
   activeStep,
   handleBack = () => {},
@@ -19,6 +21,7 @@ const RegisterAddress = ({
   }, []);
   const [addressData, setAddressData] = useState([]);
   const [userInfo, setUserInfo] = useRecoilState(registerState);
+  const [auth, setAuth] = useRecoilState(authState);
   const [province, setProvince] = useState([]);
   const [district, setDistrict] = useState([]);
   const [subDistrict, setSubDistrict] = useState([]);
@@ -99,6 +102,7 @@ const RegisterAddress = ({
     ) {
       handleRegister();
       console.log(userInfo);
+      return setAuth({ ...auth, isLoggedIn: true });
     }
   };
   return (
