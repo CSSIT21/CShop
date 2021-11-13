@@ -16,6 +16,13 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import DirectionsIcon from '@mui/icons-material/Directions';
+import Button from '@mui/material/Button';
+import { Typography } from "@mui/material";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -123,83 +130,113 @@ export default function SellerStockLog() {
   };
 
   return (
-    
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+    <Box>
 
-        <TableHead>
-            <TableRow>
-                <TableCell>OrderId</TableCell>
-                <TableCell align="right">Product</TableCell>
-                <TableCell align="right">CustomerName&nbsp;</TableCell>
-                <TableCell align="right">amount&nbsp;</TableCell>
-                <TableCell align="right">TotalPrice&nbsp;(bath)</TableCell>
-                <TableCell align="right">Status&nbsp;</TableCell>
-                <TableCell align="right">Create At&nbsp;</TableCell>
-                <TableCell align="right">Last Update&nbsp;</TableCell>
-            </TableRow>
-        </TableHead>
+      <Typography variant="h4" fontWeight="600" sx={{marginBottom:'50px'}}>
+        Order History
+      </Typography>
 
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.orderId}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.products}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.customername}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.amount}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.totalprice}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.status}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.stdate}
-              </TableCell>
-              <TableCell style={{  }} align="right">
-                {row.endate}
-              </TableCell>
-            </TableRow>
-          ))}
+      <Box sx={{ display:'flex' ,marginBottom:'50px'}}>
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+        <Button type="submit" sx={{ p: '10px' }} aria-label="search ">
+          Search
+        </Button>
+
+        <Paper
+          component="form"
+          sx={{ p: '2.5px 8px', display: 'flex', alignItems: 'center', width: '100%' }}
+        >
+          <SearchIcon sx={{ color:'grey' }} />
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder=" what are you looking at"
+            inputProps={{ 'aria-label': 'search google maps' }}
+          />
+          <Button type="submit" sx={{ p: '10px' }} aria-label="search ">
+            Search
+          </Button>
+          
+        </Paper>
+
+      </Box>  
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+
+            <TableHead>
+                <TableRow>
+                    <TableCell>OrderId</TableCell>
+                    <TableCell align="right">Product</TableCell>
+                    <TableCell align="right">CustomerName&nbsp;</TableCell>
+                    <TableCell align="right">amount&nbsp;</TableCell>
+                    <TableCell align="right">TotalPrice&nbsp;(bath)</TableCell>
+                    <TableCell align="right">Status&nbsp;</TableCell>
+                    <TableCell align="right">Create At&nbsp;</TableCell>
+                    <TableCell align="right">Last Update&nbsp;</TableCell>
+                </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {(rowsPerPage > 0
+                ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : rows
+              ).map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    {row.orderId}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.products}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.customername}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.amount}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.totalprice}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.status}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.stdate}
+                  </TableCell>
+                  <TableCell style={{  }} align="right">
+                    {row.endate}
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
+
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  colSpan={5}
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'rows per page',
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+    </Box>
   );
 }
