@@ -3,18 +3,16 @@ import { PrismaService } from './prisma/prisma.service';
 
 @Controller()
 export class AppController {
-	constructor(private readonly prisma: PrismaService) {
+	constructor(private readonly prisma: PrismaService) {}
 
-	}
+	// @Get('')
+	// public GetUser() {
+	// 	return this.prisma.customer.count();
+	// }
 
-	@Get('')
-	public GetUser() {
-		return this.prisma.user.count();
-	}
-
-	@Post('')
-	public async AddUser(@Body('username') username, @Body('password') password) {
-		await this.prisma.user.create({ data: { username, password } });
-		return 'Successfully!';
-	}
+	// @Post('')
+	// public async AddUser(@Body('username') username, @Body('password') password) {
+	// 	await this.prisma.customer.create({ data: { username, password } });
+	// 	return 'Successfully!';
+	// }
 }
