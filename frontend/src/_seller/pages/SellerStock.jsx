@@ -51,10 +51,8 @@ function TablePaginationActions(props) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
-  const [product,setProduct] = useState(true);
-
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}> <AddProduct product = {product} setProduct = {setProduct} title = "" description = "" />
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}> 
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
@@ -366,7 +364,7 @@ const SellerStock = () => {
   ];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  
+  const [product,setProduct] = useState(true);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -420,8 +418,8 @@ const SellerStock = () => {
             label="Product name"
             variant="standard"
           />
-        </Box>
-        <Button variant="contained" size="large"  >
+        </Box><AddProduct product = {product} setProduct = {setProduct} title = "" description = "" />
+        <Button variant="contained" size="large" onClick = {setProduct}>
           Add product
         </Button>
       </Box>
