@@ -1,50 +1,109 @@
-import React, { useState } from "react";
-import CButton from "~/common/components/CButton";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-const data = [
-  {
-    subDistrict: "Select Sub District",
-    district: "Select District",
-    province: "Select Province",
-    postalCode: "Postal Code",
-  },
-  {
-    subDistrict: "Bang Mot",
-    district: "Thung Khru",
-    province: "Bangkok",
-    postalCode: 10140,
-  },
-  {
-    subDistrict: "Pak Nam",
-    district: "Mueang Samut Prakan",
-    province: "Samut Prakarn",
-    postalCode: 10270,
-  },
-  {
-    subDistrict: "Tha Din Daeng",
-    district: "Phak Hai",
-    province: "Phra Nakhon Si Ayutthaya",
-    Zipcode: 13120,
-  },
-];
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import registerState from "../../common/store/registerState";
+import { assign } from "~/common/utils/";
+import authState from "~/common/store/authState";
+
 const RegisterAddress = ({
   activeStep,
   handleBack = () => {},
   handleRegister = () => {},
 }) => {
+  useEffect(() => {
+    getData();
+  }, []);
+  const [addressData, setAddressData] = useState([]);
+  const [userInfo, setUserInfo] = useRecoilState(registerState);
+  const [auth, setAuth] = useRecoilState(authState);
+  const [province, setProvince] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [subDistrict, setSubDistrict] = useState([]);
+  const [postalCode, setPostalCode] = useState([]);
   const classes = useStyles();
-  const [address, setAddress] = useState({
-    addressLine: "",
-    subDistrict: data[0].subDistrict,
-    district: data[0].district,
-    province: data[0].province,
-    postalCode: data[0].postalCode,
-  });
+  const getData = async () => {
+    const fetchedData = await axios.get(
+      "https://cshop-mock.mixkoap.com/thailand.json"
+    );
+    setAddressData(fetchedData.data);
+    setProvince([...new Set(fetchedData.data.map((el) => el.province))].sort());
+  };
 
+  useEffect(() => {
+    setDistrict(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.province === userInfo.province)
+            .map((el) => el.district)
+        ),
+      ].sort()
+    );
+    setUserInfo({ ...userInfo, district: "", subDistrict: "", postalCode: "" });
+  }, [userInfo.province]);
+
+  useEffect(() => {
+    setSubDistrict(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.district === userInfo.district)
+            .map((el) => el.subDistrict)
+        ),
+      ].sort()
+    );
+    setUserInfo({ ...userInfo, subDistrict: "", postalCode: "" });
+  }, [userInfo.district]);
+
+  useEffect(() => {
+    setPostalCode(
+      [
+        ...new Set(
+          addressData
+            .filter((el) => el.subDistrict === userInfo.subDistrict)
+            .map((el) => el.Zipcode)
+        ),
+      ].sort()
+    );
+  }, [userInfo.subDistrict]);
+  const [addressLineError, setaddressLineError] = useState("");
+  const [provinceError, setprovinceError] = useState("");
+  const [districtError, setdistrictError] = useState("");
+  const [subDistrictError, setsubDistrictError] = useState("");
+  const [postalCodeError, setpostalCodeError] = useState("");
+  const register = () => {
+    if (userInfo.addressLine == "") {
+      setaddressLineError("This field is required");
+    }
+    if (userInfo.province == "") {
+      setprovinceError("This field is required");
+    }
+    if (userInfo.district == "") {
+      setdistrictError("This field is required");
+    }
+    if (userInfo.subDistrict == "") {
+      setsubDistrictError("This field is required");
+    }
+    if (userInfo.postalCode == "") {
+      setpostalCodeError("This field is required");
+    }
+    if (
+      userInfo.addressLine != "" &&
+      userInfo.province != "" &&
+      userInfo.district != "" &&
+      userInfo.subDistrict != "" &&
+      userInfo.postalCode != ""
+    ) {
+      handleRegister();
+      console.log(userInfo);
+      return setAuth({ ...auth, isLoggedIn: true });
+    }
+  };
   return (
     <Box>
       <Box className={classes.header}>Address</Box>
@@ -59,11 +118,17 @@ const RegisterAddress = ({
               fullWidth
               multiline
               rows={5}
+              error={addressLineError.length === 0 ? false : true}
+              value={userInfo.addressLine}
               onChange={(e) => {
-                setAddress({ ...address, addressLine: e.target.value });
+                setUserInfo({ ...userInfo, addressLine: e.target.value });
+                setaddressLineError("");
               }}
             />
           </Box>
+          {addressLineError.length != 0 && (
+            <Box className={classes.error}>{addressLineError}</Box>
+          )}
           <Box className={classes.rowSelect}>
             <Box className={classes.textFieldBox} style={{ width: "45%" }}>
               <TextField
@@ -72,16 +137,21 @@ const RegisterAddress = ({
                 sx={{ borderRadius: "10px" }}
                 fullWidth
                 select
-                value={address.province}
+                label="Select Province"
+                error={provinceError.length === 0 ? false : true}
+                value={userInfo.province}
                 onChange={(e) => {
-                  setAddress({ ...address, province: e.target.value });
+                  setUserInfo({ ...userInfo, province: e.target.value });
+                  setprovinceError("");
                 }}
               >
-                {data.map((data) => (
-                  <MenuItem key={data.postalCode} value={data.province}>
-                    {data.province}
-                  </MenuItem>
-                ))}
+                {province.map((data, idx) => {
+                  return (
+                    <MenuItem key={idx} value={data}>
+                      {data}
+                    </MenuItem>
+                  );
+                })}
               </TextField>
             </Box>
             <Box className={classes.textFieldBox} style={{ width: "45%" }}>
@@ -91,18 +161,43 @@ const RegisterAddress = ({
                 sx={{ borderRadius: "10px" }}
                 fullWidth
                 select
-                value={address.district}
+                label="Select District"
+                error={districtError.length === 0 ? false : true}
+                value={userInfo.district}
                 onChange={(e) => {
-                  setAddress({ ...address, district: e.target.value });
+                  setUserInfo({ ...userInfo, district: e.target.value });
+                  setdistrictError("");
                 }}
               >
-                {data.map((data) => (
-                  <MenuItem key={data.postalCode} value={data.district}>
-                    {data.district}
+                {district.map((data, idx) => (
+                  <MenuItem key={idx} value={data}>
+                    {data}
                   </MenuItem>
                 ))}
               </TextField>
             </Box>
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            {provinceError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {provinceError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
+            {districtError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {districtError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
           </Box>
           <Box className={classes.rowSelect}>
             <Box className={classes.textFieldBox} style={{ width: "45%" }}>
@@ -112,14 +207,17 @@ const RegisterAddress = ({
                 sx={{ borderRadius: "10px" }}
                 fullWidth
                 select
-                value={address.subDistrict}
+                label="Select Sub District"
+                error={subDistrictError.length === 0 ? false : true}
+                value={userInfo.subDistrict}
                 onChange={(e) => {
-                  setAddress({ ...address, subDistrict: e.target.value });
+                  setUserInfo({ ...userInfo, subDistrict: e.target.value });
+                  setsubDistrictError("");
                 }}
               >
-                {data.map((data) => (
-                  <MenuItem key={data.postalCode} value={data.subDistrict}>
-                    {data.subDistrict}
+                {subDistrict.map((data, idx) => (
+                  <MenuItem key={idx} value={data}>
+                    {data}
                   </MenuItem>
                 ))}
               </TextField>
@@ -130,21 +228,46 @@ const RegisterAddress = ({
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
                 fullWidth
-                InputProps={{
-                  readOnly: true,
-                }}
-                value={address.postalCode}
+                select
+                label="Select Postal Code"
+                error={postalCodeError.length === 0 ? false : true}
+                value={userInfo.postalCode}
                 onChange={(e) => {
-                  setAddress({ ...address, postalCode: e.target.value });
+                  setUserInfo((user) =>
+                    assign({ ...user }, { postalCode: e.target.value })
+                  );
+                  setpostalCodeError("");
                 }}
               >
-                {data.map((data) => (
-                  <MenuItem key={data.postalCode} value={data.postalCode}>
-                    {data.postalCode}
+                {postalCode.map((data, idx) => (
+                  <MenuItem key={idx} value={data}>
+                    {data}
                   </MenuItem>
                 ))}
               </TextField>
             </Box>
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            {subDistrictError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {subDistrictError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
+            {postalCodeError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {postalCodeError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
           </Box>
         </Box>
       </Box>
@@ -156,7 +279,6 @@ const RegisterAddress = ({
             backgroundColor: "#ffffff",
             boxShadow: "none",
             border: "1px solid #FD6637",
-            borderRadius: "12px",
             width: "300px",
             height: "55px",
             color: "#FD6637",
@@ -165,12 +287,17 @@ const RegisterAddress = ({
         >
           Back
         </Button>
-        <CButton
-          title="Register"
-          onClick={handleRegister}
-          width="300px"
-          height="55px"
-        />
+        <Button
+          variant="contained"
+          onClick={register}
+          sx={{
+            width: "300px",
+            height: "55px",
+            textTransform: "capitalize",
+          }}
+        >
+          Register
+        </Button>
       </Box>
     </Box>
   );
@@ -191,7 +318,7 @@ const useStyles = makeStyles({
     marginBottom: "40px",
   },
   textFieldBox: {
-    marginBottom: "35px",
+    marginTop: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
     width: "100%",
@@ -209,6 +336,13 @@ const useStyles = makeStyles({
     justifyContent: "space-around",
     margin: "70px 0 180px 0",
     padding: "0 12%",
+  },
+  error: {
+    fontSize: "14px",
+    color: "#FD3737",
+    textAlign: "right",
+    width: "100%",
+    marginTop: "6px",
   },
 });
 export default RegisterAddress;

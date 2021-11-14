@@ -1,35 +1,34 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import CouponPic from "../../assets/voucher-pic.png";
-import Button from "@mui/material/Button";
+import CouponPic from '~/common/assets/images/voucher-pic2.png';
+import Button from '@mui/material/Button';
 
 const Coupon = ({ coupon }) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.couponbox}>
-      <Box className={classes.box}>
-        <img src={CouponPic} alt="pic" />
-        <Box className={classes.text}>
+      <Box className={classes.box}> 
+
+      <Box sx={{ display:"flex"
+        }}>
+        <img src={CouponPic} alt="pic"  style={{height:"130px",borderRadius:"10px"}}/>
+        <Box className={classes.text}  sx={{
+          borderRight: 1.5  , borderRightColor: 'white' , borderRightStyle: 'dashed', borderHeight: 20
+        }}>
           <Box className={classes.text1}>{coupon.title}</Box>
-          <Box className={classes.text2}>Detail</Box>
           <Box className={classes.text3}>{coupon.detail}</Box>
-          <Box className={classes.text4}>Valid</Box>
-          <Box className={classes.text5}>{coupon.valid}</Box>
+          <Box className={classes.text4}>{coupon.valid}</Box>
         </Box>
+        </Box>
+
+        <Button variant="secondary"  className={classes.button} sx={{
+          backgroundColor:'white', color:'#FD6637',
+          '&:hover': {
+            backgroundColor: '#ffab91', color:'white' , 
+        }}}>detail</Button>
       </Box>
-      <Button
-        style={{
-          backgroundColor: "#FD6637",
-          color: "white",
-          height: "45px",
-          width: "140px",
-          marginRight: "20px",
-        }}
-      >
-        add voucher
-      </Button>
     </Box>
   );
 };
@@ -37,37 +36,48 @@ const useStyles = makeStyles({
   couponbox: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "white",
-    marginBottom: "50px",
+    backgroundColor: "#FD6637",
+    marginTop : "20px",
+    marginBottom: "20px",
     alignItems: "center",
-    padding: "15px",
-    borderRadius: "10px",
-    width: "60%",
+    padding: "12px",
+    borderRadius: "20px",
+    width: "610px",
     justifyContent: "space-between",
   },
-  box: {
+
+ button:  {
+   backgroundColor:"white",
+    height: "30px",
+    alignSelf:"center",
+ },
+ box: {
+    marginBottom: "30px",
+    height: "100px",
+    width: "95%",
     display: "flex",
     flexDirection: "row",
+    justifyContent: "space-between",
   },
   text: {
-    margin: "15px",
+    marginTop:"8px",
+    marginLeft: "15px",
+    marginRight: "30px",
+    width:"300px",
+    height:"120px"
   },
   text1: {
-    color: "#FD6637",
-    fontWeight: "600",
-    fontSize: "25px",
-  },
-  text2: {
-    color: "#FD6637",
-    fontWeight: "500",
+    color: "white",
+    fontSize: "20px",
+    fontWeight: "800px"
   },
   text3: {
-    fontWeight: "500",
-    marginBottom: "10px",
+    fontSize: "12px",
+    color: "white"
   },
   text4: {
-    color: "#FD6637",
-    fontWeight: "500",
+    color: "black",
+    fontWeight: "200px",
   },
 });
 export default Coupon;

@@ -2,13 +2,10 @@ import { Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import React from "react";
-import authState from "../../../common/store/authState";
-import { useRecoilValue } from "recoil";
 
-const PersonalInfo = () => {
+const PersonalInfo = ({ userInfo }) => {
   const classes = useStyles();
-  const auth = useRecoilValue(authState);
-
+  const birthdate = userInfo.day + "/" + userInfo.month + "/" + userInfo.year;
   return (
     <>
       <Box className={classes.container}>
@@ -22,20 +19,20 @@ const PersonalInfo = () => {
             <Typography sx={infoTitle}>Name</Typography>
           </Grid>
           <Typography sx={infoDetail}>
-            {auth.user.first_name} {auth.user.last_name}
+            {userInfo.first_name} {userInfo.last_name}
           </Typography>
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Gender</Typography>
           </Grid>
-          <Typography sx={infoDetail}>Female</Typography>
+          <Typography sx={infoDetail}>{userInfo.gender} </Typography>
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Birthdate</Typography>
           </Grid>
-          <Typography sx={infoDetail}>DD/MM/YYYY</Typography>
+          <Typography sx={infoDetail}>{birthdate}</Typography>
         </Grid>
       </Box>
     </>

@@ -7,6 +7,7 @@ body {
 
 * {
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
 
 a {
@@ -15,4 +16,8 @@ a {
 
 .MuiBadge-badge .MuiBadge-standard {
   background-color: #fd6637 !important;
+}
+
+.gray {
+  background-color: #f3f4f5;
 }
