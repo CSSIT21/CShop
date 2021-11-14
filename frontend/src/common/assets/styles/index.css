@@ -21,3 +21,7 @@ a {
 .gray {
   background-color: #f3f4f5;
 }
+
+.MuiDialog-paper.MuiDialog-paperScrollPaper.MuiDialog-paperWidthSm.MuiBox-root {
+  overflow-y: unset !important;
+}
