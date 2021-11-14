@@ -7,37 +7,34 @@ import CouponPic from "~/common/assets/images/voucher-pic.png";
 import CButton from "~/common/components/CButton";
 import BorderLinearProgress from "~/common/components/BorderLinearProgress";
 import { noop } from "~/common/utils";
-import couponshops from "./Couponshop";
 
-const Coupon = ({
-  coupon,
-  totalCoupon = 1,
-  currentCoupon = 0,
-  setCoupon = noop,
-  claimProps = { title: "Claim" },
-}) => {
+
+
+const Coupon = ({coupon,totalCoupon = 1,currentCoupon = 0,setCoupon = noop,claimProps = { title: "Claim" },}) => {
   const classes = useStyles();
 
   useLayoutEffect(() => {
     if (currentCoupon > totalCoupon) setCoupon(totalCoupon);
   }, [currentCoupon]);
 
+
+
   return (
     <Box className={classes.couponbox}>
-      <img src={CouponPic} width="150px" alt="coupon picture" />
-
+      <img src={ coupon.CouponPic || CouponPic } width="150px" alt="coupon picture"/>
+         
       <Box className={classes.text}>
-        <Typography sx={titleStyle}> {couponshops.title} </Typography>
+        <Typography sx={titleStyle}> {coupon.title} </Typography>
         <BorderLinearProgress
           variant="determinate"
-          customColor="pink"
+          customColor="#FD6637"
           value={Math.ceil(100 * (currentCoupon / totalCoupon))}
           sx={{ margin: "10px 0" }}
         />
         <Typography sx={remainStyle}>
-          Remaining Voucher: {couponshops.remaining}
+          Remaining Voucher: {coupon.remaining}
         </Typography>
-        <Typography sx={expireStyle}>Expiring: {couponshops.valid}</Typography>
+        <Typography sx={expireStyle}>Expiring: {coupon.valid}</Typography>
       </Box>
 
       <Divider orientation="vertical" flexItem />
@@ -60,6 +57,9 @@ const useStyles = makeStyles({
 
     borderRadius: "15px",
     backgroundColor: "white",
+
+    marginBottom: '1%',
+    marginTop: '1%'
   },
 
   text: {
@@ -69,7 +69,7 @@ const useStyles = makeStyles({
 });
 
 const titleStyle = {
-  fontSize: "20px",
+  fontSize: "18px",
   fontWeight: 600,
   color: "#FD6637",
 };

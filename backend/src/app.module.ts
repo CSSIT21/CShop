@@ -11,11 +11,11 @@ import { PrismaModule } from './prisma/prisma.module';
 	imports: [HttpModule, AuthenticationModule, PrismaModule],
 	controllers: [AppController],
 	providers: [
-		AppService,
-		{
-			provide: APP_GUARD,
-			useClass: JwtAuthGuard,
-		},
+		// AppService,
+		// {
+		// 	provide: APP_GUARD,
+		// 	useClass: JwtAuthGuard,
+		// },
 	],
 })
 export class AppModule {}
