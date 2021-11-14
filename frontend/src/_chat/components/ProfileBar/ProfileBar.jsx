@@ -14,10 +14,10 @@ const ProfileBar = (props) => {
       <Avatar alt="User Pic" src={props.pic} sx={classes.avatar} />
 
       <Box className={classes.profileBarDisplayName}>
-        <Typography variant="h6" className={classes.profileName}>
+        <Typography variant="h6">
           {props.displayName}
         </Typography>
-        <Typography variant="body2" className={classes.profileStatus}>
+        <Typography variant="body2">
           {props.status}
         </Typography>
       </Box>

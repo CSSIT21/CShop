@@ -32,31 +32,33 @@ const useStyles = makeStyles({
   profileBarDisplayName: {
     display: "flex",
     flexDirection: "column",
-
     marginLeft: "15px",
+    '& > h6': {
+      height: "24px",
+      lineHeight: "24px",
+      fontSize: "22px !important",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      width: "calc(50vw - 100px)",
+    },
+    '& > p': {
+      fontSize: "16px !important",
+      color: "#A0A3BD !important",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      width: "calc(30vw - 100px)",
+    },
   },
-  profileName: {
-    
-    fontSize: "22px !important",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "calc(50vw - 100px)",
-  },
+  
   profileBarNoti: {
     color: "#323232",
     width: "15px !important",
     height: "16px !important",
     margin: "0px",
   },
-  profileStatus: {
-    fontSize: "16px !important",
-    color: "#A0A3BD !important",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "calc(30vw - 100px)",
-  },
+  
 });
 
 export default useStyles;
