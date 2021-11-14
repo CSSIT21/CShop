@@ -12,9 +12,12 @@ const VoucherCard = ({
   totalCoupon = 1,
   currentCoupon = 0,
   setCoupon = noop,
+  selectedCoupon=null,
+  setSelectedCoupon,
   claimProps = { title: "Claim" },
 }) => {
   const classes = useStyles();
+
 
   useLayoutEffect(() => {
     if (currentCoupon > totalCoupon) setCoupon(totalCoupon);
@@ -31,7 +34,7 @@ const VoucherCard = ({
 
       <Divider orientation="vertical" flexItem />
       <Box sx={{marginLeft: "30px"}}>
-      <CButton {...claimProps} />
+      {(selectedCoupon !== null && selectedCoupon.id === coupon.id )  ? <CButton backgroundColor="gray" {...{...claimProps, title: 'Cancel', onClick: () => setSelectedCoupon(null) }}/> : <CButton {...claimProps}/>}
       </Box>
     </Box>
   );
