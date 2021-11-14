@@ -49,6 +49,8 @@ import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
 import Promotion from "./_promotion/pages/Promotion";
+import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
+import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -204,6 +206,13 @@ function App() {
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/shop/:id/comment" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShopComment />
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
@@ -263,6 +272,9 @@ function App() {
                     <Suspense fallback={<SkeletonLoading />}>
                       <Route path="/seller/:id/dashboard">
                         <SellerDashboard />
+                      </Route>
+                      <Route path="/seller/:id/customize">
+                        <SellerShopCustomizationPage />
                       </Route>
                       <Route path="/seller/:id/stock">
                         <SellerStock />
