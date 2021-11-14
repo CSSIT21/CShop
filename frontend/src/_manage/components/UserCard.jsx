@@ -29,8 +29,8 @@ export class UserCard extends React.Component {
         </CardContent>
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography>Title</Typography>
-            <Typography>desc</Typography>
+            <Typography>Expaned card title</Typography>
+            <Typography>Hokma balls</Typography>
           </CardContent>
         </Collapse>
       </CardLayout>
