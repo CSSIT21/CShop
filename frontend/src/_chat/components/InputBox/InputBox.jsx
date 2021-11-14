@@ -24,12 +24,14 @@ const StyledInput = styled('input')`
   }
 `
 
-const InputBox = React.forwardRef(function CustomInput({handleSubmitMessage, ...rest}, ref) {
+const InputBox = React.forwardRef(function CustomInput({forwardedRef, onChange, ...rest}, ref) {
   return (
     <InputUnstyled
         components={{ Root: StyledRoot, Input: StyledInput }}
+        tabIndex={0}
+        onChange={onChange}
         {...rest}
-        ref={ref}
+        ref={forwardedRef}
     />
   );
 });

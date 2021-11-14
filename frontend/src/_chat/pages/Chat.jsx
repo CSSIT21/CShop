@@ -27,17 +27,12 @@ const ChatPage = props => {
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
     const [currentChatUserId, setCurrentChatUserId] = useState(4)
-    let inputText = ''
 
     const classes = useStyles()
 
-    function handleSubmitMessage(e) {
-        e.preventDefault()
-        alert('Send: ' + inputText)
-    }
-
-    function setInputText(text) {
-        inputText = text
+    function handleSubmitMessage(text) {
+        if(text === '') return
+        alert('Send: ' + text)
     }
 
     return <Box className={classes.chatLayout}>
@@ -50,7 +45,6 @@ const ChatPage = props => {
         />
         <ChatFeed
             messages={ChatService.messagesBetween(currentChatUserId)}
-            setInputText={setInputText}
             handleSubmitMessage={handleSubmitMessage}
             user_id={user_id}
             currentChatUserId={currentChatUserId}

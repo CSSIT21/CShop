@@ -49,7 +49,7 @@ const ChatFeed = (props) => {
   const classes = useStyles();
   const contentType= ['notification', 'text', 'image', 'video']
 
-  console.log(props.displayName)
+  // console.log(props.displayName)
   return (
     <Box className={classes.chatFeedContainer}>
       {/* ChatFeed on the right shows all messages between two users */}
