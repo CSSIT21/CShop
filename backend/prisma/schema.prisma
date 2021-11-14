@@ -1,5 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//npx prisma migrate dev --name init
 
 generator client {
     provider = "prisma-client-js"
@@ -17,6 +18,21 @@ enum Gender {
     PreferNotToSay
 }
 
+enum Shop_section {
+    Banner
+    BannerCarousel
+    ProductCarousel
+    Video
+}
+
+enum Platform {
+    Ios
+    Android
+    PC
+    MacOS
+    Linux
+}
+
 //Customer
 
 model customer {
@@ -30,6 +46,8 @@ model customer {
     old_password     old_password[]
     wishlist         wishlist[]
     followed_shop    followed_shop[]
+    shop_info        shop_info[]
+    shop_comment     shop_comment[]
 }
 
 model customer_info {
@@ -67,6 +85,7 @@ model address {
     sub_district     String             @db.VarChar(20)
     postal_code      String             @db.VarChar(5)
     customer_address customer_address[]
+    shop_info        shop_info[]
 }
 
 model customer_address {
@@ -103,4 +122,101 @@ model email_verification {
     email       String   @db.VarChar(60)
     token       String   @db.Text
     expire_date DateTime @db.Timestamp
+}
+
+//Seller Page Customization
+
+model shop_info {
+    id                     Int                      @id @default(autoincrement())
+    customer_id            Int
+    shop_ower_id           customer                 @relation(fields: [customer_id], references: [id])
+    shop_address_id        Int
+    join_shop_address_id   address                  @relation(fields: [shop_address_id], references: [id])
+    shop_name              String                   @db.VarChar(40)
+    join_date              DateTime                 @default(now())
+    phone_number           String                   @db.VarChar(10)
+    shop_picture           shop_picture[]
+    shop_comment           shop_comment[]
+    shop_section_log       shop_section_log[]
+    shop_section           shop_section[]
+    shop_flashsale         shop_flashsale[]
+    shop_flashsale_history shop_flashsale_history[]
+}
+
+model shop_picture {
+    shop_id                        Int       @id
+    join_shop_id_from_shop_picture shop_info @relation(fields: [shop_id], references: [id])
+    title                          String    @db.VarChar(50)
+    path                           String    @db.Text
+    thumbnail                      String    @db.Text
+    mime_type                      String    @db.VarChar(20)
+}
+
+model shop_comment {
+    id                                 Int       @id @default(autoincrement())
+    customer_id                        Int
+    join_customer_id_from_shop_comment customer  @relation(fields: [customer_id], references: [id])
+    shop_id                            Int
+    join_shop_id_from_shop_comment     shop_info @relation(fields: [shop_id], references: [id])
+    rating                             Int
+    comment                            String    @db.Text
+    date                               DateTime  @default(now())
+}
+
+model shop_section_log {
+    id                                 Int          @id @default(autoincrement())
+    shop_id                            Int
+    join_shop_id_from_shop_section_log shop_info    @relation(fields: [shop_id], references: [id])
+    section_type                       Shop_section
+    added_date                         DateTime     @default(now())
+    device                             Platform
+}
+
+model shop_section {
+    shop_id                        Int       @id
+    join_shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
+    sections                       Json
+}
+
+model shop_flashsale {
+    shop_id                          Int       @id
+    join_shop_id_from_shop_flashsale shop_info @relation(fields: [shop_id], references: [id])
+    started_date                     DateTime  @default(now())
+    ended_date                       DateTime  @default(now())
+    products                         Json
+}
+
+model shop_flashsale_history {
+    shop_id                                  Int       @id
+    join_shop_id_from_shop_flashsale_history shop_info @relation(fields: [shop_id], references: [id])
+    started_date                             DateTime  @default(now())
+    ended_date                               DateTime  @default(now())
+    products                                 Json
+    quantity                                 Json
+}
+
+model banner {
+    id        Int    @id @default(autoincrement())
+    title     String @db.VarChar(50)
+    path      String @db.Text
+    thumbnail String @db.Text
+    mime_type String @db.VarChar(20)
+}
+
+model banner_carousel {
+    id      Int  @id @default(autoincrement())
+    banners Json
+}
+
+model product_carousel {
+    id       Int   @id @default(autoincrement())
+    products Int[]
+}
+
+model video {
+    id        Int    @id @default(autoincrement())
+    title     String @db.VarChar(50)
+    path      String @db.Text
+    thumbnail String @db.Text
+    mime_type String @db.VarChar(20)
 }
