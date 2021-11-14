@@ -9,7 +9,7 @@ const useStyles = makeStyles({
         justifyContent: 'space-between',
         alignItems: 'center',
         boxSizing: 'border-box',
-        padding: '0px 40px'
+        padding: '0px 16px'
     }
 });
 

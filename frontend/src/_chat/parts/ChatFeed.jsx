@@ -35,6 +35,8 @@ const useStyles = makeStyles({
     background: "#FDF4DD",
     overflowX: "hidden",
     overflowY: "auto",
+    padding:"24px 16px ",
+    
   },
   chatFeedButtom: {
     display: "flex",
