@@ -59,7 +59,7 @@ const useStyles = makeStyles({
 const ChatList = (props) => {
   const classes = useStyles()
 
-  console.log(props.latest)
+  // console.log(props.latest)
   return (
     <Box className={classes.chatListContainer}>
       {/* ChatList on the left lists all users that have a conversation */}

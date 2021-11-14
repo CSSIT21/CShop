@@ -128,7 +128,7 @@ class ChatService {
     }
 
     userWithId(user_id) {
-        console.log(users)
+        // console.log(users)
         return users.find(u => u.user_id === user_id)
     }
 
