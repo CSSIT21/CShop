@@ -1,4 +1,5 @@
-import { MenuItem, Button } from "@mui/material";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Store as StoreIcon,
   Person as PersonIcon,
@@ -7,17 +8,41 @@ import {
   ExitToApp as ExitToAppIcon,
   KeyboardArrowDown as KeyboardArrowDownIcon,
 } from "@mui/icons-material";
+import { MenuItem, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
 import { For } from "~/common//utils";
-import { useHistory } from "react-router-dom";
 import StyledMenu from "../../StyledMenu";
+import { useRecoilState } from 'recoil';
+import authState from '~/common/store/authState';
 
+const menuLists = [
+  {
+    title: "My Account",
+    icon: PersonIcon,
+    to: "/profile",
+  },
+  {
+    title: "My Shop",
+    icon: StoreIcon,
+    to: "/shop/1",
+  },
+  {
+    title: "Order History",
+    icon: RestoreIcon,
+    to: "/profile/history",
+  },
+  {
+    title: "Favorite",
+    icon: FavoriteIcon,
+    to: "/home/favourite",
+  },
+];
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useHistory();
   const open = Boolean(anchorEl);
+  const [auth, setAuth] = useRecoilState(authState);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,33 +51,10 @@ const DropdownDetail = ({ children }) => {
     setAnchorEl(false);
   };
 
-  const menuLists = [
-    {
-      title: "My Account",
-      icon: PersonIcon,
-      to: "/profile",
-    },
-    {
-      title: "My Shop",
-      icon: StoreIcon,
-      to: "/shop/1",
-    },
-    {
-      title: "Order History",
-      icon: RestoreIcon,
-      to: "/profile/history",
-    },
-    {
-      title: "Favorite",
-      icon: FavoriteIcon,
-      to: "/home/favourite",
-    },
-    {
-      title: "Log Out",
-      icon: ExitToAppIcon,
-      to: "/logout",
-    },
-  ];
+  const onLogOut = () => {
+    router.push("/home");
+    return setAuth({ ...auth, isLoggedIn: false });
+  };
 
   return (
     <Box>
@@ -89,7 +91,6 @@ const DropdownDetail = ({ children }) => {
                 handleClose();
               }}
               disableRipple
-              sx={{ fontSize: 14, margin: "5px 0" }}
               key={index}
             >
               <Dropdown.icon />
@@ -97,9 +98,19 @@ const DropdownDetail = ({ children }) => {
             </MenuItem>
           )}
         </For>
+
+        <MenuItem
+          onClick={() => {
+            onLogOut();
+            handleClose();
+          }}
+          disableRipple
+        >
+          <ExitToAppIcon />
+          Log Out
+        </MenuItem>
       </StyledMenu>
     </Box>
   );
 };
-
 export default DropdownDetail;

@@ -5,17 +5,17 @@ import Carousel from "~/common/components/Carousel";
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import { Typography } from '@mui/material';
 import HeaderWithButton from './HeaderWithButton';
-
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
 	categoriesWrapper: {
 		margin: '40px 165px',
-		padding: '40px 80px',
-
+		padding: '40px 60px',
 	},
 
 	categoriesItem: {
-		width: "100%",
+		width: "90%",
+		margin: "0 auto",
 		padding: '20px 10px',
 
 		backgroundColor: '#EFEFF1',
@@ -41,57 +41,57 @@ const categoriesItems = [
 	{
 		id: 0,
 		title: "Free Shipping",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 1,
 		title: "Electonics",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 2,
 		title: "Education",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 3,
 		title: "Fashion",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 4,
 		title: "Kids",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 5,
 		title: "Beauty",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 6,
 		title: "Furniture",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 7,
 		title: "Accessories",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 8,
 		title: "Food",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 9,
 		title: "Sport",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 	{
 		id: 10,
 		title: "Plants",
-		url: "https://images-na.ssl-images-amazon.com/images/I/61Gh-4LQXSL.png",
+		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
 	},
 ];
 
@@ -108,7 +108,7 @@ const CategoriesSection = () => {
 
 			<Box className={classes.categoriesContent}>
 				<HeaderWithButton
-					colors="Black"
+					colors="black"
 					headerName="Categories"
 					page={page}
 					totalPage={totalPage}
@@ -119,13 +119,15 @@ const CategoriesSection = () => {
 					items={items}
 					pageState={page}
 					setPageState={setPage}
-					itemsPerRow={6}
+					itemsPerRow={itemsPerRow}
 				>
 					{(item) => (
-						<Box className={classes.categoriesItem} key={item.id}>
-							<Typography component="h3" color="black" fontWeight="bold" mb={2} >{item.title}</Typography>
-							<img src={item.url} alt={item.title} />
-						</Box>
+						<Link to={`/search/category/${item.id}`}>
+							<Box className={classes.categoriesItem} key={item.id}>
+								<Typography component="h3" color="black" fontWeight={600} mb={2} >{item.title}</Typography>
+								<img src={item.url} alt={item.title} />
+							</Box>
+						</Link>
 					)}
 				</Carousel>
 			</Box >

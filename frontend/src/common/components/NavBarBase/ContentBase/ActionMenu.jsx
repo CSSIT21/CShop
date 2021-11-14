@@ -5,12 +5,6 @@ import { Badge, Fab } from '@mui/material';
 import { Box } from '@mui/system';
 import { For } from '~/common/utils';
 
-const buttonStyle = {
-	background: 'none',
-	boxShadow: 'none',
-	marginRight: 1,
-};
-
 const actionLists = [
 	{
 		label: "chat",
@@ -29,6 +23,12 @@ const actionLists = [
 	}
 ];
 
+const buttonStyle = {
+	background: 'none',
+	boxShadow: 'none',
+	marginRight: 1,
+};
+
 const ActionMenu = () => {
 
 	return (
@@ -43,7 +43,7 @@ const ActionMenu = () => {
 				}</For>
 			</Box>
 		</>
-	)
-}
+	);
+};
 
 export default ActionMenu;
