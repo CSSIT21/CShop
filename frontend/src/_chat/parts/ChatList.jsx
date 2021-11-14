@@ -2,7 +2,7 @@ import React from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { AddChatModal, ChatBox } from '../components'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 
 const useStyles = makeStyles({
   chatListContainer: {
@@ -19,8 +19,14 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     alignItems: 'flex-start',
     width: '100%',
-    background: '#FDF4DD',
     height: '72px',
+
+  },
+  chatPageHeading:{
+    fontSize:"22px !important",
+    fontWeight:"500 !important",
+    marginLeft:"16px !important",
+    marginTop:"8px !important"
   },
   chatList: {
     display: 'flex',
@@ -39,12 +45,13 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    background: '#FDF4DD',
+    
     height: '72px',
     padding: '8px'
   },
   addNewChatButton: {
     backgroundColor: 'white',
+    borderRadius:"10px !important"
   },
 })
 
@@ -56,7 +63,9 @@ const ChatList = (props) => {
   return (
     <Box className={classes.chatListContainer}>
       {/* ChatList on the left lists all users that have a conversation */}
-      <Box className={classes.chatListTitle} />
+      <Box className={classes.chatListTitle} >
+        <Typography className={classes.chatPageHeading}>Chat</Typography>
+      </Box>
       <Box className={classes.chatList}>
         {props.latest.map((message) => (
           <ChatBox
@@ -81,7 +90,7 @@ const ChatList = (props) => {
         <Button
           variant='contained'
           className={classes.addNewChatButton}
-          sx={{ backgroundColor: '#FD6637', width: '100%', height: '100%' }}
+          sx={{ backgroundColor: '#FD6637', width: '100%', height: '100%', }}
         >
           Add New Chat
         </Button>
