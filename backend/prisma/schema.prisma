@@ -1,17 +1,360 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+//npx prisma migrate dev --name init
+
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
-model User {
-  id         Int       @id @default(autoincrement())
-  username   String?   @unique @db.VarChar
-  password   String?   @db.VarChar
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @default(now()) @db.Timestamptz(6)
-  type       Int       @default(1)
+//--------------------------------------------------------------------------------------------
+//      Customer
+//--------------------------------------------------------------------------------------------
+
+enum Gender {
+    Male
+    Female
+    Others
+    PreferNotToSay
+}
+
+model customer {
+    id                     Int                      @id @default(autoincrement())
+    email                  String                   @db.VarChar(60)
+    password               String                   @db.VarChar(255)
+    date                   DateTime                 @default(now())
+    customer_info          customer_info[]
+    customer_picture       customer_picture[]
+    customer_address       customer_address[]
+    old_password           old_password[]
+    wishlist               wishlist[]
+    followed_shop          followed_shop[]
+    shop_info              shop_info[]
+    shop_comment           shop_comment[]
+    product_reviews        product_reviews[]
+    product_comment_rating product_comment_rating[]
+}
+
+model customer_info {
+    customer_id       Int       @id
+    customer_relation customer  @relation(fields: [customer_id], references: [id])
+    firstname         String    @db.VarChar(20)
+    lastname          String    @db.VarChar(20)
+    phone_number      String    @db.VarChar(10)
+    gender            Gender
+    birthdate         DateTime?
+}
+
+model customer_picture {
+    customer_id         Int          @id
+    customer_relation   customer     @relation(fields: [customer_id], references: [id])
+    picture_id          Int
+    customer_picture_id picture_file @relation(fields: [picture_id], references: [id])
+}
+
+model picture_file {
+    id               Int                @id @default(autoincrement())
+    title            String             @db.VarChar(50)
+    path             String             @db.Text
+    thumbnail        String             @db.Text
+    mime_type        String             @db.VarChar(20)
+    primary          Boolean            @default(false)
+    customer_picture customer_picture[]
+}
+
+model address {
+    id               Int                @id @default(autoincrement())
+    address_line     String             @db.VarChar(200)
+    province         String             @db.VarChar(20)
+    district         String             @db.VarChar(20)
+    sub_district     String             @db.VarChar(20)
+    postal_code      String             @db.VarChar(5)
+    customer_address customer_address[]
+    shop_info        shop_info[]
+}
+
+model customer_address {
+    customer_id        Int      @id
+    customer_address   customer @relation(fields: [customer_id], references: [id])
+    address_id         Int
+    address_id_address address  @relation(fields: [address_id], references: [id])
+    primary            Boolean  @default(false)
+}
+
+model old_password {
+    customer_id          Int      @id
+    customer_id_password customer @relation(fields: [customer_id], references: [id])
+    password             String   @db.VarChar(255)
+    changed_date         DateTime @db.Timestamp
+}
+
+model wishlist {
+    customer_id          Int      @id
+    customer_id_wishlist customer @relation(fields: [customer_id], references: [id])
+    product_id           Int
+    added_date           DateTime @default(now())
+}
+
+model followed_shop {
+    customer_id               Int      @id
+    customer_id_followed_shop customer @relation(fields: [customer_id], references: [id])
+    shop_id                   Int
+    added_date                DateTime @default(now())
+}
+
+model email_verification {
+    id          Int      @id @default(autoincrement())
+    email       String   @db.VarChar(60)
+    token       String   @db.Text
+    expire_date DateTime @db.Timestamp
+}
+
+//--------------------------------------------------------------------------------------------
+//      Seller Page Customization
+//--------------------------------------------------------------------------------------------
+
+enum Shop_section {
+    Banner
+    BannerCarousel
+    ProductCarousel
+    Video
+}
+
+enum Platform {
+    Ios
+    Android
+    PC
+    MacOS
+    Linux
+}
+
+model shop_info {
+    id                             Int                      @id @default(autoincrement())
+    customer_id                    Int
+    shop_ower_id                   customer                 @relation(fields: [customer_id], references: [id])
+    shop_address_id                Int
+    shop_address_id_from_shop_info address                  @relation(fields: [shop_address_id], references: [id])
+    shop_name                      String                   @db.VarChar(40)
+    date                           DateTime                 @default(now())
+    phone_number                   String                   @db.VarChar(10)
+    shop_picture                   shop_picture[]
+    shop_comment                   shop_comment[]
+    shop_section_log               shop_section_log[]
+    shop_section                   shop_section[]
+    shop_flashsale                 shop_flashsale[]
+    shop_flashsale_history         shop_flashsale_history[]
+    product                        product[]
+}
+
+model shop_picture {
+    shop_id                   Int       @id
+    shop_id_from_shop_picture shop_info @relation(fields: [shop_id], references: [id])
+    title                     String    @db.VarChar(50)
+    path                      String    @db.Text
+    thumbnail                 String    @db.Text
+    mime_type                 String    @db.VarChar(20)
+}
+
+model shop_comment {
+    id                            Int       @id @default(autoincrement())
+    customer_id                   Int
+    customer_id_from_shop_comment customer  @relation(fields: [customer_id], references: [id])
+    shop_id                       Int
+    shop_id_from_shop_comment     shop_info @relation(fields: [shop_id], references: [id])
+    rating                        Int
+    comment                       String    @db.Text
+    date                          DateTime  @default(now())
+}
+
+model shop_section_log {
+    id                            Int          @id @default(autoincrement())
+    shop_id                       Int
+    shop_id_from_shop_section_log shop_info    @relation(fields: [shop_id], references: [id])
+    section_type                  Shop_section
+    added_date                    DateTime     @default(now())
+    device                        Platform
+}
+
+model shop_section {
+    shop_id                   Int       @id
+    shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
+    sections                  Json
+}
+
+model shop_flashsale {
+    shop_id                     Int       @id
+    shop_id_from_shop_flashsale shop_info @relation(fields: [shop_id], references: [id])
+    started_date                DateTime  @default(now())
+    ended_date                  DateTime  @default(now())
+    products                    Json
+}
+
+model shop_flashsale_history {
+    shop_id                             Int       @id
+    shop_id_from_shop_flashsale_history shop_info @relation(fields: [shop_id], references: [id])
+    started_date                        DateTime  @default(now())
+    ended_date                          DateTime  @default(now())
+    products                            Json
+    quantity                            Json
+}
+
+model shop_banner {
+    id        Int    @id @default(autoincrement())
+    title     String @db.VarChar(50)
+    path      String @db.Text
+    thumbnail String @db.Text
+    mime_type String @db.VarChar(20)
+}
+
+model shop_banner_carousel {
+    id      Int  @id @default(autoincrement())
+    banners Json
+}
+
+model shop_product_carousel {
+    id       Int   @id @default(autoincrement())
+    products Int[]
+}
+
+model shop_video {
+    id        Int    @id @default(autoincrement())
+    title     String @db.VarChar(50)
+    path      String @db.Text
+    thumbnail String @db.Text
+    mime_type String @db.VarChar(20)
+}
+
+//--------------------------------------------------------------------------------------------
+//      Product Management
+//--------------------------------------------------------------------------------------------
+
+enum Comment_Raitng {
+    Like
+    Dislike
+}
+
+model category_icon_picture {
+    id        Int        @id @default(autoincrement())
+    title     String     @db.VarChar(50)
+    path      String     @db.Text
+    thumbnail String     @db.Text
+    mime_type String     @db.VarChar(20)
+    category  category[]
+}
+
+model category_banner_picture {
+    id        Int        @id @default(autoincrement())
+    title     String     @db.VarChar(50)
+    path      String     @db.Text
+    thumbnail String     @db.Text
+    mime_type String     @db.VarChar(20)
+    category  category[]
+}
+
+model category {
+    id                      Int                     @id @default(autoincrement())
+    name                    String                  @db.VarChar(20)
+    icon_id                 Int
+    icon_id_from_category   category_icon_picture   @relation(fields: [icon_id], references: [id])
+    banner_id               Int
+    banner_id_from_category category_banner_picture @relation(fields: [banner_id], references: [id])
+    product                 product[]
+}
+
+model product {
+    id                       Int                  @id @default(autoincrement())
+    shop_id                  Int
+    shop_id_from_product     shop_info            @relation(fields: [shop_id], references: [id])
+    title                    String               @db.VarChar(100)
+    sub_title                String               @db.VarChar(70)
+    category_id              Int
+    category_id_from_product category             @relation(fields: [category_id], references: [id])
+    price                    Int
+    quantity                 Int
+    sold                     Int
+    added_date               DateTime             @default(now()) @db.Timestamp
+    suggest_products         Int[]
+    rating                   Decimal              @db.Decimal(1, 1)
+    product_detail           product_detail[]
+    product_picture          product_picture[]
+    product_reviews          product_reviews[]
+    product_short_link       product_short_link[]
+    product_options          product_options[]
+}
+
+model product_detail {
+    product_id                     Int     @id
+    product_id_from_product_detail product @relation(fields: [product_id], references: [id])
+    info                           String  @db.Text
+}
+
+model product_picture {
+    product_id                      Int
+    product_id_from_product_picture product           @relation(fields: [product_id], references: [id])
+    photo_id                        Int               @id @default(autoincrement())
+    title                           String            @db.VarChar(50)
+    path                            String            @db.Text
+    thumbnail                       String            @db.Text
+    mime_type                       String            @db.VarChar(20)
+    product_choices                 product_choices[]
+}
+
+model product_reviews {
+    id                               Int                       @id @default(autoincrement())
+    product_id                       Int
+    product_id_from_product_reviews  product                   @relation(fields: [product_id], references: [id])
+    customer_id                      Int
+    customer_id_from_product_reviews customer                  @relation(fields: [customer_id], references: [id])
+    rating                           Int
+    comment                          String                    @db.Text
+    review_time                      DateTime                  @default(now()) @db.Timestamp
+    product_reviews_picture          product_reviews_picture[]
+    product_comment_rating           product_comment_rating[]
+}
+
+model product_reviews_picture {
+    product_review_id                              Int             @id
+    product_review_id_from_product_reviews_picture product_reviews @relation(fields: [product_review_id], references: [id])
+    title                                          String          @db.VarChar(50)
+    path                                           String          @db.Text
+    thumbnail                                      String          @db.Text
+    mime_type                                      String          @db.VarChar(20)
+}
+
+model product_short_link {
+    product_id                         Int     @id
+    product_id_from_product_short_link product @relation(fields: [product_id], references: [id])
+    shorted_link                       String  @db.Text
+}
+
+model product_comment_rating {
+    review_id                               Int             @id
+    review_id_from_product_comment_rating   product_reviews @relation(fields: [review_id], references: [id])
+    customer_id                             Int
+    customer_id_from_product_comment_rating customer        @relation(fields: [customer_id], references: [id])
+    rate                                    Comment_Raitng
+    comment_time                            DateTime        @default(now()) @db.Timestamp
+}
+
+model product_options {
+    id                              Int               @id @default(autoincrement())
+    product_id                      Int
+    product_id_from_product_options product           @relation(fields: [product_id], references: [id])
+    name                            String            @db.VarChar(20)
+    product_choices                 product_choices[]
+}
+
+model product_choices {
+    id                                      Int             @id @default(autoincrement())
+    product_options_id                      Int
+    product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
+    name                                    String          @db.VarChar(30)
+    price                                   Int
+    quantity                                Int
+    picture_id                              Int
+    picture_id_from_product_choices         product_picture @relation(fields: [picture_id], references: [photo_id])
 }

@@ -5,6 +5,7 @@ import Carousel from "~/common/components/Carousel";
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import { Typography } from '@mui/material';
 import HeaderWithButton from './HeaderWithButton';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
 	categoriesWrapper: {
@@ -121,10 +122,12 @@ const CategoriesSection = () => {
 					itemsPerRow={itemsPerRow}
 				>
 					{(item) => (
-						<Box className={classes.categoriesItem} key={item.id}>
-							<Typography component="h3" color="black" fontWeight={600} mb={2} >{item.title}</Typography>
-							<img src={item.url} alt={item.title} />
-						</Box>
+						<Link to={`/search/category/${item.id}`}>
+							<Box className={classes.categoriesItem} key={item.id}>
+								<Typography component="h3" color="black" fontWeight={600} mb={2} >{item.title}</Typography>
+								<img src={item.url} alt={item.title} />
+							</Box>
+						</Link>
 					)}
 				</Carousel>
 			</Box >
