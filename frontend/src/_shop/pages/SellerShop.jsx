@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/sellerShopBase/Header";
 import TabsController from "../components/sellerShopBase/TabsController";
 import Voucher from "../components/sellerShopBase/Voucher";
@@ -11,7 +11,6 @@ import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
-import CarouselProduct from "../components/sellerShopBase/ContentBase/CarouselProduct";
 
 const sections = [
   {
@@ -107,11 +106,19 @@ const menus = [
   },
 ];
 
-const flashSaleItem = fakeProducts;
+const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
 const SellerShop = () => {
   const classes = useStyles();
+  const [flashItems, setflashItems] = useState(flashSaleData.products);
+  const onFavourite = (index) => {
+    setflashItems((flashItems) => {
+      const target = flashItems[index];
+      target.favourite = !target.favourite;
 
+      return [...flashItems];
+    });
+  };
   return (
     <>
       <Box className={classes.body}>
@@ -134,9 +141,11 @@ const SellerShop = () => {
           <Box className={classes.containerWhite}>
             <TabsController categories={menus} />
           </Box>
-          {flashSaleItem && (
-            <FlashSale items={flashSaleItem} filterName="Flash Sale" />
-          )}
+          <FlashSale
+            items={flashItems}
+            endAt={flashSaleData.endAt}
+            onFavourite={onFavourite}
+          />
           <Box className={classes.containerWhite}>
             <Voucher />
           </Box>

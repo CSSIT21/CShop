@@ -32,7 +32,7 @@ const HeaderLeft = () => {
         <Avatar
           alt="profile"
           src={AvatarImage}
-          sx={{ width: "95px", height: "95px" }}
+          sx={{ width: "150px", height: "150px" }}
         />
         <Box className={classes.DetailShop}>
           <Typography fontSize="18px" fontWeight="500">
@@ -50,27 +50,29 @@ const HeaderLeft = () => {
             Necessitatibus eius quas tempora accusamus maxime error distinctio
             iusto
           </Typography>
-          <FollowButton
-            sx={{ margin: "24px 24px 0 0", padding: "10px 20px" }}
-            width="120px"
-            height="45px"
-            fontSize="14px"
-            fontWeight="500"
-          />
-          <Button
-            sx={{ margin: "24px 0 0 0", padding: "10px 20px" }}
-            width="120px"
-            height="45px"
-            fontSize="14px"
-            fontWeight="500"
-            backgroundColor="#FD6637"
-            variant="contained"
-          >
-            <ShoppingCartOutlinedIcon
-              style={{ width: "16px", heigth: "16px", margin: "0 5px 0 0" }}
+          <Box>
+            <FollowButton
+              sx={{ margin: "24px 24px 0 0", padding: "10px 20px" }}
+              width="120px"
+              height="45px"
+              fontSize="14px"
+              fontWeight="500"
             />
-            Chat now
-          </Button>
+            <Button
+              sx={{ margin: "24px 0 0 0", padding: "10px 20px" }}
+              width="120px"
+              height="45px"
+              fontSize="14px"
+              fontWeight="500"
+              backgroundColor="#FD6637"
+              variant="contained"
+            >
+              <ShoppingCartOutlinedIcon
+                style={{ width: "16px", heigth: "16px", margin: "0 5px 0 0" }}
+              />
+              Chat now
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Box>

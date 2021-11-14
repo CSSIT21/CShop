@@ -7,8 +7,11 @@ import { makeStyles } from "@mui/styles";
 import FlashOnRoundedIcon from "@mui/icons-material/FlashOnRounded";
 import { Typography } from "@mui/material";
 import CarouselButton from "~/common/components/CarouselButton";
+import LinearProgress from "@mui/material/LinearProgress";
 
-const FlashSale = ({ items, onFavourite, endAt = 1636851600 }) => {
+const progressBar = () => <LinearProgress />;
+
+const FlashSale = ({ items, onFavourite, endAt }) => {
   const [products, setProducts] = useState(items);
   const [page, setPage] = useState(0);
   const classes = useStyles();
@@ -18,10 +21,16 @@ const FlashSale = ({ items, onFavourite, endAt = 1636851600 }) => {
   const endDate = new Date(endAt * 1000);
   const [timeLeft, settimeLeft] = useState(endDate - curDate);
   const hours = useMemo(() => Math.floor(timeLeft / 3600000), [timeLeft]);
-  const mins = useMemo(() => Math.floor((timeLeft - hours * 3600000) / 60000), [timeLeft]);;
-  const secs = useMemo(() => Math.floor((timeLeft - mins * 60000 - hours * 3600000) / 1000), [timeLeft]);
+  const mins = useMemo(
+    () => Math.floor((timeLeft - hours * 3600000) / 60000),
+    [timeLeft]
+  );
+  const secs = useMemo(
+    () => Math.floor((timeLeft - mins * 60000 - hours * 3600000) / 1000),
+    [timeLeft]
+  );
   const [rotateSecs, setrotateSecs] = useState(false);
-  const [s,setS] = useState(0);
+  const [s, setS] = useState(0);
   const [rotateMins, setrotateMins] = useState(false);
   const [rotateHours, setrotateHours] = useState(false);
   const unmountedStyle = {
@@ -31,7 +40,7 @@ const FlashSale = ({ items, onFavourite, endAt = 1636851600 }) => {
   useEffect(() => {
     const timeLeftInterval = setInterval(() => {
       setrotateSecs(true);
-      
+
       if (secs == 59) {
         setrotateMins(true);
       }
@@ -39,8 +48,8 @@ const FlashSale = ({ items, onFavourite, endAt = 1636851600 }) => {
         setrotateHours(true);
       }
       setTimeout(() => {
-        setS(s => s + 1);
-        settimeLeft(timeLeft => timeLeft - 1000);
+        setS((s) => s + 1);
+        settimeLeft((timeLeft) => timeLeft - 1000);
       }, 195);
       setTimeout(() => {
         setrotateSecs(false);
@@ -49,79 +58,88 @@ const FlashSale = ({ items, onFavourite, endAt = 1636851600 }) => {
       }, 400);
     }, 1000);
     return () => clearInterval(timeLeftInterval);
-  },[]);
+  }, []);
 
-  return (
-    <Box className={classes.bestsellerWrapper}>
-      <Box className={classes.bestsellerContent}>
-        <Box className={classes.bestsellerHeader}>
-          <Box className={classes.text}>
-            <FlashOnRoundedIcon
-              style={{ fontSize: "24px", color: "#FD6637" }}
-            />
-            <Typography
-              component="span"
-              color="#FD6637"
-              fontSize="24px"
-              fontWeight={600}
-              sx={{ marginRight: "20px" }}
-            >
-              Flash Sale
-            </Typography>
-            <Box className={classes.timer} sx={rotateHours && unmountedStyle}>
-              <Typography color="#FFFFFF" fontSize="11px" fontWeight={400}>
-                {("0" + hours).slice(-2)}
-              </Typography>
-            </Box>
-            <Box className={classes.timer} sx={rotateMins && unmountedStyle}>
-              <Typography color="#FFFFFF" fontSize="11px" fontWeight={400}>
-                {("0" + mins).slice(-2)}
-              </Typography>
-            </Box>
-            <Box className={classes.timer} sx={{transform: `rotatex(${s*180 % 360}deg)`,...unmountedStyle}}>
+  if (endDate - curDate > 0)
+    return (
+      <Box className={classes.bestsellerWrapper}>
+        <Box className={classes.bestsellerContent}>
+          <Box className={classes.bestsellerHeader}>
+            <Box className={classes.text}>
+              <FlashOnRoundedIcon
+                style={{ fontSize: "24px", color: "#FD6637" }}
+              />
               <Typography
-                color="#FFFFFF"
-                fontSize="11px"
-                fontWeight={400}
+                component="span"
+                color="#FD6637"
+                fontSize="24px"
+                fontWeight={600}
+                sx={{ marginRight: "20px" }}
+              >
+                Flash Sale
+              </Typography>
+              <Box className={classes.timer} sx={rotateHours && unmountedStyle}>
+                <Typography color="#FFFFFF" fontSize="11px" fontWeight={400}>
+                  {("0" + hours).slice(-2)}
+                </Typography>
+              </Box>
+              <Box className={classes.timer} sx={rotateMins && unmountedStyle}>
+                <Typography color="#FFFFFF" fontSize="11px" fontWeight={400}>
+                  {("0" + mins).slice(-2)}
+                </Typography>
+              </Box>
+              <Box
+                className={classes.timer}
                 sx={{
-                  "&": ((s % 2 === 1)) && {
-                    transform: "rotateX(180deg)",
-                  },
+                  transform: `rotatex(${(s * 180) % 360}deg)`,
+                  ...unmountedStyle,
                 }}
               >
-                {("0" + secs).slice(-2)}
-              </Typography>
+                <Typography
+                  color="#FFFFFF"
+                  fontSize="11px"
+                  fontWeight={400}
+                  sx={{
+                    "&": s % 2 === 1 && {
+                      transform: "rotateX(180deg)",
+                    },
+                  }}
+                >
+                  {("0" + secs).slice(-2)}
+                </Typography>
+              </Box>
             </Box>
+
+            <CarouselButton
+              pageHandle={setPage}
+              currentPage={page}
+              totalPage={totalPage}
+            />
           </Box>
 
-          <CarouselButton
-            pageHandle={setPage}
-            currentPage={page}
-            totalPage={totalPage}
-          />
-        </Box>
-
-        <Box className={classes.bestsellerCarousel}>
-          <Carousel
-            items={products}
-            pageState={page}
-            setPageState={setPage}
-            itemsPerRow={productsPerRow}
-            gap={20}
-          >
-            {(product, idx) => (
-              <ProductCard
-                product={product}
-                onFavourite={onFavourite}
-                to="/product/1"
-                key={product.id}
-              />
-            )}
-          </Carousel>
+          <Box className={classes.bestsellerCarousel}>
+            <Carousel
+              items={products}
+              pageState={page}
+              setPageState={setPage}
+              itemsPerRow={productsPerRow}
+              gap={20}
+            >
+              {(product, idx) => (
+                <ProductCard
+                  product={product}
+                  onFavourite={onFavourite}
+                  to="/product/1"
+                  status={`Items left: ${50}`}
+                  key={product.id}
+                />
+              )}
+            </Carousel>
+          </Box>
         </Box>
       </Box>
-    </Box>
-  );
+    );
+  return <></>;
 };
 const useStyles = makeStyles({
   bestsellerWrapper: {
