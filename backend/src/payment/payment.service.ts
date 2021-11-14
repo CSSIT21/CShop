@@ -61,5 +61,6 @@ export class PaymentService {
       });
     console.log(str);
       return str;
-    }
+  }
+  
 }

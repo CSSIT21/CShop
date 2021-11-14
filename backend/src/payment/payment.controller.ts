@@ -7,6 +7,10 @@ import { Public } from 'src/common/decorators/public.decorator';
 
 var request: object
 var strQr: string ;
+var omise = require('omise')({
+  'publicKey': process.env.OMISE_PUBLIC_KEY,
+  'secretKey': process.env.OMISE_SECRET_KEY,
+}); 
 
 @Controller('payment')
 export class PaymentController {
@@ -17,6 +21,8 @@ export class PaymentController {
     return 'Hello';
   }
   
+  //-----------------QRCODE Payment-----------------------//
+
   @Get('/qrcode')
   @Public()
   async getQRcode(@Req() req, @Res() res): Promise<void>{
@@ -27,7 +33,29 @@ export class PaymentController {
             'amount': '250.00',
             'ref1': '000',
             'ref3': process.env.ref3
-        };
+    };
+    let accessToken: string;
+    const dataTest = {
+      applicationKey: process.env.API_Key,
+      applicationSecret: process.env.API_Secret,
+    };
+    await Axios({
+      method: 'post',
+      url: 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': 'EN',
+        RequestUId: process.env.uuid,
+        ResourceOwnerId: process.env.API_Key,
+      },
+      data: JSON.stringify(dataTest),
+    })
+      .then((response) => {
+        accessToken = response.data.data.accessToken;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     let str: string;
        await Axios({
             method: 'post',
@@ -35,7 +63,7 @@ export class PaymentController {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept-Language': 'EN',
-                'Authorization': process.env.authToken,
+                'Authorization': 'Bearer'+accessToken,
                 'RequestUId': process.env.uuid,
                 'ResourceOwnerId': process.env.API_Key,
             },
@@ -71,4 +99,36 @@ export class PaymentController {
     }
     res.send({ request })
   }
+
+  //------------------------Internet Banking------------------------//
+
+  // @Post('/Krungsri')
+  // @Public()
+  // async getKrungsri(@Req() req, @Res() res): Promise<void> {
+  //   let source: String;
+  //   const data = {
+  //     'amount': '250.00',
+  //     'currency': 'THB',
+  //     'type': 'internet_banking_bay',
+  //     }
+  //     await Axios({
+  //       method: 'post',
+  //       url: 'https://api.omise.co/sources',
+  //       data: JSON.stringify(data),
+  //     })
+  //       .then((response) => {
+  //         source = response.data.id;
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  
+    
+  //-----------------Credit Card---------------//
+    // var omise = require('omise')({
+    //   'publicKey': process.env.OMISE_PUBLIC_KEY,
+    //   'secretKey': process.env.OMISE_SECRET_KEY,
+    // });   
+
+  
 }

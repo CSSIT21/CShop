@@ -41,7 +41,8 @@ import LoginPage from "./_auth/pages/Login";
 import SellerShop from "./_shop/pages/SellerShop";
 import ShopCategory from "./_shop/pages/ShopCategory";
 import NotFoundPage from "./common/pages/404";
-import Qrcode from "./_payment/Qrcode";
+import Payment from "./_payment/pages/Payment";
+
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
 // const UsersPage = lazy(() => import("./_manage/pages/Users"));
@@ -64,6 +65,9 @@ import Qrcode from "./_payment/Qrcode";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from './common/utils/catch';
 import ErrorPage from "./common/utils/error";
+
+
+
 
 
 function App() {
@@ -206,9 +210,14 @@ function App() {
               </Route>
                 
                 {/* Payment PAGE */}
-                <Route path="/payment/qrcode">
-                  <Qrcode/>
+                <Route path="/payment">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Payment/>
+                    </Suspense>
+                  </MainLayout>
                 </Route>
+          
                 
               <Route path="*">
                 <Suspense fallback={<SkeletonLoading />}>
