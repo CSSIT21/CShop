@@ -5,6 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { makeStyles } from "@mui/styles";
+import Avatar from '@mui/material/Avatar';
 
 const useStyles = makeStyles({
   root: {
@@ -15,35 +16,36 @@ const useStyles = makeStyles({
   },
 });
 
-const LogHeader = () => {
+const LogHeader = ({rows,headerName}) => {
   const classes = useStyles();
+  // console.log("headername",headerName)
   return (
     <TableHead className={classes.root}>
       <TableRow>
-        <TableCell sx={{ color: "#FD6637" }}>OrderId</TableCell>
+        <TableCell sx={{ color: "#FD6637" }}>{headerName[0]}</TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          Product
+        {headerName[1]}
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          CustomerName&nbsp;
+        {headerName[2]}&nbsp;
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          amount&nbsp;
+        {headerName[3]}&nbsp;
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          TotalPrice&nbsp;(bath)
+        {headerName[4]}&nbsp;(bath)
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          Status&nbsp;
+        {headerName[5]}&nbsp;
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          Create At&nbsp;
+        {headerName[6]}&nbsp;
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          Last Update&nbsp;
+        {headerName[7]}&nbsp;
         </TableCell>
         <TableCell sx={{ color: "#FD6637" }} align="right">
-          Actions&nbsp;
+        {headerName[8]}&nbsp;
         </TableCell>
       </TableRow>
     </TableHead>

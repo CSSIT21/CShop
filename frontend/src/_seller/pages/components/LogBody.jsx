@@ -19,15 +19,15 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
       ).map((row) => (
         <TableRow key={row.id}>
           <TableCell component="th" scope="row">
-            {row.orderId}
+            <div>
+              {row.orderId ? <div>{row.orderId}</div> : <div>{row.avatar}</div>}
+            </div>
           </TableCell>
           <TableCell align="right">{row.products}</TableCell>
           <TableCell align="right">{row.customername}</TableCell>
           <TableCell align="right">{row.amount}</TableCell>
           <TableCell align="right">{row.totalprice}</TableCell>
           <TableCell align="right">
-            {/* <Chip label="success" color="success" variant="outlined" />
-            {row.status} */}
             <Box>
               {row.status == "success" ? (
                 <Chip
