@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import { Pagination } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import { Checkbox } from '@mui/material';
@@ -18,11 +19,13 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { FormHelperText } from '@mui/material';
 import { InputAdornment } from '@mui/material';
+import { createTheme } from '@mui/material';
 import CButton from "../../common/components/CButton";
-import React, { Fragment, useEffect, useLayoutEffect } from "react";
+import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 const cardStyle = {
     width: '100%',
     padding: '0px',
@@ -39,12 +42,12 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let users = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const ManageAccountPage = () => {
     const classes = useStyles();
     const [sortBy, setSortBy] = React.useState('');
-    const handleChange = (event) => {
+    const setSort = (event) => {
         setSortBy(event.target.value);
       };
 
@@ -52,6 +55,59 @@ const ManageAccountPage = () => {
         document.body.classList.add("gray");
         return () => {document.body.classList.remove("gray")};
       }, []);
+
+      const [headerSort, setHeaderSort] = useState({
+        headerSortArr: 
+        [
+            {
+                id: 1,
+                title: 'Users',
+                asc: false
+            },
+            {
+                id: 2,
+                title: 'Address',
+                asc: false
+            },
+            {
+                id: 3,
+                title: 'Gender',
+                asc: false
+            },
+            {
+                id: 4,
+                title: 'Postal',
+                asc: false
+            },
+            {
+                id: 5,
+                title: 'Joined Date',
+                asc: false
+            },
+            {
+                id: 6,
+                title: 'Birth Date',
+                asc: false
+            },
+            {
+                id: 7,
+                title: 'Status',
+                asc: false
+            },
+        ]
+      })
+
+      const toggleHeaderSort = (id) => {
+        let updatedList = headerSort.headerSortArr.map(item => 
+          {
+            if (item.id == id){
+              return {...item, asc: !item.asc};
+            }
+            return item;
+          });
+      
+        setHeaderSort({headerSortArr: updatedList});
+      }
 
     return (
         <div>
@@ -62,23 +118,26 @@ const ManageAccountPage = () => {
                     </FormGroup>
                 </Box>
                 <Box className={classes.topright}>
-                    <Box sx={{ margin: '10px'}}>
+                    <Box sx={{ margin: '8px'}}>
                         <TextField
-                        className={classes.root2}
+                        hiddenLabel
                         id="search-field"
-                        label="Search"
-                        InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                            <Search/>
-                            </InputAdornment>
-                            ),
-                        }}
+                        placeholder="Search"
                         variant="filled"
+                        size="small"
+                        className={classes.root2}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                <Search color="primary"/>
+                                </InputAdornment>
+                                ),
+                                className: classes.input,
+                            }}
                         />
                     </Box>
-                    <Box sx={{ marginTop: '25px' }}>
-                        <FormControl sx={{ m: 1, left: '140px'}}>
+                    <Box sx={{ marginTop: '10px', marginBottom: '10px' }}>
+                        <FormControl sx={{ m: 1, left: '250px'}}>
                             <InputLabel id="sort-by-select-label" sx={{ top: '-5px' }}>Sort By</InputLabel>
                             <Select
                               labelId="sort-by-label"
@@ -86,7 +145,7 @@ const ManageAccountPage = () => {
                               value={sortBy}
                               label="Sort By"
                               className={classes.root}
-                              onChange={handleChange}
+                              onChange={setSort}
                             >
                               <MenuItem value={10}>Name</MenuItem>
                               <MenuItem value={20}>Address</MenuItem>
@@ -99,6 +158,59 @@ const ManageAccountPage = () => {
                     </Box>
                 </Box>
             </Box>
+            <Card variant="outlined" sx={cardStyle}>
+                <Card variant="outlined" style={{
+                    backgroundColor: "#FDF4DD",
+                    border: 'none',
+                    margin: '25px',
+                    marginBottom: '0px'}}>
+                    <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
+                    <Box className={classes.header}>
+                        <Box sx={{ width: '20%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users</Typography>
+                            {headerSort.headerSortArr[0].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(1)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(1)}/> }
+                        </Box>
+                        <Box sx={{ width: '20%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
+                            {headerSort.headerSortArr[1].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(2)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(2)}/> }
+                        </Box>
+                        <Box sx={{ width: '10%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Gender</Typography>
+                            {headerSort.headerSortArr[2].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(3)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(3)}/> }
+                        </Box>
+                        <Box sx={{ width: '10%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Postal</Typography>
+                            {headerSort.headerSortArr[3].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(4)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(4)}/> }
+                        </Box>
+                        <Box sx={{ width: '14%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Joined Date</Typography>
+                            {headerSort.headerSortArr[4].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(5)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(5)}/> }
+                        </Box>
+                        <Box sx={{ width: '13%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Birth Date</Typography>
+                            {headerSort.headerSortArr[5].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(6)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(6)}/> }
+                        </Box>
+                        <Box sx={{ width: '10%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Status</Typography>
+                            {headerSort.headerSortArr[6].asc ? 
+                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(7)}/> : 
+                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(7)}/> }
+                        </Box>
+                    </Box>
+                    </CardContent>
+                </Card>
             <List>
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
@@ -112,6 +224,7 @@ const ManageAccountPage = () => {
                     </CardContent>
                 </Card>
             </List>
+            </Card>
             <CardContent>      
                 <div style={{ display:'flex', justifyContent:'center' }}>
                     <Pagination count={10} showFirstButton showLastButton color="primary" shape="rounded"/>
@@ -138,9 +251,15 @@ const useStyles = makeStyles({
         height: "40px"
     },
     root2: {
-        width: "350px",
-        height: "40px"
+        width: "450px"
     },
+    input: {
+        color: 'white'
+    },
+    header: {
+        display:'flex',
+        flexDirection: 'row',
+    }
 });
 
 export default ManageAccountPage;
