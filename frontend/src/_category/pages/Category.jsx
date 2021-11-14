@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, Grid, Pagination } from '@mui/material';
+import { Box, Divider, Grid, Pagination, Rating } from '@mui/material';
 import { FilterAltOutlined } from '@mui/icons-material';
 import CategoryHeader from '../components/CategoryHeader';
 
