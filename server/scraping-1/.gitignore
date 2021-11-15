@@ -6,3 +6,6 @@
 
 # macOS junks
 .DS_Store
+
+# Output
+*.csv
