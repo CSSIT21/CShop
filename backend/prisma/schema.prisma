@@ -23,20 +23,30 @@ enum Gender {
 }
 
 model customer {
-    id                     Int                      @id @default(autoincrement())
-    email                  String                   @db.VarChar(60)
-    password               String                   @db.VarChar(255)
-    date                   DateTime                 @default(now())
-    customer_info          customer_info[]
-    customer_picture       customer_picture[]
-    customer_address       customer_address[]
-    old_password           old_password[]
-    wishlist               wishlist[]
-    followed_shop          followed_shop[]
-    shop_info              shop_info[]
-    shop_comment           shop_comment[]
-    product_reviews        product_reviews[]
-    product_comment_rating product_comment_rating[]
+    id                        Int                         @id @default(autoincrement())
+    email                     String                      @db.VarChar(60)
+    password                  String                      @db.VarChar(255)
+    date                      DateTime                    @default(now())
+    customer_info             customer_info[]
+    customer_picture          customer_picture[]
+    customer_address          customer_address[]
+    old_password              customer_old_password[]
+    wishlist                  customer_wishlist[]
+    followed_shop             customer_followed_shop[]
+    shop_info                 shop_info[]
+    shop_comment              shop_comment[]
+    product_reviews           product_reviews[]
+    product_comment_rating    product_comment_rating[]
+    discount_user_code        discount_user_code[]
+    discount_customer_spend   discount_customer_spend[]
+    discount_coin_information discount_coin_information[]
+    discount_customer_coin    discount_customer_coin[]
+    wallet                    wallet[]
+    payment_credit_card_owner payment_credit_card_owner[]
+    order_deleted_item        order_deleted_item[]
+    order_rebuy               order_rebuy[]
+    order_cart_item           order_cart_item[]
+    order                     order[]
 }
 
 model customer_info {
@@ -50,13 +60,13 @@ model customer_info {
 }
 
 model customer_picture {
-    customer_id         Int          @id
-    customer_relation   customer     @relation(fields: [customer_id], references: [id])
+    customer_id         Int                   @id
+    customer_relation   customer              @relation(fields: [customer_id], references: [id])
     picture_id          Int
-    customer_picture_id picture_file @relation(fields: [picture_id], references: [id])
+    customer_picture_id customer_picture_file @relation(fields: [picture_id], references: [id])
 }
 
-model picture_file {
+model customer_picture_file {
     id               Int                @id @default(autoincrement())
     title            String             @db.VarChar(50)
     path             String             @db.Text
@@ -75,6 +85,7 @@ model address {
     postal_code      String             @db.VarChar(5)
     customer_address customer_address[]
     shop_info        shop_info[]
+    order_detail     order_detail[]
 }
 
 model customer_address {
@@ -85,28 +96,28 @@ model customer_address {
     primary            Boolean  @default(false)
 }
 
-model old_password {
+model customer_old_password {
     customer_id          Int      @id
     customer_id_password customer @relation(fields: [customer_id], references: [id])
     password             String   @db.VarChar(255)
     changed_date         DateTime @db.Timestamp
 }
 
-model wishlist {
+model customer_wishlist {
     customer_id          Int      @id
     customer_id_wishlist customer @relation(fields: [customer_id], references: [id])
     product_id           Int
     added_date           DateTime @default(now())
 }
 
-model followed_shop {
+model customer_followed_shop {
     customer_id               Int      @id
     customer_id_followed_shop customer @relation(fields: [customer_id], references: [id])
     shop_id                   Int
     added_date                DateTime @default(now())
 }
 
-model email_verification {
+model customer_email_verification {
     id          Int      @id @default(autoincrement())
     email       String   @db.VarChar(60)
     token       String   @db.Text
@@ -133,14 +144,14 @@ enum Platform {
 }
 
 model shop_info {
-    id                             Int                      @id @default(autoincrement())
+    id                             Int                             @id @default(autoincrement())
     customer_id                    Int
-    shop_ower_id                   customer                 @relation(fields: [customer_id], references: [id])
+    shop_ower_id                   customer                        @relation(fields: [customer_id], references: [id])
     shop_address_id                Int
-    shop_address_id_from_shop_info address                  @relation(fields: [shop_address_id], references: [id])
-    shop_name                      String                   @db.VarChar(40)
-    date                           DateTime                 @default(now())
-    phone_number                   String                   @db.VarChar(10)
+    shop_address_id_from_shop_info address                         @relation(fields: [shop_address_id], references: [id])
+    shop_name                      String                          @db.VarChar(40)
+    date                           DateTime                        @default(now())
+    phone_number                   String                          @db.VarChar(10)
     shop_picture                   shop_picture[]
     shop_comment                   shop_comment[]
     shop_section_log               shop_section_log[]
@@ -148,6 +159,11 @@ model shop_info {
     shop_flashsale                 shop_flashsale[]
     shop_flashsale_history         shop_flashsale_history[]
     product                        product[]
+    discount_shop                  discount_shop[]
+    discount_event                 discount_event[]
+    payment_seller_income          payment_seller_income[]
+    payment_seller_income_receipt  payment_seller_income_receipt[]
+    payment_shop_bank_account      payment_shop_bank_account[]
 }
 
 model shop_picture {
@@ -263,27 +279,34 @@ model category {
     banner_id               Int
     banner_id_from_category category_banner_picture @relation(fields: [banner_id], references: [id])
     product                 product[]
+    discount_category       discount_category[]
 }
 
 model product {
-    id                       Int                  @id @default(autoincrement())
+    id                       Int                   @id @default(autoincrement())
     shop_id                  Int
-    shop_id_from_product     shop_info            @relation(fields: [shop_id], references: [id])
-    title                    String               @db.VarChar(100)
-    sub_title                String               @db.VarChar(70)
+    shop_id_from_product     shop_info             @relation(fields: [shop_id], references: [id])
+    title                    String                @db.VarChar(100)
+    sub_title                String                @db.VarChar(70)
     category_id              Int
-    category_id_from_product category             @relation(fields: [category_id], references: [id])
+    category_id_from_product category              @relation(fields: [category_id], references: [id])
     price                    Int
     quantity                 Int
     sold                     Int
-    added_date               DateTime             @default(now()) @db.Timestamp
+    added_date               DateTime              @default(now()) @db.Timestamp
     suggest_products         Int[]
-    rating                   Decimal              @db.Decimal(1, 1)
+    rating                   Decimal               @db.Decimal(1, 1)
     product_detail           product_detail[]
     product_picture          product_picture[]
     product_reviews          product_reviews[]
     product_short_link       product_short_link[]
     product_options          product_options[]
+    order_deleted_item       order_deleted_item[]
+    order_rebuy              order_rebuy[]
+    order_cart_item          order_cart_item[]
+    order_item               order_item[]
+    order_cancel_refund      order_cancel_refund[]
+    order_refund_item        order_refund_item[]
 }
 
 model product_detail {
@@ -357,4 +380,419 @@ model product_choices {
     quantity                                Int
     picture_id                              Int
     picture_id_from_product_choices         product_picture @relation(fields: [picture_id], references: [photo_id])
+}
+
+//--------------------------------------------------------------------------------------------
+//      Promotion & Discount
+//--------------------------------------------------------------------------------------------
+
+enum DiscountClass {
+    FreeShipping
+    ReducePrice
+}
+
+enum DiscountTypes {
+    Shop
+    Event
+    App
+    Category
+}
+
+enum DiscountUserTypes {
+    Bronze
+    Silver
+    Gold
+    Platinum
+}
+
+model discount {
+    id                 Int                  @id @default(autoincrement())
+    code               String               @db.VarChar(6)
+    start_date         DateTime             @db.Timestamp
+    end_date           DateTime             @db.Timestamp
+    description        String               @db.Text
+    class              DiscountClass
+    min_price          Int?                 @default(0)
+    reduce_price       Int?
+    discount_types     DiscountTypes
+    added_date         DateTime             @db.Timestamp
+    discount_shop      discount_shop[]
+    discount_event     discount_event[]
+    discount_app       discount_app[]
+    discount_category  discount_category[]
+    discount_user_code discount_user_code[]
+    order_detail       order_detail[]
+}
+
+model discount_shop {
+    discount_id                    Int       @id
+    discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
+    shop_id                        Int
+    shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
+}
+
+model event {
+    id             Int              @id @default(autoincrement())
+    title          String           @db.Text
+    description    String           @db.Text
+    discount_event discount_event[]
+}
+
+model discount_event {
+    discount_id                     Int       @id
+    discount_id_from_discount_event discount  @relation(fields: [discount_id], references: [id])
+    shop_id                         Int
+    shop_id_from_discount_event     shop_info @relation(fields: [shop_id], references: [id])
+    event_id                        Int
+    event_id_from_discount_event    event     @relation(fields: [event_id], references: [id])
+    quantity                        Int
+}
+
+model discount_app {
+    discount_id                   Int      @id
+    discount_id_from_discount_app discount @relation(fields: [discount_id], references: [id])
+    quantity                      Int
+}
+
+model discount_category {
+    discount_id                        Int      @id
+    discount_id_from_discount_category discount @relation(fields: [discount_id], references: [id])
+    category_id                        Int
+    category_id_from_discount_category category @relation(fields: [category_id], references: [id])
+    quantity                           Int
+}
+
+model discount_user_code {
+    customer_id                         Int      @id
+    customer_id_from_discount_user_code customer @relation(fields: [customer_id], references: [id])
+    discount_id                         Int
+    discount_id_from_iscount_user_code  discount @relation(fields: [discount_id], references: [id])
+}
+
+model discount_spend_types {
+    id                      Int                       @id @default(autoincrement())
+    type                    DiscountUserTypes
+    amonut                  Int
+    description             String                    @db.Text
+    discount_customer_spend discount_customer_spend[]
+}
+
+model discount_customer_spend {
+    customer_id                                Int                  @id
+    customer_id_from_discount_customer_spend   customer             @relation(fields: [customer_id], references: [id])
+    total_spend                                Int
+    spend_type_id                              Int
+    spend_type_id_from_discount_customer_spend discount_spend_types @relation(fields: [spend_type_id], references: [id])
+}
+
+model discount_coin_information {
+    id                                         Int      @id @default(autoincrement())
+    customer_id                                Int
+    customer_id_from_discount_coin_information customer @relation(fields: [customer_id], references: [id])
+    amount                                     Int
+    got_date                                   DateTime @db.Timestamp
+    expire_date                                DateTime @db.Timestamp
+    get_from                                   String   @db.Text
+}
+
+model discount_customer_coin {
+    customer_id                             Int      @id
+    customer_id_from_discount_customer_coin customer @relation(fields: [customer_id], references: [id])
+    total_coin                              Int      @default(0)
+}
+
+//--------------------------------------------------------------------------------------------
+//      Payment
+//--------------------------------------------------------------------------------------------
+
+enum PaymentStatus {
+    Pending
+    Success
+    Failed
+    Refunding
+    Refunded
+}
+
+enum PaymentTypes {
+    QR
+    Deeplink
+    Card
+}
+
+enum PaymentCardTransactionStatus {
+    Success
+    InsuffientBalance
+    Rejected
+    Refunded
+}
+
+enum PaymentWalletTransactionStatus {
+    Success
+    InsuffientBalance
+    Refunded
+}
+
+enum PaymentBankSelect {
+    SCB
+    KBANK
+    TMB
+    KTB
+}
+
+enum PaymentCreditTypes {
+    MasterCard
+    Visa
+    PayPal
+}
+
+model payment_seller_income {
+    shop_id                            Int       @id
+    shop_id_from_payment_seller_income shop_info @relation(fields: [shop_id], references: [id])
+    order_id                           Int //waiting to join
+    total_price                        Int
+    time                               DateTime  @default(now()) @db.Timestamp
+}
+
+model payment_seller_income_receipt {
+    shop_id                                    Int       @id
+    shop_id_from_payment_seller_income_receipt shop_info @relation(fields: [shop_id], references: [id])
+    total_income                               Int
+    time                                       DateTime  @default(now()) @db.Timestamp
+    receipt                                    String    @db.Text
+}
+
+model payment_shop_bank_account {
+    shop_id                                Int               @id
+    shop_id_from_payment_shop_bank_account shop_info         @relation(fields: [shop_id], references: [id])
+    firstname                              String            @db.VarChar(20)
+    lastname                               String            @db.VarChar(20)
+    bank                                   PaymentBankSelect
+    account_number                         String            @db.VarChar(255)
+}
+
+model wallet {
+    id                         Int                          @id @default(autoincrement())
+    customer_id                Int
+    customer_id_from_wallet    customer                     @relation(fields: [customer_id], references: [id])
+    balance                    Int                          @default(0)
+    updated_time               DateTime                     @db.Timestamp
+    payment_wallet             payment_wallet[]
+    payment_wallet_transaction payment_wallet_transaction[]
+}
+
+model payment_credit_card {
+    id                              Int                               @id @default(autoincrement())
+    card_number                     String                            @db.VarChar(255)
+    expire_date                     DateTime                          @db.Date
+    cvc                             String                            @db.VarChar(255)
+    type                            PaymentCreditTypes
+    payment_credit_card_owner       payment_credit_card_owner[]
+    payment_card                    payment_card[]
+    payment_credit_card_transaction payment_credit_card_transaction[]
+}
+
+model payment_credit_card_owner {
+    customer_id                                   Int
+    customer_id_from_payment_credit_card_owner    customer            @relation(fields: [customer_id], references: [id])
+    credit_card_id                                Int                 @id
+    credit_card_id_from_payment_credit_card_owner payment_credit_card @relation(fields: [credit_card_id], references: [id])
+}
+
+model payment {
+    id               Int                @id @default(autoincrement())
+    order_id         Int //waiting to join
+    type             PaymentTypes
+    amount           Int
+    status           PaymentStatus
+    created_date     DateTime           @db.Timestamp
+    updated_date     DateTime           @db.Timestamp
+    payment_card     payment_card[]
+    payment_wallet   payment_wallet[]
+    payment_qr       payment_qr[]
+    payment_deeplink payment_deeplink[]
+    order_detail     order_detail[]
+}
+
+model payment_transaction {
+    id                              Int                               @id @default(autoincrement())
+    amount                          Int
+    time                            DateTime                          @db.Timestamp
+    desc                            String                            @db.VarChar(64)
+    payment_credit_card_transaction payment_credit_card_transaction[]
+    payment_wallet_transaction      payment_wallet_transaction[]
+    payment_qr                      payment_qr[]
+    payment_deeplink                payment_deeplink[]
+}
+
+model payment_credit_card_transaction {
+    id                                                  Int                          @id @default(autoincrement())
+    card_id                                             Int
+    card_id_from_payment_credit_card_transaction        payment_credit_card          @relation(fields: [card_id], references: [id])
+    status                                              PaymentCardTransactionStatus
+    transaction_id                                      Int
+    transaction_id_from_payment_credit_card_transaction payment_transaction          @relation(fields: [transaction_id], references: [id])
+    refund_id                                           Int
+    refund_id_from_payment_credit_card_transaction      order_refund_item            @relation(fields: [refund_id], references: [id])
+    payment_card                                        payment_card[]
+}
+
+model payment_card {
+    payment_id                                   Int                             @id
+    payment_id_from_payment_card                 payment                         @relation(fields: [payment_id], references: [id])
+    card_id                                      Int
+    card_id_from_payment_card                    payment_credit_card             @relation(fields: [card_id], references: [id])
+    credit_card_transaction_id                   Int
+    credit_card_transaction_id_from_payment_card payment_credit_card_transaction @relation(fields: [credit_card_transaction_id], references: [id])
+}
+
+model payment_wallet_transaction {
+    id                                             Int                            @id @default(autoincrement())
+    status                                         PaymentWalletTransactionStatus
+    wallet_id                                      Int
+    wallet_id_from_payment_wallet_transaction      wallet                         @relation(fields: [wallet_id], references: [id])
+    transaction_id                                 Int
+    transaction_id_from_payment_wallet_transaction payment_transaction            @relation(fields: [transaction_id], references: [id])
+    refund_id                                      Int
+    refund_id_from_payment_wallet_transaction      order_refund_item              @relation(fields: [refund_id], references: [id])
+    payment_wallet                                 payment_wallet[]
+}
+
+model payment_wallet {
+    payment_id                                Int                        @id
+    payment_id_from_payment_wallet            payment                    @relation(fields: [payment_id], references: [id])
+    wallet_id                                 Int
+    wallet_id_from_payment_wallet             wallet                     @relation(fields: [wallet_id], references: [id])
+    wallet_transaction_id                     Int
+    wallet_transaction_id_from_payment_wallet payment_wallet_transaction @relation(fields: [wallet_transaction_id], references: [id])
+}
+
+model payment_qr {
+    payment_id                     Int                 @id
+    payment_id_from_payment_qr     payment             @relation(fields: [payment_id], references: [id])
+    transaction_id                 Int
+    transaction_id_from_payment_qr payment_transaction @relation(fields: [transaction_id], references: [id])
+    ref                            String              @db.Text
+    qr                             String              @db.Text
+}
+
+model payment_deeplink {
+    payment_id                           Int                 @id
+    payment_id_from_payment_deeplink     payment             @relation(fields: [payment_id], references: [id])
+    transaction_id                       Int
+    transaction_id_from_payment_deeplink payment_transaction @relation(fields: [transaction_id], references: [id])
+    ref                                  String              @db.Text
+    link                                 String              @db.Text
+}
+
+//--------------------------------------------------------------------------------------------
+//      Cart & Order
+//--------------------------------------------------------------------------------------------
+
+enum OrderStatus {
+    Preparing
+    Delivering
+    Delivered
+}
+
+model order_deleted_item {
+    customer_id                         Int      @id
+    customer_id_from_order_deleted_item customer @relation(fields: [customer_id], references: [id])
+    product_id                          Int
+    product_id_from_order_deleted_item  product  @relation(fields: [product_id], references: [id])
+    time                                DateTime @db.Timestamp
+}
+
+model order_rebuy {
+    customer_id                  Int      @id
+    customer_id_from_order_rebuy customer @relation(fields: [customer_id], references: [id])
+    product_id                   Int
+    product_id_from_order_rebuy  product  @relation(fields: [product_id], references: [id])
+    product_options              Int[]
+    price                        Int
+    date                         DateTime @db.Timestamp
+}
+
+model order_cart_item {
+    customer_id                      Int      @id
+    customer_id_from_order_cart_item customer @relation(fields: [customer_id], references: [id])
+    product_id                       Int
+    product_id_from_order_cart_item  product  @relation(fields: [product_id], references: [id])
+    product_options                  Int[]
+    quantity                         Int
+    added_time                       DateTime @db.Timestamp
+}
+
+model order {
+    id                     Int                   @id @default(autoincrement())
+    customer_id            Int
+    customer_id_from_order customer              @relation(fields: [customer_id], references: [id])
+    total_price            Int
+    order_date             DateTime              @db.Timestamp
+    status                 OrderStatus
+    order_item             order_item[]
+    order_cancel_refund    order_cancel_refund[]
+    order_detail           order_detail[]
+    order_billing          order_billing[]
+    order_refund_item      order_refund_item[]
+}
+
+model order_status {
+    id          Int          @id @default(autoincrement())
+    delivery_by String       @db.Text
+    status      Json
+    order_item  order_item[]
+}
+
+model order_item {
+    order_id                   Int          @id
+    order_id_from_order_item   order        @relation(fields: [order_id], references: [id])
+    product_id                 Int
+    product_id_from_order_item product      @relation(fields: [product_id], references: [id])
+    product_options            Int[]
+    quantity                   Int
+    price                      Int
+    status_id                  Int
+    status_id_from_order_item  order_status @relation(fields: [status_id], references: [id])
+}
+
+model order_cancel_refund {
+    id                                Int      @id @default(autoincrement())
+    order_id                          Int
+    order_id_from_order_cancel_refund order    @relation(fields: [order_id], references: [id])
+    product_id                        Int
+    product_id_from_cancel_refund     product  @relation(fields: [product_id], references: [id])
+    product_options                   Int[]
+    start_time                        DateTime @db.Timestamp
+    canceled_time                     DateTime @db.Timestamp
+}
+
+model order_detail {
+    order_id                      Int      @id
+    order_id_from_order_detail    order    @relation(fields: [order_id], references: [id])
+    address_id                    Int
+    address_id_from_order_detail  address  @relation(fields: [address_id], references: [id])
+    payment_id                    Int
+    payment_id_from_order_detail  payment  @relation(fields: [payment_id], references: [id])
+    discount_id                   Int
+    discount_id_from_order_detail discount @relation(fields: [discount_id], references: [id])
+}
+
+model order_billing {
+    order_id                    Int      @id
+    order_id_from_order_billing order    @relation(fields: [order_id], references: [id])
+    request                     Boolean  @default(false)
+    request_time                DateTime @db.Timestamp
+}
+
+model order_refund_item {
+    id                                Int                               @id @default(autoincrement())
+    order_id                          Int
+    order_id_from_order_refund_item   order                             @relation(fields: [order_id], references: [id])
+    product_id                        Int
+    product_id_from_order_refund_item product                           @relation(fields: [product_id], references: [id])
+    product_options                   Int[]
+    request                           Boolean                           @default(false)
+    time_remaining                    DateTime                          @db.Timestamp
+    payment_wallet_transaction        payment_wallet_transaction[]
+    payment_credit_card_transaction   payment_credit_card_transaction[]
 }
