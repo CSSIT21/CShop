@@ -283,7 +283,7 @@ const SellerStock = () => {
   const [product, setProduct] = useState(false);
 
   const headerName = [
-    "OrderId",
+    "productId",
     "products",
     "customername",
     "amount",
