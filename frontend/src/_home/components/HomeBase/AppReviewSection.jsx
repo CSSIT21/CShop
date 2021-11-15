@@ -4,80 +4,78 @@ import { makeStyles } from '@mui/styles';
 import { Typography } from "@mui/material";
 import Carousel from "~/common/components/Carousel";
 import AppReviewCard from '../commonBase/AppReviewCard';
-import { text } from '@fortawesome/fontawesome-svg-core';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 
 const reviewItems = [
     {
-		id: 0,
-        comment: "content" ,
-        name: "name",
+        id: 0,
+        comment: "The best website I ever used :)",
+        name: "ShopP",
         profilePic: "",
         date: "11/15/2021",
         bgColor: "#CED4FF",
     },
     {
-		id: 1,
-        comment: "content" ,
-        name: "name",
+        id: 1,
+        comment: "What is this?",
+        name: "What my name",
         profilePic: "",
         date: "11/15/2021",
-        bgColor:"#CED4FF",
+        bgColor: "#FDB098",
     },
     {
-		id: 2,
-        comment: "content" ,
-        name: "name",
+        id: 2,
+        comment: "Really good website to try",
+        name: "It's me",
         profilePic: "",
         date: "11/15/2021",
-        bgColor:"#CED4FF"
+        bgColor: "#CED4FF"
     },
 ];
 
 const AppReviewSection = () => {
-    
-  	const [items] = useState(reviewItems);
-	const [page, setPage] = useState(0);
-	const classes = useStyles();
-	const itemsPerRow = 2;
-	const totalPage = Math.ceil(items.length / itemsPerRow);
+
+    const [items] = useState(reviewItems);
+    const [page, setPage] = useState(0);
+    const classes = useStyles();
+    const itemsPerRow = 2;
+    const totalPage = Math.ceil(items.length / itemsPerRow);
 
     return (
-        <Box className={ classes.AppReviewWrapper}>
+        <Box className={classes.AppReviewWrapper}>
             <Typography
-				component="div"
+                component="div"
                 fontSize="20px"
                 fontWeight={600}
                 color="#394160"
-                
+
                 display="flex"
-                justifyContent="center"    
+                justifyContent="center"
             >
-                Want to tell &nbsp; 
-                <Typography 
+                Want to tell &nbsp;
+                <Typography
                     color="#FD6637"
                     fontSize="20px"
                     fontWeight={600}
                 >C</Typography>
-				Shop that...
-			</Typography>
-				
+                Shop that...
+            </Typography>
+
             <Box className={classes.commentSection}>
-				<Carousel
-					items={items}
-					pageState={page}
-					setPageState={setPage}
-					itemsPerRow={itemsPerRow}
-					itemsPerRow={2}
-					hideArrow={false}
-				>
-					{(item) => (
-                			<AppReviewCard review={item} key={item.id} />
-					)}
-				</Carousel>
+                <Carousel
+                    items={items}
+                    pageState={page}
+                    setPageState={setPage}
+                    itemsPerRow={itemsPerRow}
+                    hideArrow={false}
+                >
+                    {(item) => (
+                        <AppReviewCard review={item} key={item.id} />
+                    )}
+                </Carousel>
             </Box>
 
-            <CustomDot width={50}  setPageState={setPage} currentPage={page} totalPage={totalPage} />
+            <CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
         </Box>
     );
 };
@@ -87,11 +85,11 @@ const useStyles = makeStyles({
         width: "100%",
         boxSizing: "border-box",
         padding: "50px",
-		backgroundColor: "#F4F5F6",
-    
+        backgroundColor: "#F4F5F6",
+
     },
     commentSection: {
-        width:"100%",
+        width: "100%",
         display: "flex",
         justifyContent: "center",
 

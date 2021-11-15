@@ -1,18 +1,16 @@
 import { Avatar, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { For } from "~/common/utils/index";
-import { useState } from 'react';
 
 const AppReviewCard = ({ review }) => {
 
     const classes = useStyles();
 
-	return (
-		<Box className={classes.commentWrapper} sx={{ background: `linear-gradient(92.51deg, ${review.bgColor} -0.02%, #FFFFFF 83.97%)`}}>
+    return (
+        <Box className={classes.commentWrapper} sx={{ background: `linear-gradient(92.51deg, ${review.bgColor} -0.02%, #FFFFFF 83.97%)` }}>
             <Box className={classes.commentBox}>
                 <Typography>
-                    The best website I ever used :)
+                    {review.comment}
                 </Typography>
             </Box>
 
@@ -25,18 +23,17 @@ const AppReviewCard = ({ review }) => {
                         height: 40,
                         marginBottom: 1,
                     }}
-				/>
-				<Typography color="#394160" fontSize="13px" fontWeight="20px" mb={0.5}>
-					ShopP
-				</Typography>
-				
-                <Typography color="#A0A3BD" fontSize="10px" fontWeight="20px">
+                />
+                <Typography color="#394160" fontSize="13px" fontWeight={500} mb={0.5}>
+                    {review.name}
+                </Typography>
+
+                <Typography color="#A0A3BD" fontSize="10px" fontWeight={400}>
                     Commented on {review.date}
-				</Typography>
-				
+                </Typography>
             </Box>
-        </Box>
-	);
+        </Box >
+    );
 };
 
 const useStyles = makeStyles({
@@ -46,19 +43,19 @@ const useStyles = makeStyles({
         borderRadius: '20px',
 
         display: 'flex',
-		justifyContent: "space-between",
+        justifyContent: "space-between",
     },
 
-	commentBox: {
+    commentBox: {
         display: 'flex',
         alignItems: "center",
-	},
-    
-	profileBox: {
+    },
+
+    profileBox: {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-end",
-	},
+    },
 });
 
 export default AppReviewCard;
