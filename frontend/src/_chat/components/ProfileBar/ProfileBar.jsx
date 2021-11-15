@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "@mui/system";
 import { Button, Typography, Avatar } from "@mui/material";
+import { IconButton } from '@mui/material';
 import useStyles from "./ProfileBar.styles";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
@@ -24,9 +25,9 @@ const ProfileBar = (props) => {
 
       </Box>
       <Box className={classes.buttonZone}>
-      <Box >
+      <IconButton>
           {(props.notification)?<NotificationsIcon className={classes.profileBarNoti}/> : <NotificationsOffIcon className={classes.profileBarNoti}/>}
-      </Box>
+      </IconButton>
       <Button
         variant="contained"
         className={classes.goToShopButton}
