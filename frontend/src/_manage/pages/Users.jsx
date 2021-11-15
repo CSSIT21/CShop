@@ -104,6 +104,34 @@ let users = [
         restrictions: [
           ]
     },
+    {
+        id: 64531,
+        avatarInitials: 'CC',
+        avatarColor: grey[900],
+        name: 'Captain Catt',
+        address: 'Wonderlab Branch, District 21, The City',
+        gender: 'Female',
+        postal: '10172',
+        joinDate: '01/01/2021',
+        birthDate: '13/03/2000',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
+    {
+        id: 12374,
+        avatarInitials: 'EM',
+        avatarColor: orange[800],
+        name: 'Elijah Malkuth',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Female',
+        postal: '10172',
+        joinDate: '08/11/2018',
+        birthDate: '03/12/1998',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
 ];
 
 const ManageAccountPage = () => {
