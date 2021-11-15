@@ -4,7 +4,7 @@ const browser = async () => {
 	return new Promise((resolve, reject) => {
 		puppeteer.launch({
 			headless: false,
-			args: ['--disable-setuid-sandbox'],
+			args: ['--disable-setuid-sandbox --lang=en-US,en'],
 			ignoreHTTPSErrors: true,
 		}).then((browser) => {
 			resolve(browser);

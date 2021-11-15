@@ -6,8 +6,7 @@ const main = async (browser) => {
 	// const resultGoogleStore = await scrapeGoogleStore(browser);
 	// console.log(resultGoogleStore);
 	
-	const resultShopee = await scrapeShopee(browser, "Google Nest");
-	
+	await scrapeShopee(browser);
 };
 
 module.exports = { main };

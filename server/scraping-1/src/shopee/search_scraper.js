@@ -4,7 +4,7 @@ const search = async (browser, url) => {
 	// Initialize page
 	const page = await browser.newPage();
 	await page.goto(url);
-	await page.waitForSelector('.shopee-search-item-result__items');
+	await page.waitForSelector('.container');
 	
 	// Scroll to the end of page for loading all results.
 	await autoScroll(page);
@@ -20,7 +20,7 @@ const search = async (browser, url) => {
 	});
 	
 	// Close the page
-	// await page.close();
+	await page.close();
 	
 	// Return
 	return items;
