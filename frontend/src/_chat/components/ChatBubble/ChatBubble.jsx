@@ -26,13 +26,22 @@ const ChatBubble = props => {
         bubble = <VideoBubble variant={props.variant} src={props.content} thumbnail={props.contentExtra} />
     }
 
-    return <Box className={[classes.chatBubble, classes[props.variant]].join(' ')}>
-        {bubble}
-        <Box className={classes.statusText}>
-            <Typography variant='caption' component='span'>{ props.read ? 'Read' : '' }</Typography>
-            <Typography variant='caption' component='span'>{ formatTime(props.time) }</Typography>
+    return (
+        <Box
+            className={[classes.chatBubble, classes[props.variant]].join(' ')}
+            ref={props.forwardedRef}
+        >
+            {bubble}
+            <Box className={classes.statusText}>
+                <Typography variant="caption" component="span">
+                    {props.read ? 'Read' : ''}
+                </Typography>
+                <Typography variant="caption" component="span">
+                    {formatTime(props.time)}
+                </Typography>
+            </Box>
         </Box>
-    </Box>;
+    )
 };
 
 export default ChatBubble;

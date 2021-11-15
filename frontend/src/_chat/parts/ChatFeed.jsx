@@ -51,16 +51,29 @@ const ChatFeed = (props) => {
   const classes = useStyles();
   const contentType= ['notification', 'text', 'image', 'video']
 
-  // console.log(props.displayName)
+  const messages = props.ChatService.messagesBetween(props.currentChatUserId)
+
+  console.log(
+    `%c ChatFeed.jsx %c rendered user#${props.currentChatUserId} (${props.ChatService.userWithId(props.currentChatUserId).displayname})`,
+    'color:#004254;background:#5ce1ff', ''
+  )
   return (
     <Box className={classes.chatFeedContainer}>
       {/* ChatFeed on the right shows all messages between two users */}
       <Box className={classes.chatFeedTitle}>
-        <ProfileBar displayName={props.ChatService.userWithId(props.currentChatUserId).displayname} status="active" pic={props.ChatService.userWithId(props.currentChatUserId).pic } currentChatUserId={props.currentChatUserId} notification={false}/>
+        <ProfileBar
+          displayName={
+            props.ChatService.userWithId(props.currentChatUserId).displayname
+          }
+          status="active"
+          pic={props.ChatService.userWithId(props.currentChatUserId).pic}
+          currentChatUserId={props.currentChatUserId}
+          notification={false}
+        />
       </Box>
       <Box className={classes.chatFeed}>
         {
-          props.messages.map(m => 
+          messages.map(m => (
             <ChatBubble
               variant={m.sender === props.user_id ? 'right' : 'left'}
               read={m.seen}
@@ -68,12 +81,13 @@ const ChatFeed = (props) => {
               contentType={contentType[m.content_type]}
               content={m.content}
               contentExtra={m.content_extra}
+              forwardedRef={props.forwardedRef}
             />
-          )
+          ))
         }
       </Box>
       <Box className={classes.chatFeedButtom}>
-        <MessageBar {...props}/>
+        <MessageBar currentChatUserId={props.currentChatUserId} handleSubmitMessage={props.handleSubmitMessage} />
       </Box>
     </Box>
   );

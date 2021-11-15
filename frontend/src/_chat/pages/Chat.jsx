@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import ChatFeed from '../parts/ChatFeed'
@@ -23,16 +23,31 @@ const ChatPage = props => {
     const ChatService = new _ChatService(user_id)
     const self = ChatService.self
 
-    const [messages, setMessages] = useState(ChatService.messages)
+    const [currentChatUserId, setCurrentChatUserId] = useState(4);
+    const [messages, setMessages] = useState(ChatService.messagesBetween(currentChatUserId))
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
-    const [currentChatUserId, setCurrentChatUserId] = useState(4)
+    const lastBubbleRef = useRef(null)
 
     const classes = useStyles()
 
     function handleSubmitMessage(text) {
-        if(text === '') return
-        alert('Send: ' + text)
+        if (text === '') return
+        ChatService.send('text', text, currentChatUserId).then(() => {
+            setLatest(ChatService.latestMessages)
+            setMessages(ChatService.messagesBetween(currentChatUserId))
+            console.log(
+                `%c Chat.jsx %c sent '${text}' to user#${currentChatUserId}`,
+                'background:#40ffbf;color:#032e20',
+                ''
+            )
+            lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
+        })
+    }
+
+    function changeChat(newChatUserId) {
+        console.log(`%c Chat.jsx %c changed to user#${newChatUserId}`, 'background:#40ffbf;color:#032e20', '')
+        setCurrentChatUserId(newChatUserId)
     }
 
     return <Box className={classes.chatLayout}>
@@ -40,15 +55,15 @@ const ChatPage = props => {
             latest={latest}
             user_id={user_id}
             currentChatUserId={currentChatUserId}
-            setCurrent={setCurrentChatUserId}
+            setCurrent={changeChat}
             ChatService={ChatService}
         />
         <ChatFeed
-            messages={ChatService.messagesBetween(currentChatUserId)}
             handleSubmitMessage={handleSubmitMessage}
             user_id={user_id}
             currentChatUserId={currentChatUserId}
             ChatService={ChatService}
+            forwardedRef={lastBubbleRef}
         />
     </Box>
 }

@@ -9,42 +9,44 @@ import useStyles from './MessageBar.styles'
 import InputBox from '../InputBox/InputBox'
 
 const MessageBar = props => {
-    let focus = false
-    const [empty, setEmpty] = useState(true)
     const inputRef = useRef(null)
     const classes = useStyles()
-    // console.log(
-    //   "%c rendered %cMessageBar ",
-    //   "color:#004254;background:#5ce1ff;font-weight:bold",
-    //   "color:#004254;background:#5ce1ff;font-weight:normal"
-    // );
-    // console.log(
-    //   "%c removed %ckeybind ",
-    //   "color:white;background:green;font-weight:bold",
-    //   "color:white;background:green;font-weight:normal"
-    // );
-    window.addEventListener("keydown", (e) => {
-      if (focus && e.key === "Enter") {
-        submit(e);
-      }
-    });
-    // console.log(
-    //   "%c binded %cEnter key ",
-    //   "color:white;background:green;font-weight:bold",
-    //   "color:white;background:green;font-weight:normal"
-    // );
+    let inputSubmitted = true
 
-    function handleFocus(e) {
-        focus = true
-    }
+    useEffect(() => {
+        window.addEventListener('keydown', handleEnterKey)
+        console.log('%c MessageBar.jsx %c listening for keydown...', 'color:#e0c7ff;background:#590db5', '')
 
-    function handleBlur(e) {
-        focus = false
+        return () => {
+            window.removeEventListener("keydown", handleEnterKey)
+            console.log('%c MessageBar.jsx %c removed keydown listener', 'color:#e0c7ff;background:#590db5', '')
+        }
+    })
+
+    function handleEnterKey(e) {
+        if (e.key === "Enter") {
+            console.groupEnd();
+            submit(e)
+            inputSubmitted = true
+        } else {
+            if(inputSubmitted) {
+                console.groupCollapsed('%c MessageBar.jsx %c keydown rejected', 'color:#e0c7ff;background:#590db5', '')
+            }
+            console.log(e.key)
+            inputSubmitted = false
+        }
     }
 
     function submit(e) {
-        props.handleSubmitMessage(inputRef.current.childNodes[0].value)
+        if(inputRef.current.childNodes[0].value === '') return
+        console.log(
+          `%c MessageBar.jsx %c submitted '${inputRef.current.childNodes[0].value}' to user#${props.currentChatUserId}`,
+          'color:#e0c7ff;background:#590db5',
+          ''
+        )
+        props.handleSubmitMessage(inputRef.current.childNodes[0].value);
         inputRef.current.childNodes[0].value = ''
+        inputRef.current.childNodes[0].focus()
     }
 
     return <Box className={classes.container}>
@@ -58,8 +60,6 @@ const MessageBar = props => {
         </Box>
         <InputBox
             aria-label='Message input box'
-            onFocus={handleFocus}
-            onBlur={handleBlur}
             forwardedRef={inputRef}
         />
         <IconButton onClick={submit} >

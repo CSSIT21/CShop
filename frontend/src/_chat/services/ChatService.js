@@ -4,9 +4,15 @@ import self from './dummy/self.json'
 
 class ChatService {
     _uid = -1
+    _messages = messages
+    _users = null
+    _self = null
 
     constructor(user_id) {
         this._uid = user_id
+        this._messages = messages
+        this._users = users
+        this._self = self
     }
 
     get messages() {
@@ -73,7 +79,7 @@ class ChatService {
     get latestMessages() {
         let keys = []
         let latest = []
-        messages.forEach(m => {
+        this._messages.forEach(m => {
             let uid = m.sender === this._uid ? m.recipient : m.sender
             let i = keys.findIndex(k => k === uid)
             if(i === -1)
@@ -90,7 +96,7 @@ class ChatService {
     }
 
     messagesBetween(user_id) {
-        return messages.filter(m => m.sender === user_id || m.recipient === user_id)
+        return this._messages.filter(m => m.sender === user_id || m.recipient === user_id)
     }
 
     latestMessageBetween(user_id) {
@@ -99,7 +105,7 @@ class ChatService {
     }
 
     get users() {
-        return users
+        return this._users
 
         /***
          * 
@@ -129,11 +135,11 @@ class ChatService {
 
     userWithId(user_id) {
         // console.log(users)
-        return users.find(u => u.user_id === user_id)
+        return this._users.find(u => u.user_id === user_id)
     }
 
     get self() {
-        return self
+        return this._self
         /***
          * 
          * FYI, this is equivalent to
@@ -143,6 +149,29 @@ class ChatService {
          * WHERE user_info.user_id = _uid;
          * 
          */
+    }
+
+    sendText(text, recipient) {
+        this._messages.push({
+            message_id: this._messages[this._messages.length - 1] + 1,
+            message_datetime: (new Date()).toISOString().replace('T', ' ').replace('Z', ''),
+            sender: this._uid,
+            recipient: recipient,
+            seen: false,
+            content_type: 1,
+            content: text,
+            content_extra: null
+        })
+        console.log(`%c ChatService.js %c '${text}' sent to user #${recipient}`, 'color:white;background:green', '')
+        return new Promise((resolve, reject) => {
+            resolve()
+        })
+    }
+
+    send(contentType, content, recipient) {
+        if(contentType === 'text') {
+            return this.sendText(content, recipient)
+        }
     }
 }
 

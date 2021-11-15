@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { InputUnstyled } from '@mui/core'
 import { styled } from '@mui/system'
 import { ChangeCircle } from '@mui/icons-material';
@@ -25,6 +25,9 @@ const StyledInput = styled('input')`
 `
 
 const InputBox = React.forwardRef(function CustomInput({forwardedRef, onChange, ...rest}, ref) {
+    useEffect(() => {
+        forwardedRef.current.childNodes[0].focus()
+    })
   return (
     <InputUnstyled
         components={{ Root: StyledRoot, Input: StyledInput }}

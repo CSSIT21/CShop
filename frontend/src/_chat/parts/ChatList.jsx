@@ -81,7 +81,11 @@ const ChatList = (props) => {
                 : props.ChatService.userWithId(message.sender).pic
             }
             isFilled={props.currentChatUserId === message.sender || props.currentChatUserId === message.recipient}
-            setCurrent={() => props.setCurrent(message.sender === props.user_id ? message.recipient : message.sender)}
+            setCurrent={() =>  {
+              let toUsr = message.sender === props.user_id ? message.recipient : message.sender
+              props.setCurrent(toUsr)
+              console.log('%c ChatList.jsx %c switched to ' + props.ChatService.userWithId(toUsr).displayname, 'color:#004254;background:#5ce1ff', '')
+            }}
             read={message.seen}
           />
         ))}

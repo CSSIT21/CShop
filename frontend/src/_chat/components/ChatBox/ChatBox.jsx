@@ -22,6 +22,7 @@ const ChatBox = (props) => {
       border: "none",
       borderRadius: "10px",
       backgroundColor: background,
+      transition: "all 300ms ease",
     },
     cardAction: {
       display: "flex",
@@ -29,6 +30,7 @@ const ChatBox = (props) => {
       height: "100%",
       justifyContent: "space-between",
       alignItems: "center",
+      cursor: "pointer",
     },
     avatar: {
       width: "48px",
@@ -42,7 +44,7 @@ const ChatBox = (props) => {
     },
     typography: {
       height: "50%",
-      width: 'calc(30vw - 100px)',
+      width: "calc(30vw - 100px)",
       lineHeight: "24px",
       "&:first-child": {
         color: props.isFilled ? "white" : "black",
