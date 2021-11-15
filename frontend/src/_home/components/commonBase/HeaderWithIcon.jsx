@@ -8,12 +8,13 @@ const useStyles = makeStyles({
 	},
 });
 
-const HeaderWithIcon = ({ 
+const HeaderWithIcon = ({
 	title = "",
-	ItemIcon, 
-	fontSize = 30, 
+	ItemIcon,
+	fontSize = 30,
 	fontWeight = 600,
 	color = "#323232",
+	marginBottom = 6,
 }) => {
 
 	const classes = useStyles();
@@ -26,7 +27,7 @@ const HeaderWithIcon = ({
 				component="span"
 				fontSize={fontSize}
 				fontWeight={fontWeight}
-				mb={6}
+				mb={marginBottom}
 				className={classes.header}
 				color={color}
 			>

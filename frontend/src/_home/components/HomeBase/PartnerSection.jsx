@@ -16,7 +16,7 @@ const paymentItems = [
     },
     {
         id: 1,
-        url: "https://www.sequelonline.com/wp-content/uploads/2021/01/BBL-New-TH-768x768.jpg", 
+        url: "https://www.sequelonline.com/wp-content/uploads/2021/01/BBL-New-TH-768x768.jpg",
         name: "Bualuang",
     },
     {
@@ -71,37 +71,38 @@ const deliveryItems = [
         id: 5,
         url: "https://file.thailandpost.com/upload/content/logothp_576cab0fedfee.jpg",
         name: "THAILAND POST",
-    },    
+    },
 ]
 
 const contactProps = {
     fontSize: "14px",
     fontWeight: 500,
     color: "#978D8D",
+    marginBottom: 4,
 };
 
 const PartnerSection = () => {
     const [pItems] = useState(paymentItems);
     const [dItems] = useState(deliveryItems);
-    
+
     const classes = useStyles();
 
     return (
-        <Box className={ classes.partnerWrapper}>
+        <Box className={classes.partnerWrapper}>
 
-            <Box className={classes.partnerElements}> 
+            <Box className={classes.partnerElements}>
                 <PartnerList title="Payment Method" items={pItems} />
             </Box>
 
-            <Box className={classes.partnerElements}> 
+            <Box className={classes.partnerElements}>
                 <PartnerList title="Delivery Services" items={dItems} />
             </Box>
-        
+
             <Box className={classes.partnerElements}>
-                <Typography 
-                    component="h6" 
-                    fontSize="14px" 
-                    fontWeight={500} 
+                <Typography
+                    component="h6"
+                    fontSize="14px"
+                    fontWeight={500}
                     color="#A0A3BD"
                     mb={4}
                 >
@@ -109,23 +110,23 @@ const PartnerSection = () => {
                 </Typography>
 
                 <Box>
-                    <HeaderWithIcon 
-                        ItemIcon={LocalPhoneIcon}  
+                    <HeaderWithIcon
+                        ItemIcon={LocalPhoneIcon}
                         title="Tel: 000-123-456"
                         {...contactProps}
                     />
 
                     <a href="mailto:cshop@mail.kmutt.ac.th">
-                        <HeaderWithIcon 
-                            ItemIcon={EmailIcon} 
-                            title="Email: cshop@mail.kmutt.ac.th" 
+                        <HeaderWithIcon
+                            ItemIcon={EmailIcon}
+                            title="Email: cshop@mail.kmutt.ac.th"
                             {...contactProps}
                         />
                     </a>
 
                     <a href="https://www.facebook.com/SIT.Family">
-                        <HeaderWithIcon 
-                            ItemIcon={FacebookIcon} 
+                        <HeaderWithIcon
+                            ItemIcon={FacebookIcon}
                             title="Facebook: Cshop2021"
                             {...contactProps}
                         />
@@ -138,8 +139,8 @@ const PartnerSection = () => {
 
 const useStyles = makeStyles({
     partnerWrapper: {
-		width: "100%",
-		boxSizing: "border-box",
+        width: "100%",
+        boxSizing: "border-box",
         padding: "100px",
         display: "flex",
         gap: "100px",
@@ -153,5 +154,5 @@ const useStyles = makeStyles({
         justifyContent: "flex-start",
     },
 });
-   
+
 export default PartnerSection;
