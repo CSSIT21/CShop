@@ -42,7 +42,23 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let users = [
+    {
+        id: 1,
+        name: 'Hokma Benjamin',
+        address: '126 Pracha Uthit Rd, Bang Mot,Thung Khru, Bangkok 10140',
+        gender: 'Male',
+        postal: '10120',
+        joinDate: '10/10/2020',
+        birthDate: '02/08/1987',
+        status: 'Active',
+        restrictions: [
+            {id:1, type:'Comment Restriction', assigner:'Admin007', startTime:'10/10/2020', endTime:'17/10/2020', desc:'Rude Comment'},
+            {id:2, type:'Transaction Restriction', assigner:'muumel', startTime:'10/10/2020', endTime:'10/11/2020', desc:'Unexpected Chargeback'},
+            {id:3, type:'Terms of Service Violation, Pretty much a War Crime', assigner:'IHateAyinSoMuchYouDontEvenKnow', startTime:'10/10/2020', endTime:'31/12/2999', desc:'Collaborated with Lady Dias, Leader of the Udjats to start the Smoke War, toppling the previous L Corp to establish Lobotomy Corporation'},
+          ]
+    },
+];
 
 const ManageAccountPage = () => {
     const classes = useStyles();
@@ -218,7 +234,7 @@ const ManageAccountPage = () => {
                         {users.map((key) => (
                             <li key={key.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard/>
+                                    <UserCard user={key}/>
                                 </div>
                             </li>
                         ))}

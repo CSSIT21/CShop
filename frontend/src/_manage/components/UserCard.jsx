@@ -14,6 +14,7 @@ import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export class UserCard extends React.Component {
   constructor(props) {
@@ -21,10 +22,6 @@ export class UserCard extends React.Component {
     this.state = {
       expand: false
     };
-    this.restrictions = [
-      {id:1, type:'Comment Restriction', assigner:'Admin007', startTime:'10/10/2020', endTime:'17/10/2020', desc:'Rude Comment'},
-      {id:2, type:'Transaction Restriction', assigner:'muumel', startTime:'10/10/2020', endTime:'17/10/2020', desc:'Unexpected Chargeback'},
-    ];
   }
 
   handleExpandClick = () => {
@@ -42,23 +39,23 @@ export class UserCard extends React.Component {
               <Avatar sx={{ bgcolor: grey[400], width: 60, height: 60 }}>BH</Avatar>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>Benjamin Hokma</Typography>
+              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.user.name}</Typography>
               <Typography noWrap style={{ fontSize: '15px'}}>#24578</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px'}}>126 Pracha Uthit Rd, Bang Mot,Thung Khru, Bangkok 10140</Typography>
+              <Typography style={{ fontSize: '15px'}}>{this.props.user.address}</Typography>
             </Box>
             <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>Male</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.gender}</Typography>
             </Box>
             <Box sx={{ width: '9.5%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>10120</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.postal}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>10/10/2020</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.joinDate}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>02/08/2000</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.birthDate}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
@@ -66,7 +63,7 @@ export class UserCard extends React.Component {
                     backgroundColor: "#B3E24B33",
                     border: 'none',
                     width: '65%'}}>
-                <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>Active</Typography>
+                <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.user.status}</Typography>
               </Card>
               </div>
             </Box>
@@ -79,39 +76,43 @@ export class UserCard extends React.Component {
         </CardContent>
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
-            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.restrictions.length})</Typography>
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.props.user.restrictions.length})</Typography>
             <Button variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>
           </CardContent>
           <CardContent>
-          {this.restrictions.map((id) => (
-                            <li key={id.toString()}>
+          {this.props.user.restrictions.map((res) => (
+                            <div key={res.id.toString()}>
                                 <Card variant="outlined" style={{
                                 backgroundColor: "#FFEDE7",
                                 border: 'none',
                                 marginBottom: '15px'}}>
                                   <CardContent className={classes.header} sx={{ padding:'28px' }}>
-                                    <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>Benjamin Hokma</Typography>
-                                      <Typography noWrap style={{ fontSize: '15px'}}>#24578</Typography>
+                                    <Box sx={{ width: '22%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
+                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Restriction Type</Typography>
+                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.type}</Typography>
                                     </Box>
-                                    <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography style={{ fontSize: '15px'}}>126 Pracha Uthit Rd, Bang Mot,Thung Khru, Bangkok 10140</Typography>
+                                    <Box sx={{ width: '15%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
+                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Assigner</Typography>
+                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.assigner}</Typography>
                                     </Box>
-                                    <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography style={{ fontSize: '15px', textAlign: 'center'}}>Male</Typography>
+                                    <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
+                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Start Time</Typography>
+                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.startTime}</Typography>
                                     </Box>
-                                    <Box sx={{ width: '9.5%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography style={{ fontSize: '15px', textAlign: 'center'}}>10120</Typography>
+                                    <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
+                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>End Time</Typography>
+                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.endTime}</Typography>
                                     </Box>
-                                    <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography style={{ fontSize: '15px', textAlign: 'center'}}>10/10/2020</Typography>
+                                    <Box sx={{ width: '30%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
+                                      <Typography style={{ fontSize: '15px', color: '#FD6637'}}>Description</Typography>
+                                      <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{res.desc}</Typography>
                                     </Box>
-                                    <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography style={{ fontSize: '15px', textAlign: 'center'}}>02/08/2000</Typography>
+                                    <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center'}}>  
+                                      <Button variant="contained" sx={{ width: '50%', marginLeft: '35px'}}><DeleteIcon/></Button>
                                     </Box>
                                   </CardContent>
                                 </Card>
-                            </li>
+                            </div>
                         ))}
           </CardContent>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
