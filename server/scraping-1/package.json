@@ -4,7 +4,8 @@
 	"description": "A web scraping project for data CShop data mockup.",
 	"main": "src/index.js",
 	"scripts": {
-		"test": "nodemon src/index.js"
+		"test": "nodemon src/index.js",
+		"start": "node src/index.js"
 	},
 	"repository": {
 		"type": "git",

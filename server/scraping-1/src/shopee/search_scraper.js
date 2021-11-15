@@ -1,4 +1,5 @@
 const autoScroll = require('../utils/autoScroll');
+const { detail } = require('./detail_scraper');
 
 const search = async (browser, url) => {
 	// Initialize page
@@ -10,7 +11,7 @@ const search = async (browser, url) => {
 	await autoScroll(page);
 	
 	// Extract search result anchor elements.
-	const items = await page.$$eval('.shopee-search-item-result__item > a, shop-search-result-view__item > a', (elems) => {
+	const items = await page.$$eval('.shopee-search-item-result__item > a', (elems) => {
 		// Extract the product name from the data
 		elems = elems.map((el) => {
 			return el.href;
@@ -22,8 +23,12 @@ const search = async (browser, url) => {
 	// Close the page
 	await page.close();
 	
+	const details = [];
+	for (const item of items) {
+		details.push(await detail(browser, item));
+	}
 	// Return
-	return items;
+	return details;
 };
 
 module.exports = { search };
