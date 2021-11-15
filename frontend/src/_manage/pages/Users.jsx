@@ -42,7 +42,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let users = [1, 2, 3, 4, 5, 6, 7, 8];
+let users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const ManageAccountPage = () => {
     const classes = useStyles();
@@ -53,6 +53,7 @@ const ManageAccountPage = () => {
 
     useLayoutEffect(() => {
         document.body.classList.add("gray");
+        document.body.classList.add("no-scroll!important")
         return () => {document.body.classList.remove("gray")};
       }, []);
 
@@ -166,7 +167,7 @@ const ManageAccountPage = () => {
                     marginBottom: '0px'}}>
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
-                        <Box sx={{ width: '20%' }} className={classes.header}>
+                        <Box sx={{ width: '27%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users</Typography>
                             {headerSort.headerSortArr[0].asc ? 
                             <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(1)}/> : 
