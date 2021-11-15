@@ -1,5 +1,5 @@
 
-import { CheckCircleOutlined, CircleOutlined } from '@mui/icons-material'
+import { AccountBalance, CheckCircleOutlined, CircleOutlined } from '@mui/icons-material'
 import { Checkbox, FormControlLabel, FormGroup, Grid, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Box } from '@mui/system'
@@ -21,17 +21,24 @@ const useStyles = makeStyles({
         border: '1px solid #ccc',
         borderRadius: '20px',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        margin: '15px 30px'
     },
-    boxIcon: {
+    creditCard: {
         display: 'flex',
         flexDirection: 'row',
         position: 'absolute',
-        left: '400px',
-        top: '180px',
-
+        left: '430px',
+        top: '247px',
     },
-    iconStyle: {
+    creditCardIcon: {
         height: '36px'
+    },
+    internetBank: {
+        display: 'flex',
+        flexDirection: 'row',
+        position: 'absolute',
+        left: '515px',
+        top: '347px',
     }
 });
 
@@ -44,7 +51,7 @@ const ChoiceForPay = () => {
     return (
         <Box>
             <Grid item xs={6}>
-                <Typography component="h3" fontSize="30px" fontWeight="bold">
+                <Typography component="h3" fontSize="30px" fontWeight="bold" sx={{margin: '20px'}}>
                      Chosing payment gateway
                 </Typography>
                 <FormGroup>
@@ -53,14 +60,39 @@ const ChoiceForPay = () => {
                             <Box>
                             <Checkbox icon={<CircleOutlined />}
                                     checkedIcon={<CheckCircleOutlined />} />
-                            <Box className={ classes.boxIcon }>
-                                    <LazyImage className={classes.iconStyle} src={CreditCard} lazy="https://via.placeholder.com/92x60.png" />
-                                    <LazyImage className={classes.iconStyle} src={ VisaCard } lazy="https://via.placeholder.com/92x60.png"/>
+                            <Box className={ classes.creditCard }>
+                                    <LazyImage className={classes.creditCardIcon} src={CreditCard} lazy="https://via.placeholder.com/92x60.png" />
+                                    <LazyImage className={classes.creditCardIcon} src={ VisaCard } lazy="https://via.placeholder.com/92x60.png"/>
                                 </Box>
                             </Box>
-                        } >
-                           
-                        </FormControlLabel>
+                        } />
+                    </Box>
+                    <Box className={classes.boxStyle}>
+                        <FormControlLabel className={classes.checkBox} label="Internet Banking" control={
+                            <Box>
+                                <Checkbox icon={<CircleOutlined />}
+                                    checkedIcon={<CheckCircleOutlined />} />
+                                <Box className={ classes.internetBank }>
+                                  <AccountBalance/>   
+                                </Box>
+                            </Box>
+                        }/>
+                    </Box>
+                    <Box className={classes.boxStyle}>
+                        <FormControlLabel className={classes.checkBox} label="Wallet" control={
+                            <Box>
+                                <Checkbox icon={<CircleOutlined />}
+                                    checkedIcon={<CheckCircleOutlined />} />
+                            </Box>
+                        }/>
+                    </Box>
+                    <Box className={classes.boxStyle}>
+                        <FormControlLabel className={classes.checkBox} label="QR Code" control={
+                            <Box>
+                                <Checkbox icon={<CircleOutlined />}
+                                    checkedIcon={<CheckCircleOutlined />} />
+                            </Box>
+                        }/>
                     </Box>
                 </FormGroup>
             </Grid>
