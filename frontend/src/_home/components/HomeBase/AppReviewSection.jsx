@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
 import { Typography } from "@mui/material";
-import Carousel from "~/common/components/Carousel";
-import AppReviewCard from '../commonBase/AppReviewCard';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
+import ReviewCarousel from './ReviewCarousel';
 
 const reviewItems = [
     {
@@ -35,9 +34,9 @@ const reviewItems = [
 
 const AppReviewSection = () => {
 
+    const classes = useStyles();
     const [items] = useState(reviewItems);
     const [page, setPage] = useState(0);
-    const classes = useStyles();
     const itemsPerRow = 2;
     const totalPage = Math.ceil(items.length / itemsPerRow);
 
@@ -61,18 +60,14 @@ const AppReviewSection = () => {
                 Shop that...
             </Typography>
 
-            <Box className={classes.commentSection}>
-                <Carousel
+            <Box className={classes.reviewSection}>
+                <ReviewCarousel
                     items={items}
-                    pageState={page}
-                    setPageState={setPage}
+                    currentPage={page}
+                    totalPage={totalPage}
+                    pageHandle={setPage}
                     itemsPerRow={itemsPerRow}
-                    hideArrow={false}
-                >
-                    {(item) => (
-                        <AppReviewCard review={item} key={item.id} />
-                    )}
-                </Carousel>
+                />
             </Box>
 
             <CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
@@ -88,15 +83,14 @@ const useStyles = makeStyles({
         backgroundColor: "#F4F5F6",
 
     },
-    commentSection: {
+    reviewSection: {
         width: "100%",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "space-between",
+        alignItems: "center",
 
-        marginTop: "70px",
-        marginBottom: "70px",
+        margin: "60px 0",
     },
-
 });
 
 export default AppReviewSection;
