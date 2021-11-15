@@ -1,5 +1,5 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles();
+const useStyles = makeStyles()
 
-export default useStyles;
+export default useStyles

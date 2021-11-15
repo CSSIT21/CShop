@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
     chatBubble: {
@@ -9,10 +9,10 @@ const useStyles = makeStyles({
         width: '100%'
     },
     left: {
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     right: {
-        flexDirection: 'row-reverse',
+        flexDirection: 'row-reverse'
     },
     statusText: {
         display: 'flex',
@@ -22,6 +22,6 @@ const useStyles = makeStyles({
             fontSize: 10
         }
     }
-});
+})
 
-export default useStyles;
+export default useStyles

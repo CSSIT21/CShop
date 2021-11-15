@@ -19,9 +19,9 @@ class ChatService {
         return messages
 
         /***
-         * 
+         *
          * FYI, this is equivalent to:
-         * 
+         *
          * SELECT *
          * FROM (
          *         SELECT message.message_id,
@@ -72,23 +72,20 @@ class ChatService {
          *     ) AS U
          * WHERE U.sender = _uid OR U.recipient = _uid
          * ORDER BY U.message_datetime;
-         * 
+         *
          */
     }
 
     get latestMessages() {
         let keys = []
         let latest = []
-        this._messages.forEach(m => {
+        this._messages.forEach((m) => {
             let uid = m.sender === this._uid ? m.recipient : m.sender
-            let i = keys.findIndex(k => k === uid)
-            if(i === -1)
-            {
+            let i = keys.findIndex((k) => k === uid)
+            if (i === -1) {
                 latest.push(JSON.parse(JSON.stringify(m)))
                 keys.push(uid)
-            }
-            else
-            {
+            } else {
                 latest[i] = JSON.parse(JSON.stringify(m))
             }
         })
@@ -96,11 +93,15 @@ class ChatService {
     }
 
     messagesBetween(user_id) {
-        return this._messages.filter(m => m.sender === user_id || m.recipient === user_id)
+        return this._messages.filter(
+            (m) => m.sender === user_id || m.recipient === user_id
+        )
     }
 
     latestMessageBetween(user_id) {
-        const messagesBetweenReverse = [...this.messagesBetween(user_id)].reverse()
+        const messagesBetweenReverse = [
+            ...this.messagesBetween(user_id)
+        ].reverse()
         return messagesBetweenReverse[0] || {}
     }
 
@@ -108,9 +109,9 @@ class ChatService {
         return this._users
 
         /***
-         * 
+         *
          * FYI, this is equivalent to
-         * 
+         *
          * SELECT user_info.user_id, user_info.email, user_info.pic, user_detail.displayname, user_detail.shop_url
          * FROM user_info
          *          JOIN (
@@ -129,32 +130,35 @@ class ChatService {
          *     WHERE (sender = user_info.user_id AND recipient = _uid) OR (sender = _uid AND recipient = user_info.user_id)
          * )
          * ORDER BY user_id;
-         * 
+         *
          */
     }
 
     userWithId(user_id) {
         // console.log(users)
-        return this._users.find(u => u.user_id === user_id)
+        return this._users.find((u) => u.user_id === user_id)
     }
 
     get self() {
         return this._self
         /***
-         * 
+         *
          * FYI, this is equivalent to
-         * 
+         *
          * SELECT user_info.user_id, email, pic, TRIM(CONCAT(firstname, ' ', lastname)) AS displayname
          * FROM user_info JOIN customer ON user_info.user_id = customer.user_id
          * WHERE user_info.user_id = _uid;
-         * 
+         *
          */
     }
 
     sendText(text, recipient) {
         this._messages.push({
             message_id: this._messages[this._messages.length - 1] + 1,
-            message_datetime: (new Date()).toISOString().replace('T', ' ').replace('Z', ''),
+            message_datetime: new Date()
+                .toISOString()
+                .replace('T', ' ')
+                .replace('Z', ''),
             sender: this._uid,
             recipient: recipient,
             seen: false,
@@ -162,17 +166,21 @@ class ChatService {
             content: text,
             content_extra: null
         })
-        console.log(`%c ChatService.js %c '${text}' sent to user #${recipient}`, 'color:white;background:green', '')
+        console.log(
+            `%c ChatService.js %c '${text}' sent to user #${recipient}`,
+            'color:white;background:green',
+            ''
+        )
         return new Promise((resolve, reject) => {
             resolve()
         })
     }
 
     send(contentType, content, recipient) {
-        if(contentType === 'text') {
+        if (contentType === 'text') {
             return this.sendText(content, recipient)
         }
     }
 }
 
-export default ChatService;
+export default ChatService

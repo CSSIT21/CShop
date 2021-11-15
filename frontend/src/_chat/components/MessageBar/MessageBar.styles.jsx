@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
     container: {
@@ -11,6 +11,6 @@ const useStyles = makeStyles({
         boxSizing: 'border-box',
         padding: '0px 16px'
     }
-});
+})
 
-export default useStyles;
+export default useStyles

@@ -1,19 +1,23 @@
-import React from "react";
-import { Box } from "@mui/system";
-import { Card , CardActionArea, CardMedia } from "@mui/material"
+import React from 'react'
+import { Box } from '@mui/system'
+import { Card, CardActionArea, CardMedia } from '@mui/material'
 
-import useStyles from "./ImageBubble.styles";
+import useStyles from './ImageBubble.styles'
 
 const ImageBubble = (props) => {
-  const classes = useStyles();
+    const classes = useStyles()
 
-  return (
-    <Card className={classes.imageBubble}>
-      <CardActionArea>
-      <CardMedia component="img" image={props.src} alt="Image bubble" />
-      </CardActionArea>
-    </Card>
-  );
-};
+    return (
+        <Card className={classes.imageBubble}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    image={props.src}
+                    alt="Image bubble"
+                />
+            </CardActionArea>
+        </Card>
+    )
+}
 
-export default ImageBubble;
+export default ImageBubble

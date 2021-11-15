@@ -18,13 +18,15 @@ const useStyles = makeStyles({
     }
 })
 
-const ChatPage = props => {
+const ChatPage = (props) => {
     const user_id = 1
     const ChatService = new _ChatService(user_id)
     const self = ChatService.self
 
-    const [currentChatUserId, setCurrentChatUserId] = useState(4);
-    const [messages, setMessages] = useState(ChatService.messagesBetween(currentChatUserId))
+    const [currentChatUserId, setCurrentChatUserId] = useState(4)
+    const [messages, setMessages] = useState(
+        ChatService.messagesBetween(currentChatUserId)
+    )
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
     const lastBubbleRef = useRef(null)
@@ -46,26 +48,32 @@ const ChatPage = props => {
     }
 
     function changeChat(newChatUserId) {
-        console.log(`%c Chat.jsx %c changed to user#${newChatUserId}`, 'background:#40ffbf;color:#032e20', '')
+        console.log(
+            `%c Chat.jsx %c changed to user#${newChatUserId}`,
+            'background:#40ffbf;color:#032e20',
+            ''
+        )
         setCurrentChatUserId(newChatUserId)
     }
 
-    return <Box className={classes.chatLayout}>
-        <ChatList
-            latest={latest}
-            user_id={user_id}
-            currentChatUserId={currentChatUserId}
-            setCurrent={changeChat}
-            ChatService={ChatService}
-        />
-        <ChatFeed
-            handleSubmitMessage={handleSubmitMessage}
-            user_id={user_id}
-            currentChatUserId={currentChatUserId}
-            ChatService={ChatService}
-            forwardedRef={lastBubbleRef}
-        />
-    </Box>
+    return (
+        <Box className={classes.chatLayout}>
+            <ChatList
+                latest={latest}
+                user_id={user_id}
+                currentChatUserId={currentChatUserId}
+                setCurrent={changeChat}
+                ChatService={ChatService}
+            />
+            <ChatFeed
+                handleSubmitMessage={handleSubmitMessage}
+                user_id={user_id}
+                currentChatUserId={currentChatUserId}
+                ChatService={ChatService}
+                forwardedRef={lastBubbleRef}
+            />
+        </Box>
+    )
 }
 
 export default ChatPage
