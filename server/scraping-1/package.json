@@ -1,0 +1,25 @@
+{
+	"name": "scraping-1",
+	"version": "1.0.0",
+	"description": "A web scraping project for data CShop data mockup.",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "nodemon src/index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CSSIT21/CShop.git"
+	},
+	"author": "BSthun <co@bsthun.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/CSSIT21/CShop/issues"
+	},
+	"homepage": "https://github.com/CSSIT21/CShop#readme",
+	"dependencies": {
+		"puppeteer": "^11.0.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
