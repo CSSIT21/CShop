@@ -10,7 +10,7 @@ const search = async (browser, url) => {
 	await autoScroll(page);
 	
 	// Extract search result anchor elements.
-	const items = await page.$$eval('.shopee-search-item-result__item > a', (elems) => {
+	const items = await page.$$eval('.shopee-search-item-result__item > a, shop-search-result-view__item > a', (elems) => {
 		// Extract the product name from the data
 		elems = elems.map((el) => {
 			return el.href;

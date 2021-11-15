@@ -4,8 +4,50 @@ const array = async (browser) => {
 	const searchResultComputer = [
 		...(await Promise.all(
 			Array.from(
-				Array(30),
+				Array(10),
 				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i+10}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i+20}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i+30}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i+10}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i+20}`),
+			),
+		)),
+		...(await Promise.all(
+			Array.from(
+				Array(10),
+				(_, i) => search(browser, `https://shopee.co.th/Computers-Laptops-cat.11044958?page=${i+30}`),
 			),
 		)),
 		...(await Promise.all(
