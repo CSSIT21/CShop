@@ -12,7 +12,6 @@ const useStyles = makeStyles({
 		height: 450,
 		overflow: 'hidden',
 		boxSizing: 'border-box',
-		margin: '15px 0',
 		padding: '0 100px',
 
 		display: 'flex',
