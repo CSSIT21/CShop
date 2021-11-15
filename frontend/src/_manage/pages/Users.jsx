@@ -24,6 +24,7 @@ import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
+import { grey, red, amber, orange } from '@mui/material/colors';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 const cardStyle = {
@@ -44,18 +45,63 @@ const Item = styled(Paper)(({ theme }) => ({
 
 let users = [
     {
-        id: 1,
+        id: 24578,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
         name: 'Hokma Benjamin',
-        address: '126 Pracha Uthit Rd, Bang Mot,Thung Khru, Bangkok 10140',
+        address: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
         postal: '10120',
         joinDate: '10/10/2020',
         birthDate: '02/08/1987',
-        status: 'Active',
+        status: 'Restricted',
         restrictions: [
             {id:1, type:'Comment Restriction', assigner:'Admin007', startTime:'10/10/2020', endTime:'17/10/2020', desc:'Rude Comment'},
             {id:2, type:'Transaction Restriction', assigner:'muumel', startTime:'10/10/2020', endTime:'10/11/2020', desc:'Unexpected Chargeback'},
             {id:3, type:'Terms of Service Violation, Pretty much a War Crime', assigner:'IHateAyinSoMuchYouDontEvenKnow', startTime:'10/10/2020', endTime:'31/12/2999', desc:'Collaborated with Lady Dias, Leader of the Udjats to start the Smoke War, toppling the previous L Corp to establish Lobotomy Corporation'},
+          ]
+    },
+    {
+        id: 10695,
+        avatarInitials: 'TA',
+        avatarColor: amber[400],
+        name: 'Lisa Tiphereth',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Female',
+        postal: '10120',
+        joinDate: '02/03/2019',
+        birthDate: '11/11/2004',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
+    {
+        id: 10696,
+        avatarInitials: 'TB',
+        avatarColor: orange[400],
+        name: 'Enoch Tiphereth',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal: '10120',
+        joinDate: '02/03/2019',
+        birthDate: '28/07/2004',
+        status: 'Restricted',
+        restrictions: [
+            {id:10, type:'Full Restriction', assigner:'Admin007', startTime:'12/09/2014', endTime:'31/12/2999', desc:'Carmen is a coward'}
+          ]
+    },
+    {
+        id: 31237,
+        avatarInitials: 'GB',
+        avatarColor: red[500],
+        name: 'Kali "The Red Mist" Gebura',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Female',
+        postal: '10120',
+        joinDate: '12/01/2020',
+        birthDate: '31/08/1998',
+        status: 'Active',
+        restrictions: [
           ]
     },
 ];
@@ -232,7 +278,7 @@ const ManageAccountPage = () => {
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
                         {users.map((key) => (
-                            <li key={key.toString()}>
+                            <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
                                     <UserCard user={key}/>
                                 </div>

@@ -8,7 +8,7 @@ import { Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
-import { grey, lightBlue } from '@mui/material/colors';
+import { grey, lightBlue, amber } from '@mui/material/colors';
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
@@ -36,11 +36,11 @@ export class UserCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '7%' }} className={classes.header}>
-              <Avatar sx={{ bgcolor: grey[400], width: 60, height: 60 }}>BH</Avatar>
+              <Avatar sx={{ bgcolor: this.props.user.avatarColor, width: 60, height: 60 }}>{this.props.user.avatarInitials}</Avatar>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.user.name}</Typography>
-              <Typography noWrap style={{ fontSize: '15px'}}>#24578</Typography>
+              <Typography noWrap style={{ fontSize: '15px'}}>#{this.props.user.id}</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px'}}>{this.props.user.address}</Typography>
@@ -59,12 +59,20 @@ export class UserCard extends React.Component {
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
+              { this.props.user.status === "Active" ?
               <Card variant="outlined" style={{
                     backgroundColor: "#B3E24B33",
                     border: 'none',
-                    width: '65%'}}>
+                    width: '75%'}}>
                 <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.user.status}</Typography>
-              </Card>
+              </Card> :
+              <Card variant="outlined" style={{
+                backgroundColor: "#E04A4A33",
+                border: 'none',
+                width: '75%'}}>
+            <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#812525'}}>{this.props.user.status}</Typography>
+          </Card>
+              }
               </div>
             </Box>
             <Box sx={{ width: '2%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
