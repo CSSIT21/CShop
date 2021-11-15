@@ -36,7 +36,7 @@ const TabsController = ({ categories = [], ...rest }) => {
     setAnchorEl(null);
   };
   return (
-    <Box sx={{ width: "100%", marginBottom: "60px" }} {...rest}>
+    <Box sx={{ width: "100%" }} {...rest}>
       <StyledTabs
         value={value}
         onChange={handleChange}
