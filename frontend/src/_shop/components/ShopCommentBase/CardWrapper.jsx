@@ -33,6 +33,7 @@ const CardWrapper = ({ items = [], type }) => {
                 username={item.username}
                 rating={item.rating}
                 comment={item.comment}
+                productDetail={item.productDetail}
                 key={idx}
               />
             )}

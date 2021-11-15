@@ -4,30 +4,37 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles({
 	header: {
 		display: 'flex',
-		justifyContent: 'center',
 		alignItems: 'center',
 	},
 });
 
-const HeaderWithIcon = ({ header }) => {
+const HeaderWithIcon = ({
+	title = "",
+	ItemIcon,
+	fontSize = 30,
+	fontWeight = 600,
+	color = "#323232",
+	marginBottom = 6,
+}) => {
 
 	const classes = useStyles();
+
+	const showIcon = () => <ItemIcon sx={{ color: "#FD6637", marginRight: "10px" }} />
 
 	return (
 		<>
 			<Typography
 				component="span"
-				fontSize="30px"
-				fontWeight={600}
-				mb={6}
+				fontSize={fontSize}
+				fontWeight={fontWeight}
+				mb={marginBottom}
 				className={classes.header}
+				color={color}
 			>
-				<header.icon sx={{ color: "#FD6637", marginRight: "10px" }} />
-				{header.title}
+				{showIcon()}
+				{title}
 			</Typography>
 		</>
-
-
 	);
 };
 
