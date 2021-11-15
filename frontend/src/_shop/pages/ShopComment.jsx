@@ -14,6 +14,11 @@ const commentsList = [
     username: "Thanawan",
     rating: 3.5,
     comment: "Good :)",
+    productDetail: {
+      id: 2,
+      name: "ยากันยุง",
+      variation: "none",
+    },
   },
   {
     imageURL: "1",

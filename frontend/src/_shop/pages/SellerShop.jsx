@@ -115,7 +115,6 @@ const SellerShop = () => {
     setflashItems((flashItems) => {
       const target = flashItems[index];
       target.favourite = !target.favourite;
-
       return [...flashItems];
     });
   };

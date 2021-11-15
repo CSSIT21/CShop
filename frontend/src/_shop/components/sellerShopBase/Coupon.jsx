@@ -29,7 +29,6 @@ const Coupon = ({
         <Typography sx={titleStyle}> {coupon.title} </Typography>
         <BorderLinearProgress
           variant="determinate"
-          customColor="pink"
           value={Math.ceil(100 * (currentCoupon / totalCoupon))}
           sx={{ margin: "10px 0" }}
         />
@@ -57,7 +56,7 @@ const useStyles = makeStyles({
     alignItems: "center",
 
     borderRadius: "15px",
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
   },
 
   text: {
