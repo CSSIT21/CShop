@@ -5,11 +5,10 @@ import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 
 const ProductCommentImage = ({
-  product = {
-    name: "product's name",
-    variation: "black",
-    img: "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
-  },
+  id = 1,
+  name = "product's name",
+  variation = "black",
+  img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
 }) => {
   return (
     <Box
@@ -21,13 +20,13 @@ const ProductCommentImage = ({
       }}
       variant="outlined"
     >
-      <Link to={`/product/${1}`}>
+      <Link to={`/product/${id}`}>
         <img
-          src={product.img}
+          src={img}
           width="150px"
           height="150px"
           style={{ backgroundSize: "cover", borderRadius: "15px" }}
-          alt={product.name}
+          alt={name}
         />
       </Link>
       <Box sx={{ marginLeft: "10px" }}>
@@ -36,13 +35,13 @@ const ProductCommentImage = ({
             <Typography fontWeight={500}>Name:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography>{product.name}</Typography>
+            <Typography>{name}</Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography fontWeight={500}>Variation:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography>{product.variation}</Typography>
+            <Typography>{variation}</Typography>
           </Grid>
         </Grid>
       </Box>
