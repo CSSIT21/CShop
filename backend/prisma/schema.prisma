@@ -214,20 +214,29 @@ model shop_section {
 }
 
 model shop_flashsale {
-    shop_id                     Int       @id
-    shop_id_from_shop_flashsale shop_info @relation(fields: [shop_id], references: [id])
-    started_date                DateTime  @default(now())
-    ended_date                  DateTime  @default(now())
+    id                          Int                      @id @default(autoincrement())
+    shop_id                     Int
+    shop_id_from_shop_flashsale shop_info                @relation(fields: [shop_id], references: [id])
+    started_date                DateTime                 @default(now())
+    ended_date                  DateTime                 @default(now())
     products                    Json
+    title                       String                   @db.Text
+    path                        String                   @db.Text
+    thumbnail                   String                   @db.Text
+    mime_type                   String                   @db.VarChar(20)
+    description                 String                   @db.Text
+    shop_flashsale_history      shop_flashsale_history[]
 }
 
 model shop_flashsale_history {
-    shop_id                             Int       @id
-    shop_id_from_shop_flashsale_history shop_info @relation(fields: [shop_id], references: [id])
-    started_date                        DateTime  @default(now())
-    ended_date                          DateTime  @default(now())
-    products                            Json
-    quantity                            Json
+    flashsale_id                             Int            @id
+    flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
+    shop_id                                  Int
+    shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
+    started_date                             DateTime       @default(now())
+    ended_date                               DateTime       @default(now())
+    products                                 Json
+    quantity                                 Json
 }
 
 model shop_banner {
