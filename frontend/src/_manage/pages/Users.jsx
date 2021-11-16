@@ -24,7 +24,7 @@ import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue } from '@mui/material/colors';
+import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen } from '@mui/material/colors';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 const cardStyle = {
@@ -188,6 +188,22 @@ let users = [
         restrictions: [
           ]
     },
+    ,
+    {
+        id: 47121,
+        avatarInitials: 'NZ',
+        avatarColor: lightGreen[500],
+        name: 'Giovanni Netzach',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal: '10120',
+        joinDate: '18/01/2018',
+        birthDate: '09/04/1990',
+        status: 'Restricted',
+        restrictions: [
+            {id:11, type:'Transaction Restriction', assigner:'Admin007', startTime:'25/12/2015', endTime:'25/02/2016', desc:'Unregulated Transaction of Alcohol'}
+          ]
+    },
 ];
 
 const ManageAccountPage = () => {
@@ -206,6 +222,11 @@ const ManageAccountPage = () => {
     const toggleShowRestricted = () => {
         setShowRestricted(!showRestricted);
         }
+
+    const [page, setPage] = React.useState(1);
+    const handlePagination = (event) => {
+        setPage(event.target.textContent);
+    }
 
     useLayoutEffect(() => {
         document.body.classList.add("gray");
@@ -309,7 +330,7 @@ const ManageAccountPage = () => {
                                 return obj.status == 'Restricted';
                             })
                             : (users.sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
-                        )
+                        ).slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
@@ -323,7 +344,7 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>      
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={10} showFirstButton showLastButton color="primary" shape="rounded"/>
+                    <Pagination count={Math.ceil(users.length/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>
