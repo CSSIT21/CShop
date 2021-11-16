@@ -58,6 +58,10 @@ model customer {
     sconsole_discount_log       sconsole_discount_log[]
     sconsole_refund             sconsole_refund[]
     sconsole_refund_history     sconsole_refund_history[]
+    admin_support               admin_support[]
+    admin_customer_suspensions  admin_customer_suspensions[]
+    admin_reported_shop         admin_reported_shop[]
+    admin_reported_customer     admin_reported_customer[]
 }
 
 model customer_info {
@@ -186,6 +190,8 @@ model shop_info {
     sconsole_order_history         sconsole_order_history[]
     sconsole_refund                sconsole_refund[]
     sconsole_refund_history        sconsole_refund_history[]
+    admin_shop_suspensions         admin_shop_suspensions[]
+    admin_reported_shop            admin_reported_shop[]
 }
 
 model shop_picture {
@@ -1223,4 +1229,112 @@ model sconsole_refund_history {
     ended_time                               DateTime            @default(now()) @db.Timestamp
     quantity                                 Int
     status                                   Json
+}
+
+//--------------------------------------------------------------------------------------------
+//      Administation System
+//--------------------------------------------------------------------------------------------
+
+model admin_support_type {
+    id            Int             @id @default(autoincrement())
+    title         String          @db.Text
+    description   String          @db.Text
+    admin_support admin_support[]
+}
+
+model admin_support_picture {
+    id                         Int                          @id @default(autoincrement())
+    title                      String                       @db.VarChar(50)
+    path                       String                       @db.Text
+    thumbnail                  String                       @db.Text
+    mime_type                  String                       @db.VarChar(20)
+    admin_support              admin_support[]
+    admin_customer_suspensions admin_customer_suspensions[]
+    admin_shop_suspensions     admin_shop_suspensions[]
+    admin_reported_shop        admin_reported_shop[]
+    admin_reported_customer    admin_reported_customer[]
+}
+
+model admin_support {
+    id                                 Int                    @id @default(autoincrement())
+    customer_id                        Int
+    customer_id_from_admin_support     customer               @relation(fields: [customer_id], references: [id])
+    support_type_id                    Int
+    support_type_id_from_admin_support admin_support_type     @relation(fields: [support_type_id], references: [id])
+    sent_date                          DateTime               @default(now()) @db.Timestamp
+    ended_date                         DateTime?              @db.Timestamp
+    picture_id                         Int
+    picture_id_from_admin_support      admin_support_picture  @relation(fields: [picture_id], references: [id])
+    admin_support_status               admin_support_status[]
+}
+
+model admin_support_status {
+    support_id                           Int           @id
+    support_id_from_admin_support_status admin_support @relation(fields: [support_id], references: [id])
+    status                               Json
+}
+
+model admin_suspension_type {
+    id                         Int                          @id @default(autoincrement())
+    title                      String                       @db.Text
+    description                String                       @db.Text
+    admin_customer_suspensions admin_customer_suspensions[]
+    admin_shop_suspensions     admin_shop_suspensions[]
+}
+
+model admin_customer_suspensions {
+    customer_id                                        Int                   @id
+    customer_id_from_admin_customer_suspensions        customer              @relation(fields: [customer_id], references: [id])
+    start_date                                         DateTime              @db.Timestamp
+    end_date                                           DateTime              @db.Timestamp
+    description                                        String                @db.Text
+    picture_id                                         Int
+    picture_id_from_admin_customer_suspensions         admin_support_picture @relation(fields: [picture_id], references: [id])
+    suspension_type_id                                 Int
+    suspension_type_id_from_admin_customer_suspensions admin_suspension_type @relation(fields: [suspension_type_id], references: [id])
+    admin_id                                           Int
+}
+
+model admin_shop_suspensions {
+    shop_id                                        Int                   @id
+    shop_id_from_admin_shop_suspensions            shop_info             @relation(fields: [shop_id], references: [id])
+    start_date                                     DateTime              @db.Timestamp
+    end_date                                       DateTime              @db.Timestamp
+    description                                    String                @db.Text
+    picture_id                                     Int
+    picture_id_from_admin_shop_suspensions         admin_support_picture @relation(fields: [picture_id], references: [id])
+    suspension_type_id                             Int
+    suspension_type_id_from_admin_shop_suspensions admin_suspension_type @relation(fields: [suspension_type_id], references: [id])
+    admin_id                                       Int
+}
+
+model admin_reported_shop {
+    id                                        Int                   @id @default(autoincrement())
+    customer_id                               Int
+    customer_id_from_admin_reported_shop      customer              @relation(fields: [customer_id], references: [id])
+    reported_shop_id                          Int
+    reported_shop_id_from_admin_reported_shop shop_info             @relation(fields: [reported_shop_id], references: [id])
+    sent_date                                 DateTime              @default(now()) @db.Timestamp
+    ended_date                                DateTime?             @db.Timestamp
+    picture_id                                Int
+    picture_id_from_admin_reported_shop       admin_support_picture @relation(fields: [picture_id], references: [id])
+    status                                    Json
+}
+
+model admin_reported_customer {
+    id                                       Int                   @id @default(autoincrement())
+    customer_id                              Int
+    customer_id_from_admin_reported_customer customer              @relation(fields: [customer_id], references: [id])
+    reported_customer_id                     Int
+    sent_date                                DateTime              @default(now()) @db.Timestamp
+    ended_date                               DateTime?             @db.Timestamp
+    picture_id                               Int
+    picture_id_from_admin_reported_customer  admin_support_picture @relation(fields: [picture_id], references: [id])
+    status                                   Json
+}
+
+model admin_audit {
+    admin_id   Int      @id
+    login_date DateTime @db.Timestamp
+    action     String   @db.Text
 }
