@@ -62,6 +62,11 @@ model customer {
     admin_customer_suspensions  admin_customer_suspensions[]
     admin_reported_shop         admin_reported_shop[]
     admin_reported_customer     admin_reported_customer[]
+    home_product_log            home_product_log[]
+    home_add_to_cart_log        home_add_to_cart_log[]
+    home_shop_log               home_shop_log[]
+    home_payment_log            home_payment_log[]
+    home_discount_log           home_discount_log[]
 }
 
 model customer_info {
@@ -192,6 +197,7 @@ model shop_info {
     sconsole_refund_history        sconsole_refund_history[]
     admin_shop_suspensions         admin_shop_suspensions[]
     admin_reported_shop            admin_reported_shop[]
+    home_shop_log                  home_shop_log[]
 }
 
 model shop_picture {
@@ -360,6 +366,8 @@ model product {
     sconsole_set_lanch_product     sconsole_set_lanch_product[]
     sconsole_refund                sconsole_refund[]
     sconsole_refund_history        sconsole_refund_history[]
+    home_product_log               home_product_log[]
+    home_add_to_cart_log           home_add_to_cart_log[]
 }
 
 model product_detail {
@@ -477,6 +485,7 @@ model discount {
     order_detail          order_detail[]
     rem_product_promotion rem_product_promotion[]
     sconsole_discount_log sconsole_discount_log[]
+    home_discount_log     home_discount_log[]
 }
 
 model discount_shop {
@@ -671,6 +680,7 @@ model payment {
     payment_deeplink      payment_deeplink[]
     order_detail          order_detail[]
     sconsole_refund_money sconsole_refund_money[]
+    home_payment_log      home_payment_log[]
 }
 
 model payment_transaction {
@@ -1337,4 +1347,110 @@ model admin_audit {
     admin_id   Int      @id
     login_date DateTime @db.Timestamp
     action     String   @db.Text
+}
+
+//--------------------------------------------------------------------------------------------
+//      Homepage & Log System
+//--------------------------------------------------------------------------------------------
+
+enum homePartnerType {
+    PaymentMethod
+    Delivery
+}
+
+model home_banner_picture {
+    id          Int           @id @default(autoincrement())
+    title       String        @db.VarChar(50)
+    path        String        @db.Text
+    thumbnail   String        @db.Text
+    mime_type   String        @db.VarChar(20)
+    home_banner home_banner[]
+}
+
+model home_banner {
+    id                          Int                 @id @default(autoincrement())
+    start_date                  DateTime            @db.Timestamp
+    end_date                    DateTime            @db.Timestamp
+    picture_id                  Int
+    picture_id_from_home_banner home_banner_picture @relation(fields: [picture_id], references: [id])
+    description                 String              @db.Text
+}
+
+model home_popup {
+    id          Int      @id @default(autoincrement())
+    start_date  DateTime @db.Timestamp
+    end_date    DateTime @db.Timestamp
+    description String   @db.Text
+    title       String   @db.VarChar(50)
+    path        String   @db.Text
+    thumbnail   String   @db.Text
+    mime_type   String   @db.VarChar(20)
+}
+
+model home_app_review {
+    id          Int      @id @default(autoincrement())
+    firstname   String   @db.VarChar(20)
+    lastname    String   @db.VarChar(20)
+    nickname    String   @db.VarChar(20)
+    review_date DateTime @db.Timestamp
+    comment     String   @db.Text
+    theme_color String   @db.Text
+    title       String   @db.VarChar(50)
+    path        String   @db.Text
+    thumbnail   String   @db.Text
+    mime_type   String   @db.VarChar(20)
+}
+
+model home_partner {
+    id          Int      @id @default(autoincrement())
+    name        String   @db.Text
+    title       String   @db.VarChar(100)
+    start_date  DateTime @db.Timestamp
+    end_date    DateTime @db.Timestamp
+    join_date   DateTime @db.Timestamp
+    description String   @db.Text
+    keyword     String   @db.VarChar(20)
+    title_pic   String   @db.VarChar(50)
+    path        String   @db.Text
+    thumbnail   String   @db.Text
+    mime_type   String   @db.VarChar(20)
+}
+
+model home_product_log {
+    customer_id                       Int      @id
+    customer_id_from_home_product_log customer @relation(fields: [customer_id], references: [id])
+    product_id                        Int
+    product_id_from_home_product_log  product  @relation(fields: [product_id], references: [id])
+    view_date                         DateTime @db.Timestamp
+}
+
+model home_add_to_cart_log {
+    customer_id                           Int      @id
+    customer_id_from_home_add_to_cart_log customer @relation(fields: [customer_id], references: [id])
+    product_id                            Int
+    product_id_from_home_add_to_cart_log  product  @relation(fields: [product_id], references: [id])
+    added_date                            DateTime @db.Timestamp
+}
+
+model home_shop_log {
+    customer_id                    Int       @id
+    customer_id_from_home_shop_log customer  @relation(fields: [customer_id], references: [id])
+    shop_id                        Int
+    shop_id_from_home_shop_log     shop_info @relation(fields: [shop_id], references: [id])
+}
+
+model home_payment_log {
+    customer_id                       Int      @id
+    customer_id_from_home_payment_log customer @relation(fields: [customer_id], references: [id])
+    payment_id                        Int
+    payment_id_from_home_payment_log  payment  @relation(fields: [payment_id], references: [id])
+    issue_at                          DateTime @db.Timestamp
+}
+
+model home_discount_log {
+    customer_id                        Int      @id
+    customer_id_from_home_discount_log customer @relation(fields: [customer_id], references: [id])
+    discount_id                        Int
+    discount_id_from_home_discount_log discount @relation(fields: [discount_id], references: [id])
+    view_date                          DateTime @db.Timestamp
 }
