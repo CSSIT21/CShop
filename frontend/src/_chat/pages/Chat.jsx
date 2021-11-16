@@ -5,7 +5,7 @@ import ChatFeed from '../parts/ChatFeed'
 import ChatList from '../parts/ChatList'
 
 import { default as _ChatService } from '../services/ChatService'
-
+import { ChatMediaModal } from '../components'
 /* Navbar height is not fixed, adjust this to preserve page's layout */
 const __NAVBAR_HEIGHT = '135px'
 
@@ -30,7 +30,11 @@ const ChatPage = (props) => {
     const [users, setUsers] = useState(ChatService.users)
     const [latest, setLatest] = useState(ChatService.latestMessages)
     const lastBubbleRef = useRef(null)
-
+    // modal
+    const [open, setOpen] = React.useState(false)
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+    const [message_id, setMessage_id] = useState(3)
     const classes = useStyles()
 
     function handleSubmitMessage(text) {
@@ -48,7 +52,7 @@ const ChatPage = (props) => {
     }
 
     function handleUpload(type, file) {
-        if(type === 'image') {
+        if (type === 'image') {
             ChatService.send('image', file, currentChatUserId).then(() => {
                 setLatest(ChatService.latestMessages)
                 setMessages(ChatService.messagesBetween(currentChatUserId))
@@ -61,7 +65,7 @@ const ChatPage = (props) => {
                     lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
                 }, 500)
             })
-        } else if(type === 'video') {
+        } else if (type === 'video') {
             ChatService.send('video', file, currentChatUserId).then(() => {
                 setLatest(ChatService.latestMessages)
                 setMessages(ChatService.messagesBetween(currentChatUserId))
@@ -103,6 +107,7 @@ const ChatPage = (props) => {
                 ChatService={ChatService}
                 forwardedRef={lastBubbleRef}
             />
+            <ChatMediaModal message_id={message_id} />
         </Box>
     )
 }

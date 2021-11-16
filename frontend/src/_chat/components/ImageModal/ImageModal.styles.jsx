@@ -1,8 +1,11 @@
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
-    container: {
-        // styles here
+    imageModalStyle: {
+        width:"80vw",
+        height:"80vh",
+        display:"flex",
+        justifyContent:"center",
     }
 })
 
