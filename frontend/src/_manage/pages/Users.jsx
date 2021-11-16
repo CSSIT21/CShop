@@ -24,7 +24,7 @@ import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange } from '@mui/material/colors';
+import { grey, red, amber, orange, pink, deepPurple, blue } from '@mui/material/colors';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 const cardStyle = {
@@ -107,7 +107,7 @@ let users = [
     {
         id: 64531,
         avatarInitials: 'CC',
-        avatarColor: grey[900],
+        avatarColor: grey[700],
         name: 'Captain Catt',
         address: 'Wonderlab Branch, District 21, The City',
         gender: 'Female',
@@ -119,15 +119,71 @@ let users = [
           ]
     },
     {
+        id: 85411,
+        avatarInitials: 'TA',
+        avatarColor: pink[300],
+        name: 'Taii',
+        address: 'Wonderlab Branch, District 21, The City',
+        gender: 'N/A',
+        postal: '10172',
+        joinDate: '12/9/2021',
+        birthDate: '14/02/2001',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
+    {
         id: 12374,
         avatarInitials: 'EM',
         avatarColor: orange[800],
         name: 'Elijah Malkuth',
         address: 'Nest of former L Corp, District 12, The City',
         gender: 'Female',
-        postal: '10172',
+        postal: '10120',
         joinDate: '08/11/2018',
         birthDate: '03/12/1998',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
+    {
+        id: 25487,
+        avatarInitials: 'YE',
+        avatarColor: deepPurple[400],
+        name: 'Gabriel Yesod',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal: '10120',
+        joinDate: '06/02/2015',
+        birthDate: '11/07/1996',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
+    {
+        id: 31238,
+        avatarInitials: 'CH',
+        avatarColor: blue[500],
+        name: 'Daniel Chesed',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal: '10120',
+        joinDate: '21/08/2017',
+        birthDate: '03/12/1992',
+        status: 'Active',
+        restrictions: [
+          ]
+    },
+    {
+        id: 97112,
+        avatarInitials: 'OF',
+        avatarColor: grey[900],
+        name: 'Roland "The Black Slience"',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal: '10120',
+        joinDate: '10/11/2021',
+        birthDate: '09/10/1992',
         status: 'Active',
         restrictions: [
           ]
@@ -141,71 +197,28 @@ const ManageAccountPage = () => {
         setSortBy(event.target.value);
       };
 
+    const [sortOrder, setSortOrder] = React.useState(false);
+    const toggleSort = () => {
+        setSortOrder(!sortOrder);
+      }
+
+    const [showRestricted, setShowRestricted] = React.useState(false);
+    const toggleShowRestricted = () => {
+        setShowRestricted(!showRestricted);
+        }
+
     useLayoutEffect(() => {
         document.body.classList.add("gray");
         document.body.classList.add("no-scroll!important")
         return () => {document.body.classList.remove("gray")};
       }, []);
 
-      const [headerSort, setHeaderSort] = useState({
-        headerSortArr: 
-        [
-            {
-                id: 1,
-                title: 'Users',
-                asc: false
-            },
-            {
-                id: 2,
-                title: 'Address',
-                asc: false
-            },
-            {
-                id: 3,
-                title: 'Gender',
-                asc: false
-            },
-            {
-                id: 4,
-                title: 'Postal',
-                asc: false
-            },
-            {
-                id: 5,
-                title: 'Joined Date',
-                asc: false
-            },
-            {
-                id: 6,
-                title: 'Birth Date',
-                asc: false
-            },
-            {
-                id: 7,
-                title: 'Status',
-                asc: false
-            },
-        ]
-      })
-
-      const toggleHeaderSort = (id) => {
-        let updatedList = headerSort.headerSortArr.map(item => 
-          {
-            if (item.id == id){
-              return {...item, asc: !item.asc};
-            }
-            return item;
-          });
-      
-        setHeaderSort({headerSortArr: updatedList});
-      }
-
     return (
         <div>
             <Box className={classes.topwrapper}>
                 <Box className={classes.topright}>
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox />} label="Show Restricted Only" />
+                        <FormControlLabel onChange={toggleShowRestricted} control={<Checkbox />} label="Show Restricted Only" />
                     </FormGroup>
                 </Box>
                 <Box className={classes.topright}>
@@ -227,8 +240,11 @@ const ManageAccountPage = () => {
                             }}
                         />
                     </Box>
-                    <Box sx={{ marginTop: '10px', marginBottom: '10px' }}>
-                        <FormControl sx={{ m: 1, left: '250px'}}>
+                    <Box sx={{ marginTop: '10px', marginBottom: '10px', display:'flex', justifyContent: 'flex-end'}}>
+                        <FormGroup sx={{ margin: '6px'}}>
+                            <FormControlLabel onChange={toggleSort} control={<Checkbox />} label="Sort by Ascending"/>
+                        </FormGroup>
+                        <FormControl sx={{ m: 1 }}>
                             <InputLabel id="sort-by-select-label" sx={{ top: '-5px' }}>Sort By</InputLabel>
                             <Select
                               labelId="sort-by-label"
@@ -238,12 +254,13 @@ const ManageAccountPage = () => {
                               className={classes.root}
                               onChange={setSort}
                             >
-                              <MenuItem value={10}>Name</MenuItem>
-                              <MenuItem value={20}>Address</MenuItem>
-                              <MenuItem value={30}>Postal Code</MenuItem>
-                              <MenuItem value={40}>Join Date</MenuItem>
-                              <MenuItem value={50}>Birthday</MenuItem>
-                              <MenuItem value={60}>User Status</MenuItem>
+                              <MenuItem value={'name'}>Name</MenuItem>
+                              <MenuItem value={'id'}>User ID</MenuItem>
+                              <MenuItem value={'address'}>Address</MenuItem>
+                              <MenuItem value={'postal'}>Postal Code</MenuItem>
+                              <MenuItem value={'joinDate'}>Join Date</MenuItem>
+                              <MenuItem value={'birthDate'}>Birthday</MenuItem>
+                              <MenuItem value={'status'}>Status</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -259,45 +276,24 @@ const ManageAccountPage = () => {
                     <Box className={classes.header}>
                         <Box sx={{ width: '27%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users</Typography>
-                            {headerSort.headerSortArr[0].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(1)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(1)}/> }
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
-                            {headerSort.headerSortArr[1].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(2)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(2)}/> }
                         </Box>
                         <Box sx={{ width: '10%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Gender</Typography>
-                            {headerSort.headerSortArr[2].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(3)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(3)}/> }
                         </Box>
                         <Box sx={{ width: '10%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Postal</Typography>
-                            {headerSort.headerSortArr[3].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(4)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(4)}/> }
                         </Box>
                         <Box sx={{ width: '14%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Joined Date</Typography>
-                            {headerSort.headerSortArr[4].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(5)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(5)}/> }
                         </Box>
                         <Box sx={{ width: '13%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Birth Date</Typography>
-                            {headerSort.headerSortArr[5].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(6)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(6)}/> }
                         </Box>
                         <Box sx={{ width: '10%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Status</Typography>
-                            {headerSort.headerSortArr[6].asc ? 
-                            <KeyboardArrowUpIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(7)}/> : 
-                            <KeyboardArrowDownIcon sx={{ marginLeft: '3px', fontSize: 20}} color="primary" onClick={() => toggleHeaderSort(7)}/> }
                         </Box>
                     </Box>
                     </CardContent>
@@ -305,7 +301,15 @@ const ManageAccountPage = () => {
             <List>
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
-                        {users.map((key) => (
+                        {
+                        (showRestricted ? 
+                            (users.sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            .filter(function( obj ) {
+                                return obj.status == 'Restricted';
+                            })
+                            : (users.sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                        )
+                        .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
                                     <UserCard user={key}/>
