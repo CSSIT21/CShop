@@ -257,6 +257,7 @@ const ManageAccountPage = () => {
                               <MenuItem value={'name'}>Name</MenuItem>
                               <MenuItem value={'id'}>User ID</MenuItem>
                               <MenuItem value={'address'}>Address</MenuItem>
+                              <MenuItem value={'gender'}>Gender</MenuItem>
                               <MenuItem value={'postal'}>Postal Code</MenuItem>
                               <MenuItem value={'joinDate'}>Join Date</MenuItem>
                               <MenuItem value={'birthDate'}>Birthday</MenuItem>
