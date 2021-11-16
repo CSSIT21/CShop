@@ -23,33 +23,38 @@ enum Gender {
 }
 
 model customer {
-    id                        Int                         @id @default(autoincrement())
-    email                     String                      @db.VarChar(60)
-    password                  String                      @db.VarChar(255)
-    date                      DateTime                    @default(now())
-    customer_info             customer_info[]
-    customer_picture          customer_picture[]
-    customer_address          customer_address[]
-    old_password              customer_old_password[]
-    wishlist                  customer_wishlist[]
-    followed_shop             customer_followed_shop[]
-    shop_info                 shop_info[]
-    shop_comment              shop_comment[]
-    product_reviews           product_reviews[]
-    product_comment_rating    product_comment_rating[]
-    discount_user_code        discount_user_code[]
-    discount_customer_spend   discount_customer_spend[]
-    discount_coin_information discount_coin_information[]
-    discount_customer_coin    discount_customer_coin[]
-    wallet                    wallet[]
-    payment_credit_card_owner payment_credit_card_owner[]
-    order_deleted_item        order_deleted_item[]
-    order_rebuy               order_rebuy[]
-    order_cart_item           order_cart_item[]
-    order                     order[]
-    chat_preference           chat_preference[]
-    chat_conversation         chat_conversation[]
-    chat_reported_message     chat_reported_message[]
+    id                          Int                           @id @default(autoincrement())
+    email                       String                        @db.VarChar(60)
+    password                    String                        @db.VarChar(255)
+    date                        DateTime                      @default(now())
+    customer_info               customer_info[]
+    customer_picture            customer_picture[]
+    customer_address            customer_address[]
+    old_password                customer_old_password[]
+    wishlist                    customer_wishlist[]
+    followed_shop               customer_followed_shop[]
+    shop_info                   shop_info[]
+    shop_comment                shop_comment[]
+    product_reviews             product_reviews[]
+    product_comment_rating      product_comment_rating[]
+    discount_user_code          discount_user_code[]
+    discount_customer_spend     discount_customer_spend[]
+    discount_coin_information   discount_coin_information[]
+    discount_customer_coin      discount_customer_coin[]
+    wallet                      wallet[]
+    payment_credit_card_owner   payment_credit_card_owner[]
+    order_deleted_item          order_deleted_item[]
+    order_rebuy                 order_rebuy[]
+    order_cart_item             order_cart_item[]
+    order                       order[]
+    chat_preference             chat_preference[]
+    chat_conversation           chat_conversation[]
+    chat_reported_message       chat_reported_message[]
+    rem_number_view_product     rem_number_view_product[]
+    rem_number_product_in_cart  rem_number_product_in_cart[]
+    rem_number_payment_product  rem_number_payment_product[]
+    rem_number_interaction_user rem_number_interaction_user[]
+    rem_suggestion_homepage     rem_suggestion_homepage[]
 }
 
 model customer_info {
@@ -290,30 +295,38 @@ model category {
 }
 
 model product {
-    id                       Int                   @id @default(autoincrement())
-    shop_id                  Int
-    shop_id_from_product     shop_info             @relation(fields: [shop_id], references: [id])
-    title                    String                @db.VarChar(100)
-    sub_title                String                @db.VarChar(70)
-    category_id              Int
-    category_id_from_product category              @relation(fields: [category_id], references: [id])
-    price                    Int
-    quantity                 Int
-    sold                     Int
-    added_date               DateTime              @default(now()) @db.Timestamp
-    suggest_products         Int[]
-    rating                   Decimal               @db.Decimal(1, 1)
-    product_detail           product_detail[]
-    product_picture          product_picture[]
-    product_reviews          product_reviews[]
-    product_short_link       product_short_link[]
-    product_options          product_options[]
-    order_deleted_item       order_deleted_item[]
-    order_rebuy              order_rebuy[]
-    order_cart_item          order_cart_item[]
-    order_item               order_item[]
-    order_cancel_refund      order_cancel_refund[]
-    order_refund_item        order_refund_item[]
+    id                             Int                              @id @default(autoincrement())
+    shop_id                        Int
+    shop_id_from_product           shop_info                        @relation(fields: [shop_id], references: [id])
+    title                          String                           @db.VarChar(100)
+    sub_title                      String                           @db.VarChar(70)
+    category_id                    Int
+    category_id_from_product       category                         @relation(fields: [category_id], references: [id])
+    price                          Int
+    quantity                       Int
+    sold                           Int
+    added_date                     DateTime                         @default(now()) @db.Timestamp
+    suggest_products               Int[]
+    rating                         Decimal                          @db.Decimal(1, 1)
+    product_detail                 product_detail[]
+    product_picture                product_picture[]
+    product_reviews                product_reviews[]
+    product_short_link             product_short_link[]
+    product_options                product_options[]
+    order_deleted_item             order_deleted_item[]
+    order_rebuy                    order_rebuy[]
+    order_cart_item                order_cart_item[]
+    order_item                     order_item[]
+    order_cancel_refund            order_cancel_refund[]
+    order_refund_item              order_refund_item[]
+    rem_number_view_product        rem_number_view_product[]
+    rem_number_product_in_cart     rem_number_product_in_cart[]
+    rem_number_payment_product     rem_number_payment_product[]
+    rem_number_interaction_user    rem_number_interaction_user[]
+    rem_related_product            rem_related_products[]
+    rem_may_favorite_product       rem_may_favorite_product[]
+    rem_product_promotion          rem_product_promotion[]
+    rem_promotion_type_interaction rem_promotion_type_interaction[]
 }
 
 model product_detail {
@@ -413,22 +426,23 @@ enum DiscountUserTypes {
 }
 
 model discount {
-    id                 Int                  @id @default(autoincrement())
-    code               String               @db.VarChar(6)
-    start_date         DateTime             @db.Timestamp
-    end_date           DateTime             @db.Timestamp
-    description        String               @db.Text
-    class              DiscountClass
-    min_price          Int?                 @default(0)
-    reduce_price       Int?
-    discount_types     DiscountTypes
-    added_date         DateTime             @db.Timestamp
-    discount_shop      discount_shop[]
-    discount_event     discount_event[]
-    discount_app       discount_app[]
-    discount_category  discount_category[]
-    discount_user_code discount_user_code[]
-    order_detail       order_detail[]
+    id                    Int                     @id @default(autoincrement())
+    code                  String                  @db.VarChar(6)
+    start_date            DateTime                @db.Timestamp
+    end_date              DateTime                @db.Timestamp
+    description           String                  @db.Text
+    class                 DiscountClass
+    min_price             Int?                    @default(0)
+    reduce_price          Int?
+    discount_types        DiscountTypes
+    added_date            DateTime                @db.Timestamp
+    discount_shop         discount_shop[]
+    discount_event        discount_event[]
+    discount_app          discount_app[]
+    discount_category     discount_category[]
+    discount_user_code    discount_user_code[]
+    order_detail          order_detail[]
+    rem_product_promotion rem_product_promotion[]
 }
 
 model discount_shop {
@@ -439,10 +453,14 @@ model discount_shop {
 }
 
 model event {
-    id             Int              @id @default(autoincrement())
-    title          String           @db.Text
-    description    String           @db.Text
-    discount_event discount_event[]
+    id                             Int                              @id @default(autoincrement())
+    title                          String                           @db.Text
+    description                    String                           @db.Text
+    discount_event                 discount_event[]
+    rem_number_view_product        rem_number_view_product[]
+    rem_number_product_in_cart     rem_number_product_in_cart[]
+    rem_number_payment_product     rem_number_payment_product[]
+    rem_promotion_type_interaction rem_promotion_type_interaction[]
 }
 
 model discount_event {
@@ -965,4 +983,92 @@ model chat_deleted_message {
     from_customer                        Boolean           @default(false)
     message_time                         DateTime          @db.Timestamp
     content_type                         ChatMessageTypes
+}
+
+//--------------------------------------------------------------------------------------------
+//      Chat & Notification
+//--------------------------------------------------------------------------------------------
+
+model rem_number_view_product {
+    customer_id                              Int      @id
+    customer_id_from_rem_number_view_product customer @relation(fields: [customer_id], references: [id])
+    product_id                               Int
+    product_id_from_rem_number_view_product  product  @relation(fields: [product_id], references: [id])
+    total_view                               Int
+    event_id                                 Int
+    event_id_from_rem_number_view_product    event    @relation(fields: [event_id], references: [id])
+}
+
+model rem_number_product_in_cart {
+    customer_id                                 Int      @id
+    customer_id_from_rem_number_product_in_cart customer @relation(fields: [customer_id], references: [id])
+    product_id                                  Int
+    product_id_from_rem_number_product_in_cart  product  @relation(fields: [product_id], references: [id])
+    sum_in_cart                                 Int
+    added_time                                  DateTime @default(now()) @db.Timestamp
+    event_id                                    Int
+    event_id_from_rem_number_product_in_cart    event    @relation(fields: [event_id], references: [id])
+}
+
+model rem_number_payment_product {
+    customer_id                                 Int      @id
+    customer_id_from_rem_number_payment_product customer @relation(fields: [customer_id], references: [id])
+    product_id                                  Int
+    product_id_from_rem_number_payment_product  product  @relation(fields: [product_id], references: [id])
+    sum_buy                                     Int
+    added_time                                  DateTime @default(now()) @db.Timestamp
+    event_id                                    Int
+    event_id_from_rem_number_payment_product    event    @relation(fields: [event_id], references: [id])
+}
+
+model rem_number_interaction_user {
+    customer_id                                  Int      @id
+    customer_id_from_rem_number_interaction_user customer @relation(fields: [customer_id], references: [id])
+    product_id                                   Int
+    product_id_from_rem_number_interaction_user  product  @relation(fields: [product_id], references: [id])
+    interaction_score                            Int
+    added_time                                   DateTime @default(now()) @db.Timestamp
+}
+
+model rem_related_products {
+    product_id                          Int      @id
+    product_id_from_rem_related_product product  @relation(fields: [product_id], references: [id])
+    related_product                     Int[]
+    added_time                          DateTime @db.Timestamp
+}
+
+model rem_suggestion_homepage {
+    customer_id                              Int      @id
+    customer_id_from_rem_suggestion_homepage customer @relation(fields: [customer_id], references: [id])
+    product_id                               Int[]
+}
+
+model rem_may_favorite_product {
+    product_id                               Int      @id
+    product_id_from_rem_may_favorite_product product  @relation(fields: [product_id], references: [id])
+    related_products                         Int[]
+    added_time                               DateTime @default(now()) @db.Timestamp
+}
+
+model rem_number_keyword_search {
+    keyword         String @id @db.Text
+    number_searched Int    @default(1)
+}
+
+model rem_product_promotion {
+    product_id                             Int      @id
+    product_id_from_rem_product_promotion  product  @relation(fields: [product_id], references: [id])
+    quantity                               Int
+    discount_id                            Int
+    discount_id_from_rem_product_promotion discount @relation(fields: [discount_id], references: [id])
+    amount                                 Int
+}
+
+model rem_promotion_type_interaction {
+    event_id                                       Int      @id
+    event_id_from_rem_promotion_type_interaction   event    @relation(fields: [event_id], references: [id])
+    product_id                                     Int
+    product_id_from_rem_promotion_type_interaction product  @relation(fields: [product_id], references: [id])
+    interaction_score                              Int
+    added_date                                     DateTime @default(now()) @db.Timestamp
 }
