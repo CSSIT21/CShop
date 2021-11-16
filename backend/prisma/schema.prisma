@@ -47,6 +47,9 @@ model customer {
     order_rebuy               order_rebuy[]
     order_cart_item           order_cart_item[]
     order                     order[]
+    chat_preference           chat_preference[]
+    chat_conversation         chat_conversation[]
+    chat_reported_message     chat_reported_message[]
 }
 
 model customer_info {
@@ -164,6 +167,10 @@ model shop_info {
     payment_seller_income          payment_seller_income[]
     payment_seller_income_receipt  payment_seller_income_receipt[]
     payment_shop_bank_account      payment_shop_bank_account[]
+    chat_shop_label                chat_shop_label[]
+    chat_shop_stat                 chat_shop_stat[]
+    chat_shop_preference           chat_shop_preference[]
+    chat_conversation              chat_conversation[]
 }
 
 model shop_picture {
@@ -795,4 +802,167 @@ model order_refund_item {
     time_remaining                    DateTime                          @db.Timestamp
     payment_wallet_transaction        payment_wallet_transaction[]
     payment_credit_card_transaction   payment_credit_card_transaction[]
+}
+
+//--------------------------------------------------------------------------------------------
+//      Chat & Notification
+//--------------------------------------------------------------------------------------------
+
+enum ChatMessageTypes {
+    Text
+    Image
+    Video
+}
+
+enum ChatConversationMark {
+    Spam
+    Important
+    Unread
+    Done
+}
+
+model chat_shop_label {
+    label_no                     Int       @id @default(autoincrement())
+    shop_id                      Int
+    shop_id_from_chat_shop_label shop_info @relation(fields: [shop_id], references: [id])
+    label_text                   String    @db.Text
+    label_color                  String    @db.VarChar(15)
+}
+
+model chat_shop_stat {
+    shop_id                     Int       @id
+    shop_id_from_chat_shop_stat shop_info @relation(fields: [shop_id], references: [id])
+    response_rate               Int       @db.SmallInt
+    response_time               Int
+}
+
+model chat_automated_response {
+    id                   Int                    @id @default(autoincrement())
+    query                String                 @db.Text
+    response             String                 @db.Text
+    chat_shop_preference chat_shop_preference[]
+}
+
+model chat_shop_preference {
+    shop_id                                 Int                     @id
+    shop_id_from_chat_shop_preference       shop_info               @relation(fields: [shop_id], references: [id])
+    greeting_message                        String                  @db.Text
+    automation_id                           Int
+    automation_id_from_chat_shop_preference chat_automated_response @relation(fields: [automation_id], references: [id])
+    url_slug                                String                  @db.Text
+}
+
+model chat_preference {
+    customer_id                      Int      @id
+    customer_id_from_chat_preference customer @relation(fields: [customer_id], references: [id])
+    enter_to_send                    Boolean  @default(false)
+    click_sticker                    Boolean  @default(false)
+    font_size                        Int      @default(16) //not sure
+}
+
+model chat_conversation {
+    id                                 Int                          @id @default(autoincrement())
+    customer_id                        Int
+    custimer_id_from_chat_conversation customer                     @relation(fields: [customer_id], references: [id])
+    shop_id                            Int
+    shop_id_from_chat_conversation     shop_info                    @relation(fields: [shop_id], references: [id])
+    marked_as                          ChatConversationMark
+    note                               String                       @db.Text
+    is_muted                           Boolean                      @default(false)
+    is_blocked                         Boolean                      @default(false)
+    chat_message                       chat_message[]
+    chat_reported_conversation         chat_reported_conversation[]
+    deleted_message                    chat_deleted_message[]
+}
+
+model chat_message {
+    id                                Int                     @id @default(autoincrement())
+    conversation_id                   Int
+    conversation_id_from_chat_message chat_conversation       @relation(fields: [conversation_id], references: [id])
+    from_customer                     Boolean
+    message_time                      DateTime                @default(now())
+    content_type                      ChatMessageTypes
+    seen                              Boolean                 @default(false)
+    chat_notification                 chat_notification[]
+    chat_reported_message             chat_reported_message[]
+    chat_text                         chat_text[]
+    chat_image                        chat_image[]
+    chat_video                        chat_video[]
+    chat_sticker                      chat_sticker[]
+}
+
+model chat_notification {
+    message_id                        Int              @id
+    message_id_from_chat_notification chat_message     @relation(fields: [message_id], references: [id])
+    action_url                        String           @db.Text
+    type                              ChatMessageTypes
+    notification_text                 String           @db.Text
+}
+
+model chat_reported_conversation {
+    id                                              Int                     @id @default(autoincrement())
+    conversation_id                                 Int
+    conversation_id_from_chat_reported_conversation chat_conversation       @relation(fields: [conversation_id], references: [id])
+    report_date                                     DateTime                @db.Timestamp
+    chat_reported_message                           chat_reported_message[]
+}
+
+model chat_reported_message {
+    report_id                              Int                        @id
+    report_id_from_chat_reported_message   chat_reported_conversation @relation(fields: [report_id], references: [id])
+    message_id                             Int
+    message_id_from_chat_reported_message  chat_message               @relation(fields: [message_id], references: [id])
+    status                                 String                     @db.Text
+    description                            String                     @db.Text
+    reviewed_by                            Int
+    reviewed_by_from_chat_reported_message customer                   @relation(fields: [reviewed_by], references: [id])
+}
+
+model chat_text {
+    message_id                Int          @id
+    message_id_from_chat_text chat_message @relation(fields: [message_id], references: [id])
+    text                      String       @db.Text
+}
+
+model chat_image {
+    message_id                 Int          @id
+    message_id_from_chat_image chat_message @relation(fields: [message_id], references: [id])
+    title                      String       @db.VarChar(50)
+    path                       String       @db.Text
+    thumbnail                  String       @db.Text
+    mime_type                  String       @db.VarChar(20)
+}
+
+model chat_video {
+    message_id                 Int          @id
+    message_id_from_chat_video chat_message @relation(fields: [message_id], references: [id])
+    title                      String       @db.VarChar(50)
+    path                       String       @db.Text
+    thumbnail                  String       @db.Text
+    mime_type                  String       @db.VarChar(20)
+}
+
+model chat_sticker_lookup {
+    id           Int            @id @default(autoincrement())
+    title        String         @db.VarChar(50)
+    path         String         @db.Text
+    thumbnail    String         @db.Text
+    mime_type    String         @db.VarChar(20)
+    chat_sticker chat_sticker[]
+}
+
+model chat_sticker {
+    message_id                   Int                 @id
+    message_id_from_chat_sticker chat_message        @relation(fields: [message_id], references: [id])
+    sticker_id                   Int
+    sticker_id_from_chat_sticker chat_sticker_lookup @relation(fields: [sticker_id], references: [id])
+}
+
+model chat_deleted_message {
+    message_id                           Int               @id
+    conversation_id                      Int
+    conversation_id_from_deleted_message chat_conversation @relation(fields: [conversation_id], references: [id])
+    from_customer                        Boolean           @default(false)
+    message_time                         DateTime          @db.Timestamp
+    content_type                         ChatMessageTypes
 }
