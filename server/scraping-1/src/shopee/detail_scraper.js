@@ -84,6 +84,36 @@ const detail = async (browser, url) => {
 			});
 		});
 		
+		// Subcategories extraction
+		await page.waitForSelector('._3wdEZ5 ._3QRNmL', { timeout: 500 });
+		const subcategories = await page.$$eval('._3wdEZ5 ._3QRNmL:not(:first-child)', (elems) => {
+			return elems.map((el) => {
+				return el.textContent;
+			});
+		});
+		
+		// Reviews extraction
+		const reviews = [];
+		
+		await page.waitForSelector('.product-ratings', { timeout: 500 });
+		const reviewNoData = await page.$$('.product-ratings-comments-view__no-data');
+		if (reviewNoData.length === 0) {
+			reviews.push(
+				...await page.$$eval('.shopee-product-rating', (elems) => {
+					return elems.map((el) => {
+						const content = el.querySelector('.shopee-product-rating__content').textContent;
+						const star = [...el.querySelectorAll('.icon-rating-solid--active')].length;
+						const images = [...el.querySelectorAll('.rating-media-list__image-wrapper')].map((em) => {
+							const imgElem = em.querySelector('.shopee-rating-media-list-image__content');
+							const imgBackground = imgElem.style.backgroundImage;
+							return imgBackground.substring(5, imgBackground.length - 2);
+						});
+						return { content, star, images };
+					});
+				}),
+			);
+		}
+		
 		// Return
 		return {
 			title,
@@ -94,8 +124,10 @@ const detail = async (browser, url) => {
 			sold,
 			ratingValue,
 			ratingCount,
-			images,
 			options,
+			subcategories,
+			images,
+			reviews,
 		};
 	} catch (e) {
 		console.error(e);
