@@ -16,18 +16,18 @@ function formatTime(time) {
 const ChatBubble = (props) => {
     const classes = useStyles()
     let bubble = null
-    if (props.contentType === 'notification') {
+    if (props.contentType === 'Notification') {
         bubble = (
             <NotificationBubble
                 text={props.content}
                 actionUrl={props.contentExtra}
             />
         )
-    } else if (props.contentType === 'text') {
+    } else if (props.contentType === 'Text') {
         bubble = <TextBubble variant={props.variant} text={props.content} />
-    } else if (props.contentType === 'image') {
+    } else if (props.contentType === 'Image') {
         bubble = <ImageBubble variant={props.variant} src={props.content} />
-    } else if (props.contentType === 'video') {
+    } else if (props.contentType === 'Video') {
         bubble = (
             <VideoBubble
                 variant={props.variant}

@@ -67,8 +67,9 @@ const ChatList = (props) => {
                 </Typography>
             </Box>
             <Box className={classes.chatList}>
-                {props.latest.map((message) => (
+                {props.latest.map((message, i) => (
                     <ChatBox
+                        key={i}
                         displayName={
                             message.sender === props.user_id
                                 ? props.ChatService.userWithId(
@@ -77,7 +78,14 @@ const ChatList = (props) => {
                                 : props.ChatService.userWithId(message.sender)
                                       .displayname
                         }
-                        lastMessage={message.content}
+                        lastMessage={
+                            message.content_type === 'Text'
+                                ? message.content
+                                : message.sender === props.user_id
+                                    ? message.content_type === 'Image'
+                                        ? 'You sent an image' : 'You sent a video'
+                                    : message.content_type
+                        }
                         pic={
                             message.sender === props.user_id
                                 ? props.ChatService.userWithId(

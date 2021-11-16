@@ -47,6 +47,36 @@ const ChatPage = (props) => {
         })
     }
 
+    function handleUpload(type, file) {
+        if(type === 'image') {
+            ChatService.send('image', file, currentChatUserId).then(() => {
+                setLatest(ChatService.latestMessages)
+                setMessages(ChatService.messagesBetween(currentChatUserId))
+                console.log(
+                    `%c Chat.jsx %c sent image '${file.name}' to user#${currentChatUserId}`,
+                    'background:#40ffbf;color:#032e20',
+                    ''
+                )
+                setTimeout(() => {
+                    lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
+                }, 500)
+            })
+        } else if(type === 'video') {
+            ChatService.send('video', file, currentChatUserId).then(() => {
+                setLatest(ChatService.latestMessages)
+                setMessages(ChatService.messagesBetween(currentChatUserId))
+                console.log(
+                    `%c Chat.jsx %c sent video '${file.name}' to user#${currentChatUserId}`,
+                    'background:#40ffbf;color:#032e20',
+                    ''
+                )
+                setTimeout(() => {
+                    lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
+                }, 500)
+            })
+        }
+    }
+
     function changeChat(newChatUserId) {
         console.log(
             `%c Chat.jsx %c changed to user#${newChatUserId}`,
@@ -67,6 +97,7 @@ const ChatPage = (props) => {
             />
             <ChatFeed
                 handleSubmitMessage={handleSubmitMessage}
+                handleUpload={handleUpload}
                 user_id={user_id}
                 currentChatUserId={currentChatUserId}
                 ChatService={ChatService}

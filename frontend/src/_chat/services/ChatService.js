@@ -162,7 +162,7 @@ class ChatService {
             sender: this._uid,
             recipient: recipient,
             seen: false,
-            content_type: 1,
+            content_type: 'Text',
             content: text,
             content_extra: null
         })
@@ -176,9 +176,70 @@ class ChatService {
         })
     }
 
+    sendImage(image, recipient) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.addEventListener('load', (event) => {
+                this._messages.push({
+                    message_id: this._messages[this._messages.length - 1] + 1,
+                    message_datetime: new Date()
+                        .toISOString()
+                        .replace('T', ' ')
+                        .replace('Z', ''),
+                    sender: this._uid,
+                    recipient: recipient,
+                    seen: false,
+                    content_type: 'Image',
+                    content: event.target.result,
+                    content_extra: null
+                })
+                console.log(
+                    `%c ChatService.js %c '${image.name}' sent to user #${recipient}`,
+                    'color:white;background:green',
+                    ''
+                )
+                resolve()
+            })
+            reader.readAsDataURL(image)
+        })
+    }
+
+    sendVideo(video, recipient) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.addEventListener('load', (event) => {
+                document.write('<video src="' + event.target.result + '" width="320" height="240" controls></video>')
+                // this._messages.push({
+                //     message_id: this._messages[this._messages.length - 1] + 1,
+                //     message_datetime: new Date()
+                //         .toISOString()
+                //         .replace('T', ' ')
+                //         .replace('Z', ''),
+                //     sender: this._uid,
+                //     recipient: recipient,
+                //     seen: false,
+                //     content_type: 'Image',
+                //     content: event.target.result,
+                //     content_extra: null
+                // })
+                // console.log(
+                //     `%c ChatService.js %c '${image.name}' sent to user #${recipient}`,
+                //     'color:white;background:green',
+                //     ''
+                // )
+                resolve()
+            })
+            reader.readAsDataURL(video)
+        })
+    }
+
     send(contentType, content, recipient) {
         if (contentType === 'text') {
             return this.sendText(content, recipient)
+        } else if (contentType === 'image') {
+            return this.sendImage(content, recipient)
+        } else if (contentType === 'video') {
+            return this.sendVideo(content, recipient)
         }
     }
 }

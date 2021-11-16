@@ -47,7 +47,6 @@ const useStyles = makeStyles({
 
 const ChatFeed = (props) => {
     const classes = useStyles()
-    const contentType = ['notification', 'text', 'image', 'video']
 
     const messages = props.ChatService.messagesBetween(props.currentChatUserId)
 
@@ -77,12 +76,13 @@ const ChatFeed = (props) => {
                 />
             </Box>
             <Box className={classes.chatFeed}>
-                {messages.map((m) => (
+                {messages.map((m,i) => (
                     <ChatBubble
+                        key={i}
                         variant={m.sender === props.user_id ? 'right' : 'left'}
                         read={m.seen}
                         time={m.message_datetime}
-                        contentType={contentType[m.content_type]}
+                        contentType={m.content_type}
                         content={m.content}
                         contentExtra={m.content_extra}
                         forwardedRef={props.forwardedRef}
@@ -93,6 +93,7 @@ const ChatFeed = (props) => {
                 <MessageBar
                     currentChatUserId={props.currentChatUserId}
                     handleSubmitMessage={props.handleSubmitMessage}
+                    handleUpload={props.handleUpload}
                 />
             </Box>
         </Box>

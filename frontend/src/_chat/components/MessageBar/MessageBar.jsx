@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Box } from '@mui/system'
-import { IconButton } from '@mui/material'
+import { FormControl, IconButton, InputLabel, styled } from '@mui/material'
 import VideoLibraryOutlinedIcon from '@mui/icons-material/VideoLibraryOutlined'
 import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined'
 import SendIcon from '@mui/icons-material/Send'
@@ -10,6 +10,8 @@ import InputBox from '../InputBox/InputBox'
 
 const MessageBar = (props) => {
     const inputRef = useRef(null)
+    const vidInputRef = useRef(null)
+    const imgInputRef = useRef(null)
     const classes = useStyles()
     let inputSubmitted = true
 
@@ -34,7 +36,7 @@ const MessageBar = (props) => {
     function handleEnterKey(e) {
         if (e.key === 'Enter') {
             console.groupEnd()
-            submit(e)
+            submitText(e)
             inputSubmitted = true
         } else {
             if (inputSubmitted) {
@@ -49,7 +51,7 @@ const MessageBar = (props) => {
         }
     }
 
-    function submit(e) {
+    function submitText(e) {
         if (inputRef.current.childNodes[0].value === '') return
         console.log(
             `%c MessageBar.jsx %c submitted '${inputRef.current.childNodes[0].value}' to user#${props.currentChatUserId}`,
@@ -61,18 +63,54 @@ const MessageBar = (props) => {
         inputRef.current.childNodes[0].focus()
     }
 
+    function submitVideo(e) {
+        if (e.target.files.length < 1) return
+        console.log(
+            `%c MessageBar.jsx %c submitted video '${e.target.files[0].name}' to user#${props.currentChatUserId}`,
+            'color:#e0c7ff;background:#590db5',
+            ''
+        )
+        props.handleUpload('video', e.target.files[0])
+    }
+
+    function submitImage(e) {
+        if (e.target.files.length < 1) return
+        console.log(
+            `%c MessageBar.jsx %c submitted image '${e.target.files[0].name}' to user#${props.currentChatUserId}`,
+            'color:#e0c7ff;background:#590db5',
+            ''
+        )
+        props.handleUpload('image', e.target.files[0])
+    }
+
+    const Input = styled('input')({
+        display: 'none'
+    })
+
     return (
         <Box className={classes.container}>
             <Box>
-                <IconButton>
+                <Input
+                    accept="video/*"
+                    type="file"
+                    ref={vidInputRef}
+                    onChange={submitVideo}
+                />
+                <Input
+                    accept="image/*"
+                    type="file"
+                    ref={imgInputRef}
+                    onChange={submitImage}
+                />
+                <IconButton onClick={() => vidInputRef.current.click()}>
                     <VideoLibraryOutlinedIcon color="primary" />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => imgInputRef.current.click()}>
                     <PhotoLibraryOutlinedIcon color="primary" />
                 </IconButton>
             </Box>
             <InputBox aria-label="Message input box" forwardedRef={inputRef} />
-            <IconButton onClick={submit}>
+            <IconButton onClick={submitText}>
                 <SendIcon color="primary" />
             </IconButton>
         </Box>

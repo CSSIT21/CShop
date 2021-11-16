@@ -6,7 +6,10 @@ const useStyles = makeStyles({
         flexWrap: 'nowrap',
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-        width: '100%'
+        width: '100%',
+        '&:first-of-type': {
+            marginTop: '0px'
+        }
     },
     left: {
         flexDirection: 'row'
