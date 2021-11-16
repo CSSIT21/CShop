@@ -89,13 +89,13 @@ class ChatService {
                 latest[i] = JSON.parse(JSON.stringify(m))
             }
         })
-        return latest.reverse()
+        return latest.reverse() || []
     }
 
     messagesBetween(user_id) {
         return this._messages.filter(
             (m) => m.sender === user_id || m.recipient === user_id
-        )
+        ) || []
     }
 
     latestMessageBetween(user_id) {
@@ -103,6 +103,10 @@ class ChatService {
             ...this.messagesBetween(user_id)
         ].reverse()
         return messagesBetweenReverse[0] || {}
+    }
+
+    messageWithId(message_id) {
+        return this._messages.find((m) => m.message_id === message_id) || {}
     }
 
     get users() {
@@ -136,7 +140,7 @@ class ChatService {
 
     userWithId(user_id) {
         // console.log(users)
-        return this._users.find((u) => u.user_id === user_id)
+        return this._users.find((u) => u.user_id === user_id) || {}
     }
 
     get self() {
@@ -208,7 +212,11 @@ class ChatService {
         return new Promise((resolve, reject) => {
             const reader = new FileReader()
             reader.addEventListener('load', (event) => {
-                document.write('<video src="' + event.target.result + '" width="320" height="240" controls></video>')
+                document.write(
+                    '<video src="' +
+                        event.target.result +
+                        '" width="320" height="240" controls></video>'
+                )
                 // this._messages.push({
                 //     message_id: this._messages[this._messages.length - 1] + 1,
                 //     message_datetime: new Date()
