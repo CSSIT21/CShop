@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Card, CardActionArea, CardContent, CardMedia } from '@mui/material'
+import { Card, CardActionArea, CardContent, CardMedia, IconButton } from '@mui/material'
 import useStyles from './VideoBubble.styles'
-import CircularProgress from '@mui/material/CircularProgress'
+import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
 
 const VideoBubble = (props) => {
     const classes = useStyles()
-    const [loaded, setLoaded] = useState(false)
     const imgRef = useRef(null)
 
     useEffect(() => {
@@ -18,22 +17,37 @@ const VideoBubble = (props) => {
                 img.onload = function () {
                     imgRef.current.src = url
                     imgRef.current.style.opacity = 1
-                    imgRef.current.style.width = 'auto'
-                    imgRef.current.style.height = this.height + 'px'
+                    if (this.naturalWidth >= this.naturalHeight) {
+                        imgRef.current.style.height = `calc(28vw * ${
+                            this.naturalHeight / this.naturalWidth
+                        })`
+                    } else {
+                        imgRef.current.style.height = 'calc(75vh - 191.25px)'
+                        setTimeout(() => {
+                            imgRef.current.style.width =
+                                (this.naturalWidth / this.naturalHeight) *
+                                    imgRef.current.clientHeight +
+                                'px'
+                        }, 500)
+                    }
+                    console.log(
+                        `${this.naturalWidth} x ${this.naturalHeight} -> ${
+                            this.naturalHeight / this.naturalWidth
+                        }`
+                    )
                 }
                 img.remove()
-                setLoaded(true)
             })
-    })
+    }, [props.thumbnail, props.src])
 
     return (
         <Card className={classes.videoBubble}>
             <CardActionArea>
-                {!loaded && (
-                    <CardContent className={classes.imageSpinner}>
-                        <CircularProgress color="secondary" />
-                    </CardContent>
-                )}
+                <CardContent className={classes.videoThumbnailPlay}>
+                    <IconButton size="large">
+                        <PlayCircleOutlineRoundedIcon fontSize="inherit" />
+                    </IconButton>
+                </CardContent>
                 <CardMedia
                     component="img"
                     image={null}

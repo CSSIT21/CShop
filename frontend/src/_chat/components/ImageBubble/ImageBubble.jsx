@@ -19,13 +19,26 @@ const ImageBubble = (props) => {
                 img.onload = function () {
                     imgRef.current.src = url
                     imgRef.current.style.opacity = 1
-                    imgRef.current.style.width = 'auto'
-                    imgRef.current.style.height = this.height + 'px'
+                    if(this.naturalWidth >= this.naturalHeight) {
+                        imgRef.current.style.height = `calc(28vw * ${
+                            this.naturalHeight / this.naturalWidth
+                        })`
+                    } else {
+                        imgRef.current.style.height = 'calc(75vh - 191.25px)'
+                        setTimeout(() => {
+                            imgRef.current.style.width = (this.naturalWidth / this.naturalHeight) * imgRef.current.clientHeight + 'px'
+                        }, 500)
+                    }
+                    console.log(
+                        `${this.naturalWidth} x ${this.naturalHeight} -> ${
+                            this.naturalHeight / this.naturalWidth
+                        }`
+                    )
                 }
                 img.remove()
                 setLoaded(true)
             })
-    })
+    }, [props.src])
 
     return (
         <Card className={classes.imageBubble}>

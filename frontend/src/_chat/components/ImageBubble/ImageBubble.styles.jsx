@@ -8,7 +8,7 @@ const useStyles = makeStyles({
         margin: '8px',
         backgroundColor: '#FD6637 !important',
         '& img': {
-            width: '200px',
+            width: '28vw',
             height: '200px',
             opacity: 0,
             transition: 'all 500ms ease'

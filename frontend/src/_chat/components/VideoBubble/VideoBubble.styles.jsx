@@ -8,14 +8,14 @@ const useStyles = makeStyles({
         margin: '8px',
         backgroundColor: '#FD6637 !important',
         '& img': {
-            width: '200px',
+            width: '28vw',
             height: '200px',
             opacity: 0,
-            transition: 'all 500ms ease'
+            transition: 'all 500ms ease',
+            filter: 'brightness(0.8)'
         }
     },
-    imageSpinner: {
-        color: 'white',
+    videoThumbnailPlay: {
         position: 'absolute',
         top: '0px',
         left: '0px',
@@ -23,7 +23,12 @@ const useStyles = makeStyles({
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        '& button': {
+            color: 'white !important',
+            fontSize: '72px',
+            zIndex: 999
+        }
     }
 })
 
