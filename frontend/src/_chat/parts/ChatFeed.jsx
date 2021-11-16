@@ -47,12 +47,13 @@ const useStyles = makeStyles({
 
 const ChatFeed = (props) => {
     const classes = useStyles()
+    const currentUser = props.ChatService.userWithId(props.currentChatUserId)
 
     const messages = props.ChatService.messagesBetween(props.currentChatUserId)
 
     console.log(
         `%c ChatFeed.jsx %c rendered user#${props.currentChatUserId} (${
-            props.ChatService.userWithId(props.currentChatUserId).displayname
+            currentUser.displayname
         })`,
         'color:#004254;background:#5ce1ff',
         ''
@@ -63,13 +64,11 @@ const ChatFeed = (props) => {
             <Box className={classes.chatFeedTitle}>
                 <ProfileBar
                     displayName={
-                        props.ChatService.userWithId(props.currentChatUserId)
-                            .displayname
+                        currentUser.displayname
                     }
                     status="active"
                     pic={
-                        props.ChatService.userWithId(props.currentChatUserId)
-                            .pic
+                        currentUser.pic
                     }
                     currentChatUserId={props.currentChatUserId}
                     notification={false}

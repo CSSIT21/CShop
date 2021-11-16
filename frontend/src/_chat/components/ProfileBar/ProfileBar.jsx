@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box } from '@mui/system'
 import { Button, Typography, Avatar } from '@mui/material'
 import { IconButton } from '@mui/material'
@@ -8,6 +8,7 @@ import NotificationsOffIcon from '@mui/icons-material/NotificationsOff'
 
 const ProfileBar = (props) => {
     const classes = useStyles()
+    const [noti, setNoti] = useState(props.notification)
 
     return (
         <Box className={classes.profileBarContainer}>
@@ -20,8 +21,8 @@ const ProfileBar = (props) => {
                 </Box>
             </Box>
             <Box className={classes.buttonZone}>
-                <IconButton>
-                    {props.notification ? (
+                <IconButton onClick={() => setNoti(!noti)}>
+                    {noti ? (
                         <NotificationsIcon className={classes.profileBarNoti} />
                     ) : (
                         <NotificationsOffIcon

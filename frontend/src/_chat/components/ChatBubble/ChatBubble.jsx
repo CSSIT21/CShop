@@ -17,12 +17,13 @@ const ChatBubble = (props) => {
     const classes = useStyles()
     let bubble = null
     if (props.contentType === 'Notification') {
-        bubble = (
-            <NotificationBubble
-                text={props.content}
-                actionUrl={props.contentExtra}
-            />
-        )
+        return <></>
+        // bubble = (
+        //     <NotificationBubble
+        //         text={props.content}
+        //         actionUrl={props.contentExtra}
+        //     />
+        // )
     } else if (props.contentType === 'Text') {
         bubble = <TextBubble variant={props.variant} text={props.content} />
     } else if (props.contentType === 'Image') {
