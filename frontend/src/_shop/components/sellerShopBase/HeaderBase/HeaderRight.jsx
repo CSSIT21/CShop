@@ -4,6 +4,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 
 // const Item = styled(Paper)(({ theme }) => ({
 //   ...theme.typography.body2,
@@ -14,6 +16,7 @@ import { makeStyles } from "@mui/styles";
 
 export default function RowAndColumnSpacing() {
   const classes = useStyles();
+  const { id } = useParams();
   return (
     <>
       <Box
@@ -68,7 +71,7 @@ export default function RowAndColumnSpacing() {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            4.7
+            <Link to={`/shop/${id}/comment`}>4.7</Link>
           </Grid>
         </Grid>
       </Box>
