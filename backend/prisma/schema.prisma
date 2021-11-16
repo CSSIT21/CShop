@@ -288,6 +288,12 @@ model shop_video {
     mime_type String @db.VarChar(20)
 }
 
+model shop_category {
+    id       Int    @id @default(autoincrement())
+    title    String @db.VarChar(20)
+    products Int[]
+}
+
 //--------------------------------------------------------------------------------------------
 //      Product Management
 //--------------------------------------------------------------------------------------------
