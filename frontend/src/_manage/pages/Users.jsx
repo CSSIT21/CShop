@@ -244,6 +244,11 @@ const ManageAccountPage = () => {
         setPage(event.target.textContent);
     }
 
+    const [search, setSearch] = React.useState('');
+    const handleSearch = (event) => {
+        setSearch(event.target.value);
+    }
+
     useLayoutEffect(() => {
         document.body.classList.add("gray");
         document.body.classList.add("no-scroll!important")
@@ -266,6 +271,7 @@ const ManageAccountPage = () => {
                         placeholder="Search"
                         variant="filled"
                         size="small"
+                        onChange={handleSearch}
                         className={classes.root2}
                         InputProps={{
                             startAdornment: (
@@ -341,11 +347,11 @@ const ManageAccountPage = () => {
                     <CardContent>
                         {
                         (showRestricted ? 
-                            (users.sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
                                 return obj.status == 'Restricted';
                             })
-                            : (users.sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            : (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
                             <li key={key.id.toString()}>
@@ -360,7 +366,7 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(function( obj ) {return obj.status == 'Restricted';})).length : users.length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Restricted';})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>
