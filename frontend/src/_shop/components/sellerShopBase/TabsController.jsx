@@ -78,11 +78,8 @@ const TabsController = ({ categories = [], ...rest }) => {
                 fontSize: "18px",
                 fontWeight: 400,
               }}
-              aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
               endIcon={<KeyboardArrowDownIcon />}
-              disableFocusRipples
-              disableRipple
             >
               More
             </Button>
