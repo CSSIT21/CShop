@@ -24,7 +24,7 @@ import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen } from '@mui/material/colors';
+import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 const cardStyle = {
@@ -161,6 +161,21 @@ let users = [
           ]
     },
     {
+        id: 38875,
+        avatarInitials: 'HO',
+        avatarColor: brown[700],
+        name: 'Michelle Hod',
+        address: 'Nest of former L Corp, District 12, The City',
+        gender: 'Female',
+        postal: '10120',
+        joinDate: '21/10/2018',
+        birthDate: '30/11/1997',
+        status: 'Restricted',
+        restrictions: [
+            {id:90, type:'Full Restriction', assigner:'Ayin', startTime:'15/08/2014', endTime:'31/12/2999', desc:'"Snitch..." -Ayin'}
+          ]
+    },
+    {
         id: 31238,
         avatarInitials: 'CH',
         avatarColor: blue[500],
@@ -221,6 +236,7 @@ const ManageAccountPage = () => {
     const [showRestricted, setShowRestricted] = React.useState(false);
     const toggleShowRestricted = () => {
         setShowRestricted(!showRestricted);
+        setPage(1);
         }
 
     const [page, setPage] = React.useState(1);
@@ -297,7 +313,7 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '27%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(function( obj ) {return obj.status == 'Restricted';})).length : users.length - 1)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
@@ -342,9 +358,9 @@ const ManageAccountPage = () => {
                 </Card>
             </List>
             </Card>
-            <CardContent>      
+            <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(users.length/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(function( obj ) {return obj.status == 'Restricted';})).length : users.length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>
