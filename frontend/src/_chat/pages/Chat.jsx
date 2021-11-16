@@ -31,10 +31,10 @@ const ChatPage = (props) => {
     const [latest, setLatest] = useState(ChatService.latestMessages)
     const lastBubbleRef = useRef(null)
     // modal
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
-    const [message_id, setMessage_id] = useState(3)
+    const [mediaMessageId, setMediaMessageId] = useState(3)
     const classes = useStyles()
 
     function handleSubmitMessage(text) {
@@ -90,6 +90,16 @@ const ChatPage = (props) => {
         setCurrentChatUserId(newChatUserId)
     }
 
+    function openModal(type, message_id) {
+        // alert('open modal for ' + type + '#' + message_id)
+        setMediaMessageId(message_id)
+        setOpen(true)
+    }
+
+    function closeModal() {
+        setOpen(false)
+    }
+
     return (
         <Box className={classes.chatLayout}>
             <ChatList
@@ -106,8 +116,14 @@ const ChatPage = (props) => {
                 currentChatUserId={currentChatUserId}
                 ChatService={ChatService}
                 forwardedRef={lastBubbleRef}
+                openModal={openModal}
             />
-            <ChatMediaModal message_id={message_id} />
+            <ChatMediaModal
+                open={open}
+                onClose={closeModal}
+                message_id={mediaMessageId}
+                ChatService={ChatService}
+            />
         </Box>
     )
 }

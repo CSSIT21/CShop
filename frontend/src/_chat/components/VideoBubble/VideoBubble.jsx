@@ -41,7 +41,10 @@ const VideoBubble = (props) => {
     }, [props.thumbnail, props.src])
 
     return (
-        <Card className={classes.videoBubble}>
+        <Card
+            className={classes.videoBubble}
+            onClick={() => props.openModal('video', props.messageId)}
+        >
             <CardActionArea>
                 <CardContent className={classes.videoThumbnailPlay}>
                     <IconButton size="large">

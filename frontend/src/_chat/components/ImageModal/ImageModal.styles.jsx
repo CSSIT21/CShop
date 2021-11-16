@@ -2,10 +2,10 @@ import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
     imageModalStyle: {
-        width:"80vw",
-        height:"80vh",
-        display:"flex",
-        justifyContent:"center",
+        maxWidth: '80vw',
+        maxHeight: '90vh',
+        display: 'flex',
+        justifyContent: 'center'
     }
 })
 

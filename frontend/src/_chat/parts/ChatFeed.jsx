@@ -81,10 +81,12 @@ const ChatFeed = (props) => {
                         variant={m.sender === props.user_id ? 'right' : 'left'}
                         read={m.seen}
                         time={m.message_datetime}
+                        messageId={m.message_id}
                         contentType={m.content_type}
                         content={m.content}
                         contentExtra={m.content_extra}
                         forwardedRef={props.forwardedRef}
+                        openModal={props.openModal}
                     />
                 ))}
             </Box>

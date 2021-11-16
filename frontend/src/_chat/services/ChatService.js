@@ -158,7 +158,8 @@ class ChatService {
 
     sendText(text, recipient) {
         this._messages.push({
-            message_id: this._messages[this._messages.length - 1] + 1,
+            message_id:
+                this._messages[this._messages.length - 1].message_id + 1,
             message_datetime: new Date()
                 .toISOString()
                 .replace('T', ' ')
@@ -185,7 +186,8 @@ class ChatService {
             const reader = new FileReader()
             reader.addEventListener('load', (event) => {
                 this._messages.push({
-                    message_id: this._messages[this._messages.length - 1] + 1,
+                    message_id:
+                        this._messages[this._messages.length - 1].message_id + 1,
                     message_datetime: new Date()
                         .toISOString()
                         .replace('T', ' ')

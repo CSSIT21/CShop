@@ -41,7 +41,7 @@ const ImageBubble = (props) => {
     }, [props.src])
 
     return (
-        <Card className={classes.imageBubble}>
+        <Card className={classes.imageBubble} onClick={props.openModal}>
             <CardActionArea>
                 {!loaded && (
                     <CardContent className={classes.imageSpinner}>

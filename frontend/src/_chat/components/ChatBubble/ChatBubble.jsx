@@ -27,13 +27,20 @@ const ChatBubble = (props) => {
     } else if (props.contentType === 'Text') {
         bubble = <TextBubble variant={props.variant} text={props.content} />
     } else if (props.contentType === 'Image') {
-        bubble = <ImageBubble variant={props.variant} src={props.content} />
+        bubble = (
+            <ImageBubble
+                variant={props.variant}
+                src={props.content}
+                openModal={() => props.openModal('media', props.messageId)}
+            />
+        )
     } else if (props.contentType === 'Video') {
         bubble = (
             <VideoBubble
                 variant={props.variant}
                 src={props.content}
                 thumbnail={props.contentExtra}
+                openModal={() => props.openModal('media', props.messageId)}
             />
         )
     }
