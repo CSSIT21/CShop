@@ -1,7 +1,7 @@
 const autoScroll = require('../utils/autoScroll');
 const { detail } = require('./detail_scraper');
 
-const search = async (browser, url) => {
+const search = async (browser, url, params) => {
 	// Initialize page
 	const page = await browser.newPage();
 	await page.goto(url);
@@ -25,8 +25,14 @@ const search = async (browser, url) => {
 	
 	const details = [];
 	for (const item of items) {
-		details.push(await detail(browser, item));
+		const det = {
+			...await detail(browser, item),
+			...params,
+		};
+		details.push(det);
+		console.log(JSON.stringify(det));
 	}
+	
 	// Return
 	return details;
 };
