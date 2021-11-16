@@ -23,67 +23,73 @@ enum Gender {
 }
 
 model customer {
-    id                          Int                           @id @default(autoincrement())
-    email                       String                        @db.VarChar(60)
-    password                    String                        @db.VarChar(255)
-    date                        DateTime                      @default(now())
-    customer_info               customer_info[]
-    customer_picture            customer_picture[]
-    customer_address            customer_address[]
-    old_password                customer_old_password[]
-    wishlist                    customer_wishlist[]
-    followed_shop               customer_followed_shop[]
-    shop_info                   shop_info[]
-    shop_comment                shop_comment[]
-    product_reviews             product_reviews[]
-    product_comment_rating      product_comment_rating[]
-    discount_user_code          discount_user_code[]
-    discount_customer_spend     discount_customer_spend[]
-    discount_coin_information   discount_coin_information[]
-    discount_customer_coin      discount_customer_coin[]
-    wallet                      wallet[]
-    payment_credit_card_owner   payment_credit_card_owner[]
-    order_deleted_item          order_deleted_item[]
-    order_rebuy                 order_rebuy[]
-    order_cart_item             order_cart_item[]
-    order                       order[]
-    chat_preference             chat_preference[]
-    chat_conversation           chat_conversation[]
-    chat_reported_message       chat_reported_message[]
-    rem_number_view_product     rem_number_view_product[]
-    rem_number_product_in_cart  rem_number_product_in_cart[]
-    rem_number_payment_product  rem_number_payment_product[]
-    rem_number_interaction_user rem_number_interaction_user[]
-    rem_suggestion_homepage     rem_suggestion_homepage[]
-    sconsole_discount_log       sconsole_discount_log[]
-    sconsole_refund             sconsole_refund[]
-    sconsole_refund_history     sconsole_refund_history[]
-    admin_support               admin_support[]
-    admin_customer_suspensions  admin_customer_suspensions[]
-    admin_reported_shop         admin_reported_shop[]
-    admin_reported_customer     admin_reported_customer[]
-    home_product_log            home_product_log[]
-    home_add_to_cart_log        home_add_to_cart_log[]
-    home_shop_log               home_shop_log[]
-    home_payment_log            home_payment_log[]
-    home_discount_log           home_discount_log[]
+    id                            Int                             @id @default(autoincrement())
+    email                         String                          @db.VarChar(60)
+    password                      String                          @db.VarChar(255)
+    date                          DateTime                        @default(now())
+    customer_info                 customer_info[]
+    customer_picture              customer_picture[]
+    customer_address              customer_address[]
+    old_password                  customer_old_password[]
+    wishlist                      customer_wishlist[]
+    followed_shop                 customer_followed_shop[]
+    shop_info                     shop_info[]
+    shop_comment                  shop_comment[]
+    product_reviews               product_reviews[]
+    product_comment_rating        product_comment_rating[]
+    discount_user_code            discount_user_code[]
+    discount_customer_spend       discount_customer_spend[]
+    discount_coin_information     discount_coin_information[]
+    discount_customer_coin        discount_customer_coin[]
+    wallet                        wallet[]
+    payment_credit_card_owner     payment_credit_card_owner[]
+    order_deleted_item            order_deleted_item[]
+    order_rebuy                   order_rebuy[]
+    order_cart_item               order_cart_item[]
+    order                         order[]
+    chat_preference               chat_preference[]
+    chat_conversation             chat_conversation[]
+    chat_reported_message         chat_reported_message[]
+    rem_number_view_product       rem_number_view_product[]
+    rem_number_product_in_cart    rem_number_product_in_cart[]
+    rem_number_payment_product    rem_number_payment_product[]
+    rem_number_interaction_user   rem_number_interaction_user[]
+    rem_suggestion_homepage       rem_suggestion_homepage[]
+    sconsole_discount_log         sconsole_discount_log[]
+    sconsole_refund               sconsole_refund[]
+    sconsole_refund_history       sconsole_refund_history[]
+    admin_support                 admin_support[]
+    admin_customer_suspensions    admin_customer_suspensions[]
+    admin_reported_shop           admin_reported_shop[]
+    admin_reported_customer       admin_reported_customer[]
+    home_product_log              home_product_log[]
+    home_add_to_cart_log          home_add_to_cart_log[]
+    home_shop_log                 home_shop_log[]
+    home_payment_log              home_payment_log[]
+    home_discount_log             home_discount_log[]
+    search_history                search_history[]
+    search_keyword_interacts      search_keyword_interacts[]
+    mispelling_log                search_mispelling_log[]
+    mispelling_edits              search_mispelling_edits[]
+    page_view_recoeds             business_page_view_records[]
+    business_product_view_records business_product_view_records[]
 }
 
 model customer_info {
-    customer_id       Int       @id
-    customer_relation customer  @relation(fields: [customer_id], references: [id])
-    firstname         String    @db.VarChar(20)
-    lastname          String    @db.VarChar(20)
-    phone_number      String    @db.VarChar(10)
-    gender            Gender
-    birthdate         DateTime?
+    customer_id                    Int       @id
+    customer_id_from_customer_info customer  @relation(fields: [customer_id], references: [id])
+    firstname                      String    @db.VarChar(20)
+    lastname                       String    @db.VarChar(20)
+    phone_number                   String    @db.VarChar(10)
+    gender                         Gender
+    birthdate                      DateTime?
 }
 
 model customer_picture {
-    customer_id         Int                   @id
-    customer_relation   customer              @relation(fields: [customer_id], references: [id])
-    picture_id          Int
-    customer_picture_id customer_picture_file @relation(fields: [picture_id], references: [id])
+    customer_id                       Int                   @id
+    customer_id_from_customer_picture customer              @relation(fields: [customer_id], references: [id])
+    picture_id                        Int
+    picture_id_from_customer_picture  customer_picture_file @relation(fields: [picture_id], references: [id])
 }
 
 model customer_picture_file {
@@ -109,11 +115,11 @@ model address {
 }
 
 model customer_address {
-    customer_id        Int      @id
-    customer_address   customer @relation(fields: [customer_id], references: [id])
-    address_id         Int
-    address_id_address address  @relation(fields: [address_id], references: [id])
-    primary            Boolean  @default(false)
+    customer_id                      Int      @id
+    customer_address                 customer @relation(fields: [customer_id], references: [id])
+    address_id                       Int
+    address_id_from_customer_address address  @relation(fields: [address_id], references: [id])
+    primary                          Boolean  @default(false)
 }
 
 model customer_old_password {
@@ -124,17 +130,18 @@ model customer_old_password {
 }
 
 model customer_wishlist {
-    customer_id          Int      @id
-    customer_id_wishlist customer @relation(fields: [customer_id], references: [id])
-    product_id           Int
-    added_date           DateTime @default(now())
+    customer_id                        Int      @id
+    customer_id_from_customer_wishlist customer @relation(fields: [customer_id], references: [id])
+    product_id                         Int
+    added_date                         DateTime @default(now())
 }
 
 model customer_followed_shop {
-    customer_id               Int      @id
-    customer_id_followed_shop customer @relation(fields: [customer_id], references: [id])
-    shop_id                   Int
-    added_date                DateTime @default(now())
+    customer_id                             Int       @id
+    customer_id_from_customer_followed_shop customer  @relation(fields: [customer_id], references: [id])
+    shop_id                                 Int
+    shop_id_from_customer_followed_shop     shop_info @relation(fields: [shop_id], references: [id])
+    added_date                              DateTime  @default(now())
 }
 
 model customer_email_verification {
@@ -198,6 +205,7 @@ model shop_info {
     admin_shop_suspensions         admin_shop_suspensions[]
     admin_reported_shop            admin_reported_shop[]
     home_shop_log                  home_shop_log[]
+    customer_followed_shop         customer_followed_shop[]
 }
 
 model shop_picture {
@@ -333,47 +341,49 @@ model category {
 }
 
 model product {
-    id                             Int                              @id @default(autoincrement())
-    shop_id                        Int
-    shop_id_from_product           shop_info                        @relation(fields: [shop_id], references: [id])
-    title                          String                           @db.VarChar(100)
-    sub_title                      String                           @db.VarChar(70)
-    category_id                    Int
-    category_id_from_product       category                         @relation(fields: [category_id], references: [id])
-    price                          Int
-    quantity                       Int
-    sold                           Int
-    added_date                     DateTime                         @default(now()) @db.Timestamp
-    suggest_products               Int[]
-    rating                         Decimal                          @db.Decimal(1, 1)
-    product_detail                 product_detail[]
-    product_picture                product_picture[]
-    product_reviews                product_reviews[]
-    product_short_link             product_short_link[]
-    product_options                product_options[]
-    order_deleted_item             order_deleted_item[]
-    order_rebuy                    order_rebuy[]
-    order_cart_item                order_cart_item[]
-    order_item                     order_item[]
-    order_cancel_refund            order_cancel_refund[]
-    order_refund_item              order_refund_item[]
-    rem_number_view_product        rem_number_view_product[]
-    rem_number_product_in_cart     rem_number_product_in_cart[]
-    rem_number_payment_product     rem_number_payment_product[]
-    rem_number_interaction_user    rem_number_interaction_user[]
-    rem_related_product            rem_related_products[]
-    rem_may_favorite_product       rem_may_favorite_product[]
-    rem_product_promotion          rem_product_promotion[]
-    rem_promotion_type_interaction rem_promotion_type_interaction[]
-    sconsole_stock_history         sconsole_stock_history[]
-    sconsole_order_status          sconsole_order_status[]
-    sconsole_discount_log          sconsole_discount_log[]
-    sconsole_order_history         sconsole_order_history[]
-    sconsole_set_lanch_product     sconsole_set_lanch_product[]
-    sconsole_refund                sconsole_refund[]
-    sconsole_refund_history        sconsole_refund_history[]
-    home_product_log               home_product_log[]
-    home_add_to_cart_log           home_add_to_cart_log[]
+    id                              Int                               @id @default(autoincrement())
+    shop_id                         Int
+    shop_id_from_product            shop_info                         @relation(fields: [shop_id], references: [id])
+    title                           String                            @db.VarChar(100)
+    sub_title                       String                            @db.VarChar(70)
+    category_id                     Int
+    category_id_from_product        category                          @relation(fields: [category_id], references: [id])
+    price                           Int
+    quantity                        Int
+    sold                            Int
+    added_date                      DateTime                          @default(now()) @db.Timestamp
+    suggest_products                Int[]
+    rating                          Decimal                           @db.Decimal(1, 1)
+    product_detail                  product_detail[]
+    product_picture                 product_picture[]
+    product_reviews                 product_reviews[]
+    product_short_link              product_short_link[]
+    product_options                 product_options[]
+    order_deleted_item              order_deleted_item[]
+    order_rebuy                     order_rebuy[]
+    order_cart_item                 order_cart_item[]
+    order_item                      order_item[]
+    order_cancel_refund             order_cancel_refund[]
+    order_refund_item               order_refund_item[]
+    rem_number_view_product         rem_number_view_product[]
+    rem_number_product_in_cart      rem_number_product_in_cart[]
+    rem_number_payment_product      rem_number_payment_product[]
+    rem_number_interaction_user     rem_number_interaction_user[]
+    rem_related_product             rem_related_products[]
+    rem_may_favorite_product        rem_may_favorite_product[]
+    rem_product_promotion           rem_product_promotion[]
+    rem_promotion_type_interaction  rem_promotion_type_interaction[]
+    sconsole_stock_history          sconsole_stock_history[]
+    sconsole_order_status           sconsole_order_status[]
+    sconsole_discount_log           sconsole_discount_log[]
+    sconsole_order_history          sconsole_order_history[]
+    sconsole_set_lanch_product      sconsole_set_lanch_product[]
+    sconsole_refund                 sconsole_refund[]
+    sconsole_refund_history         sconsole_refund_history[]
+    home_product_log                home_product_log[]
+    home_add_to_cart_log            home_add_to_cart_log[]
+    business_product_view_records   business_product_view_records[]
+    business_product_view_summaries business_product_view_summaries[]
 }
 
 model product_detail {
@@ -1050,6 +1060,7 @@ model rem_number_view_product {
     total_view                               Int
     event_id                                 Int
     event_id_from_rem_number_view_product    event    @relation(fields: [event_id], references: [id])
+    added_time                               DateTime @db.Timestamp
 }
 
 model rem_number_product_in_cart {
@@ -1084,10 +1095,9 @@ model rem_number_interaction_user {
 }
 
 model rem_related_products {
-    product_id                          Int      @id
-    product_id_from_rem_related_product product  @relation(fields: [product_id], references: [id])
+    product_id                          Int     @id
+    product_id_from_rem_related_product product @relation(fields: [product_id], references: [id])
     related_product                     Int[]
-    added_time                          DateTime @db.Timestamp
 }
 
 model rem_suggestion_homepage {
@@ -1097,10 +1107,9 @@ model rem_suggestion_homepage {
 }
 
 model rem_may_favorite_product {
-    product_id                               Int      @id
-    product_id_from_rem_may_favorite_product product  @relation(fields: [product_id], references: [id])
+    product_id                               Int     @id
+    product_id_from_rem_may_favorite_product product @relation(fields: [product_id], references: [id])
     related_products                         Int[]
-    added_time                               DateTime @default(now()) @db.Timestamp
 }
 
 model rem_number_keyword_search {
@@ -1459,4 +1468,162 @@ model home_discount_log {
     discount_id                        Int
     discount_id_from_home_discount_log discount @relation(fields: [discount_id], references: [id])
     view_date                          DateTime @db.Timestamp
+}
+
+//--------------------------------------------------------------------------------------------
+//      Search
+//--------------------------------------------------------------------------------------------
+
+model search_history {
+    customer_id                     Int      @id
+    customer_id_from_search_history customer @relation(fields: [customer_id], references: [id])
+    query                           String   @db.Text
+    search_time                     DateTime @default(now()) @db.Timestamp
+}
+
+model search_keyword_interacts {
+    keyword                                   String    @id @db.VarChar(16)
+    customer_id                               Int
+    customer_id_from_search_keyword_interacts customer  @relation(fields: [customer_id], references: [id])
+    timestamp                                 DateTime? @db.Timestamp
+}
+
+model search_suggestion_matchpoint {
+    start_key String    @id @db.VarChar(16)
+    next_key  String    @db.VarChar(16)
+    timestamp DateTime? @db.Timestamp
+}
+
+model search_suggestion_history {
+    start_key String @id @db.VarChar(16)
+    next_key  String @db.VarChar(16)
+    count     Int
+}
+
+model search_suggestion_score {
+    start_keyword String @id @db.VarChar(16)
+    next_keyword  String @db.VarChar(16)
+    score         Int
+}
+
+model search_trend_summaries {
+    keyword String @id @db.VarChar(16)
+    count   Int
+    day     Int    @db.SmallInt
+    month   Int    @db.SmallInt
+    year    Int    @db.SmallInt
+}
+
+model search_trend_records {
+    keyword   String   @id @db.VarChar(16)
+    timestamp DateTime @db.Timestamp
+}
+
+model search_mispelling_log {
+    sentence                        String    @id @db.Text
+    customer_id                     Int
+    customer_id_from_mispelling_log customer  @relation(fields: [customer_id], references: [id])
+    timestamp                       DateTime? @db.Timestamp
+}
+
+model search_mispelling_edits {
+    orginal_keyword                   String   @id @db.VarChar(16)
+    edited_keyword                    String   @db.VarChar(16)
+    customer_id                       Int
+    customer_id_from_mispelling_edits customer @relation(fields: [customer_id], references: [id])
+    count                             Int
+}
+
+model search_mispelling_proofed {
+    orginal_keyword String @id @db.VarChar(16)
+    edited_keyword  String @db.VarChar(16)
+}
+
+//--------------------------------------------------------------------------------------------
+//      Business & Analytics
+//--------------------------------------------------------------------------------------------
+
+model business_page_types {
+    id                                    Int                                     @id @default(autoincrement())
+    title                                 String                                  @db.VarChar(16)
+    path                                  String                                  @db.VarChar(64)
+    page_view_recoeds                     business_page_view_records[]
+    business_conversation_records         business_conversation_records[]
+    business_pageview_count_summaries     business_pageview_count_summaries[]
+    business_pageview_referer_summaries   business_pageview_referer_summaries[]
+    business_conversation_count_summaries business_conversation_count_summaries[]
+}
+
+model business_conversation_types {
+    id                                    Int                                     @id @default(autoincrement())
+    title                                 String                                  @db.VarChar(16)
+    weight                                Int                                     @db.SmallInt
+    business_conversation_records         business_conversation_records[]
+    business_conversation_count_summaries business_conversation_count_summaries[]
+}
+
+model business_page_view_records {
+    page_type_id                        Int                 @id
+    page_type_id_from_page_view_recoeds business_page_types @relation(fields: [page_type_id], references: [id])
+    referer_page_type_id                Int
+    duration                            Int
+    customer_id                         Int
+    customer_id_from_page_view_recoeds  customer            @relation(fields: [customer_id], references: [id])
+    timestamp                           DateTime            @db.Timestamp
+}
+
+model business_product_view_records {
+    product_id                                     Int      @id
+    product_id_from_business_product_view_records  product  @relation(fields: [product_id], references: [id])
+    customer_id                                    Int
+    customer_id_from_business_product_view_records customer @relation(fields: [customer_id], references: [id])
+    duration                                       Int
+    timestamp                                      DateTime @db.Timestamp
+}
+
+model business_conversation_records {
+    conversation_id                                       Int                         @id
+    conversation_id_from_business_conversation_records    business_conversation_types @relation(fields: [conversation_id], references: [id])
+    referer_page_types_id                                 Int
+    referer_page_types_from_business_conversation_records business_page_types         @relation(fields: [referer_page_types_id], references: [id])
+    timestamp                                             DateTime                    @db.Timestamp
+}
+
+model business_pageview_count_summaries {
+    pagetype_id                                        Int                 @id
+    pagetype_id_from_business_pageview_count_summaries business_page_types @relation(fields: [pagetype_id], references: [id])
+    registered                                         Int                 @db.SmallInt
+    avgduration                                        Int
+    count                                              Int
+    date                                               DateTime            @db.Date
+}
+
+model business_pageview_referer_summaries {
+    pagetype_id                                          Int                 @id
+    pagetype_id_from_business_pageview_referer_summaries business_page_types @relation(fields: [pagetype_id], references: [id])
+    referer_page_type                                    Int
+    count                                                Int
+    date                                                 DateTime            @db.Date
+}
+
+model business_product_view_summaries {
+    product_id                                      Int      @id
+    product_id_from_business_product_view_summaries product  @relation(fields: [product_id], references: [id])
+    avgduration                                     Int
+    count                                           Int
+    date                                            DateTime @db.Date
+}
+
+model business_conversation_count_summaries {
+    conversation_id                                              Int                         @id
+    conversation_id_from_business_conversation_count_summaries   business_conversation_types @relation(fields: [conversation_id], references: [id])
+    referer_page_type_id                                         Int
+    referer_page_type_from_business_conversation_count_summaries business_page_types         @relation(fields: [referer_page_type_id], references: [id])
+    count                                                        Int
+    date                                                         DateTime                    @db.Date
+}
+
+model business_interaction_weight {
+    weight Int      @id
+    date   DateTime @db.Date
 }
