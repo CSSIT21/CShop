@@ -55,6 +55,9 @@ model customer {
     rem_number_payment_product  rem_number_payment_product[]
     rem_number_interaction_user rem_number_interaction_user[]
     rem_suggestion_homepage     rem_suggestion_homepage[]
+    sconsole_discount_log       sconsole_discount_log[]
+    sconsole_refund             sconsole_refund[]
+    sconsole_refund_history     sconsole_refund_history[]
 }
 
 model customer_info {
@@ -176,6 +179,13 @@ model shop_info {
     chat_shop_stat                 chat_shop_stat[]
     chat_shop_preference           chat_shop_preference[]
     chat_conversation              chat_conversation[]
+    sconsole_stock_history         sconsole_stock_history[]
+    sconsole_order_status          sconsole_order_status[]
+    sconsole_discount_log          sconsole_discount_log[]
+    sconsole_flashsale_log         sconsole_flashsale_log[]
+    sconsole_order_history         sconsole_order_history[]
+    sconsole_refund                sconsole_refund[]
+    sconsole_refund_history        sconsole_refund_history[]
 }
 
 model shop_picture {
@@ -226,6 +236,7 @@ model shop_flashsale {
     mime_type                   String                   @db.VarChar(20)
     description                 String                   @db.Text
     shop_flashsale_history      shop_flashsale_history[]
+    sconsole_flashsale_log      sconsole_flashsale_log[]
 }
 
 model shop_flashsale_history {
@@ -336,6 +347,13 @@ model product {
     rem_may_favorite_product       rem_may_favorite_product[]
     rem_product_promotion          rem_product_promotion[]
     rem_promotion_type_interaction rem_promotion_type_interaction[]
+    sconsole_stock_history         sconsole_stock_history[]
+    sconsole_order_status          sconsole_order_status[]
+    sconsole_discount_log          sconsole_discount_log[]
+    sconsole_order_history         sconsole_order_history[]
+    sconsole_set_lanch_product     sconsole_set_lanch_product[]
+    sconsole_refund                sconsole_refund[]
+    sconsole_refund_history        sconsole_refund_history[]
 }
 
 model product_detail {
@@ -452,6 +470,7 @@ model discount {
     discount_user_code    discount_user_code[]
     order_detail          order_detail[]
     rem_product_promotion rem_product_promotion[]
+    sconsole_discount_log sconsole_discount_log[]
 }
 
 model discount_shop {
@@ -633,18 +652,19 @@ model payment_credit_card_owner {
 }
 
 model payment {
-    id               Int                @id @default(autoincrement())
-    order_id         Int //waiting to join
-    type             PaymentTypes
-    amount           Int
-    status           PaymentStatus
-    created_date     DateTime           @db.Timestamp
-    updated_date     DateTime           @db.Timestamp
-    payment_card     payment_card[]
-    payment_wallet   payment_wallet[]
-    payment_qr       payment_qr[]
-    payment_deeplink payment_deeplink[]
-    order_detail     order_detail[]
+    id                    Int                     @id @default(autoincrement())
+    order_id              Int //waiting to join
+    type                  PaymentTypes
+    amount                Int
+    status                PaymentStatus
+    created_date          DateTime                @db.Timestamp
+    updated_date          DateTime                @db.Timestamp
+    payment_card          payment_card[]
+    payment_wallet        payment_wallet[]
+    payment_qr            payment_qr[]
+    payment_deeplink      payment_deeplink[]
+    order_detail          order_detail[]
+    sconsole_refund_money sconsole_refund_money[]
 }
 
 model payment_transaction {
@@ -757,17 +777,19 @@ model order_cart_item {
 }
 
 model order {
-    id                     Int                   @id @default(autoincrement())
+    id                     Int                      @id @default(autoincrement())
     customer_id            Int
-    customer_id_from_order customer              @relation(fields: [customer_id], references: [id])
+    customer_id_from_order customer                 @relation(fields: [customer_id], references: [id])
     total_price            Int
-    order_date             DateTime              @db.Timestamp
+    order_date             DateTime                 @db.Timestamp
     status                 OrderStatus
     order_item             order_item[]
     order_cancel_refund    order_cancel_refund[]
     order_detail           order_detail[]
     order_billing          order_billing[]
     order_refund_item      order_refund_item[]
+    sconsole_order_status  sconsole_order_status[]
+    sconsole_order_history sconsole_order_history[]
 }
 
 model order_status {
@@ -995,7 +1017,7 @@ model chat_deleted_message {
 }
 
 //--------------------------------------------------------------------------------------------
-//      Chat & Notification
+//      Recommendation
 //--------------------------------------------------------------------------------------------
 
 model rem_number_view_product {
@@ -1080,4 +1102,125 @@ model rem_promotion_type_interaction {
     product_id_from_rem_promotion_type_interaction product  @relation(fields: [product_id], references: [id])
     interaction_score                              Int
     added_date                                     DateTime @default(now()) @db.Timestamp
+}
+
+//--------------------------------------------------------------------------------------------
+//      Seller Console
+//--------------------------------------------------------------------------------------------
+
+enum SConsoleRefundTypes {
+    Defective
+    UnSatisfied
+}
+
+model sconsole_stock_history {
+    id                                     Int       @id @default(autoincrement())
+    product_id                             Int
+    product_id_from_sconsole_stock_history product   @relation(fields: [product_id], references: [id])
+    shop_id                                Int
+    shop_id_from_sconsole_stock_history    shop_info @relation(fields: [shop_id], references: [id])
+    quantity                               Int
+    updated_date                           DateTime  @db.Timestamp
+}
+
+model sconsole_order_status {
+    id                                    Int       @id @default(autoincrement())
+    order_id                              Int
+    order_id_from_sconsole_order_status   order     @relation(fields: [order_id], references: [id])
+    product_id                            Int
+    product_id_from_sconsole_order_status product   @relation(fields: [product_id], references: [id])
+    shop_id                               Int
+    shop_id_from_sconsole_order_status    shop_info @relation(fields: [shop_id], references: [id])
+    started_date                          DateTime  @default(now()) @db.Timestamp
+    status                                Json
+}
+
+model sconsole_discount_log {
+    id                                     Int       @id @default(autoincrement())
+    discount_id                            Int
+    discount_id_from_sconsole_discount_log discount  @relation(fields: [discount_id], references: [id])
+    product_id                             Int
+    product_id_from_sconsole_discount_log  product   @relation(fields: [product_id], references: [id])
+    shop_id                                Int
+    shop_id_from_sconsole_discount_log     shop_info @relation(fields: [shop_id], references: [id])
+    customer_id                            Int
+    customer_id_from_sconsole_discount_log customer  @relation(fields: [customer_id], references: [id])
+    used_date                              DateTime  @db.Timestamp
+}
+
+model sconsole_flashsale_log {
+    id                                       Int            @id @default(autoincrement())
+    shop_id                                  Int
+    shop_id_from_sconsole_flashsale_log      shop_info      @relation(fields: [shop_id], references: [id])
+    flashsale_id                             Int
+    flashsale_id_from_sconsole_flashsale_log shop_flashsale @relation(fields: [flashsale_id], references: [id])
+    added_date                               DateTime       @default(now()) @db.Timestamp
+    ended_date                               DateTime?      @db.Timestamp
+}
+
+model sconsole_order_history {
+    id                                     Int       @id @default(autoincrement())
+    order_id                               Int
+    order_id_from_sconsole_order_history   order     @relation(fields: [order_id], references: [id])
+    product_id                             Int
+    product_id_from_sconsole_order_history product   @relation(fields: [product_id], references: [id])
+    shop_id                                Int
+    shop_id_from_sconsole_order_history    shop_info @relation(fields: [shop_id], references: [id])
+    started_date                           DateTime  @default(now()) @db.Timestamp
+    ended_date                             DateTime  @db.Timestamp
+    status                                 Json
+}
+
+model sconsole_set_lanch_product {
+    product_id                                 Int      @id
+    product_id_from_sconsole_set_lanch_product product  @relation(fields: [product_id], references: [id])
+    lanch_time                                 DateTime @db.Timestamp
+}
+
+model sconsole_refund {
+    id                               Int                      @id @default(autoincrement())
+    customer_id                      Int
+    customer_id_from_sconsole_refund customer                 @relation(fields: [customer_id], references: [id])
+    product_id                       Int
+    product_id_from_sconsole_refund  product                  @relation(fields: [product_id], references: [id])
+    shop_id                          Int
+    shop_id_from_sconsole_refund     shop_info                @relation(fields: [shop_id], references: [id])
+    type                             SConsoleRefundTypes
+    description                      String                   @db.Text
+    refund_time                      DateTime                 @default(now()) @db.Timestamp
+    quantity                         Int
+    sconsole_refund_status           sconsole_refund_status[]
+    sconsole_refund_money            sconsole_refund_money[]
+}
+
+model sconsole_refund_status {
+    refund_id                             Int             @id
+    refund_id_from_sconsole_refund_status sconsole_refund @relation(fields: [refund_id], references: [id])
+    status                                Json
+}
+
+model sconsole_refund_money {
+    refund_id                             Int             @id
+    refund_id_from_sconsole_refund_money  sconsole_refund @relation(fields: [refund_id], references: [id])
+    amount                                Int
+    payment_id                            Int
+    payment_id_from_sconsole_refund_money payment         @relation(fields: [payment_id], references: [id])
+    refund                                Boolean
+    refund_time                           DateTime        @db.Timestamp
+}
+
+model sconsole_refund_history {
+    id                                       Int                 @id
+    customer_id                              Int
+    customer_id_from_sconsole_refund_history customer            @relation(fields: [customer_id], references: [id])
+    product_id                               Int
+    product_id_from_sconsole_refund_history  product             @relation(fields: [product_id], references: [id])
+    shop_id                                  Int
+    shop_id_from_sconsole_refund_history     shop_info           @relation(fields: [shop_id], references: [id])
+    type                                     SConsoleRefundTypes
+    description                              String              @db.Text
+    started_time                             DateTime            @db.Timestamp
+    ended_time                               DateTime            @default(now()) @db.Timestamp
+    quantity                                 Int
+    status                                   Json
 }
