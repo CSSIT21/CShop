@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import { ExpandLessRounded } from "@mui/icons-material";
+import fakeProducts from "~/common/faker/fakeComments";
 
 const ProductRating = (props) => {
   const classes = useStyles();
@@ -21,110 +22,7 @@ const ProductRating = (props) => {
 
   const [open, setOpen] = React.useState(false);
   const [commentOffset, setCommentOffset] = React.useState(5);
-  const [commentsList, setCommentsList] = React.useState([
-    {
-      imageURL: "1",
-      username: "patiphon",
-      rating: 3,
-      comment:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "1",
-      username: "Pw-a02",
-      rating: 3,
-      comment:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "1",
-      username: "Pw-a02",
-      rating: 3,
-      comment:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
-    },
-    {
-      imageURL: "2",
-      username: "cympati",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "1",
-      username: "YOK",
-      rating: 3,
-      comment:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "1",
-      username: "patiphon",
-      rating: 3,
-      comment:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "1",
-      username: "patiphon",
-      rating: 3,
-      comment:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis laborum debitis neque, ea nemo amet fugiat incidunt laudantium excepturi quidem nulla odit illo iure deleniti quisquam, repudiandae asperiores doloremque aliquam?",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-    {
-      imageURL: "2",
-      username: "Thanawan",
-      rating: 3.5,
-      comment: "Good :)",
-    },
-  ]);
+  const [commentsList, setCommentsList] = React.useState(fakeProducts);
 
   const handleClick = () => {
     setOpen(!open);
@@ -188,6 +86,7 @@ const ProductRating = (props) => {
                   rating={val.rating}
                   comment={val.comment}
                   key={key}
+                  reviewPhoto={val.reviewPhoto}
                 ></Comments>
               ))}
               <Box sx={{ marginTop: "50px" }}>
