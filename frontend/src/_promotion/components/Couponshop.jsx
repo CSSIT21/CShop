@@ -79,18 +79,14 @@ const couponshops = [
 ];
 
 
-
 const Couponshop = () => {
   const classes = useStyles();
-  const [currentCoupon, setCurrentCoupon] = useState(4);
-  const handleClaim = () => {
-    setCurrentCoupon(currentCoupon - 1);
-  };
+
 
   return (
     <Box className={classes.wrapper}>
       <box className={classes.boxtype} style={{backgroundColor:'#a5cd4c'}}>
-      <Typography fontWeight={500} fontSize="24px" className={classes.type} >
+      <Typography fontWeight={500} fontSize="24px" className={classes.type}>
         Event
       </Typography>
       </box>
@@ -100,12 +96,9 @@ const Couponshop = () => {
             <Coupon
               key={idx}
               coupon={coupon}
-              currentCoupon={currentCoupon} 
-              totalCoupon={5}
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
-                onClick: handleClaim,
               }}
             />
           );
@@ -122,12 +115,9 @@ const Couponshop = () => {
             <Coupon
               key={idx}
               coupon={coupon}
-              currentCoupon={currentCoupon}
-              totalCoupon={5}
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
-                onClick: handleClaim,
               }}
             />
           );
@@ -144,12 +134,9 @@ const Couponshop = () => {
             <Coupon
               key={idx}
               coupon={coupon}
-              currentCoupon={currentCoupon}
-              totalCoupon={5}
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
-                onClick: handleClaim,
               }}
             />
           );
@@ -166,12 +153,9 @@ const Couponshop = () => {
             <Coupon
               key={idx}
               coupon={coupon}
-              currentCoupon={currentCoupon}
-              totalCoupon={5}
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
-                onClick: handleClaim,
               }}
             />
           );
@@ -188,12 +172,9 @@ const Couponshop = () => {
             <Coupon
               key={idx}
               coupon={coupon}
-              currentCoupon={currentCoupon}
-              totalCoupon={5}
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
-                onClick: handleClaim,
               }}
             />
           );

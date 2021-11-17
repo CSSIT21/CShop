@@ -6,17 +6,16 @@ import Divider from "@mui/material/Divider";
 import CouponPic from "~/common/assets/images/voucher-pic.png";
 import CButton from "~/common/components/CButton";
 import BorderLinearProgress from "~/common/components/BorderLinearProgress";
-import { noop } from "~/common/utils";
 
 
 
-const Coupon = ({coupon,totalCoupon = 1,currentCoupon = 0,setCoupon = noop,claimProps = { title: "Claim" },}) => {
+const Coupon = ({coupon,claimProps = { title: "Claim", idx: 'idx'},}) => {
   const classes = useStyles();
-
-  useLayoutEffect(() => {
-    if (currentCoupon > totalCoupon) setCoupon(totalCoupon);
-  }, [currentCoupon]);
-
+  const [currentCoupon, setCurrentCoupon] = useState(coupon.remaining);
+  const handleClaim = () => {
+    setCurrentCoupon(currentCoupon - 1);
+  };
+  
 
 
   return (
@@ -28,18 +27,19 @@ const Coupon = ({coupon,totalCoupon = 1,currentCoupon = 0,setCoupon = noop,claim
         <BorderLinearProgress
           variant="determinate"
           customColor="#FD6637"
-          value={Math.ceil(100 * (currentCoupon / totalCoupon))}
+          currentCoupon={currentCoupon} 
+          value={Math.ceil(100 * (currentCoupon / coupon.remaining))}
           sx={{ margin: "10px 0" }}
         />
         <Typography sx={remainStyle}>
-          Remaining Voucher: {coupon.remaining}
+          Remaining Voucher: {currentCoupon}
         </Typography>
         <Typography sx={expireStyle}>Expiring: {coupon.valid}</Typography>
       </Box>
 
       <Divider orientation="vertical" flexItem />
       <Box sx={{marginLeft: "30px"}}>
-      <CButton {...claimProps} />
+      <CButton {...claimProps} onClick={handleClaim}/>
       </Box>
       
     </Box>
