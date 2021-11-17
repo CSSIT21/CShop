@@ -196,8 +196,15 @@ const SellerRegister = ({}) => {
             {phoneError.length != 0 && (
               <Box className={classes.error}>{phoneError}</Box>
             )}
-            <Box sx={{display: "flex", width: "60%", justifyContent: "space-between"}} className={classes.textFieldBox}>
-              <TextField type="file" sx={{width: "80%"}} />
+            <Box
+              sx={{
+                display: "flex",
+                width: "60%",
+                justifyContent: "space-between",
+              }}
+              className={classes.textFieldBox}
+            >
+              <TextField type="file" sx={{ width: "80%" }} />
               <Button
                 variant="contained"
                 style={{

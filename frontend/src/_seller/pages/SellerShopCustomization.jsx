@@ -1,185 +1,275 @@
-import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
-import SideBar from "./components/CustomizationBase/SideBar";
-import React, {useState} from "react";
+import React, { useState } from "react";
+import uuid from "uuid/v4";
+import styled from "styled-components";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import ImageBanner from "./components/CustomizationBase/ImageBanner";
 import { Box } from "@mui/system";
-import { nanoid } from 'nanoid';
 
-// fake data generator
-const getItems = (count, offset = 0) =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k + offset}`,
-        content: `item ${k + offset}`
-    }));
-
-// a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
 
-    return result;
+  return result;
 };
-
 /**
  * Moves an item from one list to another list.
  */
+const copy = (source, destination, droppableSource, droppableDestination) => {
+  console.log("==> dest", destination);
+
+  const sourceClone = Array.from(source);
+  const destClone = Array.from(destination);
+  const item = sourceClone[droppableSource.index];
+
+  destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });
+  return destClone;
+};
+
 const move = (source, destination, droppableSource, droppableDestination) => {
-    console.log(source)
-    let sourceClone = Array.from(source);
-    let destClone = Array.from(destination);
-    let cloneSource = Array.from(sourceClone);
-    let removed = sourceClone[droppableSource.index];//sourceClone.splice(droppableSource.index, 1);
-    removed.id += nanoid();
-    sourceClone = cloneSource;
-    destClone.splice(droppableDestination.index, 0, removed);
-    console.log(destClone);
-    let result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
+  const sourceClone = Array.from(source);
+  const destClone = Array.from(destination);
+  const [removed] = sourceClone.splice(droppableSource.index, 1);
 
-    return result;
+  destClone.splice(droppableDestination.index, 0, removed);
+
+  const result = {};
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destClone;
+
+  return result;
 };
 
-const grid = 8;
+const Content = styled.div`
+  margin-right: 200px;
+`;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
+const Item = styled.div`
+  display: flex;
+  user-select: none;
+  padding: 0.5rem;
+  margin: 0 0 0.5rem 0;
+  align-items: flex-start;
+  align-content: flex-start;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: #fff;
+  border: 1px ${(props) => (props.isDragging ? "dashed #4099ff" : "solid #ddd")};
+`;
 
-    // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
+const Clone = styled(Item)`
+  + div {
+    display: none !important;
+  }
+`;
 
-    // styles we need to apply on draggables
-    ...draggableStyle
-});
+const Handle = styled.div`
+  display: flex;
+  align-items: center;
+  align-content: center;
+  user-select: none;
+  margin: -0.5rem 0.5rem -0.5rem -0.5rem;
+  padding: 0.5rem;
+  line-height: 1.5;
+  border-radius: 3px 0 0 3px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  color: #000;
+`;
 
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    padding: grid,
-    width: 250
-});
+const List = styled.div`
+  border: 1px
+    ${(props) => (props.isDraggingOver ? "dashed #000" : "solid #ddd")};
+  background: #ffffff;
+  padding: 0.5rem 0.5rem 0;
+  border-radius: 3px;
+  flex: 0 0 150px;
+  font-family: sans-serif;
+`;
 
-const id2List = {
-    droppable: 'items',
-    droppable2: 'selected'
-};
+const Kiosk = styled(List)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+`;
 
+const Container = styled(List)`
+  margin: 0.5rem 0.5rem 1.5rem;
+  background: #ffffff;
+`;
 
+const Notice = styled.div`
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  padding: 0.5rem;
+  margin: 0 0.5rem 0.5rem;
+  border: 1px solid transparent;
+  line-height: 1.5;
+  color: #aaa;
+`;
+
+const ITEMS = [
+  {
+    id: uuid(),
+    content: "Headline",
+  },
+  {
+    id: uuid(),
+    content: "Copy",
+  },
+  {
+    id: uuid(),
+    content: "Image",
+  },
+  {
+    id: uuid(),
+    content: "Slideshow",
+  },
+  {
+    id: uuid(),
+    content: "Quote",
+  },
+];
 
 const SellerShopCustomization = () => {
-    const [items, setItems] = useState(getItems(10));
-    const [selects, setSelects] = useState(getItems(5, 10));
+  const [state, setState] = useState({
+    [uuid()]: [],
+  });
 
-    const getList = id => ({items, selected: selects})[id2List[id]];
+  console.log(state);
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
 
-    const onDragEnd = result => {
-        const { source, destination } = result;
+    console.log("==> result", result);
 
-        // dropped outside the list
-        if (!destination) {
-            return;
-        }
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
 
-        if (source.droppableId === destination.droppableId) {
-            const items = reorder(
-                getList(source.droppableId),
-                source.index,
-                destination.index
-            );
+    switch (source.droppableId) {
+      case destination.droppableId:
+        setState({
+          [destination.droppableId]: reorder(
+            state[source.droppableId],
+            source.index,
+            destination.index
+          ),
+        });
+        break;
+      case "ITEMS":
+        setState({
+          [destination.droppableId]: copy(
+            ITEMS,
+            state[destination.droppableId],
+            source,
+            destination
+          ),
+        });
+        break;
+      default:
+        setState(
+          move(
+            state[source.droppableId],
+            state[destination.droppableId],
+            source,
+            destination
+          )
+        );
+        break;
+    }
+  };
 
-            if (source.droppableId === 'droppable2') {
-                setSelects(items);
-            }else{
-                setItems(items);
-            }
-            console.log('DROPPED!')
-
-        } else {
-
-            const result = move(
-                getList(source.droppableId),
-                getList(destination.droppableId),
-                source,
-                destination
-            );
-            setItems(result.droppable);
-            setSelects(result.droppable2);
-            // this.setState({
-            //     items: result.droppable,
-            //     selected: result.droppable2
-            // });
-        }
-    };
-
-    return (
-        <DragDropContext onDragEnd={onDragEnd}>
-        <Box sx={{display: 'flex'}}>
-            <Box sx={{ flexGrow: 1}}>
-            <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {items.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}>
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                
-            </Box>
-            <SideBar>
-                <Droppable droppableId="droppable2">
-                        {(provided, snapshot) => (
-                            <div
+  return (
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="ITEMS" isDropDisabled={true}>
+          {(provided, snapshot) => (
+            <Kiosk
+              ref={provided.innerRef}
+              isDraggingOver={snapshot.isDraggingOver}
+            >
+              {ITEMS.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <React.Fragment>
+                      <Item
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        isDragging={snapshot.isDragging}
+                        style={provided.draggableProps.style}
+                      >
+                        {item.content}
+                      </Item>
+                      {snapshot.isDragging && <Clone>{item.content}</Clone>}
+                      {/* <Clone>sdfsdfsdfsds{item.content}</Clone> */}
+                    </React.Fragment>
+                  )}
+                </Draggable>
+              ))}
+            </Kiosk>
+          )}
+        </Droppable>
+        <Content>
+          {Object.keys(state).map((list, i) => {
+            console.log("==> list", list);
+            return (
+              <Droppable key={list} droppableId={list}>
+                {(provided, snapshot) => (
+                  <Container
+                    ref={provided.innerRef}
+                    isDraggingOver={snapshot.isDraggingOver}
+                  >
+                    {state[list].length
+                      ? state[list].map((item, index) => (
+                          <Draggable
+                            key={item.id}
+                            draggableId={item.id}
+                            index={index}
+                          >
+                            {(provided, snapshot) => (
+                              <div
                                 ref={provided.innerRef}
-                                style={getListStyle(snapshot.isDraggingOver)}>
-                                {selects.map((item, index) => (
-                                    <Draggable
-                                        key={item.id}
-                                        draggableId={item.id}
-                                        index={index}>
-                                        {(provided, snapshot) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                                )}>
-                                                {item.content}
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </div>
+                                {...provided.draggableProps}
+                                isDragging={snapshot.isDragging}
+                                style={provided.draggableProps.style}
+                              >
+                                {/* <Handle {...provided.dragHandleProps}>
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                  <path
+                                    fill="currentColor"
+                                    d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                  />
+                                </svg>
+                              </Handle> */}
+                                {/* {item.content} */}
+                                <ImageBanner
+                                  {...provided.dragHandleProps}
+                                  order={index}
+                                />
+                                <Box>{item.content}</Box>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))
+                      : !provided.placeholder && (
+                          <Notice>Drop items here</Notice>
                         )}
-                    </Droppable>
-                </SideBar>
-            </Box>
-        </DragDropContext>
-    );
+                    {provided.placeholder}
+                  </Container>
+                )}
+              </Droppable>
+            );
+          })}
+        </Content>
+      </DragDropContext>
+    </>
+  );
 };
 
 export default SellerShopCustomization;
