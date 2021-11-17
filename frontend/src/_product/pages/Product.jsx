@@ -7,9 +7,6 @@ import ProductSuggestion from "../sections/ProductSuggestion";
 import fakeProducts from "~/common/faker/fakeProducts";
 import { Box } from "@mui/material";
 
-const Bestseller1 =
-  "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg";
-
 const ProductPage = (props) => {
  
   const [products, setProducts] = useState(fakeProducts);

@@ -8,10 +8,26 @@ import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 import ShareIcon from "@mui/icons-material/ShareRounded";
 import IconButton from "@mui/material/IconButton";
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavouriteIcon from "../components/Favorite";
+import {
+  FavoriteRounded as FavoriteRoundedIcon,
+  FavoriteBorderRounded as FavoriteBorderRoundedIcon,
+} from "@mui/icons-material";
 
-const ProductDetails = (props) => {
+const ProductDetails = () => {
+
+   const [product, setProduct] = useState({
+    id: 0,
+    title: "Cheese Pizza very อร่อย มากๆๆๆ",
+    price: "500",
+    status: "Hot sale",
+    favourite: true,
+  });
+
+
+  const onFavourite = () => {
+    setProduct({...product, favourite: !product.favourite})
+  };
+
   const productName = "Product Name";
   const productDetail = "Product Detail";
   const price = "500";
@@ -44,14 +60,25 @@ const ProductDetails = (props) => {
         >
           {productName}
         </Typography>
-        <Box sx={{ display: "flex", width:"400px", justifyContent:"flex-end" }}>
+        <Box sx={boxShareLike}>
           <Box >
             <IconButton>
-              <ShareIcon />
+              <ShareIcon sx={{ color: "#A0A3BD", fontSize: "28px" }}/>
             </IconButton>
-            <IconButton>
-              <FavouriteIcon />
-            </IconButton>
+             <IconButton
+          onClick={(e) => {
+            e.preventDefault();
+            onFavourite(product);
+          }}
+              sx={{
+                fontWeight: "bold", fontSize: "30px"
+              }}
+        >
+          {product.favourite
+            ? <FavoriteRoundedIcon sx={{ color: "#A0A3BD" }} fontSize="inherit" />
+            : <FavoriteBorderRoundedIcon sx={{ color: "#A0A3BD" }} fontSize="inherit"/>
+          }
+        </IconButton>
           </Box>
         </Box>
         <Typography
@@ -113,4 +140,5 @@ const ProductDetails = (props) => {
   );
 };
 
+const boxShareLike = { display: "flex", width:"475px",height:"40px",alignItems:"center", justifyContent:"flex-end", margin:"0 0 1px 0"}
 export default ProductDetails;
