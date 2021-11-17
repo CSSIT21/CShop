@@ -53,6 +53,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
       userInfo.email != "" &&
       userInfo.password != "" &&
       userInfo.confirmPassword != "" &&
+      userInfo.password === userInfo.confirmPassword &&
       userInfo.firstname != "" &&
       userInfo.lastname != "" &&
       userInfo.phoneNumber != "" &&
