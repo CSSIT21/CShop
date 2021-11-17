@@ -27,6 +27,7 @@ import { Search } from '@mui/icons-material';
 import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 const cardStyle = {
     width: '100%',
     padding: '0px',
@@ -209,6 +210,8 @@ let users = [
     },
 ];
 
+let resId = 1000;
+
 const ManageAccountPage = () => {
     const classes = useStyles();
     const [sortBy, setSortBy] = React.useState('');
@@ -239,6 +242,13 @@ const ManageAccountPage = () => {
 
     const deleteRestriction = (userid, restrictionid) => {
         users.filter(user => user.id === userid)[0].restrictions = users.filter(user => user.id === userid)[0].restrictions.filter(res => res.id != restrictionid);
+    }
+
+    const addRestriction = (userid, type, desc, date) => {
+        users.filter(user => user.id === userid)[0].restrictions.push(
+            {id:resId, type:type, assigner:'CurrentUser', startTime:'11/18/2021', endTime:date, desc:desc}
+        );
+        resId++;
     }
 
     useLayoutEffect(() => {
