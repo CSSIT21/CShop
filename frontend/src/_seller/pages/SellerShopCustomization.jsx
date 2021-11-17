@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageBanner from "./components/CustomizationBase/ImageBanner";
 import { Box } from "@mui/system";
+import { Button } from "@mui/material";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import YoutubeSection from "./components/CustomizationBase/YoutubeSection";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -39,6 +42,15 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
   return result;
 };
+
+const deleteItem = (source, id) => {
+  const target = source.find(item => item.id === id);
+  const index = source.indexOf(target);
+
+  const cloneSource = [...source];
+  cloneSource.splice(index, 1);
+  return cloneSource;
+}
 
 const Content = styled.div`
   margin-right: 200px;
@@ -110,6 +122,8 @@ const Notice = styled.div`
   border: 1px solid transparent;
   line-height: 1.5;
   color: #aaa;
+  border-radius: 5px;
+  background-color: #E9EEF1;
 `;
 
 const ITEMS = [
@@ -133,11 +147,16 @@ const ITEMS = [
     id: uuid(),
     content: "Quote",
   },
+  {
+    id: uuid(),
+    content: "Youtube",
+  },
 ];
 
 const SellerShopCustomization = () => {
+  const dropArea = 'area';
   const [state, setState] = useState({
-    [uuid()]: [],
+    [dropArea]: [],
   });
 
   console.log(state);
@@ -183,6 +202,15 @@ const SellerShopCustomization = () => {
         break;
     }
   };
+
+  const GetComponent = ({ content, ...rest }) => {
+    const Components = {
+      "Youtube": <YoutubeSection {...rest} id="UbYPG1GsZEI"/>,
+      "ImageBanner": <ImageBanner {...rest} />
+    };
+
+    return Components[content] || Components["ImageBanner"]
+  }
 
   return (
     <>
@@ -239,20 +267,8 @@ const SellerShopCustomization = () => {
                                 isDragging={snapshot.isDragging}
                                 style={provided.draggableProps.style}
                               >
-                                {/* <Handle {...provided.dragHandleProps}>
-                                <svg width="24" height="24" viewBox="0 0 24 24">
-                                  <path
-                                    fill="currentColor"
-                                    d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
-                                  />
-                                </svg>
-                              </Handle> */}
-                                {/* {item.content} */}
-                                <ImageBanner
-                                  {...provided.dragHandleProps}
-                                  order={index}
-                                />
-                                <Box>{item.content}</Box>
+                                <GetComponent content={item.content} {...provided.dragHandleProps} order={index}/>
+                                <Box><Button onClick={() => setState(({area}) => ({ area: deleteItem(area,item.id)}))} variant="contained"><DeleteRoundedIcon/></Button> Hello {item.content} {JSON.stringify(item)}</Box>
                               </div>
                             )}
                           </Draggable>
