@@ -69,8 +69,7 @@ let sellers = [
         cancelRate: '4%',
         rating: 4.4,
         restrictions: []
-    }
-    ,
+    },
     {
         id: 1201,
         avatarInitials: 'LC',
@@ -84,6 +83,32 @@ let sellers = [
         restrictions: [
             {id:24, type:'Transaction Restrictions', assigner:'AdminGarion', startTime:'22/11/2016', endTime:'22/12/2016', desc:'Improper Handling of Products'},
             {id:25, type:'Full Restrictions', assigner:'AdminGarion', startTime:'22/12/2016', endTime:'31/12/2999', desc:'Improper Handling of Products'}
+        ]
+    },
+    {
+        id: 9898,
+        avatarInitials: 'H',
+        avatarColor: orange[300],
+        name: 'The Head',
+        productCount: 0,
+        followers: 34581245,
+        joinDate: '08/03/1978',
+        cancelRate: '0%',
+        rating: 5.0,
+        restrictions: [
+        ]
+    },
+    {
+        id: 1019,
+        avatarInitials: 'NS',
+        avatarColor: lightGreen[600],
+        name: 'A Normal Shop',
+        productCount: 12,
+        followers: 492,
+        joinDate: '20/02/2018',
+        cancelRate: '0.8%',
+        rating: 4.1,
+        restrictions: [
         ]
     }
 ];
@@ -114,6 +139,10 @@ const ManageSellerAccountPage = () => {
     const [search, setSearch] = React.useState('');
     const handleSearch = (event) => {
         setSearch(event.target.value);
+    }
+
+    const deleteRestriction = (sellerid, restrictionid) => {
+        sellers.filter(seller => seller.id === sellerid)[0].restrictions = sellers.filter(seller => seller.id === sellerid)[0].restrictions.filter(res => res.id != restrictionid);
     }
 
     useLayoutEffect(() => {
@@ -222,7 +251,7 @@ const ManageSellerAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <SellerCard seller={key}/>
+                                    <SellerCard seller={key} deleteRestriction={deleteRestriction}/>
                                 </div>
                             </li>
                         ))}

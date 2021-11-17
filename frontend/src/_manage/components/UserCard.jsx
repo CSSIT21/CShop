@@ -15,6 +15,7 @@ import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RestrictionCard from "../components/RestrictionCard";
 
 export class UserCard extends React.Component {
   constructor(props) {
@@ -26,6 +27,10 @@ export class UserCard extends React.Component {
 
   handleExpandClick = () => {
     this.setState({ expand: !this.state.expand });
+  };
+
+  update = () => {
+    this.forceUpdate()
   };
 
   render() {
@@ -90,36 +95,7 @@ export class UserCard extends React.Component {
           <CardContent>
           {this.props.user.restrictions.map((res) => (
                             <div key={res.id.toString()}>
-                                <Card variant="outlined" style={{
-                                backgroundColor: "#FFEDE7",
-                                border: 'none',
-                                marginBottom: '15px'}}>
-                                  <CardContent className={classes.header} sx={{ padding:'28px' }}>
-                                    <Box sx={{ width: '22%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Restriction Type</Typography>
-                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.type}</Typography>
-                                    </Box>
-                                    <Box sx={{ width: '15%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Assigner</Typography>
-                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.assigner}</Typography>
-                                    </Box>
-                                    <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Start Time</Typography>
-                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.startTime}</Typography>
-                                    </Box>
-                                    <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>End Time</Typography>
-                                      <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{res.endTime}</Typography>
-                                    </Box>
-                                    <Box sx={{ width: '30%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-                                      <Typography style={{ fontSize: '15px', color: '#FD6637'}}>Description</Typography>
-                                      <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{res.desc}</Typography>
-                                    </Box>
-                                    <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center'}}>  
-                                      <Button variant="contained" sx={{ width: '50%', marginLeft: '35px'}}><DeleteIcon/></Button>
-                                    </Box>
-                                  </CardContent>
-                                </Card>
+                                <RestrictionCard res={res} deleteRestriction={this.props.deleteRestriction} objid={this.props.user.id} update={() => this.update()}/>
                             </div>
                         ))}
           </CardContent>

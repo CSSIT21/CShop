@@ -249,6 +249,10 @@ const ManageAccountPage = () => {
         setSearch(event.target.value);
     }
 
+    const deleteRestriction = (userid, restrictionid) => {
+        users.filter(user => user.id === userid)[0].restrictions = users.filter(user => user.id === userid)[0].restrictions.filter(res => res.id != restrictionid);
+    }
+
     useLayoutEffect(() => {
         document.body.classList.add("gray");
         document.body.classList.add("no-scroll!important")
@@ -356,7 +360,7 @@ const ManageAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard user={key}/>
+                                    <UserCard user={key} deleteRestriction={deleteRestriction}/>
                                 </div>
                             </li>
                         ))}
