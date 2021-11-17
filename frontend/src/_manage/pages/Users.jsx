@@ -54,7 +54,6 @@ let users = [
         postal: '10120',
         joinDate: '10/10/2020',
         birthDate: '02/08/1987',
-        status: 'Restricted',
         restrictions: [
             {id:1, type:'Comment Restriction', assigner:'Admin007', startTime:'10/10/2020', endTime:'17/10/2020', desc:'Rude Comment'},
             {id:2, type:'Transaction Restriction', assigner:'muumel', startTime:'10/10/2020', endTime:'10/11/2020', desc:'Unexpected Chargeback'},
@@ -71,7 +70,6 @@ let users = [
         postal: '10120',
         joinDate: '02/03/2019',
         birthDate: '11/11/2004',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -85,7 +83,6 @@ let users = [
         postal: '10120',
         joinDate: '02/03/2019',
         birthDate: '28/07/2004',
-        status: 'Restricted',
         restrictions: [
             {id:10, type:'Full Restriction', assigner:'Admin007', startTime:'12/09/2014', endTime:'31/12/2999', desc:'Carmen is a coward'}
           ]
@@ -100,7 +97,6 @@ let users = [
         postal: '10120',
         joinDate: '12/01/2020',
         birthDate: '31/08/1998',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -114,7 +110,6 @@ let users = [
         postal: '10172',
         joinDate: '01/01/2021',
         birthDate: '13/03/2000',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -128,7 +123,6 @@ let users = [
         postal: '10172',
         joinDate: '12/9/2021',
         birthDate: '14/02/2001',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -142,7 +136,6 @@ let users = [
         postal: '10120',
         joinDate: '08/11/2018',
         birthDate: '03/12/1998',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -156,7 +149,6 @@ let users = [
         postal: '10120',
         joinDate: '06/02/2015',
         birthDate: '11/07/1996',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -170,7 +162,6 @@ let users = [
         postal: '10120',
         joinDate: '21/10/2018',
         birthDate: '30/11/1997',
-        status: 'Restricted',
         restrictions: [
             {id:90, type:'Full Restriction', assigner:'Ayin', startTime:'15/08/2014', endTime:'31/12/2999', desc:'"Snitch..." -Ayin'}
           ]
@@ -185,7 +176,6 @@ let users = [
         postal: '10120',
         joinDate: '21/08/2017',
         birthDate: '03/12/1992',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -199,7 +189,6 @@ let users = [
         postal: '10120',
         joinDate: '10/11/2021',
         birthDate: '09/10/1992',
-        status: 'Active',
         restrictions: [
           ]
     },
@@ -214,7 +203,6 @@ let users = [
         postal: '10120',
         joinDate: '18/01/2018',
         birthDate: '09/04/1990',
-        status: 'Restricted',
         restrictions: [
             {id:11, type:'Transaction Restriction', assigner:'Admin007', startTime:'25/12/2015', endTime:'25/02/2016', desc:'Unregulated Transaction of Alcohol'}
           ]
@@ -323,7 +311,7 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '27%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(function( obj ) {return obj.status == 'Restricted';})).length : users.length - 1)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(function( obj ) {return obj.restrictions.length > 0;})).length : users.length - 1)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
@@ -353,7 +341,7 @@ const ManageAccountPage = () => {
                         (showRestricted ? 
                             (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.status == 'Restricted';
+                                return obj.restrictions.length > 0;
                             })
                             : (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
@@ -370,7 +358,7 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Restricted';})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>
