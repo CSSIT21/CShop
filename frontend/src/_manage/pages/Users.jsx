@@ -358,7 +358,7 @@ const ManageAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard user={key} deleteRestriction={deleteRestriction}/>
+                                    <UserCard user={key} deleteRestriction={deleteRestriction} addRestriction={addRestriction}/>
                                 </div>
                             </li>
                         ))}

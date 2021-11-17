@@ -38,10 +38,12 @@ export class UserCard extends React.Component {
     };
     this.open = false;
     this.editDate = {
-      day: '',
-      month: '',
-      year: ''
+      day: 'Select Day',
+      month: '0',
+      year: 'Select Year'
     };
+    this.type = 'General Restriction';
+    this.desc = 'Pending Description';
   }
 
   handleExpandClick = () => {
@@ -62,6 +64,12 @@ export class UserCard extends React.Component {
     this.forceUpdate();
   };
 
+  addRes = () => {
+    this.props.addRestriction(this.props.user.id, this.type, this.desc, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
+    this.forceUpdate();
+    this.dialogClose();
+  };
+
   changeDay = (event) => {
     this.editDate.day = event.target.value;
   }
@@ -72,6 +80,14 @@ export class UserCard extends React.Component {
 
   changeYear = (event) => {
     this.editDate.year = event.target.value;
+  }
+
+  changeDesc = (event) => {
+    this.desc = event.target.value;
+  }
+
+  changeType = (event) => {
+    this.type = event.target.value;
   }
 
   render() {
@@ -157,6 +173,7 @@ export class UserCard extends React.Component {
             fullWidth
             variant="outlined"
             sx={{width:'80%!important'}}
+            onChange={this.changeType}
           />
         </DialogContent>
         <DialogContent>
@@ -172,6 +189,7 @@ export class UserCard extends React.Component {
             rows={6}
             variant="outlined"
             sx={{width:'80%!important'}}
+            onChange={this.changeDesc}
           />
         </DialogContent>
         <DialogContent>
@@ -240,7 +258,7 @@ export class UserCard extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.dialogClose} size="large" sx={{margin:"10px"}}>Cancel</Button>
-          <Button variant="contained" onClick={this.dialogClose} size="large" sx={{margin:"10px"}}>Confirm</Button>
+          <Button variant="contained" onClick={this.addRes} size="large" sx={{margin:"10px"}}>Confirm</Button>
         </DialogActions>
       </Dialog>
       </CardLayout>
