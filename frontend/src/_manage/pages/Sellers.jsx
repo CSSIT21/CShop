@@ -113,6 +113,8 @@ let sellers = [
     }
 ];
 
+let resId = 1000;
+
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
     const [sortBy, setSortBy] = React.useState('');
@@ -143,6 +145,13 @@ const ManageSellerAccountPage = () => {
 
     const deleteRestriction = (sellerid, restrictionid) => {
         sellers.filter(seller => seller.id === sellerid)[0].restrictions = sellers.filter(seller => seller.id === sellerid)[0].restrictions.filter(res => res.id != restrictionid);
+    }
+
+    const addRestriction = (sellerid, type, desc, date) => {
+        sellers.filter(seller => seller.id === sellerid)[0].restrictions.push(
+            {id:resId, type:type, assigner:'CurrentUser', startTime:'11/18/2021', endTime:date, desc:desc}
+        );
+        resId++;
     }
 
     useLayoutEffect(() => {
@@ -251,7 +260,7 @@ const ManageSellerAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <SellerCard seller={key} deleteRestriction={deleteRestriction}/>
+                                    <SellerCard seller={key} deleteRestriction={deleteRestriction} addRestriction={addRestriction}/>
                                 </div>
                             </li>
                         ))}
