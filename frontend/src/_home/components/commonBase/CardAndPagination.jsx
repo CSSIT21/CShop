@@ -4,7 +4,6 @@ import { Pagination } from '@mui/material';
 const CardAndPagination = ({ products, onFavorite, onPageChange, page }) => {
 	return (
 		<>
-
 			<GridCard products={products} onFavorite={onFavorite} />
 
 			<Pagination
