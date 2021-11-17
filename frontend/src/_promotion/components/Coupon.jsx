@@ -18,6 +18,8 @@ const Coupon = ({coupon,claimProps = { title: "Claim", idx: 'idx'},}) => {
   
 
 
+
+
   return (
     <Box className={classes.couponbox}>
       <img src={ coupon.CouponPic || CouponPic } width="150px" alt="coupon picture"/>
