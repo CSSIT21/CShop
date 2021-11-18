@@ -5,8 +5,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageBanner from "./components/CustomizationBase/ImageBanner";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import YoutubeSection from "./components/CustomizationBase/YoutubeSection";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CarouselBanner from "./components/CustomizationBase/CarouselBanner";
+import MenuList from "@mui/material/MenuList";
+import Menu from "@mui/material/Menu";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -42,15 +48,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
   return result;
 };
-
-const deleteItem = (source, id) => {
-  const target = source.find(item => item.id === id);
-  const index = source.indexOf(target);
-
-  const cloneSource = [...source];
-  cloneSource.splice(index, 1);
-  return cloneSource;
-}
 
 const Content = styled.div`
   margin-right: 200px;
@@ -123,7 +120,7 @@ const Notice = styled.div`
   line-height: 1.5;
   color: #aaa;
   border-radius: 5px;
-  background-color: #E9EEF1;
+  background-color: #e9eef1;
 `;
 
 const ITEMS = [
@@ -145,7 +142,7 @@ const ITEMS = [
   },
   {
     id: uuid(),
-    content: "Quote",
+    content: "CarouselBanner",
   },
   {
     id: uuid(),
@@ -154,12 +151,28 @@ const ITEMS = [
 ];
 
 const SellerShopCustomization = () => {
-  const dropArea = 'area';
+  const dropArea = "area";
   const [state, setState] = useState({
     [dropArea]: [],
   });
+  const [deleteIndex, setDeleteIndex] = useState(0);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  console.log(state);
+  const deleteItem = (source, id) => {
+    const target = source.find((item) => item.id === id);
+    const index = source.indexOf(target);
+    const cloneSource = [...source];
+    cloneSource.splice(index, 1);
+    return cloneSource;
+  };
+
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
@@ -205,12 +218,20 @@ const SellerShopCustomization = () => {
 
   const GetComponent = ({ content, ...rest }) => {
     const Components = {
-      "Youtube": <YoutubeSection {...rest} id="UbYPG1GsZEI"/>,
-      "ImageBanner": <ImageBanner {...rest} />
+      Youtube: <YoutubeSection {...rest} id="UbYPG1GsZEI" />,
+      ImageBanner: <ImageBanner {...rest} />,
+      CarouselBanner: <CarouselBanner {...rest} />,
     };
 
-    return Components[content] || Components["ImageBanner"]
-  }
+    return Components[content] || Components["ImageBanner"];
+  };
+
+  const onDelete = (e) => {
+    setState(({ area }) => ({
+      area: deleteItem(area, e.target.getAttribute("id")),
+    }));
+    handleClose();
+  };
 
   return (
     <>
@@ -266,9 +287,35 @@ const SellerShopCustomization = () => {
                                 {...provided.draggableProps}
                                 isDragging={snapshot.isDragging}
                                 style={provided.draggableProps.style}
+                                id={index}
                               >
-                                <GetComponent content={item.content} {...provided.dragHandleProps} order={index}/>
-                                <Box><Button onClick={() => setState(({area}) => ({ area: deleteItem(area,item.id)}))} variant="contained"><DeleteRoundedIcon/></Button> Hello {item.content} {JSON.stringify(item)}</Box>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <IconButton
+                                    aria-expanded={open ? "true" : undefined}
+                                    onClick={() => {
+                                      setState(({ area }) => ({
+                                        area: deleteItem(area, item.id),
+                                      }));
+                                      console.log(item);
+                                      handleClose();
+                                    }}
+                                  >
+                                    <DeleteRoundedIcon />
+                                  </IconButton>
+                                </Box>
+                                <GetComponent
+                                  content={item.content}
+                                  {...provided.dragHandleProps}
+                                  order={index}
+                                />
+                                <Box>
+                                  Hello {item.content} {JSON.stringify(item)}
+                                </Box>
                               </div>
                             )}
                           </Draggable>

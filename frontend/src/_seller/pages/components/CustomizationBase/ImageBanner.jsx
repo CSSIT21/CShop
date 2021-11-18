@@ -9,7 +9,7 @@ const ImageBanner = ({
     id: "0",
     page: {
       type: 1,
-      id: "1",
+      id: 1,
       content: { img: CategoryPic1 },
     },
   },
@@ -20,9 +20,9 @@ const ImageBanner = ({
   return (
     <Box
       sx={{
-        padding: "30px",
+        padding: "70px",
         backgroundColor: "#EFEFF1",
-        margin: "20px 0",
+        borderRadius: "20px",
       }}
       {...rest}
     >
