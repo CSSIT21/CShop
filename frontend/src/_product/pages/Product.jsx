@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductDetails from "../sections/ProductDetails";
 import ShopDetails from "../sections/ShopDetails";
 import ProductDescription from "../sections/ProductDescription";
@@ -8,9 +8,8 @@ import fakeProducts from "~/common/faker/fakeProducts";
 import { Box } from "@mui/material";
 
 const ProductPage = (props) => {
- 
   const [products, setProducts] = useState(fakeProducts);
-  
+
   const onFavourite = (index) => {
     setProducts((products) => {
       const target = products[index];
@@ -19,6 +18,10 @@ const ProductPage = (props) => {
       return [...products];
     });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Box
@@ -35,7 +38,10 @@ const ProductPage = (props) => {
       >
         <ProductDetails />
         <ShopDetails />
-        <ProductSuggestion suggestionItems={products} onFavourite={onFavourite} />
+        <ProductSuggestion
+          suggestionItems={products}
+          onFavourite={onFavourite}
+        />
         <ProductDescription />
         <ProductRating />
       </Box>

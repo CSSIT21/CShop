@@ -56,7 +56,7 @@ const ProductRating = (props) => {
           }}
         >
           <Box className={classes.head}>
-            <Typography fontWeight={600} fontSize= "30px" >
+            <Typography fontWeight={600} fontSize="30px">
               Product Rating
             </Typography>
             <RatingStars
@@ -85,6 +85,7 @@ const ProductRating = (props) => {
                   username={val.username}
                   rating={val.rating}
                   comment={val.comment}
+                  numberOfLike={val.numberOfLike}
                   key={key}
                   reviewPhoto={val.reviewPhoto}
                 ></Comments>
@@ -133,7 +134,7 @@ const useStyles = makeStyles({
 const iconStyle = {
   width: "38px",
   height: "38px",
-  
+
   color: "#FD6637",
 };
 const paddingStar = {

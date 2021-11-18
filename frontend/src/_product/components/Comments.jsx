@@ -1,3 +1,4 @@
+import React from "react";
 import { Avatar, Box, Divider, Typography } from "@mui/material";
 import RatingStars from "./RatingStars";
 import ReviewPhoto from "./ReviewPhoto";
@@ -5,8 +6,17 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import EmojiFlagsRoundedIcon from "@mui/icons-material/EmojiFlagsRounded";
 import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Grid";
+import CommentFooter from "./CommentFooter";
 
-const Comments = ({ imageURL, username, rating, comment, reviewPhoto }) => {
+const Comments = ({
+  // commentDetails,
+  imageURL,
+  username,
+  rating,
+  comment,
+  reviewPhoto,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -15,6 +25,7 @@ const Comments = ({ imageURL, username, rating, comment, reviewPhoto }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <>
       <Box
@@ -63,7 +74,7 @@ const Comments = ({ imageURL, username, rating, comment, reviewPhoto }) => {
             </Typography>
             <Box>
               <IconButton onClick={handleClick}>
-                <EmojiFlagsRoundedIcon />
+                <EmojiFlagsRoundedIcon sx={{ color: "#A0A3BD" }} />
               </IconButton>
               <Menu
                 id="basic-menu"
@@ -89,34 +100,18 @@ const Comments = ({ imageURL, username, rating, comment, reviewPhoto }) => {
           >
             {comment}
           </Typography>
-          <Box>
-            {reviewPhoto &&
-              reviewPhoto.map((val, key) => (
-                <ReviewPhoto id={key} img={val.reviewPhoto} />
-              ))}
+
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container sx={{ width: "500px" }} gap={0.5}>
+              {reviewPhoto &&
+                reviewPhoto.map((val, key) => (
+                  <Grid item xs={2} id={key}>
+                    <ReviewPhoto id={key} img={val.reviewPhoto} />
+                  </Grid>
+                ))}
+            </Grid>
           </Box>
-          <Box>
-            {" "}
-            <Typography
-              sx={{ marginTop: 1.5, fontSize: "16px", fontWeight: "400" }}
-            >
-              Like
-            </Typography>
-            {/* <IconButton
-          onClick={(e) => {
-            e.preventDefault();
-            onFavourite(product);
-          }}
-              sx={{
-                fontWeight: "bold", fontSize: "30px"
-              }}
-        >
-          {product.favourite
-            ? <FavoriteRoundedIcon sx={{ color: "#A0A3BD" }} fontSize="inherit" />
-            : <FavoriteBorderRoundedIcon sx={{ color: "#A0A3BD" }} fontSize="inherit"/>
-          }
-        </IconButton> */}
-          </Box>
+          <CommentFooter />
         </Box>
       </Box>
       <Divider sx={{ alignSelf: "stretch", marginTop: 3 }} />
