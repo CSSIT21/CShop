@@ -106,7 +106,6 @@ const menus = [
   },
 ];
 
-const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
 const SellerShop = () => {
   const classes = useStyles();

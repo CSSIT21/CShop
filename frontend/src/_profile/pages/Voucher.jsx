@@ -7,17 +7,14 @@ import { For } from "~/common/utils";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { Button } from "@mui/material";
+import CouponPic from '~/common/assets/images/voucher-pic2.png';
 
 const couponsevent = [
   {
     title: "event",
     detail: "This coupon can be use to have 50% discount",
     valid: "Until 31/12/2021",
-  },
-  {
-    title: "event",
-    detail: "This coupon can be use to have 50% discount",
-    valid: "Until 31/12/2021",
+    pic: "https://sanookwifi.com/storage/2019/11/Promotion_11.11-1024x1024.png"
   }
 ];
 const couponscategory = [
@@ -25,6 +22,13 @@ const couponscategory = [
     title: "category",
     detail: "This coupon can be use 3 day",
     valid: "Until 31/12/2021",
+    pic: "https://media.discordapp.net/attachments/843125481389424640/909131606680281128/unsplash_FoeIOgztCXo.png"
+  },
+  {
+    title: "category",
+    detail: "This coupon can be use 3 day",
+    valid: "Until 31/12/2021",
+    pic: "https://media.discordapp.net/attachments/843125481389424640/909131590544789544/unsplash_23coWmkTNSg.png"
   }
 ];
 const couponsreward = [
@@ -32,11 +36,13 @@ const couponsreward = [
     title: "reward",
     detail: "50% discount from Beauty Category",
     valid: "Until 31/12/2021",
+    pic: "https://pbs.twimg.com/profile_images/1403166048996642819/G50KbiqY_400x400.jpg"
   },
   {
     title: "reward",
     detail: "50% discount from Beauty Category",
     valid: "Until 31/12/2021",
+    pic: "https://cf.shopee.co.th/file/13087f34b6c97eae9abb70a59a3d793a"
   }
 ];
 const couponsshop = [
@@ -44,11 +50,13 @@ const couponsshop = [
     title: "shop",
     detail: "This coupon can be use to Electronic Category",
     valid: "Until 31/12/2021",
+    pic: "https://pbs.twimg.com/profile_images/1068192031153868800/Y-5gyvsP_400x400.jpg"
   },
   {
     title: "shop",
     detail: "This coupon can be use to Electronic Category",
     valid: "Until 31/12/2021",
+    pic: "https://pbs.twimg.com/profile_images/1068192031153868800/Y-5gyvsP_400x400.jpg"
   }
 ];
 const couponsapp = [
@@ -56,6 +64,7 @@ const couponsapp = [
     title: "app",
     detail: "This coupon can use only day",
     valid: "Until 31/12/2021",
+    pic: CouponPic
   },
 
 ];
