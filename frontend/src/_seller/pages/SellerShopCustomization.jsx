@@ -4,15 +4,12 @@ import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageBanner from "./components/CustomizationBase/ImageBanner";
 import { Box } from "@mui/system";
-import { Button } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import YoutubeSection from "./components/CustomizationBase/YoutubeSection";
 import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CarouselProduct from "./components/CustomizationBase/CarouselProduct";
 import CarouselBanner from "./components/CustomizationBase/CarouselBanner";
-import MenuList from "@mui/material/MenuList";
-import Menu from "@mui/material/Menu";
+import CarouselProductSelect from "./components/CustomizationBase/CarouselProductSelect";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -126,11 +123,11 @@ const Notice = styled.div`
 const ITEMS = [
   {
     id: uuid(),
-    content: "Headline",
+    content: "ImageBanner",
   },
   {
     id: uuid(),
-    content: "Copy",
+    content: "CarouselBanner",
   },
   {
     id: uuid(),
@@ -138,11 +135,11 @@ const ITEMS = [
   },
   {
     id: uuid(),
-    content: "Slideshow",
+    content: "CarouselProductSelect",
   },
   {
     id: uuid(),
-    content: "CarouselBanner",
+    content: "CarouselProduct",
   },
   {
     id: uuid(),
@@ -220,17 +217,12 @@ const SellerShopCustomization = () => {
     const Components = {
       Youtube: <YoutubeSection {...rest} id="UbYPG1GsZEI" />,
       ImageBanner: <ImageBanner {...rest} />,
+      CarouselProduct: <CarouselProduct {...rest} />,
       CarouselBanner: <CarouselBanner {...rest} />,
+      CarouselProductSelect: <CarouselProductSelect {...rest} />,
     };
 
     return Components[content] || Components["ImageBanner"];
-  };
-
-  const onDelete = (e) => {
-    setState(({ area }) => ({
-      area: deleteItem(area, e.target.getAttribute("id")),
-    }));
-    handleClose();
   };
 
   return (
