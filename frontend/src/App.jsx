@@ -79,12 +79,13 @@ import CoinHistoryPage from "./_coin/pages/coinHistory";
 import CoinRedeemPage from "./_coin/pages/coinRedeem";
 import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
+import ManageBanner from "./_home/pages/ManageBanner";
 
 function App() {
   return (
     <div className="App">
       <Catch
-        onError={() => {}}
+        onError={() => { }}
         fallback={({ state }) => (
           <ErrorPage error={state.error} errorInfo={state.errorInfo} />
         )}
@@ -114,6 +115,9 @@ function App() {
                       </Route>
                       <Route exact path="/manage/bannedusers">
                         <BannedUsersPage />
+                      </Route>
+                      <Route exact path="/manage/banner">
+                        <ManageBanner />
                       </Route>
                     </Suspense>
                   </SidebarLayout>
