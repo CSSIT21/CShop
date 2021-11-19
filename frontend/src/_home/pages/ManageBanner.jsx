@@ -19,8 +19,10 @@ const ManageBanner = () => {
 			</Box>
 
 			<Box className={classes.header} mt={8} pb={4} sx={{ borderBottom: '1px solid #C4C4C4' }}>
-				<Typography fontSize={20} fontWeight={600}>Create Banner</Typography>
-				<Button sx={{ height: "40px", borderWidth: "2px" }} variant="outlined" startIcon={<AddIcon />}>Add Banner Carousel</Button>
+				<Typography fontSize={20} fontWeight={500}>Create Banner</Typography>
+				<Button sx={{ height: "42px", borderWidth: "2px" }} variant="outlined" startIcon={<AddIcon />}>
+					Add Banner Carousel
+				</Button>
 			</Box>
 
 			<BannerList />
@@ -30,7 +32,7 @@ const ManageBanner = () => {
 
 const useStyles = makeStyles({
 	header: {
-		width: "80%",
+		width: "90%",
 		margin: "0 auto",
 		display: "flex",
 		justifyContent: "space-between",

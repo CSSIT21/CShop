@@ -109,7 +109,7 @@ const BannerList = () => {
 	};
 
 	return (
-		<Box sx={{ width: "80%", margin: "50px auto", height, position: "relative" }}>
+		<Box sx={{ width: "70%", margin: "50px auto", height, position: "relative" }}>
 			{transitions.map(({ item, props: { y, ...rest }, key }, index) => (
 				<animated.div
 					key={key}

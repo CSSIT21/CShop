@@ -1,25 +1,30 @@
 import { useRef, useLayoutEffect } from 'react';
 import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import { Typography, Button, Stack } from '@mui/material';
 import { noop } from '~/common/utils';
 
 const Image = styled(({ path, title, ...rest }) => (
-	<img
-		height="240"
-		width="50%"
-		src={path}
-		alt={title}
+	<div
 		{...rest}
-	/>
+	>
+		<img src={path} alt={title} style={{ width: '100%' }} />
+	</div>
 ))(() => ({
-	padding: "10px",
-	borderRadius: 10,
-	objectFit: "cover",
+	borderRadius: 20,
+	objectFit: "contain",
+	width: "50%",
+	"&:nth-child(odd)": {
+		paddingRight: '.5rem'
+	},
+	"&:nth-child(even)": {
+		paddingLeft: '.5rem'
+	},
+	paddingBottom: '.5rem'
 }));
 
 const BannerItem = ({
@@ -46,15 +51,18 @@ const BannerItem = ({
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
-		return () => window.removeEventListener('resize', () => onSetItem());
+		setTimeout(() => onSetItem(), 500);
+		return () => {
+			window.removeEventListener('resize', () => onSetItem());
+		};
 	}, []);
 
 	return (
 		<Box className={classes.bannerComponent} ref={wrapper}>
 			{index > 0 &&
 				<Box>
-					<Button sx={{ width: '100%' }} aria-label="prev" onClick={() => onPrev(index)}>
-						<ArrowDropUpIcon />
+					<Button sx={arrowButton} onClick={() => onPrev(index)} aria-label="prev">
+						<ArrowDropUpRoundedIcon sx={{ fontSize: "2.7rem" }} />
 					</Button>
 				</Box>
 			}
@@ -62,26 +70,41 @@ const BannerItem = ({
 			<Stack direction="column" gap={5}>
 				<Box sx={{ display: "flex", justifyContent: "center" }}>
 					<img
-						height="480px"
 						width="100%"
 						src={head}
 						alt={`Banner ${item.id}`}
+						style={{ display: "block" }}
 					/>
 				</Box>
 
+				<Box className={classes.addPicture} my={2}>
+					<Typography fontSize={20} fontWeight={500}>Add more pictures</Typography>
+					<Button sx={{ height: "42px", borderWidth: "2px" }} variant="outlined" startIcon={<AddIcon />}>
+						Choose Pictures
+					</Button>
+				</Box>
+
 				{children.length !== 0 &&
-					<Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
 						{children.map((item) => (
 							<Image path={item.path} title="Banner!" key={item.id} />
 						))}
 					</Box>
 				}
+
+				<Typography
+					sx={{ textAlign: "center" }}
+					fontSize={13}
+					color="#A0A3BD"
+				>
+					{children.length + 1}/5
+				</Typography>
 			</Stack>
 
 			{index < items.length - 1 &&
 				<Box>
-					<Button sx={{ width: '100%' }} aria-label="next" onClick={() => onNext(index)}>
-						<ArrowDropDownIcon />
+					<Button sx={arrowButton} onClick={() => onNext(index)} aria-label="next" >
+						<ArrowDropDownRoundedIcon sx={{ fontSize: "2.7rem" }} />
 					</Button>
 				</Box>
 			}
@@ -90,12 +113,31 @@ const BannerItem = ({
 };
 
 const useStyles = makeStyles({
+	// if possible, not try to change this class ;-;
 	bannerComponent: {
 		position: "relative",
 		width: "100%",
 		height: "auto",
-		borderBottom: '1px solid #C4C4C4'
+		borderBottom: '1px solid #C4C4C4',
+	},
+
+	addPicture: {
+		width: "100%",
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
 	},
 });
+
+const arrowButton = {
+	width: "100%",
+	padding: "4px 0",
+	margin: "10px 0",
+	color: '#C4C4C4',
+
+	"&:hover": {
+		backgroundColor: "#fafafa",
+	},
+}
 
 export default BannerItem;
