@@ -35,18 +35,18 @@ const BannerItem = ({
 	const { head, children = [] } = item.pictures;
 	const onSetItem = () => {
 		setItems(items => {
-			// items[index].height = 580 + (240 * Math.ceil(children.length / 2));
 			items[index].height = wrapper.current.offsetHeight;
 			return [...items];
 		});
 	};
+
 	useLayoutEffect(() => {
 		onSetItem();
 	}, [index]);
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
-		return () => window.removeEventListener('resize');
+		return () => window.removeEventListener('resize', () => onSetItem());
 	}, []);
 
 	return (

@@ -39,6 +39,23 @@ const bannerList = [
 			]
 		},
 	},
+	{
+		id: 2,
+		description: "banner about washing",
+		pictures: {
+			head: BannerPic,
+			children: [
+				{
+					id: 0,
+					path: BannerPic,
+				},
+				{
+					id: 1,
+					path: BannerPic,
+				},
+			]
+		},
+	},
 ];
 
 const BannerList = () => {
@@ -51,7 +68,7 @@ const BannerList = () => {
 
 	let height = 0;
 	const transitions = useTransition(
-		items.map((data, index) => {
+		items.map((data) => {
 			return { ...data, y: (height += data.height || 0) - data.height || 0 }
 		}),
 		d => d.id,
