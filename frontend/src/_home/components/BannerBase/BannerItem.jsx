@@ -94,7 +94,7 @@ const useStyles = makeStyles({
 		position: "relative",
 		width: "100%",
 		height: "auto",
-		borderBottom: '1px solid #5353534c'
+		borderBottom: '1px solid #C4C4C4'
 	},
 });
 

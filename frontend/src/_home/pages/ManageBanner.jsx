@@ -1,7 +1,8 @@
 import { makeStyles } from "@mui/styles";
 import BannerList from '../components/BannerBase/BannerList';
 import { Box } from "@mui/system";
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import CButton from '~/common/components/CButton';
 
 const ManageBanner = () => {
@@ -14,8 +15,14 @@ const ManageBanner = () => {
 					<Typography fontSize={28} fontWeight={600} color="#FD6637">Banner &nbsp;</Typography>
 					<Typography fontSize={28} fontWeight={600}>Management</Typography>
 				</Box>
-				<CButton title="Save" width="90px" height="44px" />
+				<CButton title="Save" width="90px" height="42px" />
 			</Box>
+
+			<Box className={classes.header} mt={8} pb={4} sx={{ borderBottom: '1px solid #C4C4C4' }}>
+				<Typography fontSize={20} fontWeight={600}>Create Banner</Typography>
+				<Button sx={{ height: "40px", borderWidth: "2px" }} variant="outlined" startIcon={<AddIcon />}>Add Banner Carousel</Button>
+			</Box>
+
 			<BannerList />
 		</Box>
 	);
