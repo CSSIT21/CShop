@@ -1,13 +1,14 @@
 import React from "react";
 import { Avatar, Box, Divider, Typography } from "@mui/material";
 import RatingStars from "./RatingStars";
-import ReviewPhoto from "./ReviewPhoto";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import EmojiFlagsRoundedIcon from "@mui/icons-material/EmojiFlagsRounded";
 import IconButton from "@mui/material/IconButton";
-import Grid from "@mui/material/Grid";
 import CommentFooter from "./CommentFooter";
+import ReviewPhotoContainer from "./ReviewPhotoCarousel";
+import ReviewPhoto from "./ReviewPhoto";
+import Grid from "@mui/material/Grid";
 
 const Comments = ({
   // commentDetails,
@@ -15,7 +16,7 @@ const Comments = ({
   username,
   rating,
   comment,
-  reviewPhoto,
+  reviewPhoto = [],
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -72,6 +73,8 @@ const Comments = ({
             >
               {username}
             </Typography>
+
+            {/* flag icon */}
             <Box>
               <IconButton onClick={handleClick}>
                 <EmojiFlagsRoundedIcon sx={{ color: "#A0A3BD" }} />
@@ -90,27 +93,37 @@ const Comments = ({
             </Box>
           </Box>
 
+          {/* rating */}
           <RatingStars
             value={rating}
             iconStyle={iconStyle}
             isComment
           ></RatingStars>
+
+          {/* comment */}
           <Typography
             sx={{ marginTop: 1.5, fontSize: "16px", fontWeight: "400" }}
           >
             {comment}
           </Typography>
 
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container sx={{ width: "500px" }} gap={0.5}>
-              {reviewPhoto &&
-                reviewPhoto.map((val, key) => (
-                  <Grid item xs={2} id={key}>
-                    <ReviewPhoto id={key} img={val.reviewPhoto} />
-                  </Grid>
-                ))}
-            </Grid>
-          </Box>
+          {/* Photo */}
+          {reviewPhoto.length < 6 ? (
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container sx={{ width: "500px" }} gap={0.9}>
+                {reviewPhoto &&
+                  reviewPhoto.map((val, key) => (
+                    <Grid item xs={2} id={key}>
+                      <ReviewPhoto id={key} img={val.reviewPhoto} />
+                    </Grid>
+                  ))}
+              </Grid>
+            </Box>
+          ) : (
+            <ReviewPhotoContainer reviewPhoto={reviewPhoto} />
+          )}
+
+          {/* footer */}
           <CommentFooter />
         </Box>
       </Box>

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
@@ -11,29 +10,29 @@ import CarouselButton from "../../common/components/CarouselButton";
 const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
   const [products, setProducts] = useState(suggestionItems);
   const [page, setPage] = useState(0);
-  
-	const classes = useStyles();
-	const productsPerRow = 4;
-	const totalPage = Math.ceil(products.length / productsPerRow);
 
-    return (
-        <Box className={classes.suggestionWrapper}>
-            <Box className={classes.suggestionContent}>
-                <Box className={classes.suggestionHeader}>
-                    <Typography
-                        component="span"
-                        color="#000000"
-                        fontSize="30px"
-                        fontWeight={600}
-                    >
-                        Suggestions
-                    </Typography>
-                    <CarouselButton
-                        pageHandle={setPage}
-                        currentPage={page}
-                        totalPage={totalPage}
-                    />
-                </Box>
+  const classes = useStyles();
+  const productsPerRow = 4;
+  const totalPage = Math.ceil(products.length / productsPerRow);
+
+  return (
+    <Box className={classes.suggestionWrapper}>
+      <Box className={classes.suggestionContent}>
+        <Box className={classes.suggestionHeader}>
+          <Typography
+            component="span"
+            color="#000000"
+            fontSize="30px"
+            fontWeight={600}
+          >
+            Suggestions
+          </Typography>
+          <CarouselButton
+            pageHandle={setPage}
+            currentPage={page}
+            totalPage={totalPage}
+          />
+        </Box>
 
         <Box className={classes.suggestionCarousel}>
           <Carousel
@@ -54,14 +53,14 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
         </Box>
       </Box>
 
-            <CustomDot
-                width={50}
-                setPageState={setPage}
-                currentPage={page}
-                totalPage={totalPage}
-            />
-        </Box>
-    );
+      <CustomDot
+        width={50}
+        setPageState={setPage}
+        currentPage={page}
+        totalPage={totalPage}
+      />
+    </Box>
+  );
 };
 
 const useStyles = makeStyles({
@@ -70,7 +69,6 @@ const useStyles = makeStyles({
     margin: "100px 0",
   },
   suggestionContent: {
-
     margin: "0 0 40 0",
     padding: "40px 100px 80px 100px",
 
