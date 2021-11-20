@@ -64,6 +64,7 @@ const BannerItem = ({
 				</Button>
 			}
 
+
 			{/* Banner Images */}
 			<Stack direction="column" gap={4}>
 				{/* Main Image */}
@@ -75,6 +76,7 @@ const BannerItem = ({
 						style={{ display: "block" }}
 					/>
 				</Stack>
+
 
 				{/* Add picture button */}
 				<Stack

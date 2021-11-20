@@ -14,7 +14,7 @@ const SellerTopBar = ({ isSeller = false }) => {
 
         {!isSeller && (
           <Box className={classes.sellerRegister}>
-            <Link to={"/login"}>Seller Register</Link>
+            <Link to={"/register/seller"}>Seller Register</Link>
           </Box>
         )}
       </Box>
