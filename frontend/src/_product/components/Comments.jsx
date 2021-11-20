@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Box, Divider, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
 import RatingStars from "./RatingStars";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,6 +9,7 @@ import CommentFooter from "./CommentFooter";
 import ReviewPhotoContainer from "./ReviewPhotoCarousel";
 import ReviewPhoto from "./ReviewPhoto";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 
 const Comments = ({
   // commentDetails,
@@ -28,12 +29,18 @@ const Comments = ({
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           alignSelf: "self-start",
           marginTop: 3,
+          padding: "0 50px 0 0 ",
           width: "100%",
         }}
       >
@@ -59,7 +66,6 @@ const Comments = ({
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
               justifyContent: "space-between",
               width: "100%",
             }}
@@ -73,32 +79,16 @@ const Comments = ({
             >
               {username}
             </Typography>
-
-            {/* flag icon */}
-            <Box>
-              <IconButton onClick={handleClick}>
-                <EmojiFlagsRoundedIcon sx={{ color: "#A0A3BD" }} />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-              >
-                <MenuItem onClick={handleClose}>Report Abuse</MenuItem>
-              </Menu>
-            </Box>
           </Box>
 
-          {/* rating */}
-          <RatingStars
-            value={rating}
-            iconStyle={iconStyle}
-            isComment
-          ></RatingStars>
+          <Box sx={{ margin: "5px 0 5px -4px" }}>
+            {/* rating */}
+            <RatingStars
+              value={rating}
+              iconStyle={iconStyle}
+              isComment
+            ></RatingStars>
+          </Box>
 
           {/* comment */}
           <Typography
@@ -108,27 +98,54 @@ const Comments = ({
           </Typography>
 
           {/* Photo */}
-          {reviewPhoto.length < 6 ? (
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container sx={{ width: "500px" }} gap={0.9}>
-                {reviewPhoto &&
-                  reviewPhoto.map((val, key) => (
-                    <Grid item xs={2} id={key}>
-                      <ReviewPhoto id={key} img={val.reviewPhoto} />
-                    </Grid>
-                  ))}
-              </Grid>
-            </Box>
-          ) : (
-            <ReviewPhotoContainer reviewPhoto={reviewPhoto} />
-          )}
-
-          {/* footer */}
-          <CommentFooter />
+          <Stack direction="row" spacing={1.5}>
+            {reviewPhoto &&
+              reviewPhoto
+                .slice(0, 5)
+                .map((val, key) => (
+                  <ReviewPhoto id={key} img={val.reviewPhoto} />
+                ))}
+            {reviewPhoto.length >= 6 && (
+              <Box
+                sx={{
+                  width: "80px",
+                  height: "80px",
+                  backgroundColor: "pink",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button>+{reviewPhoto.length - 5}</Button>
+              </Box>
+            )}
+          </Stack>
         </Box>
       </Box>
+
+      {/* flag icon */}
+      <IconButton
+        onClick={handleClick}
+        sx={{ position: "absolute", top: "10px", right: "0" }}
+      >
+        <EmojiFlagsRoundedIcon />
+      </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={handleClose}>Report Abuse</MenuItem>
+      </Menu>
+
+      {/* footer */}
+      <CommentFooter />
       <Divider sx={{ alignSelf: "stretch", marginTop: 3 }} />
-    </>
+    </Box>
   );
 };
 
