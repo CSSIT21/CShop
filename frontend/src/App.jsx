@@ -145,7 +145,7 @@ function App() {
                   </Suspense>
                 </MainLayout>
               </Route>
-              <Route path="/chat" exact>
+              <Route path="/chat/:id?" exact>
                 <MainLayout>
                   <Suspense fallback={<SkeletonLoading />}>
                     <ChatPage />

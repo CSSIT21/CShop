@@ -41,7 +41,7 @@ const ProfileBar = (props) => {
                         marginRight: '20px',
                         marginLeft: '15px'
                     }}
-                    href={'/seller/' + props.currentChatUserId}
+                    href={'/shop/' + props.currentChatUserId}
                 >
                     Go to shop
                 </Button>

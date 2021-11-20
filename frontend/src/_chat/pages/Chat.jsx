@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import ChatFeed from '../parts/ChatFeed'
@@ -22,6 +23,7 @@ const ChatPage = (props) => {
     const user_id = 1
     const ChatService = new _ChatService(user_id)
     const self = ChatService.self
+    const { id: router_id } = useParams()
 
     const [currentChatUserId, setCurrentChatUserId] = useState(4)
     const [messages, setMessages] = useState(
@@ -99,6 +101,13 @@ const ChatPage = (props) => {
     function closeModal() {
         setOpen(false)
     }
+
+    useEffect(() => {
+        if(router_id)
+        {
+            alert('opening chat page for id#' + router_id)
+        }
+    }, [router_id])
 
     return (
         <Box className={classes.chatLayout}>
