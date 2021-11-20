@@ -1,17 +1,19 @@
-// import { useState } from 'react';
+import { useMemo } from 'react';
 import Button from '@mui/material/Button';
 import { noot, noop } from '~/common/utils';
+import { nanoid } from 'nanoid';
 
 const UploadButton = ({
 	title = 'Upload',
 	Icon = noot,
 	height = "42px",
-	onUploadImg = noop,
 	disabled = false,
+	onUploadImg = noop,
 }) => {
-	console.log(onUploadImg);
+	const id = useMemo(() => nanoid(), []);
+
 	return (
-		<label htmlFor={disabled ? "text" : "outlined-button-file"}>
+		<label htmlFor={disabled ? "text" : `outlined-button-file-${id}`}>
 			<Button
 				component="span"
 				variant="outlined"
@@ -21,7 +23,7 @@ const UploadButton = ({
 			>
 				<input
 					accept="image/*"
-					id="outlined-button-file"
+					id={`outlined-button-file-${id}`}
 					type="file"
 					style={{ display: 'none' }}
 					onChange={onUploadImg}

@@ -74,6 +74,15 @@ const ManageBanner = () => {
 		setItems(bannerList.map(item => ({ ...item, height: 100 })));
 	}, []);
 
+	const onUploadMainImg = (e) => {
+		alert("testtt");
+		console.log(e.target.files);
+		if (e.target.files.length) {
+			const newImg = URL.createObjectURL(e.target.files[0]);
+			console.log(newImg);
+		}
+	};
+
 	return (
 		<Box sx={{ width: "100%", marginTop: "50px" }}>
 			<Box className={classes.header}>
@@ -86,7 +95,7 @@ const ManageBanner = () => {
 
 			<Box className={classes.header} mt={8} pb={4} sx={{ borderBottom: '1px solid #C4C4C4' }}>
 				<Typography fontSize={20} fontWeight={500}>Create Banner</Typography>
-				<UploadButton Icon={<AddIcon />} title="Add Banner Carousel" />
+				<UploadButton Icon={<AddIcon />} title="Add Banner Carousel" onUploadImg={onUploadMainImg} />
 			</Box>
 
 			<BannerList items={items} setItems={setItems} />

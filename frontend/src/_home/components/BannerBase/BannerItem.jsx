@@ -37,11 +37,18 @@ const BannerItem = ({
 		return () => window.removeEventListener('resize', () => onSetItem());
 	}, []);
 
-	const onUploadImg = (e) => {
-		console.log("1");
+	const onUploadSubImg = (e) => {
 		if (e.target.files.length) {
-			const newImg = URL.createObjectURL(e.target.files[0]);
-			console.log(newImg);
+			const path = URL.createObjectURL(e.target.files[0]);
+			setItems(items => {
+				items[index].pictures.children.push({
+					id: items[index].pictures.children.length,
+					path,
+				})
+
+				return [...items];
+			})
+			setTimeout(() => onSetItem(), 500);
 		}
 	};
 
@@ -66,10 +73,10 @@ const BannerItem = ({
 				<Stack direction="row" justifyContent="space-between" alignItems="center">
 					<Typography fontSize={20} fontWeight={500}>Add more pictures</Typography>
 					<UploadButton
+						onUploadImg={onUploadSubImg}
 						Icon={<AddIcon />}
 						title="Choose Pictures"
 						disabled={children.length === 4}
-						onUploadImg={onUploadImg}
 					/>
 				</Stack>
 
