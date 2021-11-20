@@ -51,19 +51,6 @@ const bannerList = [
 			]
 		},
 	},
-	{
-		id: 2,
-		description: "banner about washing",
-		pictures: {
-			head: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-			]
-		},
-	},
 ];
 
 const ManageBanner = () => {
@@ -75,11 +62,21 @@ const ManageBanner = () => {
 	}, []);
 
 	const onUploadMainImg = (e) => {
-		alert("testtt");
-		console.log(e.target.files);
 		if (e.target.files.length) {
-			const newImg = URL.createObjectURL(e.target.files[0]);
-			console.log(newImg);
+			const head = URL.createObjectURL(e.target.files[0]);
+			setItems([
+				...items,
+				{
+					id: items.length,
+					description: "",
+					pictures: {
+						head,
+						children: []
+					},
+					height: 100
+				}
+			]);
+			e.target.value = null;
 		}
 	};
 
@@ -87,18 +84,40 @@ const ManageBanner = () => {
 		<Box sx={{ width: "100%", marginTop: "50px" }}>
 			<Box className={classes.header}>
 				<Stack direction="row" spacing={1}>
-					<Typography fontSize={28} fontWeight={600} color="#FD6637">Banner</Typography>
+					<Typography
+						fontSize={28}
+						fontWeight={600}
+						color="#FD6637"
+					>
+						Banner
+					</Typography>
 					<Typography fontSize={28} fontWeight={600}>Management</Typography>
 				</Stack>
-				<CButton title="Save" width="90px" height="42px" />
+				<CButton
+					title="Save"
+					width="90px"
+					height="42px"
+				/>
 			</Box>
 
-			<Box className={classes.header} mt={8} pb={4} sx={{ borderBottom: '1px solid #C4C4C4' }}>
+			<Box
+				className={classes.header}
+				mt={8}
+				pb={4}
+				sx={{ borderBottom: '1px solid #C4C4C4' }}
+			>
 				<Typography fontSize={20} fontWeight={500}>Create Banner</Typography>
-				<UploadButton Icon={<AddIcon />} title="Add Banner Carousel" onUploadImg={onUploadMainImg} />
+				<UploadButton
+					Icon={<AddIcon />}
+					title="Add Banner Carousel"
+					onUploadImg={onUploadMainImg}
+				/>
 			</Box>
 
-			<BannerList items={items} setItems={setItems} />
+			<BannerList
+				items={items}
+				setItems={setItems}
+			/>
 		</Box>
 	);
 };

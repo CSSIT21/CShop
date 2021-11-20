@@ -15,21 +15,24 @@ const BannerItem = ({
 	onNext = noop,
 	onPrev = noop
 }) => {
-	const wrapper = useRef(null);
 	const classes = useStyles();
+	const wrapper = useRef(null);
 	const item = items[index];
 	const { head, children = [] } = item.pictures;
-  
+
 	const onSetItem = () => {
 		setItems(items => {
-			items[index].height = wrapper.current.offsetHeight;
-			return [...items];
+			if (items[index].height != wrapper.current.offsetHeight) {
+				items[index].height = wrapper.current.offsetHeight;
+				return [...items];
+			}
+			return items;
 		});
 	};
 
 	useLayoutEffect(() => {
 		onSetItem();
-	}, [index]);
+	}, [index, items]);
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
@@ -49,6 +52,7 @@ const BannerItem = ({
 				return [...items];
 			})
 			setTimeout(() => onSetItem(), 500);
+			e.target.value = null;
 		}
 	};
 
@@ -60,7 +64,10 @@ const BannerItem = ({
 				</Button>
 			}
 
-			<Stack direction="column" gap={5}>
+
+			{/* Banner Images */}
+			<Stack direction="column" gap={4}>
+				{/* Main Image */}
 				<Stack justifyContent="center">
 					<img
 						width="100%"
@@ -70,7 +77,14 @@ const BannerItem = ({
 					/>
 				</Stack>
 
-				<Stack direction="row" justifyContent="space-between" alignItems="center">
+
+				{/* Add picture button */}
+				<Stack
+					direction="row"
+					justifyContent="space-between"
+					alignItems="center"
+					my={3}
+				>
 					<Typography fontSize={20} fontWeight={500}>Add more pictures</Typography>
 					<UploadButton
 						onUploadImg={onUploadSubImg}
@@ -80,6 +94,7 @@ const BannerItem = ({
 					/>
 				</Stack>
 
+				{/* Sub Image */}
 				{children.length !== 0 &&
 					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
 						{children.map((item) => (
