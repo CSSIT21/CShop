@@ -20,7 +20,7 @@ let links = [
     generateLink(PersonRoundedIcon, "Users", "/manage/users"),
     generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
     generateLink(CardGiftcardRoundedIcon, "Products", "/manage/products"),
-    generateLink(HelpRoundedIcon, "Support", "/manage/support"),
+    generateLink(HelpRoundedIcon, "Support", "/manage/tickets"),
     generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
 ];
 

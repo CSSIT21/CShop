@@ -25,6 +25,7 @@ import HomePage from "./_home/pages/Home";
 import UsersPage from "./_manage/pages/Users";
 import ProductsPage from "./_manage/pages/Products";
 import SellersPage from "./_manage/pages/Sellers";
+import TicketsPage from "./_manage/pages/Tickets";
 import SupportPage from "./_manage/pages/Support";
 import FavouritePage from "./_home/pages/Favourite";
 import SugggestionPage from "./_home/pages/Suggestion";
@@ -107,8 +108,8 @@ function App() {
                         <Route exact path="/manage/users">
                       <UsersPage />
                       </Route>
-                        <Route exact path="/manage/support">
-                      <SupportPage />
+                        <Route exact path="/manage/tickets">
+                      <TicketsPage />
                       </Route>
                         <Route exact path="/manage/sellers">
                       <SellersPage />
@@ -169,6 +170,15 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <LoginPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
+                {/* SUPPORT PAGE */}
+                <Route path="/support" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <SupportPage />
                     </Suspense>
                   </MainLayout>
                 </Route>
