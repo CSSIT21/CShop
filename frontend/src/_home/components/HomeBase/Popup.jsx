@@ -45,7 +45,7 @@ const Popup = () => {
 			aria-describedby="alert-dialog-description"
 			PaperComponent={Box}
 		>
-			<CancelRoundedIcon className={classes.closeStyle} sx={{ fontSize: "1.9rem" }} onClick={handleClose} />
+			<CancelRoundedIcon className={classes.closeStyle} sx={{ fontSize: "1.5rem" }} onClick={handleClose} />
 
 			<Paper className={classes.paperStyle}>
 				<img className={classes.imgStyle} width={75} src={popup.picture} />
@@ -97,10 +97,10 @@ const useStyles = makeStyles({
 	},
 
 	closeStyle: {
-		color: "white",
+		color: "#ffffff7d",
 		position: "absolute",
-		top: "-17%",
-		right: "-8%",
+		top: "-12%",
+		right: "0%",
 		cursor: "pointer",
 
 		"&:hover": {

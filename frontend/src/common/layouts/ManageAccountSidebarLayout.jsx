@@ -1,25 +1,26 @@
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import { Box, List, CssBaseline, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Logo from "../assets/images/Logo.svg";
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import StoreRoundedIcon from '@mui/icons-material/StoreRounded';
+import NoAccountsRoundedIcon from '@mui/icons-material/NoAccountsRounded';
+import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
+import ViewCarouselRoundedIcon from '@mui/icons-material/ViewCarouselRounded';
 import { Link } from "react-router-dom";
 import { Person, Store, CardGiftcard, Help } from '@mui/icons-material';
 
 const drawerWidth = 222;
 
-const generateLink = (icon, title = "", path = "/") => ({ icon, title, path });
+const generateLink = (Icon, title = "", path = "/") => ({ Icon, title, path });
 
 let links = [
-    generateLink((<Person/>), "Users", "/manage/users"),
-    generateLink((<Store/>), "Sellers", "/manage/sellers"),
-    generateLink((<CardGiftcard/>), "Products", "/manage/products"),
-    generateLink((<Help/>), "Support Tickets", "/manage/support")
+    generateLink(PersonRoundedIcon, "Users", "/manage/users"),
+    generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
+    generateLink(NoAccountsRoundedIcon, "Banned users", "/manage/bannedusers"),
+    generateLink(BlockRoundedIcon, "Banned sellers", "/manage/bannedsellers"),
+    generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
 ];
 
 const openedMixin = (theme) => ({
@@ -50,6 +51,8 @@ const Drawer = styled(MuiDrawer, {
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
+    border: "none",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     ...(open && {
         ...openedMixin(theme),
         "& .MuiDrawer-paper": openedMixin(theme),
@@ -71,17 +74,17 @@ export default function SidebarLayout(props) {
                     <img src={Logo} alt="logo" width="140px" />
                 </Box>
                 <List>
-                    {links.map(({ icon, title, path }, index) => (
-                        <ListItem button key={index} to={path} component={Link}>
-                            <ListItemIcon className={classes.icon}>
-                                {icon}
+                    {links.map(({ Icon, title, path }, index) => (
+                        <ListItem button key={index} to={path} component={Link} sx={listStyle}>
+                            <ListItemIcon>
+                                <Icon className={classes.icon} />
                             </ListItemIcon>
                             <ListItemText primary={title} />
                         </ListItem>
                     ))}
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }} margin="15px 30px">
+            <Box component="main" sx={{ minHeight: "100vh", flexGrow: 1, backgroundColor: "rgba(239, 239, 241, 0.7)" }}>
                 {props.children}
             </Box>
         </Box>
@@ -99,5 +102,29 @@ const useStyles = makeStyles({
         marginRight: "-15px",
         height: 28,
         fontSize: 25,
+        color: "#A0A3BD",
     },
 });
+
+const listStyle = {
+    width: "86%",
+    margin: "15px auto",
+    padding: "13px 5px",
+    borderRadius: "15px",
+
+    "&:hover": {
+        backgroundColor: "#FD6637",
+
+        "& span": {
+            color: "#ffffff",
+        },
+
+        "& svg": {
+            color: "#ffffff",
+        }
+    },
+
+    "& span": {
+        color: "#A0A3BD",
+    },
+};
