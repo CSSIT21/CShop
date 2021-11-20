@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
 import RatingStars from "./RatingStars";
 import Menu from "@mui/material/Menu";
@@ -7,9 +7,58 @@ import EmojiFlagsRoundedIcon from "@mui/icons-material/EmojiFlagsRounded";
 import IconButton from "@mui/material/IconButton";
 import CommentFooter from "./CommentFooter";
 import ReviewPhotoContainer from "./ReviewPhotoCarousel";
-import ReviewPhoto from "./ReviewPhoto";
+import ReviewPhoto from "./ReviewPhotos";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import { fontSize } from "@mui/system";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import CloseIcon from "@mui/icons-material/Close";
+import Carousel from "../../common/components/Carousel";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { CloseRounded } from "@mui/icons-material";
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 1, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: -16,
+            top: 8,
+            transform: "translate(-50%, 100%)",
+            color: "#FD6637",
+            zIndex: 1,
+            backgroundColor: "#ffffff",
+
+            boxShadow: " 0px 1px 3px 0px rgba(128,128,128,0.75)",
+
+            "&:hover": {
+              backgroundColor: "#dddddd",
+            },
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
 
 const Comments = ({
   // commentDetails,
@@ -26,6 +75,36 @@ const Comments = ({
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const [openDialog, setOpenDialog] = useState(false);
+  // const [photoList, setphotoList] = useState(img);
+  const [page, setPage] = useState(0);
+  const photoPerRow = 1;
+  const totalPage = Math.ceil(reviewPhoto.length / photoPerRow);
+  const onPrev = () => {
+    if (page === 0) {
+      setPage(totalPage - 1);
+    } else {
+      setPage(page - 1);
+    }
+  };
+
+  const onNext = () => {
+    if (totalPage - 1 === page) {
+      setPage(0);
+    } else {
+      setPage(page + 1);
+    }
+  };
+
+  const handleClickOpenDialog = (id) => {
+    setPage(id);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -98,28 +177,86 @@ const Comments = ({
           </Typography>
 
           {/* Photo */}
-          <Stack direction="row" spacing={1.5}>
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
+            marginTop="8px"
+          >
             {reviewPhoto &&
-              reviewPhoto
-                .slice(0, 5)
-                .map((val, key) => (
-                  <ReviewPhoto id={key} img={val.reviewPhoto} />
-                ))}
+              reviewPhoto.slice(0, 5).map((val, key) => (
+                <ReviewPhoto
+                  setPage={setPage}
+                  page={page}
+                  id={key}
+                  img={val}
+                  key={key}
+                  handleClickOpen={handleClickOpenDialog}
+                >
+                  {
+                    <Box variant="outlined">
+                      <img src={val} style={imageStyle} alt={key} />
+                    </Box>
+                  }
+                </ReviewPhoto>
+              ))}
+
+            {/* More photo */}
             {reviewPhoto.length >= 6 && (
-              <Box
-                sx={{
-                  width: "80px",
-                  height: "80px",
-                  backgroundColor: "pink",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+              <ReviewPhoto
+                id={5}
+                img={reviewPhoto[5]}
+                setPage={setPage}
+                page={page}
+                handleClickOpen={handleClickOpenDialog}
               >
-                <Button>+{reviewPhoto.length - 5}</Button>
-              </Box>
+                {
+                  <Box sx={numberConatiner}>
+                    <Typography variant="h6" color="#bdbdbd">
+                      +{reviewPhoto.length - 5}
+                    </Typography>
+                  </Box>
+                }
+              </ReviewPhoto>
             )}
           </Stack>
+
+          {/* Dialog */}
+          <Dialog
+            onClose={handleCloseDialog}
+            aria-labelledby="customized-dialog-title"
+            open={openDialog}
+            PaperComponent={Box}
+            sx={{ objectFit: "contain" }}
+          >
+            <Box sx={{ position: "relative" }}>
+              <BootstrapDialogTitle
+                id="customized-dialog-title"
+                onClose={handleCloseDialog}
+              ></BootstrapDialogTitle>
+              <Carousel
+                items={reviewPhoto}
+                pageState={page}
+                setPageState={setPage}
+                itemsPerRow={1}
+                hideArrow={false}
+              >
+                {(item, idx) => (
+                  <Box>
+                    <DialogContent>
+                      <Box>
+                        <img
+                          src={item}
+                          alt={idx}
+                          style={{ width: "100%", maxWidth: "60vw" }}
+                        />
+                      </Box>
+                    </DialogContent>
+                  </Box>
+                )}
+              </Carousel>
+            </Box>
+          </Dialog>
         </Box>
       </Box>
 
@@ -154,5 +291,23 @@ const iconStyle = {
   height: "24px",
   color: "#FD6637",
 };
+const numberConatiner = {
+  width: "45px",
+  height: "45px",
+  backgroundColor: "#eeeeee",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  borderRadius: "9999px",
+};
 
+const imageStyle = {
+  width: "100%",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  cursor: "pointer",
+};
 export default Comments;
