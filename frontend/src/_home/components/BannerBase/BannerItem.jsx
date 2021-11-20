@@ -81,7 +81,7 @@ const BannerItem = ({
 					direction="row"
 					justifyContent="space-between"
 					alignItems="center"
-					my={1}
+					my={3}
 				>
 					<Typography fontSize={20} fontWeight={500}>Add more pictures</Typography>
 					<UploadButton
