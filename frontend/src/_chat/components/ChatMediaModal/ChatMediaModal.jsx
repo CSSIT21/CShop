@@ -1,11 +1,9 @@
 import React from 'react'
-import { Box } from '@mui/system'
+import { Modal } from '@mui/material'
 
 import useStyles from './ChatMediaModal.styles'
-import { Modal, Button, Typography } from '@mui/material'
 import ImageModal from '../ImageModal/ImageModal'
 import VideoModal from '../VideoModal/VideoModal'
-import ChatService from '../../services/ChatService'
 
 const ChatMediaModal = (props) => {
     const classes = useStyles()
@@ -21,9 +19,9 @@ const ChatMediaModal = (props) => {
             onClose={props.onClose}
         >
             {message.content_type === 'Image' ? (
-                <ImageModal src={message.content} />
+                <ImageModal src={message.content} onClose={props.onClose} />
             ) : (
-                <VideoModal src={message.content} />
+                <VideoModal src={message.content} onClose={props.onClose} />
             )}
         </Modal>
     )

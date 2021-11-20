@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box } from '@mui/system'
-import { Card, CardMedia } from '@mui/material'
+import { Card, CardMedia, IconButton } from '@mui/material'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import useStyles from './ImageModal.styles'
 
 const ImageModal = (props) => {
@@ -9,6 +9,13 @@ const ImageModal = (props) => {
     return (
         <Card className={classes.imageModalStyle}>
             <CardMedia component="img" image={props.src} alt="image modal" />
+            <IconButton className={classes.closeButton}>
+                <CloseRoundedIcon
+                    onClick={props.onClose}
+                    sx={{ color: 'white' }}
+                    fontSize="large"
+                />
+            </IconButton>
         </Card>
     )
 }
