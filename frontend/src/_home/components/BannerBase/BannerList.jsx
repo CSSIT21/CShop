@@ -1,70 +1,10 @@
 import { useState, useLayoutEffect } from 'react';
 import { useTransition, animated } from 'react-spring';
-import Box from '@mui/material/Box';
 import BannerItem from './BannerItem';
-import BannerPic from "../../assets/images/TopBanner.png";
+import { noop } from '~/common/utils';
+import { Container } from '@mui/material';
 
-const bannerList = [
-	{
-		id: 0,
-		description: "banner about washing",
-		pictures: {
-			head: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-				{
-					id: 1,
-					path: BannerPic,
-				},
-				{
-					id: 2,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-	{
-		id: 1,
-		description: "banner about washing",
-		pictures: {
-			head: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-	{
-		id: 2,
-		description: "banner about washing",
-		pictures: {
-			head: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-				{
-					id: 1,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-];
-
-const BannerList = () => {
-	const [items, setItems] = useState([]);
-
-	useLayoutEffect(() => {
-		console.log("test");
-		setItems(bannerList.map(item => ({ ...item, height: 100 })));
-	}, []);
+const BannerList = ({ items = [], setItems = noop }) => {
 
 	let height = 0;
 	const transitions = useTransition(
@@ -109,7 +49,7 @@ const BannerList = () => {
 	};
 
 	return (
-		<Box sx={{ width: "70%", margin: "50px auto", height, position: "relative" }}>
+		<Container sx={{ width: "70%", margin: "50px auto", height, position: "relative" }}>
 			{transitions.map(({ item, props: { y, ...rest }, key }, index) => (
 				<animated.div
 					key={key}
@@ -130,7 +70,7 @@ const BannerList = () => {
 					/>
 				</animated.div>
 			))}
-		</Box>
+		</Container>
 	);
 };
 

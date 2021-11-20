@@ -1,31 +1,12 @@
 import { useRef, useLayoutEffect } from 'react';
 import { makeStyles } from "@mui/styles";
-import { styled } from "@mui/material/styles";
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import AddIcon from '@mui/icons-material/Add';
-import Box from '@mui/material/Box';
-import { Typography, Button, Stack } from '@mui/material';
+import { Box, Typography, Button, Stack } from '@mui/material';
 import { noop } from '~/common/utils';
-
-const Image = styled(({ path, title, ...rest }) => (
-	<div
-		{...rest}
-	>
-		<img src={path} alt={title} style={{ width: '100%' }} />
-	</div>
-))(() => ({
-	borderRadius: 20,
-	objectFit: "contain",
-	width: "50%",
-	"&:nth-child(odd)": {
-		paddingRight: '.5rem'
-	},
-	"&:nth-child(even)": {
-		paddingLeft: '.5rem'
-	},
-	paddingBottom: '.5rem'
-}));
+import UploadButton from './UploadButton';
+import SubImage from './SubImage';
 
 const BannerItem = ({
 	index = 0,
@@ -38,6 +19,7 @@ const BannerItem = ({
 	const classes = useStyles();
 	const item = items[index];
 	const { head, children = [] } = item.pictures;
+
 	const onSetItem = () => {
 		setItems(items => {
 			items[index].height = wrapper.current.offsetHeight;
@@ -52,42 +34,49 @@ const BannerItem = ({
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
 		setTimeout(() => onSetItem(), 500);
-		return () => {
-			window.removeEventListener('resize', () => onSetItem());
-		};
+		return () => window.removeEventListener('resize', () => onSetItem());
 	}, []);
 
+	const onUploadImg = (e) => {
+		console.log("1");
+		if (e.target.files.length) {
+			const newImg = URL.createObjectURL(e.target.files[0]);
+			console.log(newImg);
+		}
+	};
+
 	return (
-		<Box className={classes.bannerComponent} ref={wrapper}>
+		<Box className={classes.bannerBlock} ref={wrapper}>
 			{index > 0 &&
-				<Box>
-					<Button sx={arrowButton} onClick={() => onPrev(index)} aria-label="prev">
-						<ArrowDropUpRoundedIcon sx={{ fontSize: "2.7rem" }} />
-					</Button>
-				</Box>
+				<Button sx={arrowButton} onClick={() => onPrev(index)} aria-label="prev">
+					<ArrowDropUpRoundedIcon sx={{ fontSize: "2.5rem" }} />
+				</Button>
 			}
 
 			<Stack direction="column" gap={5}>
-				<Box sx={{ display: "flex", justifyContent: "center" }}>
+				<Stack justifyContent="center">
 					<img
 						width="100%"
 						src={head}
 						alt={`Banner ${item.id}`}
 						style={{ display: "block" }}
 					/>
-				</Box>
+				</Stack>
 
-				<Box className={classes.addPicture} my={2}>
+				<Stack direction="row" justifyContent="space-between" alignItems="center">
 					<Typography fontSize={20} fontWeight={500}>Add more pictures</Typography>
-					<Button sx={{ height: "42px", borderWidth: "2px" }} variant="outlined" startIcon={<AddIcon />}>
-						Choose Pictures
-					</Button>
-				</Box>
+					<UploadButton
+						Icon={<AddIcon />}
+						title="Choose Pictures"
+						disabled={children.length === 4}
+						onUploadImg={onUploadImg}
+					/>
+				</Stack>
 
 				{children.length !== 0 &&
 					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
 						{children.map((item) => (
-							<Image path={item.path} title="Banner!" key={item.id} />
+							<SubImage path={item.path} title="Banner!" key={item.id} />
 						))}
 					</Box>
 				}
@@ -102,11 +91,9 @@ const BannerItem = ({
 			</Stack>
 
 			{index < items.length - 1 &&
-				<Box>
-					<Button sx={arrowButton} onClick={() => onNext(index)} aria-label="next" >
-						<ArrowDropDownRoundedIcon sx={{ fontSize: "2.7rem" }} />
-					</Button>
-				</Box>
+				<Button sx={arrowButton} onClick={() => onNext(index)} aria-label="next" >
+					<ArrowDropDownRoundedIcon sx={{ fontSize: "2.5rem" }} />
+				</Button>
 			}
 		</Box>
 	);
@@ -114,24 +101,17 @@ const BannerItem = ({
 
 const useStyles = makeStyles({
 	// if possible, not try to change this class ;-;
-	bannerComponent: {
+	bannerBlock: {
 		position: "relative",
 		width: "100%",
 		height: "auto",
 		borderBottom: '1px solid #C4C4C4',
 	},
-
-	addPicture: {
-		width: "100%",
-		display: "flex",
-		justifyContent: "space-between",
-		alignItems: "center",
-	},
 });
 
 const arrowButton = {
 	width: "100%",
-	padding: "4px 0",
+	padding: "0",
 	margin: "10px 0",
 	color: '#C4C4C4',
 
