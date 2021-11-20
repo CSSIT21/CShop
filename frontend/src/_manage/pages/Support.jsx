@@ -27,6 +27,7 @@ import { Search } from '@mui/icons-material';
 import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 const cardStyle = {
     width: '100%',
     padding: '0px',
@@ -46,47 +47,55 @@ const Item = styled(Paper)(({ theme }) => ({
 let tickets = [
     {
         id: 89547,
-        title: 'Missing Coffee',
+        name: 'Missing Coffee',
         desc: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
         type: 'User Report',
         filer: 'Daniel Chesed',
         target: 'Garion Binah',
         filedDate: '01/08/2020',
         assignee: 'AdminAngela',
-        status: 'Open'
+        status: 'Open',
+        title: 'fake product',
+        image: "https://via.placeholder.com/410x360"
     },
     {
         id: 89548,
-        title: 'Missing Tea',
+        name: 'Missing Tea',
         desc: 'That blue nobel boy spiked my perfectly good tea with coffee. Maybe I should do a Daniel on him once more.',
         type: 'User Report',
         filer: 'Garion Binah',
         target: 'Daniel Chesed',
         filedDate: '02/08/2020',
         assignee: 'AdminAngela',
-        status: 'Open'
+        status: 'Open',
+        title: 'fake product',
+        image: "https://via.placeholder.com/410x360"
     },
     {
         id: 89429,
-        title: 'Missing Category',
+        name: 'Missing Category',
         desc: 'I cant seem to buy the things I want from CShop? There isnt a category for weapons of mass destruction on here. Is this a bug?',
         type: 'Bug Report',
         filer: 'Lisa Tiphereth',
         target: 'Category System',
         filedDate: '10/06/2020',
         assignee: 'AdminAngela',
-        status: 'Closed'
+        status: 'Closed',
+        title: 'fake product',
+        image: "https://via.placeholder.com/410x360"
     },
     {
         id: 87429,
-        title: 'Lorem ipsum dolor sit amet',
+        name: 'Lorem ipsum dolor sit amet',
         desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ornare erat accumsan justo tempor efficitur. Donec convallis libero sit amet odio auctor, luctus auctor est euismod. Etiam in sem at lectus consectetur laoreet venenatis eget lacus. Donec quis turpis laoreet, aliquam diam eu, molestie leo. Nunc dapibus sapien id ornare fringilla. Fusce tempor pulvinar dolor, vitae condimentum felis bibendum nec. Quisque facilisis congue pulvinar. Praesent ut massa pulvinar, ullamcorper elit sed, egestas tortor. Mauris nec sollicitudin lorem. Vestibulum quis eleifend nibh.',
         type: 'Seller Report',
         filer: 'Don Quixote',
         target: 'The Library',
         filedDate: '21/02/2020',
         assignee: 'Vergilius',
-        status: 'Open'
+        status: 'Open',
+        title: 'fake product',
+        image: "https://via.placeholder.com/410x360"
     }
 ];
 
@@ -116,6 +125,10 @@ const ManageSellerAccountPage = () => {
     const [search, setSearch] = React.useState('');
     const handleSearch = (event) => {
         setSearch(event.target.value);
+    }
+
+    const setStatus = (ticketid, status) => {
+        tickets.filter(ticket => ticket.id === ticketid)[0].status = status;
     }
 
     return (
@@ -154,9 +167,9 @@ const ManageSellerAccountPage = () => {
                             <InputLabel id="sort-by-select-label" sx={{ top: '-5px' }}>Sort By</InputLabel>
                             <Select
                               labelId="sort-by-label"
+                              label="Sort By"
                               id="sort-by"
                               value={sortBy}
-                              label="Sort By"
                               className={classes.root}
                               onChange={setSort}
                             >
@@ -220,7 +233,7 @@ const ManageSellerAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <TicketCard ticket={key}/>
+                                    <TicketCard ticket={key} setStatus={setStatus}/>
                                 </div>
                             </li>
                         ))}

@@ -19,9 +19,11 @@ import { FormGroup } from "@mui/material";
 import { FormControl } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Select } from "@mui/material";
+import { InputLabel } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SupportMedia from "../components/SupportMedia";
 
 export class TicketCard extends React.Component {
   constructor(props) {
@@ -31,7 +33,7 @@ export class TicketCard extends React.Component {
     };
     this.open = false;
     this.status = {
-      value: 'open'
+      value: this.props.ticket.status
     };
   }
 
@@ -59,18 +61,6 @@ export class TicketCard extends React.Component {
     this.dialogClose();
   };
 
-  changeDay = (event) => {
-    this.editDate.day = event.target.value;
-  }
-
-  changeMonth = (event) => {
-    this.editDate.month = event.target.value;
-  }
-
-  changeYear = (event) => {
-    this.editDate.year = event.target.value;
-  }
-
   changeDesc = (event) => {
     this.desc = event.target.value;
   }
@@ -81,6 +71,8 @@ export class TicketCard extends React.Component {
 
   changeStatus = (event) => {
     this.status = event.target.value;
+    this.props.setStatus(this.props.ticket.id, event.target.value);
+    this.forceUpdate();
   }
 
   render() {
@@ -91,7 +83,7 @@ export class TicketCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '30%', overflow: "hidden", textOverflow: "ellipsis", display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', wordWrap: 'break-word', lineClamp: 1}}>{this.props.ticket.title}</Typography>
+              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', wordWrap: 'break-word', lineClamp: 1}}>{this.props.ticket.name}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.type}</Typography>
@@ -152,6 +144,11 @@ export class TicketCard extends React.Component {
               </Box>
               <Box>
               </Box>
+
+              <Box sx={{width:'25%', display:'flex', flexDirection: 'column', justifyContent: 'center', margin:'16px'}}>
+                <SupportMedia image={this.props.ticket.image} title={this.props.ticket.title} />
+              </Box>
+
               <Box sx={{display:'flex', flexDirection: 'column', margin:'25px'}}>
                 <Box>
                   <Box>
@@ -161,16 +158,19 @@ export class TicketCard extends React.Component {
                     <Button size="large" sx={{margin:"10px"}}>Return Ticket</Button>
                   </Box>
                   <Box>
+                    <InputLabel id="status-label" sx={{ top: '5px', left: '10px' }}>Status</InputLabel>
                     <FormControl sx={{ m: 1 }} sx={{margin:"10px"}}>
                         <Select
                           id="status"
+                          labelId="status-label"
+                          label="Status"
                           defaultValue={this.status.value}
                           className={classes.root}
                           onChange={this.changeStatus}
                         >
-                          <MenuItem value={'open'}>Open</MenuItem>
-                          <MenuItem value={'prog'}>In Progress</MenuItem>
-                          <MenuItem value={'closed'}>Closed</MenuItem>
+                          <MenuItem value={'Open'}>Open</MenuItem>
+                          <MenuItem value={'In Progress'}>In Progress</MenuItem>
+                          <MenuItem value={'Closed'}>Closed</MenuItem>
                         </Select>
                     </FormControl>
                   </Box>
