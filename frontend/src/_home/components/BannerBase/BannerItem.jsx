@@ -1,26 +1,12 @@
 import { useRef, useLayoutEffect } from 'react';
 import { makeStyles } from "@mui/styles";
-import { styled } from "@mui/material/styles";
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Typography, Button, Stack } from '@mui/material';
 import { noop } from '~/common/utils';
-
-const Image = styled(({ path, title, ...rest }) => (
-	<img
-		height="240"
-		width="50%"
-		src={path}
-		alt={title}
-		{...rest}
-	/>
-))(() => ({
-	padding: "10px",
-	borderRadius: 10,
-	objectFit: "cover",
-}));
+import UploadButton from './UploadButton';
+import SubImage from './SubImage';
 
 const BannerItem = ({
 	index = 0,
@@ -33,6 +19,7 @@ const BannerItem = ({
 	const classes = useStyles();
 	const item = items[index];
 	const { head, children = [] } = item.pictures;
+  
 	const onSetItem = () => {
 		setItems(items => {
 			items[index].height = wrapper.current.offsetHeight;
@@ -46,56 +33,98 @@ const BannerItem = ({
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
+		setTimeout(() => onSetItem(), 500);
 		return () => window.removeEventListener('resize', () => onSetItem());
 	}, []);
 
+	const onUploadSubImg = (e) => {
+		if (e.target.files.length) {
+			const path = URL.createObjectURL(e.target.files[0]);
+			setItems(items => {
+				items[index].pictures.children.push({
+					id: items[index].pictures.children.length,
+					path,
+				})
+
+				return [...items];
+			})
+			setTimeout(() => onSetItem(), 500);
+		}
+	};
+
 	return (
-		<Box className={classes.bannerComponent} ref={wrapper}>
+		<Box className={classes.bannerBlock} ref={wrapper}>
 			{index > 0 &&
-				<Box>
-					<Button sx={{ width: '100%' }} aria-label="prev" onClick={() => onPrev(index)}>
-						<ArrowDropUpIcon />
-					</Button>
-				</Box>
+				<Button sx={arrowButton} onClick={() => onPrev(index)} aria-label="prev">
+					<ArrowDropUpRoundedIcon sx={{ fontSize: "2.5rem" }} />
+				</Button>
 			}
 
 			<Stack direction="column" gap={5}>
-				<Box sx={{ display: "flex", justifyContent: "center" }}>
+				<Stack justifyContent="center">
 					<img
-						height="480px"
 						width="100%"
 						src={head}
 						alt={`Banner ${item.id}`}
+						style={{ display: "block" }}
 					/>
-				</Box>
+				</Stack>
+
+				<Stack direction="row" justifyContent="space-between" alignItems="center">
+					<Typography fontSize={20} fontWeight={500}>Add more pictures</Typography>
+					<UploadButton
+						onUploadImg={onUploadSubImg}
+						Icon={<AddIcon />}
+						title="Choose Pictures"
+						disabled={children.length === 4}
+					/>
+				</Stack>
 
 				{children.length !== 0 &&
-					<Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
 						{children.map((item) => (
-							<Image path={item.path} title="Banner!" key={item.id} />
+							<SubImage path={item.path} title="Banner!" key={item.id} />
 						))}
 					</Box>
 				}
+
+				<Typography
+					sx={{ textAlign: "center" }}
+					fontSize={13}
+					color="#A0A3BD"
+				>
+					{children.length + 1}/5
+				</Typography>
 			</Stack>
 
 			{index < items.length - 1 &&
-				<Box>
-					<Button sx={{ width: '100%' }} aria-label="next" onClick={() => onNext(index)}>
-						<ArrowDropDownIcon />
-					</Button>
-				</Box>
+				<Button sx={arrowButton} onClick={() => onNext(index)} aria-label="next" >
+					<ArrowDropDownRoundedIcon sx={{ fontSize: "2.5rem" }} />
+				</Button>
 			}
 		</Box>
 	);
 };
 
 const useStyles = makeStyles({
-	bannerComponent: {
+	// if possible, not try to change this class ;-;
+	bannerBlock: {
 		position: "relative",
 		width: "100%",
 		height: "auto",
-		borderBottom: '1px solid #5353534c'
+		borderBottom: '1px solid #C4C4C4',
 	},
 });
+
+const arrowButton = {
+	width: "100%",
+	padding: "0",
+	margin: "10px 0",
+	color: '#C4C4C4',
+
+	"&:hover": {
+		backgroundColor: "#fafafa",
+	},
+}
 
 export default BannerItem;

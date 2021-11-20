@@ -69,9 +69,9 @@ export default function SidebarLayout(props) {
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <Drawer variant="permanent" open={true}>
-                <Box className={classes.logo}>
+                <Link className={classes.logo} to="/home">
                     <img src={Logo} alt="logo" width="140px" />
-                </Box>
+                </Link>
                 <List>
                     {links.map(({ Icon, title, path }, index) => (
                         <ListItem button key={index} to={path} component={Link} sx={listStyle}>
