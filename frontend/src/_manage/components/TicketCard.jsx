@@ -15,6 +15,10 @@ import { Button } from "@mui/material";
 import { Grid } from "@mui/material";
 import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
+import { FormGroup } from "@mui/material";
+import { FormControl } from "@mui/material";
+import { FormControlLabel } from "@mui/material";
+import { Select } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,6 +30,9 @@ export class TicketCard extends React.Component {
       expand: false
     };
     this.open = false;
+    this.status = {
+      value: 'open'
+    };
   }
 
   handleExpandClick = () => {
@@ -69,7 +76,11 @@ export class TicketCard extends React.Component {
   }
 
   changeType = (event) => {
-    this.type = event.target.value;
+    this.type.value = event.target.value;
+  }
+
+  changeStatus = (event) => {
+    this.status = event.target.value;
   }
 
   render() {
@@ -79,8 +90,8 @@ export class TicketCard extends React.Component {
       <CardLayout elevation={0}>
         <CardContent>
           <Box className={classes.header}>
-            <Box sx={{ width: '30%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.ticket.desc}</Typography>
+            <Box sx={{ width: '30%', overflow: "hidden", textOverflow: "ellipsis", display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
+              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', wordWrap: 'break-word', lineClamp: 1}}>{this.props.ticket.title}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.type}</Typography>
@@ -101,16 +112,16 @@ export class TicketCard extends React.Component {
               <div style={{ display:'flex', justifyContent:'center' }}>
               { this.props.ticket.status === 'Open' ?
                   <Card variant="outlined" style={{
-                    backgroundColor: "#B3E24B33",
-                    border: 'none',
-                    width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.ticket.status}</Typography>
-                  </Card> :
-                  <Card variant="outlined" style={{
                     backgroundColor: "#F4AF5433",
                     border: 'none',
                     width: '75%'}}>
                   <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.props.ticket.status}</Typography>
+                  </Card> :
+                  <Card variant="outlined" style={{
+                    backgroundColor: "#B3E24B33",
+                    border: 'none',
+                    width: '75%'}}>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.ticket.status}</Typography>
                   </Card>
               }
               </div>
@@ -123,9 +134,50 @@ export class TicketCard extends React.Component {
           </Box>
         </CardContent>
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
-          <Box sx={{ display:'flex', flexDirection: 'column', justifyContent: 'left' }}>  
-            <Typography noWrap style={{ fontSize: '15px'}}>{this.props.ticket.desc}</Typography>
+          <Card variant="outlined" style={{
+            backgroundColor: "#FFEDE7",
+            border: 'none',
+            marginBottom: '20px'}}>
+            <Box sx={{display:'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Box style={{width: '50%', margin: '15px'}}>
+                <Typography style={{ fontWeight: 600, fontSize: '15px'}}>Description</Typography>
+                <Card variant="outlined" style={{
+                backgroundColor: "#FFFFFF",
+                border: 'none',
+                margin: '10px'}}>
+                  <Box sx={{ display:'flex', flexDirection: 'column', justifyContent: 'left' }}>  
+                  <Typography style={{ fontSize: '15px', margin:'25px'}}>{this.props.ticket.desc}</Typography>
+                  </Box>
+                </Card>
+              </Box>
+              <Box>
+              </Box>
+              <Box sx={{display:'flex', flexDirection: 'column', margin:'25px'}}>
+                <Box>
+                  <Box>
+                    <Button variant="contained" size="large" sx={{margin:"10px"}}>Take Ticket</Button>
+                  </Box>
+                  <Box>
+                    <Button size="large" sx={{margin:"10px"}}>Return Ticket</Button>
+                  </Box>
+                  <Box>
+                    <FormControl sx={{ m: 1 }} sx={{margin:"10px"}}>
+                        <Select
+                          id="status"
+                          defaultValue={this.status.value}
+                          className={classes.root}
+                          onChange={this.changeStatus}
+                        >
+                          <MenuItem value={'open'}>Open</MenuItem>
+                          <MenuItem value={'prog'}>In Progress</MenuItem>
+                          <MenuItem value={'closed'}>Closed</MenuItem>
+                        </Select>
+                    </FormControl>
+                  </Box>
+                </Box>
+              </Box>
             </Box>
+          </Card>
         </Collapse>
       </CardLayout>
     );

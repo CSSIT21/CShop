@@ -46,7 +46,8 @@ const Item = styled(Paper)(({ theme }) => ({
 let tickets = [
     {
         id: 89547,
-        desc: 'Binah replaced by coffee with tea. I swear to god that arbiter will pay for this.',
+        title: 'Missing Coffee',
+        desc: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
         type: 'User Report',
         filer: 'Daniel Chesed',
         target: 'Garion Binah',
@@ -56,6 +57,7 @@ let tickets = [
     },
     {
         id: 89548,
+        title: 'Missing Tea',
         desc: 'That blue nobel boy spiked my perfectly good tea with coffee. Maybe I should do a Daniel on him once more.',
         type: 'User Report',
         filer: 'Garion Binah',
@@ -66,6 +68,7 @@ let tickets = [
     },
     {
         id: 89429,
+        title: 'Missing Category',
         desc: 'I cant seem to buy the things I want from CShop? There isnt a category for weapons of mass destruction on here. Is this a bug?',
         type: 'Bug Report',
         filer: 'Lisa Tiphereth',
@@ -73,6 +76,17 @@ let tickets = [
         filedDate: '10/06/2020',
         assignee: 'AdminAngela',
         status: 'Closed'
+    },
+    {
+        id: 87429,
+        title: 'Lorem ipsum dolor sit amet',
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ornare erat accumsan justo tempor efficitur. Donec convallis libero sit amet odio auctor, luctus auctor est euismod. Etiam in sem at lectus consectetur laoreet venenatis eget lacus. Donec quis turpis laoreet, aliquam diam eu, molestie leo. Nunc dapibus sapien id ornare fringilla. Fusce tempor pulvinar dolor, vitae condimentum felis bibendum nec. Quisque facilisis congue pulvinar. Praesent ut massa pulvinar, ullamcorper elit sed, egestas tortor. Mauris nec sollicitudin lorem. Vestibulum quis eleifend nibh.',
+        type: 'Seller Report',
+        filer: 'Don Quixote',
+        target: 'The Library',
+        filedDate: '21/02/2020',
+        assignee: 'Vergilius',
+        status: 'Open'
     }
 ];
 
@@ -167,7 +181,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '50%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Ticket ({(!showClosed ? (tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status != 'Closed';})).length : tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Tickets ({(!showClosed ? (tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status != 'Closed';})).length : tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '16%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Type</Typography>
@@ -184,7 +198,7 @@ const ManageSellerAccountPage = () => {
                         <Box sx={{ width: '16%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Assigned To</Typography>
                         </Box>
-                        <Box sx={{ width: '16%' }} className={classes.header}>
+                        <Box sx={{ width: '14%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Status</Typography>
                         </Box>
                         <Box sx={{ width: '5%' }} className={classes.header}>

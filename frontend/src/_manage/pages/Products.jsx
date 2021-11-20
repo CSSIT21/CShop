@@ -167,7 +167,7 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '12%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Picture ({products.filter(product => product.name.toUpperCase().includes(search.toUpperCase())).length})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Products ({products.filter(product => product.name.toUpperCase().includes(search.toUpperCase())).length})</Typography>
                         </Box>
                         <Box sx={{ width: '18%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Name</Typography>
