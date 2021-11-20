@@ -216,14 +216,6 @@ function App() {
                       </Route>
                       <Route path="/profile/history">
                         <HistoryPage />
-                      </Route>
-                    </Suspense>
-                  </MainLayout>
-                </Route>
-                <Route path="/shop/:id/comment" exact>
-                  <MainLayout>
-                    <Suspense fallback={<SkeletonLoading />}>
-                      <ShopComment />
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
@@ -231,6 +223,14 @@ function App() {
                         <FollowedShop />
                       </Route>
                     </Suspense>
+                  </MainLayout>
+                </Route>
+                      
+                <Route path="/shop/:id/comment" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShopComment />
+                      </Suspense>
                   </MainLayout>
                 </Route>
                 <Route path="/shop/:id/:cateId" exact>
