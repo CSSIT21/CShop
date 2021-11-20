@@ -14,19 +14,13 @@ import {
 } from "@mui/icons-material";
 
 const ProductDetails = () => {
-
-   const [product, setProduct] = useState({
+  const [product, setProduct] = useState({
     id: 0,
     title: "Cheese Pizza very อร่อย มากๆๆๆ",
     price: "500",
     status: "Hot sale",
     favourite: true,
   });
-
-
-  const onFavourite = () => {
-    setProduct({...product, favourite: !product.favourite})
-  };
 
   const productName = "Product Name";
   const productDetail = "Product Detail";
@@ -40,6 +34,10 @@ const ProductDetails = () => {
   };
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const onFavourite = () => {
+    setProduct({ ...product, favourite: !product.favourite });
   };
 
   return (
@@ -61,24 +59,32 @@ const ProductDetails = () => {
           {productName}
         </Typography>
         <Box sx={boxShareLike}>
-          <Box >
+          <Box>
             <IconButton>
-              <ShareIcon sx={{ color: "#A0A3BD", fontSize: "28px" }}/>
+              <ShareIcon sx={{ color: "#A0A3BD", fontSize: "28px" }} />
             </IconButton>
-             <IconButton
-          onClick={(e) => {
-            e.preventDefault();
-            onFavourite(product);
-          }}
-              sx={{
-                fontWeight: "bold", fontSize: "30px"
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                onFavourite(product);
               }}
-        >
-          {product.favourite
-            ? <FavoriteRoundedIcon sx={{ color: "#A0A3BD" }} fontSize="inherit" />
-            : <FavoriteBorderRoundedIcon sx={{ color: "#A0A3BD" }} fontSize="inherit"/>
-          }
-        </IconButton>
+              sx={{
+                fontWeight: "bold",
+                fontSize: "30px",
+              }}
+            >
+              {product.favourite ? (
+                <FavoriteRoundedIcon
+                  sx={{ color: "#A0A3BD" }}
+                  fontSize="inherit"
+                />
+              ) : (
+                <FavoriteBorderRoundedIcon
+                  sx={{ color: "#A0A3BD" }}
+                  fontSize="inherit"
+                />
+              )}
+            </IconButton>
           </Box>
         </Box>
         <Typography
@@ -140,5 +146,12 @@ const ProductDetails = () => {
   );
 };
 
-const boxShareLike = { display: "flex", width:"475px",height:"40px",alignItems:"center", justifyContent:"flex-end", margin:"0 0 1px 0"}
+const boxShareLike = {
+  display: "flex",
+  width: "475px",
+  height: "40px",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  margin: "0 0 1px 0",
+};
 export default ProductDetails;
