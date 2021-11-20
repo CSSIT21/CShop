@@ -251,12 +251,6 @@ const ManageAccountPage = () => {
         resId++;
     }
 
-    useLayoutEffect(() => {
-        document.body.classList.add("gray");
-        document.body.classList.add("no-scroll!important")
-        return () => {document.body.classList.remove("gray")};
-      }, []);
-
     return (
         <div>
             <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
