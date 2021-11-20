@@ -152,8 +152,8 @@ const SellerShopCustomization = () => {
   const [state, setState] = useState({
     [dropArea]: [],
   });
-  const [deleteIndex, setDeleteIndex] = useState(0);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [sectionInfos, setSectionInfos] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -169,7 +169,7 @@ const SellerShopCustomization = () => {
     cloneSource.splice(index, 1);
     return cloneSource;
   };
-
+  console.log(state);
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
@@ -213,16 +213,16 @@ const SellerShopCustomization = () => {
     }
   };
 
-  const GetComponent = ({ content, ...rest }) => {
+  const GetComponent = ({ type, ...rest }) => {
     const Components = {
-      Youtube: <YoutubeSection {...rest} id="UbYPG1GsZEI" />,
+      Youtube: <YoutubeSection {...rest} vid="UbYPG1GsZEI" />,
       ImageBanner: <ImageBanner {...rest} />,
       CarouselProduct: <CarouselProduct {...rest} />,
       CarouselBanner: <CarouselBanner {...rest} />,
       CarouselProductSelect: <CarouselProductSelect {...rest} />,
     };
 
-    return Components[content] || Components["ImageBanner"];
+    return Components[type] || Components["ImageBanner"];
   };
 
   return (
@@ -248,7 +248,6 @@ const SellerShopCustomization = () => {
                         {item.content}
                       </Item>
                       {snapshot.isDragging && <Clone>{item.content}</Clone>}
-                      {/* <Clone>sdfsdfsdfsds{item.content}</Clone> */}
                     </React.Fragment>
                   )}
                 </Draggable>
@@ -301,7 +300,10 @@ const SellerShopCustomization = () => {
                                   </IconButton>
                                 </Box>
                                 <GetComponent
-                                  content={item.content}
+                                  type={item.content}
+                                  id={item.id}
+                                  information={sectionInfos}
+                                  setInformation={setSectionInfos}
                                   {...provided.dragHandleProps}
                                   order={index}
                                 />

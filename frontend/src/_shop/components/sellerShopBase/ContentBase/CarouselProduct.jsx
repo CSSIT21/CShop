@@ -33,7 +33,7 @@ const CarouselProduct = ({ items, onFavourite, filterName }) => {
   const classes = useStyles();
   const productsPerRow = 5;
   const totalPage = Math.ceil(products.length / productsPerRow);
-
+  console.log(page);
   return (
     <Box className={classes.bestsellerWrapper}>
       <Box className={classes.bestsellerContent}>

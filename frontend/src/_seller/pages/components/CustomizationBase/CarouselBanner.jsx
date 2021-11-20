@@ -36,11 +36,12 @@ const CarouselBanner = ({
 
   const addImage = () => {
     if (sectionImages.length < 5)
-      setSectionImages(sectionImages.concat([{ id: nanoid() }]));
+      setSectionImages([...sectionImages, { id: nanoid() }]);
   };
 
   const deleteImage = (id) => {
     console.log(id);
+    console.log(sectionImages);
     setSectionImages(sectionImages.filter((s, index) => id !== s.id));
   };
 

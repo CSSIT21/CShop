@@ -1,22 +1,42 @@
 import { Box } from "@mui/system";
-import React from "react";
-import { Typography, TextField, Button } from "@mui/material";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { Typography, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
 
 const ImageBanner = ({
-  section = {
-    id: "0",
-    page: {
-      type: 1,
-      id: 1,
-      content: { img: CategoryPic1 },
-    },
-  },
+  id = "",
+  type = 1,
+  content = { img: CategoryPic1 },
+  information,
+  setInformation = () => {},
   order = 0,
   ...rest
 }) => {
+  const [image, setImage] = useState("");
   const classes = useStyles();
+  useLayoutEffect(() => {
+    if(id in information){
+      setImage(information[id].img);
+    }else{
+      setImage(content.img);
+    }
+  }, [])
+  // useLayoutEffect(() => {
+  //   setInformation(info => ({...info,
+  //     [id]: content
+  //   }));
+  // },[order]);
+
+  const uploadFile = (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      setImage(path);
+      setInformation(info => ({...info,
+        [id]: {...info[id] || content, img: path}
+      }));
+    }
+  };
   return (
     <Box
       sx={{
@@ -34,13 +54,23 @@ const ImageBanner = ({
       >
         Banner#{order}
       </Typography>
-      <img
-        src={section.page.content.img}
-        alt={section.page.type}
-        width="100%"
-        className={classes.img}
-      />
-      <TextField type="file" sx={{ maxWidth: "35%", color: "#FD6637" }} />
+      <img src={image} alt={type} width="100%" className={classes.img} />
+      <label htmlFor={`outlined-button-file`}>
+        <Button
+          component="span"
+          variant="outlined"
+          sx={{ height: "42px", borderWidth: "2px" }}
+        >
+          <input
+            accept="image/*"
+            type="file"
+            style={{ display: "none" }}
+            id={`outlined-button-file`}
+            onChange={uploadFile}
+          />
+          Upload
+        </Button>
+      </label>
     </Box>
   );
 };
