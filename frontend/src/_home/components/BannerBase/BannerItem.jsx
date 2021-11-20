@@ -19,7 +19,7 @@ const BannerItem = ({
 	const classes = useStyles();
 	const item = items[index];
 	const { head, children = [] } = item.pictures;
-
+  
 	const onSetItem = () => {
 		setItems(items => {
 			items[index].height = wrapper.current.offsetHeight;
