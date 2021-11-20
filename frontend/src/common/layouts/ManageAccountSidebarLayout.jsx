@@ -8,8 +8,9 @@ import StoreRoundedIcon from '@mui/icons-material/StoreRounded';
 import NoAccountsRoundedIcon from '@mui/icons-material/NoAccountsRounded';
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import ViewCarouselRoundedIcon from '@mui/icons-material/ViewCarouselRounded';
+import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { Link } from "react-router-dom";
-import { Person, Store, CardGiftcard, Help } from '@mui/icons-material';
 
 const drawerWidth = 222;
 
@@ -18,8 +19,8 @@ const generateLink = (Icon, title = "", path = "/") => ({ Icon, title, path });
 let links = [
     generateLink(PersonRoundedIcon, "Users", "/manage/users"),
     generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
-    generateLink(NoAccountsRoundedIcon, "Banned users", "/manage/bannedusers"),
-    generateLink(BlockRoundedIcon, "Banned sellers", "/manage/bannedsellers"),
+    generateLink(CardGiftcardRoundedIcon, "Products", "/manage/products"),
+    generateLink(HelpRoundedIcon, "Support", "/manage/support"),
     generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
 ];
 

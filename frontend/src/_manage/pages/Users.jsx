@@ -259,14 +259,14 @@ const ManageAccountPage = () => {
 
     return (
         <div>
-            <Box className={classes.topwrapper}>
+            <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
                 <Box className={classes.topright}>
                     <FormGroup>
                         <FormControlLabel onChange={toggleShowRestricted} control={<Checkbox />} label="Show Restricted Only" />
                     </FormGroup>
                 </Box>
                 <Box className={classes.topright}>
-                    <Box sx={{ margin: '8px'}}>
+                    <Box>
                         <TextField
                         hiddenLabel
                         id="search-field"
@@ -312,7 +312,7 @@ const ManageAccountPage = () => {
                     </Box>
                 </Box>
             </Box>
-            <Card variant="outlined" sx={cardStyle}>
+            <Card variant="outlined" sx={cardStyle} sx={{ margin:'0px 45px'}}>
                 <Card variant="outlined" style={{
                     backgroundColor: "#FDF4DD",
                     border: 'none',
