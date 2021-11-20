@@ -86,7 +86,7 @@ function App() {
   return (
     <div className="App">
       <Catch
-        onError={() => { }}
+        onError={() => {}}
         fallback={({ state }) => (
           <ErrorPage error={state.error} errorInfo={state.errorInfo} />
         )}
@@ -216,6 +216,7 @@ function App() {
                       </Route>
                       <Route path="/profile/history">
                         <HistoryPage />
+                      </Route>
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
@@ -225,12 +226,12 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-                      
+
                 <Route path="/shop/:id/comment" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShopComment />
-                      </Suspense>
+                    </Suspense>
                   </MainLayout>
                 </Route>
                 <Route path="/shop/:id/:cateId" exact>
