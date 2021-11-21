@@ -16,16 +16,16 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 import CropOriginalIcon from "@mui/icons-material/CropOriginal";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const subBodyClick = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -45,11 +45,13 @@ function SubBodyClick() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={subBodyClick}>
-          <Box sx = {{display : "flex", justifyContent : "center", color : "green"}}>
-            <CheckCircleOutlineIcon sx = {{fontSize : 100}} />
-            </Box>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", color: "green" }}
+          >
+            <CheckCircleOutlineIcon sx={{ fontSize: 100 }} />
+          </Box>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-          Successfully added your product
+            Successfully added your product
           </Typography>
         </Box>
       </Modal>
@@ -57,15 +59,14 @@ function SubBodyClick() {
   );
 }
 
-
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   pt: 2,
   px: 4,
@@ -80,7 +81,7 @@ function SubModal() {
   const subClose = () => {
     setSubAdd(false);
   };
-  return ( 
+  return (
     <Box>
       <Button onClick={subOpen}>ADD</Button>
       <Modal
@@ -92,13 +93,26 @@ function SubModal() {
       >
         <Box sx={{ ...style, width: 250 }}>
           <h2 id="child-modal-title">Are your sure?</h2>
-        <Box sx={{ display : "flex" ,justifyContent : "space-between"}}>
-          <Button onClick={subClose}>No</Button>
-          <SubBodyClick/>
+          <Stack component="form" noValidate spacing={3}>
+            <TextField
+              id="date"
+              label="Date"
+              type="datetime-local"
+              variant="standard"
+              defaultValue="2017-05-24T10:30"
+              sx={{ width: 190 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Stack>
+          <Box sx={{ display: "flex", justifyContent: "space-between",marginTop : 2 }}>
+            <Button onClick={subClose}>No</Button>
+            <SubBodyClick />
           </Box>
         </Box>
       </Modal>
-      </Box>
+    </Box>
   );
 }
 
@@ -145,10 +159,7 @@ function SelectVariants() {
   );
 }
 
-export default function AddProduct({
-  product = false,
-  setProduct = () => {},
-}) {
+export default function AddProduct({ product = false, setProduct = () => {} }) {
   const ProductAdd = () => setProduct(true);
   const ProduceClose = () => setProduct(false);
 
@@ -164,7 +175,6 @@ export default function AddProduct({
     p: 4,
   };
 
-  
   return (
     <Dialog open={product} onClose={ProduceClose}>
       <DialogTitle
@@ -217,16 +227,23 @@ export default function AddProduct({
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <UploadButtons />
-            <Box sx = {{display : "flex",marginLeft : "30px" , fontSize : "10px" , flexDirection : "column"}}>
-              <Box >Cutest Cactus Ever</Box>
-              <Box >100000000 Bath</Box>
+            <Box
+              sx={{
+                display: "flex",
+                marginLeft: "30px",
+                fontSize: "10px",
+                flexDirection: "column",
+              }}
+            >
+              <Box>Cutest Cactus Ever</Box>
+              <Box>100000000 Bath</Box>
             </Box>
           </Box>
         </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={ProduceClose}>Cancel</Button>
-        <SubModal/>
+        <SubModal />
       </DialogActions>
     </Dialog>
   );
