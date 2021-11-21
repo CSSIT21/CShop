@@ -1,11 +1,9 @@
 import React from "react";
-import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box } from "@mui/system";
@@ -63,7 +61,6 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
                   backgroundColor: "#484b94",
                 },
               }}
-              v
             >
               {<EditIcon sx={{ fontSize: 18 }} />}
             </Button>

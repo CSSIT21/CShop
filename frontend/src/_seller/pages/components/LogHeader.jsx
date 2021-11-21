@@ -5,7 +5,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { makeStyles } from "@mui/styles";
-import Avatar from '@mui/material/Avatar';
+import Avatar from "@mui/material/Avatar";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   root: {
@@ -16,37 +17,22 @@ const useStyles = makeStyles({
   },
 });
 
-const LogHeader = ({rows,headerName}) => {
+const LogHeader = ({ headerName }) => {
   const classes = useStyles();
-  // console.log("headername",headerName)
+  // headerName.map((index, key) => console.log({index}.index));
   return (
     <TableHead className={classes.root}>
       <TableRow>
         <TableCell sx={{ color: "#FD6637" }}>{headerName[0]}</TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[1]}
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[2]}&nbsp;
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[3]}&nbsp;
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[4]}&nbsp;(bath)
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[5]}&nbsp;
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[6]}&nbsp;
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[7]}&nbsp;
-        </TableCell>
-        <TableCell sx={{ color: "#FD6637" }} align="right">
-        {headerName[8]}&nbsp;
-        </TableCell>
+        {headerName.map((index, key) =>
+          key == 0 ? (
+            ""
+          ) : (
+            <TableCell key={key} sx={{ color: "#FD6637", textAlign: "right" }}>
+              {index}
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );
