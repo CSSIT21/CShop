@@ -1,18 +1,5 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import React from "react";
 import { Box } from "@mui/material";
-import { CloseRounded } from "@mui/icons-material";
-import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
-import Carousel from "~/common/components/Carousel";
 import { noop } from "~/common/utils";
 
 const ReviewPhotos = ({

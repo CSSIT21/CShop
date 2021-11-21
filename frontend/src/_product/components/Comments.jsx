@@ -1,26 +1,19 @@
 import React, { useState } from "react";
-import { Avatar, Box, Button, Divider, Typography } from "@mui/material";
+import { Avatar, Box, Divider, Typography } from "@mui/material";
 import RatingStars from "./RatingStars";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import EmojiFlagsRoundedIcon from "@mui/icons-material/EmojiFlagsRounded";
 import IconButton from "@mui/material/IconButton";
 import CommentFooter from "./CommentFooter";
-import ReviewPhotoContainer from "./ReviewPhotoCarousel";
 import ReviewPhoto from "./ReviewPhotos";
-import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import { fontSize } from "@mui/system";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import Carousel from "../../common/components/Carousel";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { CloseRounded } from "@mui/icons-material";
 
 const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
@@ -78,7 +71,6 @@ const Comments = ({
   };
 
   const [openDialog, setOpenDialog] = useState(false);
-  // const [photoList, setphotoList] = useState(img);
   const [page, setPage] = useState(0);
   const photoPerRow = 1;
   const totalPage = Math.ceil(reviewPhoto.length / photoPerRow);
@@ -153,7 +145,6 @@ const Comments = ({
               sx={{
                 fontSize: "18px",
                 fontWeight: "500",
-                // marginBottom: 0.5
               }}
             >
               {username}

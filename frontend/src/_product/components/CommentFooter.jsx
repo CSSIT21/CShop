@@ -8,9 +8,7 @@ const CommentFooter = ({ date = "23/12/2021", time = "10:00" }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "end",
-
         margin: "0",
-
         width: "100%",
       }}
     >
