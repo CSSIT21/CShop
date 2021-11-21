@@ -7,26 +7,15 @@ import { styled } from '@mui/material/styles';
 import { Pagination } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
-import { Grid } from '@mui/material';
-import { FormGroup } from '@mui/material';
-import { FormControlLabel } from '@mui/material';
-import { Checkbox } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { TextField } from '@mui/material';
 import { FormControl } from '@mui/material'
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
-import { FormHelperText } from '@mui/material';
-import { InputAdornment } from '@mui/material';
-import { createTheme } from '@mui/material';
-import CButton from "../../common/components/CButton";
+import { Button } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
-import TicketCard from "../components/TicketCard";
-import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import SupportMedia from "../components/SupportMedia";
 
 const cardStyle = {
     width: '100%',
@@ -46,9 +35,9 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
-    const [sortBy, setSortBy] = React.useState('');
-    const setSort = (event) => {
-        setSortBy(event.target.value);
+    const [type, setType] = React.useState('');
+    const setTicketType = (event) => {
+        setType(event.target.value);
       };
 
     const [sortOrder, setSortOrder] = React.useState(false);
@@ -76,15 +65,55 @@ const ManageSellerAccountPage = () => {
         tickets.filter(ticket => ticket.id === ticketid)[0].status = status;
     }
 
+    const [picture, setPicture] = React.useState({title: 'fake support picture',
+    image: "https://via.placeholder.com/410x360"});
+
     return (
-        <div>
+        <Box sx={{ margin: '25px 0px' }}>
             <Card variant="outlined" style={{
                     backgroundColor: "rgba(239, 239, 241, 0.7)",
                     border: 'none',
                     margin: '40px 75px',
                     marginBottom: '0px'}}>
                 <CardContent>
-                    <Box sx={{display:'flex', justifyContent:'center', margin:'20px'}}>
+                    <Box sx={{ display:'flex', justifyContent:'center', margin:'20px'}}>
+                        <Typography style={{ fontWeight: 700, fontSize: '40px' }} color="primary">File a Support Ticket</Typography>
+                    </Box>
+                    <Box sx={{ display:'flex', justifyContent:'left', marginLeft:'12%'}}>
+                        <Typography style={{ fontWeight: 600, fontSize: '23px' }} color="primary">Problem Type</Typography>
+                    </Box>
+                    <Box sx={{ display:'flex', justifyContent:'space-between', width: '80%', marginLeft: '9.5%'}}>
+                        <FormControl sx={{ m: '20px' }}>
+                            <InputLabel id="ticket-label" sx={{ top: '-5px' }}>Problem Type</InputLabel>
+                            <Select
+                              labelId="ticket-label"
+                              label="Problem Type"
+                              id="ticket-id"
+                              value={type}
+                              className={classes.root}
+                              onChange={setTicketType}
+                            >
+                              <MenuItem value={'user'}>User Report</MenuItem>
+                              <MenuItem value={'seller'}>Seller Report</MenuItem>
+                              <MenuItem value={'bug'}>Bug Report</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{ width: '40%' }}>
+                            <TextField
+                                align="center"
+                                margin="dense"
+                                label="What are you reporting?"
+                                id="target"
+                                fullWidth
+                                placeholder="e.g., RudeUser, ScamSeller, Shop Bug..."
+                                variant="outlined"
+                            />
+                        </FormControl>
+                    </Box>
+                    <Box sx={{ display:'flex', justifyContent:'left', marginLeft:'12%'}}>
+                        <Typography style={{ fontWeight: 600, fontSize: '23px' }} color="primary">Description</Typography>
+                    </Box>
+                    <Box sx={{display:'flex', justifyContent:'center', margin:'7px 15px'}}>
                         <TextField
                             align="center"
                             margin="dense"
@@ -97,9 +126,30 @@ const ManageSellerAccountPage = () => {
                             sx={{width:'80%!important'}}
                         />
                     </Box>
+                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Box sx={{width:'25%', display:'flex', flexDirection: 'column', justifyContent: 'center', margin:'2.2% 10%'}}>
+                            <SupportMedia image={picture.image} title={picture.title} />
+                            <Box sx={{ margin:'15px 0px' }}>
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    fullWidth
+                                >
+                                    Upload Picture
+                                <input
+                                    type="file"
+                                    hidden
+                                />
+                                </Button>
+                            </Box>
+                        </Box>
+                        <Box sx={{width: '20%', display:'flex', alignItems:'flex-end', margin: '27.5px'}}>
+                            <Button variant="contained" size="large" sx={{margin:"10px"}}>Submit Ticket</Button>
+                        </Box>
+                    </Box>
                 </CardContent>
             </Card>
-        </div>
+        </Box>
     );
 };
 

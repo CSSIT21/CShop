@@ -55,7 +55,7 @@ let tickets = [
         filedDate: '01/08/2020',
         assignee: 'AdminAngela',
         status: 'Open',
-        title: 'fake product',
+        title: 'fake support picture',
         image: "https://via.placeholder.com/410x360"
     },
     {
@@ -68,7 +68,7 @@ let tickets = [
         filedDate: '02/08/2020',
         assignee: 'AdminAngela',
         status: 'Open',
-        title: 'fake product',
+        title: 'fake support picture',
         image: "https://via.placeholder.com/410x360"
     },
     {
@@ -81,7 +81,7 @@ let tickets = [
         filedDate: '10/06/2020',
         assignee: 'AdminAngela',
         status: 'Closed',
-        title: 'fake product',
+        title: 'fake support picture',
         image: "https://via.placeholder.com/410x360"
     },
     {
@@ -94,7 +94,7 @@ let tickets = [
         filedDate: '21/02/2020',
         assignee: 'Vergilius',
         status: 'Open',
-        title: 'fake product',
+        title: 'fake support picture',
         image: "https://via.placeholder.com/410x360"
     }
 ];

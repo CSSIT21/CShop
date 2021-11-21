@@ -61,14 +61,6 @@ export class TicketCard extends React.Component {
     this.dialogClose();
   };
 
-  changeDesc = (event) => {
-    this.desc = event.target.value;
-  }
-
-  changeType = (event) => {
-    this.type.value = event.target.value;
-  }
-
   changeStatus = (event) => {
     this.status = event.target.value;
     this.props.setStatus(this.props.ticket.id, event.target.value);
