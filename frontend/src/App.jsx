@@ -80,13 +80,14 @@ import CoinHistoryPage from "./_coin/pages/coinHistory";
 import CoinRedeemPage from "./_coin/pages/coinRedeem";
 import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
+import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
 
 function App() {
   return (
     <div className="App">
       <Catch
-        onError={() => { }}
+        onError={() => {}}
         fallback={({ state }) => (
           <ErrorPage error={state.error} errorInfo={state.errorInfo} />
         )}
@@ -198,6 +199,13 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+                <Route path="/register/seller" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <SellerRegister />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
                 <Route path="/profile" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -220,19 +228,20 @@ function App() {
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
-                    </Suspense>
-                  </MainLayout>
-                </Route>
-                <Route path="/shop/:id/comment" exact>
-                  <MainLayout>
-                    <Suspense fallback={<SkeletonLoading />}>
-                      <ShopComment />
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
                       <Route path="/profile/followedshop">
                         <FollowedShop />
                       </Route>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
+                <Route path="/shop/:id/comment" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShopComment />
                     </Suspense>
                   </MainLayout>
                 </Route>

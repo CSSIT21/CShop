@@ -10,7 +10,7 @@ import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import ViewCarouselRoundedIcon from '@mui/icons-material/ViewCarouselRounded';
 import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const drawerWidth = 222;
 
@@ -66,17 +66,33 @@ const Drawer = styled(MuiDrawer, {
 
 export default function SidebarLayout(props) {
     const classes = useStyles();
+    //assigning location variable
+    const location = useLocation();
+
+    //destructuring pathname from location
+    const { pathname } = location;
 
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <Drawer variant="permanent" open={true}>
-                <Box className={classes.logo}>
+                <Link className={classes.logo} to="/home">
                     <img src={Logo} alt="logo" width="140px" />
-                </Box>
+                </Link>
                 <List>
                     {links.map(({ Icon, title, path }, index) => (
-                        <ListItem button key={index} to={path} component={Link} sx={listStyle}>
+                        <ListItem button key={index} to={path} component={Link} sx={{
+                            ...listStyle,
+                            ...(pathname == path ? {
+                                backgroundColor: "#FD6637", "& span": {
+                                    color: "#ffffff",
+                                },
+
+                                "& svg": {
+                                    color: "#ffffff",
+                                }
+                            } : {})
+                        }}>
                             <ListItemIcon>
                                 <Icon className={classes.icon} />
                             </ListItemIcon>
@@ -88,7 +104,7 @@ export default function SidebarLayout(props) {
             <Box component="main" sx={{ minHeight: "100vh", flexGrow: 1, backgroundColor: "rgba(239, 239, 241, 0.7)" }}>
                 {props.children}
             </Box>
-        </Box>
+        </Box >
     );
 }
 
