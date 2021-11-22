@@ -49,6 +49,8 @@ import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
 import Promotion from "./_promotion/pages/Promotion";
+import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
+import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -77,6 +79,8 @@ import CoinHistoryPage from "./_coin/pages/coinHistory";
 import CoinRedeemPage from "./_coin/pages/coinRedeem";
 import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
+import SellerRegister from "./_auth/pages/SellerRegister";
+import ManageBanner from "./_home/pages/ManageBanner";
 
 function App() {
   return (
@@ -112,6 +116,9 @@ function App() {
                       </Route>
                       <Route exact path="/manage/bannedusers">
                         <BannedUsersPage />
+                      </Route>
+                      <Route exact path="/manage/banner">
+                        <ManageBanner />
                       </Route>
                     </Suspense>
                   </SidebarLayout>
@@ -166,7 +173,6 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-
                 {/* Register Page */}
                 <Route path="/register" exact>
                   <MainLayout>
@@ -179,6 +185,13 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <RegisterInfoPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/register/seller" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <SellerRegister />
                     </Suspense>
                   </MainLayout>
                 </Route>
@@ -210,6 +223,14 @@ function App() {
                       <Route path="/profile/followedshop">
                         <FollowedShop />
                       </Route>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
+                <Route path="/shop/:id/comment" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShopComment />
                     </Suspense>
                   </MainLayout>
                 </Route>
@@ -263,6 +284,9 @@ function App() {
                     <Suspense fallback={<SkeletonLoading />}>
                       <Route path="/seller/:id/dashboard">
                         <SellerDashboard />
+                      </Route>
+                      <Route path="/seller/:id/customize">
+                        <SellerShopCustomizationPage />
                       </Route>
                       <Route path="/seller/:id/stock">
                         <SellerStock />
