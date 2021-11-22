@@ -54,8 +54,9 @@ function TestDialog() {
         sx={{
           margin: "20px",
           width: "75%",
-          height: "450px",
-          backgroundColor: "lightBlue",
+          height: "440px",
+          backgroundColor: "#F4F5F6",
+          borderRadius: "10px",
         }}
       >
         <ConditionsDialog />
