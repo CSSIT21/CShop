@@ -3,7 +3,7 @@ import { useState } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import InputAdornment from "@mui/material/InputAdornment";
 
-function YoutubeSection({ id: ID, ...rest }) {
+function YoutubeSection({ vid: ID, ...rest }) {
   const [id, setId] = useState(ID);
   return (
     <>

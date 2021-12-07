@@ -4,12 +4,18 @@ import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageBanner from "./components/CustomizationBase/ImageBanner";
 import { Box } from "@mui/system";
+import { Typography } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import YoutubeSection from "./components/CustomizationBase/YoutubeSection";
 import IconButton from "@mui/material/IconButton";
 import CarouselProduct from "./components/CustomizationBase/CarouselProduct";
 import CarouselBanner from "./components/CustomizationBase/CarouselBanner";
 import CarouselProductSelect from "./components/CustomizationBase/CarouselProductSelect";
+import ImageBannerIcon from "./components/CustomizationBase/DragableIcon/ImageBannerIcon";
+import CarouselBannerIcon from "./components/CustomizationBase/DragableIcon/CarouselBannerIcon";
+import YoutubeEmbedIcon from "./components/CustomizationBase/DragableIcon/YoutubeEmbedIcon";
+import ProductCarouselIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselIcon";
+import ProductCarouselSelectIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselSelectIcon";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -47,20 +53,16 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 const Content = styled.div`
-  margin-right: 200px;
+  margin-right: 300px;
 `;
 
 const Item = styled.div`
-  display: flex;
   user-select: none;
-  padding: 0.5rem;
-  margin: 0 0 0.5rem 0;
-  align-items: flex-start;
-  align-content: flex-start;
-  line-height: 1.5;
+  background-color: #ffffff;
   border-radius: 3px;
-  background: #fff;
-  border: 1px ${(props) => (props.isDragging ? "dashed #4099ff" : "solid #ddd")};
+
+  padding: 1rem 2.5rem;
+  border: 1px ${(props) => props.isDragging && "dashed #4099ff"};
 `;
 
 const Clone = styled(Item)`
@@ -94,11 +96,11 @@ const List = styled.div`
 `;
 
 const Kiosk = styled(List)`
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 200px;
+  width: 300px;
 `;
 
 const Container = styled(List)`
@@ -131,11 +133,7 @@ const ITEMS = [
   },
   {
     id: uuid(),
-    content: "Image",
-  },
-  {
-    id: uuid(),
-    content: "CarouselProductSelect",
+    content: "Youtube",
   },
   {
     id: uuid(),
@@ -143,7 +141,7 @@ const ITEMS = [
   },
   {
     id: uuid(),
-    content: "Youtube",
+    content: "CarouselProductSelect",
   },
 ];
 
@@ -225,6 +223,18 @@ const SellerShopCustomization = () => {
     return Components[type] || Components["ImageBanner"];
   };
 
+  const GetIcon = ({ type, ...rest }) => {
+    const Components = {
+      ImageBanner: <ImageBannerIcon {...rest} />,
+      CarouselBanner: <CarouselBannerIcon {...rest} />,
+      Youtube: <YoutubeEmbedIcon {...rest} />,
+      CarouselProduct: <ProductCarouselIcon {...rest} />,
+      CarouselProductSelect: <ProductCarouselSelectIcon {...rest} />,
+    };
+
+    return Components[type] || Components["ImageBanner"];
+  };
+
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -234,6 +244,14 @@ const SellerShopCustomization = () => {
               ref={provided.innerRef}
               isDraggingOver={snapshot.isDraggingOver}
             >
+              <Typography
+                fontWeight="600"
+                fontSize="20px"
+                color="#FD6637"
+                sx={{ padding: "0 2rem" }}
+              >
+                Drag item to section
+              </Typography>
               {ITEMS.map((item, index) => (
                 <Draggable key={item.id} draggableId={item.id} index={index}>
                   {(provided, snapshot) => (
@@ -245,9 +263,13 @@ const SellerShopCustomization = () => {
                         isDragging={snapshot.isDragging}
                         style={provided.draggableProps.style}
                       >
-                        {item.content}
+                        <GetIcon type={item.content} />
                       </Item>
-                      {snapshot.isDragging && <Clone>{item.content}</Clone>}
+                      {snapshot.isDragging && (
+                        <Clone>
+                          <GetIcon type={item.content} />
+                        </Clone>
+                      )}
                     </React.Fragment>
                   )}
                 </Draggable>
@@ -274,6 +296,7 @@ const SellerShopCustomization = () => {
                           >
                             {(provided, snapshot) => (
                               <div
+                                key={item.id}
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 isDragging={snapshot.isDragging}
@@ -292,6 +315,10 @@ const SellerShopCustomization = () => {
                                       setState(({ area }) => ({
                                         area: deleteItem(area, item.id),
                                       }));
+                                      setInformation((info) => {
+                                        delete info[item.id];
+                                        return info;
+                                      });
                                       console.log(item);
                                       handleClose();
                                     }}
@@ -302,6 +329,7 @@ const SellerShopCustomization = () => {
                                 <GetComponent
                                   type={item.content}
                                   id={item.id}
+                                  vid="FmfGvRPFOTE"
                                   information={sectionInfos}
                                   setInformation={setSectionInfos}
                                   {...provided.dragHandleProps}
