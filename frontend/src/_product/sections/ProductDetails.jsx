@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-import DisplayImage from "../components/Image";
+import DisplayImage from "../components/ProductDetailsBase/Image";
 import AddToCartButton from "../../common/components/CButton";
-import Amount from "../components/AmountField";
+import Amount from "../components/ProductDetailsBase/AmountField";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";

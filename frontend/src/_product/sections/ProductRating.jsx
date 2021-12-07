@@ -1,7 +1,7 @@
 import React from "react";
-import RatingStars from "../components/RatingStars";
+import RatingStars from "../components/ProductDetailsBase/RatingStars";
 import ShowMoreButton from "../../common/components/CButton";
-import Comments from "../components/Comments";
+import Comments from "../components/ProductDetailsBase/Comments";
 import { makeStyles } from "@mui/styles";
 import {
   Accordion,

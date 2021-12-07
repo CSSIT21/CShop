@@ -1,34 +1,30 @@
 import { Box } from "@mui/system";
 import React from "react";
-import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { Typography } from "@mui/material";
 
 function ConditionsDialog() {
   return (
-    <Box
-      sx ={{
-        margin: "22px"
-      }}
-    >
+    <Box>
       {/* head */}
       <Box
-        sx = {{
+        sx={{
           borderBottom: "1px solid #FD6637",
-          padding: "10px 0"
+          padding: "0 0 10px 0",
         }}
       >
-        <Typography fontWeight= {500} fontSize= "18px">
+        <Typography fontWeight="500" fontSize="18px">
           Getting Coins Conditions
         </Typography>
       </Box>
 
       {/* condition-1 */}
-      <Box 
+      <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          margin: "35px 0 35px 10px"
+          margin: "30px 0 30px 10px",
         }}
       >
         <Box
@@ -44,12 +40,12 @@ function ConditionsDialog() {
       </Box>
 
       {/* condition-2 */}
-      <Box 
+      <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          margin: "35px 0 35px 10px"
+          margin: "30px 0 30px 10px",
         }}
       >
         <Box
@@ -57,8 +53,11 @@ function ConditionsDialog() {
             display: "flex",
           }}
         >
-          <li/>
-          <Typography>Write your product review at least 100 words <br /> and add at least 1 picture.</Typography>
+          <li />
+          <Typography>
+            Write your product review at least 100 words <br /> and add at least
+            1 picture.
+          </Typography>
         </Box>
         <Typography color="#FD6637">0.5 Coins</Typography>
       </Box>
@@ -71,7 +70,7 @@ function ConditionsDialog() {
           color: "#A0A3BD",
         }}
       >
-        <WarningAmberRoundedIcon /> 
+        <WarningAmberRoundedIcon sx={{ marginRight: "8px" }} />
         You will not get the coins from editting the review has been sent.
       </Box>
     </Box>

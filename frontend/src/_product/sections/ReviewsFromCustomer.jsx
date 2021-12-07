@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import ConfirmButton from "../../common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 import { Box } from "@mui/system";
-import ConditionsDialog from "../components/ConditionsDialog";
-import ReviewDialog from "../components/ReviewDialog";
-import ReviewDialogContents from "../components/ReviewDialogContents";
+import ConditionsContents from "../components/ReviewBase/ConditionsContents";
+import ReviewDialog from "../components/ReviewBase/ReviewDialog";
+import ReviewDialogContents from "../components/ReviewBase/ReviewDialogContents";
 
 function TestDialog() {
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -36,7 +36,7 @@ function TestDialog() {
           sx={{ marginLeft: "0px" }}
         />
         <ConfirmDialogs
-          text="Thank you for the review"
+          text="Your review has been sent"
           open={openThankYouDialog}
           handleClose={handleCloseThankYouDialog}
         />
@@ -59,7 +59,7 @@ function TestDialog() {
           borderRadius: "10px",
         }}
       >
-        <ConditionsDialog />
+        <ConditionsContents />
       </Box>
     </Box>
   );

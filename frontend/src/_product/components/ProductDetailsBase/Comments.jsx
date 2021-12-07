@@ -10,7 +10,7 @@ import ReviewPhoto from "./ReviewPhotos";
 import Stack from "@mui/material/Stack";
 import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
-import Carousel from "../../common/components/Carousel";
+import Carousel from "../../../common/components/Carousel";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";

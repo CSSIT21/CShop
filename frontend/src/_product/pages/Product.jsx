@@ -6,7 +6,7 @@ import ProductRating from "../sections/ProductRating";
 import ProductSuggestion from "../sections/ProductSuggestion";
 import fakeProducts from "~/common/faker/fakeProducts";
 import { Box } from "@mui/material";
-import TestDialog from "../sections/TestDialog";
+import ReviewsFromCustomer from "../sections/ReviewsFromCustomer";
 
 const ProductPage = (props) => {
   const [products, setProducts] = useState(fakeProducts);
@@ -37,7 +37,7 @@ const ProductPage = (props) => {
           maxWidth: "1200px",
         }}
       >
-        <TestDialog />
+        <ReviewsFromCustomer />
         <ProductDetails />
         <ShopDetails />
         <ProductSuggestion
