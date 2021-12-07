@@ -1,9 +1,10 @@
 
 import { AccountBalance, CheckCircleOutlined, CircleOutlined } from '@mui/icons-material'
-import { Checkbox, FormControlLabel, FormGroup, Grid, Typography } from '@mui/material'
+import { Button, Checkbox, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import LazyImage from '../../common/components/LazyImage/LazyImage'
 import CreditCard from '../assets/images/mc_vrt_pos.svg'
 import VisaCard from '../assets/images/Visa_2021.svg'
@@ -39,7 +40,25 @@ const useStyles = makeStyles({
         position: 'absolute',
         left: '515px',
         top: '347px',
-    }
+    },
+    confirmButton: {
+        fontWeight: 'bold',
+		textTransform: 'capitalize',
+        fontSize: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    boxButton: {
+        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        whiteSpace: 'normal',
+        border: '1px solid #ccc',
+        borderRadius: '20px',
+        width: '10%',
+        top: '610px',
+        left: '230px',
+    },
 });
 
 
@@ -47,6 +66,26 @@ const useStyles = makeStyles({
 const ChoiceForPay = () => {
 
     const classes = useStyles();
+    const [value, setValue] = React.useState('');
+    
+    const handleRadioChange = (event) => {
+        setValue(event.target.value);
+    };
+
+    const handleSubmit = (event) => {
+        if (value === 'creditCard') {
+            console.log("CreditCard");
+        }
+        if (value === 'InBanking') {
+            console.log("Banking");
+        }
+        if (value === 'wallet') {
+            console.log("wallet");
+        }
+        if (value === 'qr') {
+            console.log("qr");
+        }
+    }
 
     return (
         <Box>
@@ -55,44 +94,47 @@ const ChoiceForPay = () => {
                      Chosing payment gateway
                 </Typography>
                 <FormGroup>
-                    <Box className={classes.boxStyle}>
-                        <FormControlLabel className={classes.checkBox} label="Credit Card" control={
-                            <Box>
-                            <Checkbox icon={<CircleOutlined />}
-                                    checkedIcon={<CheckCircleOutlined />} />
-                            <Box className={ classes.creditCard }>
-                                    <LazyImage className={classes.creditCardIcon} src={CreditCard} lazy="https://via.placeholder.com/92x60.png" />
-                                    <LazyImage className={classes.creditCardIcon} src={ VisaCard } lazy="https://via.placeholder.com/92x60.png"/>
+                    <RadioGroup row aria-label="way" name="way" value={value} onChange={handleRadioChange}>
+                        <Box className={classes.boxStyle}> 
+                            <FormControlLabel className={classes.checkBox} value="CreditCard" label={
+                                <Box>
+                                    Credit Card
+                                    <Box className={classes.creditCard}>
+                                        <LazyImage className={classes.creditCardIcon} src={CreditCard} lazy="https://via.placeholder.com/92x60.png" />
+                                        <LazyImage className={classes.creditCardIcon} src={ VisaCard } lazy="https://via.placeholder.com/92x60.png"/>
+                                    </Box>
                                 </Box>
-                            </Box>
-                        } />
-                    </Box>
-                    <Box className={classes.boxStyle}>
-                        <FormControlLabel className={classes.checkBox} label="Internet Banking" control={
-                            <Box>
-                                <Checkbox icon={<CircleOutlined />}
-                                    checkedIcon={<CheckCircleOutlined />} />
-                                <Box className={ classes.internetBank }>
-                                  <AccountBalance/>   
+                            } control={<Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} />}
+                            />
+                        </Box>
+                        <Box className={classes.boxStyle}>
+                            <FormControlLabel className={classes.checkBox} value="InternetBanking" label={
+                                <Box>
+                                    Internet Bnaking
+                                    <Box className={classes.internetBank}>
+                                        <AccountBalance />
+                                    </Box>
                                 </Box>
-                            </Box>
-                        }/>
-                    </Box>
-                    <Box className={classes.boxStyle}>
-                        <FormControlLabel className={classes.checkBox} label="Wallet" control={
-                            <Box>
-                                <Checkbox icon={<CircleOutlined />}
-                                    checkedIcon={<CheckCircleOutlined />} />
-                            </Box>
-                        }/>
-                    </Box>
-                    <Box className={classes.boxStyle}>
-                        <FormControlLabel className={classes.checkBox} label="QR Code" control={
-                            <Box>
-                                <Checkbox icon={<CircleOutlined />}
-                                    checkedIcon={<CheckCircleOutlined />} />
-                            </Box>
-                        }/>
+                            } control={ <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} /> }  
+                            />
+                        </Box>
+                        <Box className={classes.boxStyle}>
+                            <FormControlLabel className={classes.checkBox} value="Wallet" label="Wallet" control={
+                                    <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} />
+                            }/>
+                        </Box>
+                        <Box className={classes.boxStyle}>
+                            <FormControlLabel className={classes.checkBox} value="PaidByQr" label="QR Code" control={
+                                    <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} />
+                            }/>
+                        </Box>
+                    </RadioGroup>
+                    <Box className={classes.boxButton}>
+                        <Link to={"/"+value}>
+                            <Button className={classes.confirmButton} color="primary">
+                                Confirm
+                            </Button>
+                        </Link>
                     </Box>
                 </FormGroup>
             </Grid>

@@ -7,24 +7,7 @@ import { makeStyles } from '@mui/styles';
 import PaidByQr from '../components/PaidByQr';
 
 const useStyles = makeStyles({
-    confirmButton: {
-        fontWeight: 'bold',
-		textTransform: 'capitalize',
-        fontSize: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    boxButton: {
-        position: 'absolute',
-        display: 'flex',
-        flexDirection: 'column',
-        whiteSpace: 'normal',
-        border: '1px solid #ccc',
-        borderRadius: '20px',
-        width: '10%',
-        top: '610px',
-        left: '230px',
-    },
+    
     showQr: {
         position: 'absolute',
         top: '200px',
@@ -50,11 +33,7 @@ const payment = () => {
             <Box>
                 <ChoiceForPay/>
             </Box>
-            <Box className={classes.boxButton}>
-                <Button className={classes.confirmButton} onClick={getQrCode} color="primary">
-                    Confirm
-                </Button>
-            </Box>
+            
             <Box className={classes.showQr}>
                 <PaidByQr qrCode={ qrCode }/>
             </Box>
