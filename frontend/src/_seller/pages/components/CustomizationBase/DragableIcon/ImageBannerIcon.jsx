@@ -13,8 +13,9 @@ const ImageBannerIcon = ({ ...rest }) => {
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: "#E9EEF1",
-          height: "90px",
+          height: "80px",
           marginTop: "10px",
+          borderRadius: "5px",
         }}
       >
         <PhotoSizeSelectActualOutlinedIcon style={{ color: "#ACACAC" }} />

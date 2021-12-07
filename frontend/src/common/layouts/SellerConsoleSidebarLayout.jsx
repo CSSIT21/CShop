@@ -20,9 +20,9 @@ import {
   faCoins,
   faWrench,
   faList,
-  faPercentage
+  faPercentage,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -69,6 +69,7 @@ const Drawer = styled(MuiDrawer, {
 export default function SellerConsoleSidebarLayout(props) {
   const classes = useStyles();
   const params = useParams();
+  const history = useHistory();
 
   let links = [
     generateLink(
@@ -78,24 +79,44 @@ export default function SellerConsoleSidebarLayout(props) {
     ),
     generateLink(faLuggageCart, "Stock", "/seller/" + params.id + "/stock"),
     generateLink(faBolt, "FlashSale", "/seller/" + params.id + "/flashsell"),
-    generateLink(faWrench, "Page customization", "/seller/" + params.id + "/customize"),
-    generateLink(faPercentage, "FlashSale Log", "/seller/" + params.id + "/flashsalelog"),
+    generateLink(
+      faWrench,
+      "Page customization",
+      "/seller/" + params.id + "/customize"
+    ),
+    generateLink(
+      faPercentage,
+      "FlashSale Log",
+      "/seller/" + params.id + "/flashsalelog"
+    ),
     generateLink(faBoxes, "Stock Log", "/seller/" + params.id + "/stocklog"),
-    generateLink(faList, "Order Status", "/seller/" + params.id + "/orderstatus"),
-    generateLink(faReceipt, "Order History", "/seller/" + params.id + "/orderlog"),
+    generateLink(
+      faList,
+      "Order Status",
+      "/seller/" + params.id + "/orderstatus"
+    ),
+    generateLink(
+      faReceipt,
+      "Order History",
+      "/seller/" + params.id + "/orderlog"
+    ),
     generateLink(
       faMoneyCheckAlt,
       "Discount History",
       "/seller/" + params.id + "/discountlog"
     ),
-    generateLink(faCoins, "Refund History", "/seller/" + params.id + "/refundlog"),
+    generateLink(
+      faCoins,
+      "Refund History",
+      "/seller/" + params.id + "/refundlog"
+    ),
   ];
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Drawer variant="permanent" open={true}>
-        <Box className={classes.logo}>
+        <Box className={classes.logo} onClick={() => history.push("/")}>
           <img src={Logo} alt="logo" width="140px" />
         </Box>
         <List>
@@ -109,7 +130,7 @@ export default function SellerConsoleSidebarLayout(props) {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} margin="15px 30px">
+      <Box component="main" sx={{ width: "100%" }}>
         {props.children}
       </Box>
     </Box>

@@ -16,6 +16,7 @@ const ProductCategoryIcon = ({ ...rest }) => {
           backgroundColor: "#F4F5F6",
           height: "90px",
           marginTop: "10px",
+          borderRadius: "5px",
         }}
       >
         <Box

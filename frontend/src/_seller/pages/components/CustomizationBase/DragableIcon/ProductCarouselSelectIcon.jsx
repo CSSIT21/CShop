@@ -16,6 +16,7 @@ const ProductCategorySelectIcon = ({ ...rest }) => {
           backgroundColor: "#FDF4DD",
           height: "90px",
           marginTop: "10px",
+          borderRadius: "5px",
         }}
       >
         <Box
