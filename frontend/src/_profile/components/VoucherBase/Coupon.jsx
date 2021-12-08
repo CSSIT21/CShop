@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import CouponPic from '~/common/assets/images/voucher-pic2.png';
 import Button from '@mui/material/Button';
 
 const Coupon = ({ coupon }) => {
@@ -13,7 +12,7 @@ const Coupon = ({ coupon }) => {
 
       <Box sx={{ display:"flex"
         }}>
-        <img src={CouponPic} alt="pic"  style={{height:"130px",borderRadius:"10px"}}/>
+        <img src={coupon.pic} alt="pic"  style={{height:"130px", width:"130px",borderRadius:"10px"}}/>
         <Box className={classes.text}  sx={{
           borderRight: 1.5  , borderRightColor: 'white' , borderRightStyle: 'dashed', borderHeight: 20
         }}>
