@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Box } from "@mui/system";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
@@ -33,8 +33,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function ReviewDialog({ children }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
+
+  const [chipData, setChipData] = useState([
+    { key: 0, label: "Good Quality", clicked: false },
+    { key: 1, label: "Worth Buying", clicked: false },
+    { key: 2, label: "Fast Shipping", clicked: false },
+    { key: 3, label: "Good Shop Services", clicked: false },
+    { key: 4, label: "Good Ship Services", clicked: false },
+  ]);
+
+  const submitable = useMemo(() => {
+    let chipCheck = false;
+    chipData.forEach((el) => {
+      if (el.clicked) chipCheck = true;
+    });
+
+    // เพ่ิมconditions(image, commenttext, chip)เพิ่มdependency
+    return chipCheck;
+  }, [chipData]);
+
+  const [value, setValue] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,6 +71,9 @@ function ReviewDialog({ children }) {
     setOpen(false);
   };
 
+  const handleChange = (e) => {
+    setValue(e.target.value.slice(0, 120));
+  };
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -64,7 +87,6 @@ function ReviewDialog({ children }) {
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
-        // sx={{ padding: "100px 10px" }}
       >
         <DialogTitle
           sx={{ color: "#FD6637", fontSize: "24px", fontWeight: "600" }}
@@ -72,7 +94,13 @@ function ReviewDialog({ children }) {
           {"Product Review"}
         </DialogTitle>
         <DialogContent sx={{ width: "1000px", height: "500px" }}>
-          <ReviewDialogContents />
+          <ReviewDialogContents
+            generatedCommentsData={chipData}
+            setChipData={setChipData}
+            value={value}
+            setValue={setValue}
+            handleChange={handleChange}
+          />
         </DialogContent>
         <DialogActions>
           <CButton
@@ -89,6 +117,7 @@ function ReviewDialog({ children }) {
             height="39px"
             onClick={handleClickOpenThankYouDialog}
             sx={{ marginLeft: "16px" }}
+            disabled={!submitable}
           />
           <ConfirmDialogs
             text="Your review has been sent"

@@ -1,28 +1,123 @@
-import React from "react";
+import { useState } from "react";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
-function CommentsBox() {
-  const [value, setValue] = React.useState("");
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import AddPhotoAlternateRounded from "@mui/icons-material/AddPhotoAlternateRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+const Input = styled("input")({
+  display: "none",
+});
+
+const UploadButtonStyle = styled(Button)({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: "9px",
+  width: "56px",
+  height: "56px",
+  marginRight: "5px",
+  borderRadius: "6px",
+  border: "1px dashed #CCCCCC",
+  backgroundColor: "#FFFFFF",
+  color: "#CCCCCC",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  "&:hover": {
+    border: "1px dashed #A0A3BD",
+    boxShadow: "none",
+    backgroundColor: "#FFFFFF",
+    color: "#A0A3BD",
+  },
+  "&:active": {
+    boxShadow: "none",
+    backgroundColor: "#FFFFFF",
+  },
+  "&:focus": {
+    boxShadow: "none",
+  },
+});
+
+function CommentsBox({ value, setValue, handleChange }) {
+  const [imageList, setImageList] = useState(itemData);
+
+  const onUploadFile = (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+
+      setImageList((imageList) => {
+        imageList.push({
+          id: imageList.length + 1,
+          path: path,
+        });
+
+        return [...imageList];
+      });
+
+      e.target.value = null;
+    }
   };
+
+  const deleteImage = (e) => {
+    setImageList(imageList.filter((item) => item.id !== e));
+    console.log(e + " : This image is deleted");
+  };
+
   return (
     <Box sx={{ width: "100%", height: "100px", marginTop: "20px" }}>
       <Typography fontSize="18px" fontWeight="500">
         Review
       </Typography>
-      <Box sx={{ margin: "10px 0" }}>
-        {itemData.map((item) => (
-          <img
-            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.title}
-            loading="lazy"
-            style={imgStyle}
-          />
+      <Box
+        sx={{
+          margin: "10px 0",
+          display: "flex",
+          justifyContent: "start",
+          alignItems: "center",
+        }}
+      >
+        {imageList.map((item) => (
+          <Box sx={imageBox} key={item.id}>
+            <img
+              src={item.path}
+              alt={item.id}
+              loading="lazy"
+              style={imgStyle}
+            />
+            <DeleteRoundedIcon
+              style={{
+                top: "50%",
+                left: "50%",
+                position: "absolute",
+                transform: "translate(-50%, -50%)",
+                transition: "0.25s all ease-in-out",
+                cursor: "pointer",
+              }}
+              onClick={() => deleteImage(item.id)}
+            />
+          </Box>
         ))}
+        {/* Check number of image */}
+        {imageList.length >= 12 ? (
+          <></>
+        ) : (
+          <label htmlFor="contained-button-file">
+            <Input
+              accept="image/*"
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={onUploadFile}
+            />
+            <UploadButtonStyle variant="contained" component="span">
+              <AddPhotoAlternateRounded />
+              {imageList.length} / 12
+            </UploadButtonStyle>
+          </label>
+        )}
       </Box>
       <Box>
         <TextField
@@ -46,65 +141,73 @@ function CommentsBox() {
         }}
       >
         {/* ทำ check length เพิ่ม */}
-        <Typography fontSize="14px">{value.length} / 100</Typography>
+        <Typography fontSize="14px">{value.length} / 120</Typography>
       </Box>
     </Box>
   );
 }
-const imgStyle = {
+const imageBox = {
   width: "56px",
   height: "56px",
   marginRight: "5px",
   borderRadius: "6px",
+  position: "relative",
+  "&:hover img": {
+    opacity: "0.5",
+  },
+  "&:hover .MuiSvgIcon-root": {
+    opacity: "1",
+  },
+  "& .MuiSvgIcon-root": {
+    opacity: "0",
+  },
+};
+const imgStyle = {
+  top: "50%",
+  left: "50%",
+  width: "100%",
+  height: "100%",
+  position: "absolute",
+  borderRadius: "6px",
+  transform: "translate(-50%, -50%)",
+  overflow: "visible",
 };
 const itemData = [
   {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
+    path: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
+    id: 5435,
   },
   {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
+    path: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
+    id: 6546,
   },
   {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
+    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    id: 6546546,
   },
   {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
+    path: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
+    id: 654677,
   },
   {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
+    path: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
+    id: 7657,
   },
   {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
+    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    id: 7687,
   },
   {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
+    path: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
+    id: 98989,
   },
   {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
+    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    id: 897,
   },
   {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
+    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    id: 987,
   },
 ];
 export default CommentsBox;
