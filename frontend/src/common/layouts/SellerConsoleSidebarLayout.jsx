@@ -56,6 +56,18 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+
+  "& ::-webkit-scrollbar": {
+    width: "12px"
+  },
+  "& ::-webkit-scrollbar-thumb": {
+    background: "#cecece",
+    borderRadius: "5px",
+  },
+  "& ::-webkit-scrollbar-thumb:hover": {
+    background: "#c5c5c5"
+  },
+
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -73,7 +85,7 @@ export default function SellerConsoleSidebarLayout(props) {
 
   let links = [
     generateLink(
-      faCalendarDay,
+      EventRoundedIcon,
       "Dashboard",
       "/seller/" + params.id + "/dashboard"
     ),
@@ -101,7 +113,7 @@ export default function SellerConsoleSidebarLayout(props) {
       "/seller/" + params.id + "/orderlog"
     ),
     generateLink(
-      faMoneyCheckAlt,
+      LoyaltyRoundedIcon,
       "Discount History",
       "/seller/" + params.id + "/discountlog"
     ),
@@ -120,10 +132,21 @@ export default function SellerConsoleSidebarLayout(props) {
           <img src={Logo} alt="logo" width="140px" />
         </Box>
         <List>
-          {links.map(({ icon, title, path }, index) => (
-            <ListItem button key={index} to={path} component={Link}>
+          {links.map(({ Icon, title, path }, index) => (
+            <ListItem button key={index} to={path} component={Link} sx={{
+              ...listStyle,
+              ...(pathname == path ? {
+                backgroundColor: "#FD6637", "& span": {
+                  color: "#ffffff",
+                },
+
+                "& svg": {
+                  color: "#ffffff",
+                }
+              } : {})
+            }}>
               <ListItemIcon>
-                <FontAwesomeIcon icon={icon} className={classes.icon} />
+                <Icon className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary={title} />
             </ListItem>
@@ -133,7 +156,7 @@ export default function SellerConsoleSidebarLayout(props) {
       <Box component="main" sx={{ width: "100%" }}>
         {props.children}
       </Box>
-    </Box>
+    </Box >
   );
 }
 
@@ -149,3 +172,26 @@ const useStyles = makeStyles({
     fontSize: 25,
   },
 });
+
+const listStyle = {
+  width: "86%",
+  margin: "15px auto",
+  padding: "13px 5px",
+  borderRadius: "15px",
+
+  "&:hover": {
+    backgroundColor: "#FD6637",
+
+    "& span": {
+      color: "#ffffff",
+    },
+
+    "& svg": {
+      color: "#ffffff",
+    }
+  },
+
+  "& span": {
+    color: "#A0A3BD",
+  },
+};

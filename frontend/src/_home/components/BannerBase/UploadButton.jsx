@@ -26,7 +26,7 @@ const UploadButton = ({
 					id={`outlined-button-file-${id}`}
 					type="file"
 					style={{ display: 'none' }}
-					onChange={onUploadImg}
+					onInput={onUploadImg}
 				/>
 				{title}
 			</Button>
