@@ -206,6 +206,9 @@ function App() {
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
+                      <Route path="/profile/followedshop">
+                        <FollowedShop />
+                      </Route>
                     </Suspense>
                   </MainLayout>
                 </Route>
@@ -213,12 +216,6 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShopComment />
-                      <Route path="/profile/history">
-                        <HistoryPage />
-                      </Route>
-                      <Route path="/profile/followedshop">
-                        <FollowedShop />
-                      </Route>
                     </Suspense>
                   </MainLayout>
                 </Route>
