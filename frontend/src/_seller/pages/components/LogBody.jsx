@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
@@ -8,7 +8,11 @@ import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box } from "@mui/system";
 
+import EditClick from "./EditClick"; // Edit Model (Stock , Order)
+import DeleteOnClick from "./DeleteOnClick"; //Edit Model (Stock , Order)
+
 const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
+
   return (
     <TableBody>
       {(rowsPerPage > 0
@@ -62,13 +66,15 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
                 },
               }}
             >
-              {<EditIcon sx={{ fontSize: 18 }} />}
+              <EditClick/>
+              {/* <EditIcon  sx={{ fontSize: 18 }} /> */}
             </Button>
             <Button
               variant="contained"
               sx={{ backgroundColor: "#FD8A75", fontSize: 10, maxWidth: 10 }}
             >
-              {<DeleteIcon />}
+              <DeleteOnClick/>
+              {/* {<DeleteIcon />} */}
             </Button>
           </TableCell>
         </TableRow>
