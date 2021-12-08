@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import uuid from "uuid/v4";
+import { nanoid } from "nanoid";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageBanner from "./components/CustomizationBase/ImageBanner";
@@ -35,7 +35,7 @@ const copy = (source, destination, droppableSource, droppableDestination) => {
   const destClone = Array.from(destination);
   const item = sourceClone[droppableSource.index];
 
-  destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });
+  destClone.splice(droppableDestination.index, 0, { ...item, id: nanoid() });
   return destClone;
 };
 
@@ -71,20 +71,6 @@ const Clone = styled(Item)`
   + div {
     display: none !important;
   }
-`;
-
-const Handle = styled.div`
-  display: flex;
-  align-items: center;
-  align-content: center;
-  user-select: none;
-  margin: -0.5rem 0.5rem -0.5rem -0.5rem;
-  padding: 0.5rem;
-  line-height: 1.5;
-  border-radius: 3px 0 0 3px;
-  background: #ffffff;
-  border-right: 1px solid #ddd;
-  color: #000;
 `;
 
 const List = styled.div`
@@ -126,23 +112,23 @@ const Notice = styled.div`
 
 const ITEMS = [
   {
-    id: uuid(),
+    id: nanoid(),
     content: "ImageBanner",
   },
   {
-    id: uuid(),
+    id: nanoid(),
     content: "CarouselBanner",
   },
   {
-    id: uuid(),
+    id: nanoid(),
     content: "Youtube",
   },
   {
-    id: uuid(),
+    id: nanoid(),
     content: "CarouselProduct",
   },
   {
-    id: uuid(),
+    id: nanoid(),
     content: "CarouselProductSelect",
   },
 ];
