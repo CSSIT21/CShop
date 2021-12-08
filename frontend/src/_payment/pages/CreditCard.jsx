@@ -1,6 +1,5 @@
 import { Box } from '@mui/system'
 import LazyImage from '../../common/components/LazyImage/LazyImage'
-import CreditCardIcon from '../assets/images/mc_vrt_opt_pos_46_2x.png'
 import { CheckCircleOutline, RadioButtonUnchecked,  } from '@mui/icons-material'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import { makeStyles } from '@mui/styles'

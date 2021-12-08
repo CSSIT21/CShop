@@ -58,6 +58,7 @@ const useStyles = makeStyles({
         width: '10%',
         top: '610px',
         left: '230px',
+        alignItems: 'center',
     },
 });
 
@@ -72,20 +73,20 @@ const ChoiceForPay = () => {
         setValue(event.target.value);
     };
 
-    const handleSubmit = (event) => {
-        if (value === 'creditCard') {
-            console.log("CreditCard");
-        }
-        if (value === 'InBanking') {
-            console.log("Banking");
-        }
-        if (value === 'wallet') {
-            console.log("wallet");
-        }
-        if (value === 'qr') {
-            console.log("qr");
-        }
-    }
+    // const handleSubmit = (event) => {
+    //     if (value === 'creditCard') {
+    //         console.log("CreditCard");
+    //     }
+    //     if (value === 'InBanking') {
+    //         console.log("Banking");
+    //     }
+    //     if (value === 'wallet') {
+    //         console.log("wallet");
+    //     }
+    //     if (value === 'qr') {
+    //         console.log("qr");
+    //     }
+    // }
 
     return (
         <Box>
@@ -96,7 +97,7 @@ const ChoiceForPay = () => {
                 <FormGroup>
                     <RadioGroup row aria-label="way" name="way" value={value} onChange={handleRadioChange}>
                         <Box className={classes.boxStyle}> 
-                            <FormControlLabel className={classes.checkBox} value="CreditCard" label={
+                            <FormControlLabel className={classes.checkBox} value="creditcard" label={
                                 <Box>
                                     Credit Card
                                     <Box className={classes.creditCard}>
@@ -108,7 +109,7 @@ const ChoiceForPay = () => {
                             />
                         </Box>
                         <Box className={classes.boxStyle}>
-                            <FormControlLabel className={classes.checkBox} value="InternetBanking" label={
+                            <FormControlLabel className={classes.checkBox} value="banking" label={
                                 <Box>
                                     Internet Bnaking
                                     <Box className={classes.internetBank}>
@@ -119,12 +120,12 @@ const ChoiceForPay = () => {
                             />
                         </Box>
                         <Box className={classes.boxStyle}>
-                            <FormControlLabel className={classes.checkBox} value="Wallet" label="Wallet" control={
+                            <FormControlLabel className={classes.checkBox} value="wallet" label="Wallet" control={
                                     <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} />
                             }/>
                         </Box>
                         <Box className={classes.boxStyle}>
-                            <FormControlLabel className={classes.checkBox} value="PaidByQr" label="QR Code" control={
+                            <FormControlLabel className={classes.checkBox} value="paidbyqr" label="QR Code" control={
                                     <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} />
                             }/>
                         </Box>

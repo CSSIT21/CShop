@@ -11,8 +11,9 @@ const useStyles = makeStyles({
         width: '300px'
     }
 })
+const qrCode = "0002010102123032011563959634889012902091234678325204701153037645406100.005802TH5905CShop6007BANGKOK62340523202111151028050140000000703CMQ630447C0";
 
-const paidByQr = ({qrCode}) => {
+const paidByQr = () => {
     const classes = useStyles();
     
     return (

@@ -41,7 +41,12 @@ import LoginPage from "./_auth/pages/Login";
 import SellerShop from "./_shop/pages/SellerShop";
 import ShopCategory from "./_shop/pages/ShopCategory";
 import NotFoundPage from "./common/pages/404";
+
 import Payment from "./_payment/pages/Payment";
+import PaidByQr from "./_payment/pages/PaidByQr";
+import CreditCard from "./_payment/pages/CreditCard";
+import InternetBanking from "./_payment/pages/InternetBanking";
+import Wallet from "./_payment/pages/Wallet";
 
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
@@ -210,10 +215,38 @@ function App() {
               </Route>
                 
                 {/* Payment PAGE */}
-                <Route path="/payment">
+                <Route path="/payment" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <Payment/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/paidbyqr" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <PaidByQr/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/wallet" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Wallet/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/banking" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <InternetBanking/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/creditcard" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CreditCard/>
                     </Suspense>
                   </MainLayout>
                 </Route>

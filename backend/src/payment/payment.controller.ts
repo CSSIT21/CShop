@@ -100,7 +100,7 @@ export class PaymentController {
     res.send({ request })
   }
 
-  //------------------------Internet Banking------------------------//
+  //------------------------Internet Banking Pin------------------------//
 
   // @Post('/Krungsri')
   // @Public()
@@ -124,11 +124,13 @@ export class PaymentController {
   //       });
   
     
-  //-----------------Credit Card---------------//
+  //-----------------Credit Card Spy---------------//
     // var omise = require('omise')({
     //   'publicKey': process.env.OMISE_PUBLIC_KEY,
     //   'secretKey': process.env.OMISE_SECRET_KEY,
     // });   
 
+  
+  //-----------------Wallet Willy---------------//
   
 }
