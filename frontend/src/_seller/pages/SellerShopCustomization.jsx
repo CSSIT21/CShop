@@ -243,14 +243,14 @@ const SellerShopCustomization = () => {
       <Box
         sx={{
           position: "fixed",
-          width: `calc(100vw - 240px)`,
+          width: `calc(100vw - 280px)`,
           height: "100px",
           padding: "1rem",
           backgroundColor: "#FFE8E1",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          zIndex: "999"
+          zIndex: "999",
         }}
       >
         <Typography
