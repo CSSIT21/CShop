@@ -12,10 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import { ExpandLessRounded } from "@mui/icons-material";
+import { ExpandMoreRounded } from "@mui/icons-material";
 import fakeProducts from "~/common/faker/fakeComments";
 
-const ProductRating = (props) => {
+const ProductRating = () => {
   const classes = useStyles();
 
   const avgRating = 4.5;
@@ -47,7 +47,7 @@ const ProductRating = (props) => {
         }}
       >
         <AccordionSummary
-          expandIcon={<ExpandLessRounded />}
+          expandIcon={<ExpandMoreRounded />}
           aria-controls="expand-comment"
           id="expand-comment"
           onClick={handleClick}

@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 
 function ConditionsDialog() {
   return (
-    <Box>
+    <Box sx={{ margin: "16px 2px 10px 2px" }}>
       {/* head */}
       <Box
         sx={{

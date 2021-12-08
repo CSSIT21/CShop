@@ -1,5 +1,5 @@
 import React from "react";
-import ExpandLessRoundedIcon from "@mui/icons-material/ExpandLessRounded";
+import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import {
   Accordion,
   AccordionDetails,
@@ -37,7 +37,7 @@ const ProductDescription = (props) => {
           }}
         >
           <AccordionSummary
-            expandIcon={<ExpandLessRoundedIcon />}
+            expandIcon={<ExpandMoreRounded />}
             aria-controls="expand-detail"
             id="expand-detail"
             onClick={handleClick}
@@ -47,7 +47,7 @@ const ProductDescription = (props) => {
             }}
           >
             <Box className={classes.title}>
-              <Typography fontWeight= {600} fontSize= "30px">
+              <Typography fontWeight={600} fontSize="30px">
                 Product Detail
               </Typography>
             </Box>

@@ -16,47 +16,21 @@ import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
-// const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-//   "& .MuiDialogContent-root": {
-//     padding: theme.spacing(2),
-//   },
-//   "& .MuiDialogActions-root": {
-//     padding: theme.spacing(1),
-//   },
-// }));
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogTitle-root": {
+    padding: "25px 45px 8px 45px",
+  },
+  "& .MuiDialogContent-root": {
+    padding: "25px 45px",
+  },
+  "& .MuiDialogActions-root": {
+    padding: "20px 45px 25px 45px",
+  },
+}));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-const BootstrapDialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
-
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-};
-
-BootstrapDialogTitle.propTypes = {
-  children: PropTypes.node,
-  onClose: PropTypes.func.isRequired,
-};
 
 function ReviewDialog({ children }) {
   const [open, setOpen] = React.useState(false);
@@ -83,13 +57,14 @@ function ReviewDialog({ children }) {
         Review
       </Button>
 
-      <Dialog
+      <BootstrapDialog
         maxWidth="xl"
         open={open}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
+        // sx={{ padding: "100px 10px" }}
       >
         <DialogTitle
           sx={{ color: "#FD6637", fontSize: "24px", fontWeight: "600" }}
@@ -100,26 +75,18 @@ function ReviewDialog({ children }) {
           <ReviewDialogContents />
         </DialogContent>
         <DialogActions>
-          {/* <Button
-            sx={{ width: "100px", height: "40px", color: "#A0A3BD" }}
-            onClick={handleClose}
-            disableFocusRipple
-          >
-            Cancel
-          </Button> */}
           <CButton
             title="Cancel"
             width="100px"
-            height="40px"
+            height="39px"
             onClick={handleClose}
             backgroundColor="white"
             style={{ color: "#A0A3BD" }}
           />
-          {/* <Button onClick={handleClose}>Agree</Button> */}
           <CButton
             title="Confirm"
             width="100px"
-            height="40px"
+            height="39px"
             onClick={handleClickOpenThankYouDialog}
             sx={{ marginLeft: "16px" }}
           />
@@ -129,26 +96,7 @@ function ReviewDialog({ children }) {
             handleClose={handleCloseThankYouDialog}
           />
         </DialogActions>
-      </Dialog>
-
-      {/* <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        >
-          Modal title
-        </BootstrapDialogTitle>
-        <DialogContent dividers>{children}</DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
-      </BootstrapDialog> */}
+      </BootstrapDialog>
     </div>
   );
 }

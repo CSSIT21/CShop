@@ -1,16 +1,27 @@
-import React from "react";
+import { useState } from "react";
 import { Box } from "@mui/system";
 import ConditionAccordion from "./ConditionAccordion";
+import ProductBox from "./ProductBox";
+import StarBox from "./StarBox";
+import GenaratedComments from "./GenaratedComments";
+import CommentsBox from "./CommentsBox";
 
 function ReviewDialogContents() {
   // Create function on this component and then sent them to other component.
+  const [commentsText, setCommentsText] = useState("");
+
+  const selectGenaratedComments = (newComment) => {
+    setCommentsText(commentsText + " " + newComment);
+    console.log(commentsText);
+  };
   return (
     <Box>
       <ConditionAccordion />
-      <Box className="productBox">productBox</Box>
-      <Box className="starBox">starBox</Box>
-      <Box className="genaratedComments">genaratedComments</Box>
-      <Box className="commentsBox">commentsBox</Box>
+      <ProductBox />
+      <StarBox />
+      {/* ให้ธันช่วยแก้ */}
+      <GenaratedComments handleClick={selectGenaratedComments} />
+      <CommentsBox />
     </Box>
   );
 }
