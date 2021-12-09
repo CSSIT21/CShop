@@ -1,11 +1,9 @@
-import { useState, useLayoutEffect } from 'react';
 import { useTransition, animated } from 'react-spring';
+import { Container } from '@mui/material';
 import BannerItem from './BannerItem';
 import { noop } from '~/common/utils';
-import { Container } from '@mui/material';
 
 const BannerList = ({ items = [], setItems = noop }) => {
-
 	let height = 0;
 	const transitions = useTransition(
 		items.map((data) => {
@@ -48,6 +46,11 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		})
 	};
 
+	const onDelete = (index) => {
+		// setItems(items.filter((item) => item.id !== items[index].id));
+		// setItems(items.splice(0, 1))
+		// console.log(items);
+	}
 	return (
 		<Container sx={{ width: "70%", margin: "50px auto", height, position: "relative" }}>
 			{transitions.map(({ item, props: { y, ...rest }, key }, index) => (
@@ -67,6 +70,7 @@ const BannerList = ({ items = [], setItems = noop }) => {
 						items={items}
 						onNext={onNext}
 						onPrev={onPrev}
+						onDelete={onDelete}
 					/>
 				</animated.div>
 			))}

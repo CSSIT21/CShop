@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from 'react';
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Typography, Button, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CButton from '~/common/components/CButton';
 import BannerList from '../components/BannerBase/BannerList';
@@ -12,6 +12,10 @@ const bannerList = [
 	{
 		id: 0,
 		description: "banner about washing",
+		start_date: "",
+		end_date: "",
+		status: true,
+		keywords: ["Free Shipping", "Flash sale", "Free Shipping", "Flash sale"],
 		pictures: {
 			head: BannerPic,
 			children: [
@@ -29,6 +33,10 @@ const bannerList = [
 	{
 		id: 1,
 		description: "banner about washing",
+		start_date: "",
+		end_date: "",
+		status: true,
+		keywords: ["Free Shipping"],
 		pictures: {
 			head: BannerPic,
 			children: [
@@ -69,6 +77,10 @@ const ManageBanner = () => {
 				{
 					id: items.length,
 					description: "",
+					start_date: "",
+					end_date: "",
+					status: true,
+					keywords: [],
 					pictures: {
 						head,
 						children: []
@@ -131,4 +143,5 @@ const useStyles = makeStyles({
 		alignItems: "center",
 	},
 });
+
 export default ManageBanner;
