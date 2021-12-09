@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import SellerSearch from "./components/SellerSearch";
-import LogTable from "./components/LogTable";
+import LogTable from "./components/TableContent/LogTable";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
+import PageHeader from "./components/PageHeader";
 
 function createData(
   id,
@@ -247,7 +248,7 @@ export default function SellerStockLog() {
     "status",
     "stdate",
     "endate",
-    "actions",
+    
   ];
 
   return (
@@ -262,7 +263,7 @@ export default function SellerStockLog() {
             mb: 2,
           }}
         >
-          <SellerSearch Pagename={Pagename} />
+          <PageHeader Pagename={Pagename} />
         </Box>
         <Box sx={{ mt: "4rem" }} />
 

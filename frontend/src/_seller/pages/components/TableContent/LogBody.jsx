@@ -8,8 +8,8 @@ import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box } from "@mui/system";
 
-import EditClick from "./EditClick"; // Edit Model (Stock , Order)
-import DeleteOnClick from "./DeleteOnClick"; //Edit Model (Stock , Order)
+// import EditClick from "./EditClick"; // Edit Model (Stock , Order)
+// import DeleteOnClick from "./DeleteOnClick"; //Edit Model (Stock , Order)
 
 const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
 
@@ -54,7 +54,7 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
           </TableCell>
           <TableCell align="right">{row.stdate}</TableCell>
           <TableCell align="right">{row.endate}</TableCell>
-          <TableCell align="right">
+          {/* <TableCell align="right">
             <Button
               variant="contained"
               sx={{
@@ -67,16 +67,16 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
               }}
             >
               <EditClick/>
-              {/* <EditIcon  sx={{ fontSize: 18 }} /> */}
+          
             </Button>
             <Button
               variant="contained"
               sx={{ backgroundColor: "#FD8A75", fontSize: 10, maxWidth: 10 }}
             >
               <DeleteOnClick/>
-              {/* {<DeleteIcon />} */}
+            
             </Button>
-          </TableCell>
+          </TableCell> */}
         </TableRow>
       ))}
 

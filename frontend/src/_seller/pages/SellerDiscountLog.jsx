@@ -7,9 +7,9 @@ import { useRecoilValue } from "recoil";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
-import LogHeader from "./components/LogHeader";
-import LogBody from "./components/LogBody";
-import LogFooter from "./components/LogFooter";
+import LogHeader from "./components/TableContent/LogHeader";
+
+import LogFooter from "./components/TableContent/LogFooter";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,8 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import HistoryDiscount from "./components/HistoryDiscountBody";
+import HistoryDiscount from "./components/TableContent/HistoryDiscountBody";
+import PageHeader from "./components/PageHeader";
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -135,7 +136,7 @@ const SellerDiscountLog = () => {
           mb: 2,
         }}
       >
-        <SellerSearch Pagename={Pagename} />
+        <PageHeader Pagename={Pagename} />
       </Box>
       <Box sx={{ mt: "4rem" }} />
 

@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 import AddProduct from "./components/AddProduct";
 import SellerSearch from "./components/SellerSearch";
 import AddIcon from "@mui/icons-material/Add";
-import LogTable from "./components/LogTable";
+import LogTable from "./components/TableContent/LogTable";
 
 function createData(
   id,
@@ -291,7 +291,6 @@ const SellerStock = () => {
     "status",
     "stdate",
     "endate",
-    "actions",
   ];
 
   const Pagename = "Stock";

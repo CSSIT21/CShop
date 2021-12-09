@@ -79,7 +79,7 @@ export default function SellerConsoleSidebarLayout(props) {
     generateLink(faLuggageCart, "Stock", "/seller/" + params.id + "/stock"),
     generateLink(faBolt, "FlashSale", "/seller/" + params.id + "/flashsell"),
     generateLink(faWrench, "Page customization", "/seller/" + params.id + "/sellercustomize"),
-    generateLink(faPercentage, "FlashSale Log", "/seller/" + params.id + "/flashsalelog"),
+    // generateLink(faPercentage, "FlashSale Log", "/seller/" + params.id + "/flashsalelog"),
     generateLink(faBoxes, "Stock Log", "/seller/" + params.id + "/stocklog"),
     generateLink(faList, "Order Status", "/seller/" + params.id + "/orderstatus"),
     generateLink(faReceipt, "Order History", "/seller/" + params.id + "/orderlog"),

@@ -8,6 +8,7 @@ import AllInboxIcon from "@mui/icons-material/AllInbox";
 import Typography from "@mui/material/Typography";
 const SellerSearch = ({ Pagename }) => {
   return (
+    // <Box sx={{ display: "flex", width: "80%" }}>
     <Box sx={{ display: "flex", width: "80%" }}>
       <Button sx={{ p: "10px", mr: "10px", flexShrink:0 }}>
         {<AllInboxIcon />}
