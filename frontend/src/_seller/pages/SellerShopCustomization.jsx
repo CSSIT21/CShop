@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import uuid from "uuid/v4";
+import { nanoid } from "nanoid";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ImageBanner from "./components/CustomizationBase/ImageBanner";
 import { Box } from "@mui/system";
+import { Typography } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import YoutubeSection from "./components/CustomizationBase/YoutubeSection";
 import IconButton from "@mui/material/IconButton";
 import CarouselProduct from "./components/CustomizationBase/CarouselProduct";
 import CarouselBanner from "./components/CustomizationBase/CarouselBanner";
 import CarouselProductSelect from "./components/CustomizationBase/CarouselProductSelect";
+import ImageBannerIcon from "./components/CustomizationBase/DragableIcon/ImageBannerIcon";
+import CarouselBannerIcon from "./components/CustomizationBase/DragableIcon/CarouselBannerIcon";
+import YoutubeEmbedIcon from "./components/CustomizationBase/DragableIcon/YoutubeEmbedIcon";
+import ProductCarouselIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselIcon";
+import ProductCarouselSelectIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselSelectIcon";
+import Button from "@mui/material/Button";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -28,7 +35,7 @@ const copy = (source, destination, droppableSource, droppableDestination) => {
   const destClone = Array.from(destination);
   const item = sourceClone[droppableSource.index];
 
-  destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });
+  destClone.splice(droppableDestination.index, 0, { ...item, id: nanoid() });
   return destClone;
 };
 
@@ -47,40 +54,23 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 const Content = styled.div`
-  margin-right: 200px;
+  margin-top: 100px;
+  margin-right: 300px;
 `;
 
 const Item = styled.div`
-  display: flex;
   user-select: none;
-  padding: 0.5rem;
-  margin: 0 0 0.5rem 0;
-  align-items: flex-start;
-  align-content: flex-start;
-  line-height: 1.5;
+  background-color: #ffffff;
   border-radius: 3px;
-  background: #fff;
-  border: 1px ${(props) => (props.isDragging ? "dashed #4099ff" : "solid #ddd")};
+
+  padding: 1rem 2.5rem;
+  border: 1px ${(props) => props.isDragging && "dashed #4099ff"};
 `;
 
 const Clone = styled(Item)`
   + div {
     display: none !important;
   }
-`;
-
-const Handle = styled.div`
-  display: flex;
-  align-items: center;
-  align-content: center;
-  user-select: none;
-  margin: -0.5rem 0.5rem -0.5rem -0.5rem;
-  padding: 0.5rem;
-  line-height: 1.5;
-  border-radius: 3px 0 0 3px;
-  background: #ffffff;
-  border-right: 1px solid #ddd;
-  color: #000;
 `;
 
 const List = styled.div`
@@ -94,11 +84,11 @@ const List = styled.div`
 `;
 
 const Kiosk = styled(List)`
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 100px;
   right: 0;
   bottom: 0;
-  width: 200px;
+  width: 300px;
 `;
 
 const Container = styled(List)`
@@ -122,32 +112,29 @@ const Notice = styled.div`
 
 const ITEMS = [
   {
-    id: uuid(),
+    id: nanoid(),
     content: "ImageBanner",
   },
   {
-    id: uuid(),
+    id: nanoid(),
     content: "CarouselBanner",
   },
   {
-    id: uuid(),
-    content: "Image",
+    id: nanoid(),
+    content: "Youtube",
   },
   {
-    id: uuid(),
-    content: "CarouselProductSelect",
-  },
-  {
-    id: uuid(),
+    id: nanoid(),
     content: "CarouselProduct",
   },
   {
-    id: uuid(),
-    content: "Youtube",
+    id: nanoid(),
+    content: "CarouselProductSelect",
   },
 ];
 
 const SellerShopCustomization = () => {
+  const shopName = "Shop name";
   const dropArea = "area";
   const [state, setState] = useState({
     [dropArea]: [],
@@ -225,106 +212,161 @@ const SellerShopCustomization = () => {
     return Components[type] || Components["ImageBanner"];
   };
 
+  const GetIcon = ({ type, ...rest }) => {
+    const Components = {
+      ImageBanner: <ImageBannerIcon {...rest} />,
+      CarouselBanner: <CarouselBannerIcon {...rest} />,
+      Youtube: <YoutubeEmbedIcon {...rest} />,
+      CarouselProduct: <ProductCarouselIcon {...rest} />,
+      CarouselProductSelect: <ProductCarouselSelectIcon {...rest} />,
+    };
+
+    return Components[type] || Components["ImageBanner"];
+  };
+
   return (
     <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="ITEMS" isDropDisabled={true}>
-          {(provided, snapshot) => (
-            <Kiosk
-              ref={provided.innerRef}
-              isDraggingOver={snapshot.isDraggingOver}
-            >
-              {ITEMS.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
+      <Box
+        sx={{
+          position: "fixed",
+          width: `calc(100vw - 280px)`,
+          height: "100px",
+          padding: "1rem",
+          backgroundColor: "#FFE8E1",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          zIndex: "999",
+        }}
+      >
+        <Typography
+          fontWeight="600"
+          fontSize="20px"
+          color="#FD6637"
+          sx={{ padding: "0 2rem" }}
+        >
+          {shopName}
+        </Typography>
+        <Button variant="contained">Save</Button>
+      </Box>
+      <Box>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="ITEMS" isDropDisabled={true}>
+            {(provided, snapshot) => (
+              <Kiosk
+                ref={provided.innerRef}
+                isDraggingOver={snapshot.isDraggingOver}
+              >
+                <Typography
+                  fontWeight="600"
+                  fontSize="20px"
+                  color="#FD6637"
+                  sx={{ padding: "0 2rem" }}
+                >
+                  Drag item to section
+                </Typography>
+                {ITEMS.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => (
+                      <React.Fragment>
+                        <Item
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          isDragging={snapshot.isDragging}
+                          style={provided.draggableProps.style}
+                        >
+                          <GetIcon type={item.content} />
+                        </Item>
+                        {snapshot.isDragging && (
+                          <Clone>
+                            <GetIcon type={item.content} />
+                          </Clone>
+                        )}
+                      </React.Fragment>
+                    )}
+                  </Draggable>
+                ))}
+              </Kiosk>
+            )}
+          </Droppable>
+          <Content>
+            {Object.keys(state).map((list, i) => {
+              console.log("==> list", list);
+              return (
+                <Droppable key={list} droppableId={list}>
                   {(provided, snapshot) => (
-                    <React.Fragment>
-                      <Item
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        isDragging={snapshot.isDragging}
-                        style={provided.draggableProps.style}
-                      >
-                        {item.content}
-                      </Item>
-                      {snapshot.isDragging && <Clone>{item.content}</Clone>}
-                    </React.Fragment>
-                  )}
-                </Draggable>
-              ))}
-            </Kiosk>
-          )}
-        </Droppable>
-        <Content>
-          {Object.keys(state).map((list, i) => {
-            console.log("==> list", list);
-            return (
-              <Droppable key={list} droppableId={list}>
-                {(provided, snapshot) => (
-                  <Container
-                    ref={provided.innerRef}
-                    isDraggingOver={snapshot.isDraggingOver}
-                  >
-                    {state[list].length
-                      ? state[list].map((item, index) => (
-                          <Draggable
-                            key={item.id}
-                            draggableId={item.id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                isDragging={snapshot.isDragging}
-                                style={provided.draggableProps.style}
-                                id={index}
-                              >
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                  }}
+                    <Container
+                      ref={provided.innerRef}
+                      isDraggingOver={snapshot.isDraggingOver}
+                    >
+                      {state[list].length
+                        ? state[list].map((item, index) => (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id}
+                              index={index}
+                            >
+                              {(provided, snapshot) => (
+                                <div
+                                  key={item.id}
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  isDragging={snapshot.isDragging}
+                                  style={provided.draggableProps.style}
+                                  id={index}
                                 >
-                                  <IconButton
-                                    aria-expanded={open ? "true" : undefined}
-                                    onClick={() => {
-                                      setState(({ area }) => ({
-                                        area: deleteItem(area, item.id),
-                                      }));
-                                      console.log(item);
-                                      handleClose();
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "flex-end",
                                     }}
                                   >
-                                    <DeleteRoundedIcon />
-                                  </IconButton>
-                                </Box>
-                                <GetComponent
-                                  type={item.content}
-                                  id={item.id}
-                                  information={sectionInfos}
-                                  setInformation={setSectionInfos}
-                                  {...provided.dragHandleProps}
-                                  order={index}
-                                />
-                                <Box>
-                                  Hello {item.content} {JSON.stringify(item)}
-                                </Box>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))
-                      : !provided.placeholder && (
-                          <Notice>Drop items here</Notice>
-                        )}
-                    {provided.placeholder}
-                  </Container>
-                )}
-              </Droppable>
-            );
-          })}
-        </Content>
-      </DragDropContext>
+                                    <IconButton
+                                      aria-expanded={open ? "true" : undefined}
+                                      onClick={() => {
+                                        setState(({ area }) => ({
+                                          area: deleteItem(area, item.id),
+                                        }));
+                                        setInformation((info) => {
+                                          delete info[item.id];
+                                          return info;
+                                        });
+                                        console.log(item);
+                                        handleClose();
+                                      }}
+                                    >
+                                      <DeleteRoundedIcon />
+                                    </IconButton>
+                                  </Box>
+                                  <GetComponent
+                                    type={item.content}
+                                    id={item.id}
+                                    vid="FmfGvRPFOTE"
+                                    information={sectionInfos}
+                                    setInformation={setSectionInfos}
+                                    {...provided.dragHandleProps}
+                                    order={index}
+                                  />
+                                  <Box>
+                                    Hello {item.content} {JSON.stringify(item)}
+                                  </Box>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))
+                        : !provided.placeholder && (
+                            <Notice>Drop items here</Notice>
+                          )}
+                      {provided.placeholder}
+                    </Container>
+                  )}
+                </Droppable>
+              );
+            })}
+          </Content>
+        </DragDropContext>
+      </Box>
     </>
   );
 };

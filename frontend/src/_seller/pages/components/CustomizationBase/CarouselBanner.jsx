@@ -14,14 +14,17 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const CarouselBanner = ({
-  section = {
-    id: "0",
-    page: {
-      type: 1,
+  id = "0",
+  contents = [
+    {
+      name: "placeholder",
       id: 1,
-      content: { img: CategoryPic1 },
+      img: CategoryPic1,
     },
-  },
+  ],
+
+  information,
+  setInformation = () => {},
   order = 0,
   ...rest
 }) => {
@@ -51,6 +54,13 @@ const CarouselBanner = ({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const upload = (e, id) => {
+    setInformation((info) => ({
+      ...info,
+      [id]: { ...(info[id] || contents), img: path },
+    }));
   };
   return (
     <>
@@ -96,8 +106,8 @@ const CarouselBanner = ({
           />
           <img
             onClick={handleClickOpen}
-            src={section.page.content.img}
-            alt={section.page.type}
+            src={contents[0].img}
+            alt={contents[0].name}
             width="100%"
             style={{
               transition: "0.25s all ease-in-out",
@@ -172,11 +182,7 @@ const CarouselBanner = ({
           <Button onClick={handleClose} sx={{ width: "100px" }} variant="text">
             Cancel
           </Button>
-          <Button
-            onClick={handleClose}
-            sx={{ width: "100px" }}
-            variant="contained"
-          >
+          <Button onClick={upload} sx={{ width: "100px" }} variant="contained">
             Add
           </Button>
         </DialogActions>
