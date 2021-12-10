@@ -49,7 +49,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
     },
     boxButton: {
-        position: 'absolute',
+        position: 'static',
         display: 'flex',
         flexDirection: 'column',
         whiteSpace: 'normal',
@@ -60,6 +60,11 @@ const useStyles = makeStyles({
         left: '230px',
         alignItems: 'center',
     },
+    fullBox: {
+        display: 'flex',
+        position: 'static',
+        justify: "space-between",
+    }
 });
 
 
@@ -89,7 +94,7 @@ const ChoiceForPay = () => {
     // }
 
     return (
-        <Box>
+        <Box className={classes.fullBox}>
             <Grid item xs={6}>
                 <Typography component="h3" fontSize="30px" fontWeight="bold" sx={{margin: '20px'}}>
                      Chosing payment gateway
