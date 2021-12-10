@@ -1,6 +1,6 @@
 import React from 'react';
 import LazyImage from "../../common/components/LazyImage/LazyImage";
-import { Box, typography } from '@mui/system';
+import { Box } from '@mui/system';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
@@ -18,7 +18,6 @@ const paidByQr = () => {
     
     return (
         <Box className={classes.sizeBox}>
-            <typography>hello</typography>
             {qrCode.length > 1 ? (
                     <LazyImage className = {classes.sizeQr}
               src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}

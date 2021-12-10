@@ -5,13 +5,12 @@ import { Box } from '@mui/system';
 import ChoiceForPay from '../components/ChoiceForPay';
 import { makeStyles } from '@mui/styles';
 import PaidByQr from './PaidByQr';
+import OrderSummarize from '../components/OrderSummerize';
 
 const useStyles = makeStyles({
     
-    SomeCssExample: {
-        position: 'absolute',
-        top: '200px',
-        right: '300px'
+    boxStyle: {
+        position: 'static',
     }
 })
 
@@ -24,8 +23,11 @@ const payment = () => {
 
     return (
         <Box>
-            <Box>
-                <ChoiceForPay/>
+            <Box className = {classes.boxStyle}>
+                <ChoiceForPay />
+            </Box>
+            <Box className = {classes.boxStyle}>
+                <OrderSummarize />
             </Box>
         </Box>
     )
