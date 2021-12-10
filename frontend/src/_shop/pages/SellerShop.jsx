@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/sellerShopBase/Header";
 import TabsController from "../components/sellerShopBase/TabsController";
 import Voucher from "../components/sellerShopBase/Voucher";
@@ -10,6 +10,7 @@ import CategoryPic2 from "~/common/assets/images/category-2.png";
 import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
+import FlashSale from "../components/sellerShopBase/FlashSale";
 
 const sections = [
   {
@@ -67,7 +68,7 @@ const sections = [
       ],
     },
   },
-  
+
   {
     id: "4",
     page: {
@@ -77,7 +78,13 @@ const sections = [
       content: fakeProducts,
     },
   },
-  
+  {
+    id: "5",
+    page: {
+      type: 4,
+      content: "https://www.youtube.com/embed/F5tSoaJ93ac",
+    },
+  },
 ];
 
 const menus = [
@@ -97,22 +104,51 @@ const menus = [
     cateId: 6,
     title: "Umbar",
   },
-]
+];
+
+const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
 const SellerShop = () => {
   const classes = useStyles();
-
+  const [flashItems, setflashItems] = useState(flashSaleData.products);
+  const onFavourite = (index) => {
+    setflashItems((flashItems) => {
+      const target = flashItems[index];
+      target.favourite = !target.favourite;
+      return [...flashItems];
+    });
+  };
   return (
     <>
       <Box className={classes.body}>
         <Box className={classes.container}>
+          <Box
+            sx={{
+              marginBottom: "30px",
+              padding: "25px 75px",
+            }}
+          >
+            <Header />
+          </Box>
+          <Box
+            sx={{
+              width: "100vw",
+              height: "2px",
+              backgroundColor: "#D9DBE9",
+            }}
+          />
           <Box className={classes.containerWhite}>
-            <Box sx={{ marginBottom: "30px", padding: "50px 100px" }}>
-              <Header />
-            </Box>
             <TabsController categories={menus} />
+          </Box>
+          <FlashSale
+            items={flashItems}
+            endAt={flashSaleData.endAt}
+            onFavourite={onFavourite}
+          />
+          <Box className={classes.containerWhite}>
             <Voucher />
           </Box>
+
           <Box className={classes.categoryBox}>
             <Box className={classes.category}>
               {sections.map((section, idx) => {
@@ -121,7 +157,7 @@ const SellerShop = () => {
             </Box>
           </Box>
           <Box className={classes.containerWhite}>
-              <Filter categories={menus} />
+            <Filter categories={menus} />
           </Box>
         </Box>
       </Box>

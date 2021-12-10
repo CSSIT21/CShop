@@ -1,10 +1,10 @@
 import { Box } from "@mui/system";
 import { useState } from "react";
-import Carousel from "../../common/components/Carousel";
-import LazyImage from "../../common/components/LazyImage/LazyImage";
+import Carousel from "~/common/components/Carousel";
+import LazyImage from "~/common/components/LazyImage/LazyImage";
 import { makeStyles } from '@mui/styles';
-import CustomDot from "../../common/components/CarouselBase/CustomDot";
-import BannerImage from "../assets/images/TopBanner.png"
+import CustomDot from "~/common/components/CarouselBase/CustomDot";
+import BannerImage from "../../assets/images/TopBanner.png"
 
 const useStyles = makeStyles({
   bannerWrapper: {
