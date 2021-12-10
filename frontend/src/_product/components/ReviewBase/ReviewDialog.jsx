@@ -1,41 +1,19 @@
 import React, { useState, useMemo } from "react";
-import { Box } from "@mui/system";
-import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
-import DialogContentText from "@mui/material/DialogContentText";
 import Slide from "@mui/material/Slide";
 import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogTitle-root": {
-    padding: "25px 45px 8px 45px",
-  },
-  "& .MuiDialogContent-root": {
-    padding: "25px 45px",
-  },
-  "& .MuiDialogActions-root": {
-    padding: "20px 45px 25px 45px",
-  },
-}));
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-function ReviewDialog({ children }) {
+function ReviewDialog() {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
-
+  const [commentText, setCommentText] = useState("");
   const [chipData, setChipData] = useState([
     { key: 0, label: "Good Quality", clicked: false },
     { key: 1, label: "Worth Buying", clicked: false },
@@ -43,18 +21,46 @@ function ReviewDialog({ children }) {
     { key: 3, label: "Good Shop Services", clicked: false },
     { key: 4, label: "Good Ship Services", clicked: false },
   ]);
+  const [imageList, setImageList] = useState([]);
+  const [starScore, setStarScore] = React.useState(0);
 
+  const onUploadFile = (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+
+      setImageList((imageList) => {
+        imageList.push({
+          id: imageList.length + 1,
+          path: path,
+        });
+
+        return [...imageList];
+      });
+
+      e.target.value = null;
+    }
+  };
+
+  const deleteImage = (e) => {
+    setImageList(imageList.filter((item) => item.id !== e));
+    console.log(e + " : This image is deleted");
+  };
   const submitable = useMemo(() => {
     let chipCheck = false;
+    let imageCheck = false;
+    let commentCheck = false;
+    let allCheck = false;
     chipData.forEach((el) => {
       if (el.clicked) chipCheck = true;
     });
+    imageList.forEach((el) => {
+      if (imageList) imageCheck = true;
+    });
+    if (commentText) commentCheck = true;
+    if (chipCheck || imageCheck || commentCheck) allCheck = true;
 
-    // เพ่ิมconditions(image, commenttext, chip)เพิ่มdependency
-    return chipCheck;
-  }, [chipData]);
-
-  const [value, setValue] = React.useState("");
+    return allCheck;
+  }, [chipData, imageList, commentText]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -72,8 +78,9 @@ function ReviewDialog({ children }) {
   };
 
   const handleChange = (e) => {
-    setValue(e.target.value.slice(0, 120));
+    setCommentText(e.target.value.slice(0, 120));
   };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -97,9 +104,15 @@ function ReviewDialog({ children }) {
           <ReviewDialogContents
             generatedCommentsData={chipData}
             setChipData={setChipData}
-            value={value}
-            setValue={setValue}
+            value={commentText}
+            setValue={setCommentText}
             handleChange={handleChange}
+            imageList={imageList}
+            setImageList={setImageList}
+            onUploadFile={onUploadFile}
+            deleteImage={deleteImage}
+            starScore={starScore}
+            setStarScore={setStarScore}
           />
         </DialogContent>
         <DialogActions>
@@ -129,4 +142,21 @@ function ReviewDialog({ children }) {
     </div>
   );
 }
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogTitle-root": {
+    padding: "25px 45px 8px 45px",
+  },
+  "& .MuiDialogContent-root": {
+    padding: "25px 45px",
+  },
+  "& .MuiDialogActions-root": {
+    padding: "20px 45px 25px 45px",
+  },
+}));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default ReviewDialog;

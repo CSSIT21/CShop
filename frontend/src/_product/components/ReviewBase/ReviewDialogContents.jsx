@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Box } from "@mui/system";
 import ConditionAccordion from "./ConditionAccordion";
 import ProductBox from "./ProductBox";
@@ -12,20 +11,18 @@ function ReviewDialogContents({
   value,
   setValue,
   handleChange,
+  imageList,
+  setImageList,
+  onUploadFile,
+  deleteImage,
+  starScore,
+  setStarScore,
 }) {
-  // Create function on this component and then sent them to other component.
-  const [commentsText, setCommentsText] = useState("");
-
-  const selectGeneratedComments = (newComment) => {
-    setCommentsText(commentsText + " " + newComment);
-    console.log(commentsText);
-  };
-
   return (
     <Box>
       <ConditionAccordion />
       <ProductBox />
-      <StarBox />
+      <StarBox starScore={starScore} setStarScore={setStarScore} />
       <GeneratedComments
         generatedComments={generatedCommentsData}
         setChipData={setChipData}
@@ -34,6 +31,10 @@ function ReviewDialogContents({
         value={value}
         setValue={setValue}
         handleChange={handleChange}
+        imageList={imageList}
+        setImageList={setImageList}
+        onUploadFile={onUploadFile}
+        deleteImage={deleteImage}
       />
     </Box>
   );

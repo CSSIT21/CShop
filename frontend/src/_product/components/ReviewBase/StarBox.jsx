@@ -3,7 +3,6 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
-import Typography from "@mui/material/Typography";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -13,20 +12,19 @@ const StyledRating = styled(Rating)({
     color: "#FD6637",
   },
 });
-function StarBox() {
+function StarBox({ starScore, setStarScore }) {
   // value = -1 --> change to 0
-  const [value, setValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
 
   return (
     <Box sx={container}>
       <StyledRating
         name="rating-star"
-        value={value}
+        value={starScore}
         defaultValue={0}
         precision={0.5}
         onChange={(event, newValue) => {
-          setValue(newValue);
+          setStarScore(newValue);
         }}
         onChangeActive={(event, newHover) => {
           setHover(newHover);
@@ -34,7 +32,7 @@ function StarBox() {
         icon={<StarRateRounded sx={starStyle} />}
         emptyIcon={<StarOutlineRounded sx={starStyle} />}
       />
-      {/* {value !== null && <Box sx={{ ml: 2 }}>{value}</Box>} */}
+      {/* {starScore !== null && <Box sx={{ ml: 2 }}>{starScore}</Box>} */}
     </Box>
   );
 }

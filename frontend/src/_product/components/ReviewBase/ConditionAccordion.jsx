@@ -1,7 +1,6 @@
 import React from "react";
 import { Box } from "@mui/system";
 import { styled } from "@mui/material/styles";
-// import Accordion from "@mui/material/Accordion";
 import MuiAccordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -10,14 +9,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ConditionsContents from "./ConditionsContents";
 import coin from "../../assets/coin.png";
 
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: "none",
-  borderRadius: "10px",
-  backgroundColor: "#F4F5F6",
-  ".MuiAccordionSummary-content": { margin: "5px 0" },
-}));
 const ConditionAccordion = () => {
   return (
     <>
@@ -54,5 +45,14 @@ const ConditionAccordion = () => {
     </>
   );
 };
+
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: "none",
+  borderRadius: "10px",
+  backgroundColor: "#F4F5F6",
+  ".MuiAccordionSummary-content": { margin: "5px 0" },
+}));
 
 export default ConditionAccordion;

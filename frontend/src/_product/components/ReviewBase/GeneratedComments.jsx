@@ -1,25 +1,9 @@
 import { useState } from "react";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
 import { styled } from "@mui/material/styles";
 
-const StyledChip = styled(Chip)({
-  ".MuiChip-root": {
-    ".MuiChip-clickableColorPrimary": {
-      color: "#FD6637",
-    },
-    ".css-1ncfxsu-MuiButtonBase-root-MuiChip-root:hover": {
-      background: "#FD6637",
-    },
-  },
-});
-
 function GeneratedComments({ generatedComments, setChipData }) {
-  const [active, setActive] = useState(false);
-
   const handleClick = (e) => {
     setChipData((data) =>
       data.map((el) => (el.key == e.key ? { ...el, clicked: !el.clicked } : el))
@@ -68,5 +52,16 @@ function GeneratedComments({ generatedComments, setChipData }) {
     </Box>
   );
 }
+
+const StyledChip = styled(Chip)({
+  ".MuiChip-root": {
+    ".MuiChip-clickableColorPrimary": {
+      color: "#FD6637",
+    },
+    ".css-1ncfxsu-MuiButtonBase-root-MuiChip-root:hover": {
+      background: "#FD6637",
+    },
+  },
+});
 
 export default GeneratedComments;

@@ -7,65 +7,15 @@ import Button from "@mui/material/Button";
 import AddPhotoAlternateRounded from "@mui/icons-material/AddPhotoAlternateRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
-const Input = styled("input")({
-  display: "none",
-});
-
-const UploadButtonStyle = styled(Button)({
-  boxShadow: "none",
-  textTransform: "none",
-  fontSize: "9px",
-  width: "56px",
-  height: "56px",
-  marginRight: "5px",
-  borderRadius: "6px",
-  border: "1px dashed #CCCCCC",
-  backgroundColor: "#FFFFFF",
-  color: "#CCCCCC",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  "&:hover": {
-    border: "1px dashed #A0A3BD",
-    boxShadow: "none",
-    backgroundColor: "#FFFFFF",
-    color: "#A0A3BD",
-  },
-  "&:active": {
-    boxShadow: "none",
-    backgroundColor: "#FFFFFF",
-  },
-  "&:focus": {
-    boxShadow: "none",
-  },
-});
-
-function CommentsBox({ value, setValue, handleChange }) {
-  const [imageList, setImageList] = useState(itemData);
-
-  const onUploadFile = (e) => {
-    if (e.target.files.length) {
-      const path = URL.createObjectURL(e.target.files[0]);
-
-      setImageList((imageList) => {
-        imageList.push({
-          id: imageList.length + 1,
-          path: path,
-        });
-
-        return [...imageList];
-      });
-
-      e.target.value = null;
-    }
-  };
-
-  const deleteImage = (e) => {
-    setImageList(imageList.filter((item) => item.id !== e));
-    console.log(e + " : This image is deleted");
-  };
-
+function CommentsBox({
+  value,
+  setValue,
+  handleChange,
+  imageList,
+  setImageList,
+  onUploadFile,
+  deleteImage,
+}) {
   return (
     <Box sx={{ width: "100%", height: "100px", marginTop: "20px" }}>
       <Typography fontSize="18px" fontWeight="500">
@@ -140,12 +90,46 @@ function CommentsBox({ value, setValue, handleChange }) {
           color: "#A0A3BD",
         }}
       >
-        {/* ทำ check length เพิ่ม */}
         <Typography fontSize="14px">{value.length} / 120</Typography>
       </Box>
     </Box>
   );
 }
+
+const UploadButtonStyle = styled(Button)({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: "9px",
+  width: "56px",
+  height: "56px",
+  marginRight: "5px",
+  borderRadius: "6px",
+  border: "1px dashed #CCCCCC",
+  backgroundColor: "#FFFFFF",
+  color: "#CCCCCC",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  "&:hover": {
+    border: "1px dashed #A0A3BD",
+    boxShadow: "none",
+    backgroundColor: "#FFFFFF",
+    color: "#A0A3BD",
+  },
+  "&:active": {
+    boxShadow: "none",
+    backgroundColor: "#FFFFFF",
+  },
+  "&:focus": {
+    boxShadow: "none",
+  },
+});
+
+const Input = styled("input")({
+  display: "none",
+});
+
 const imageBox = {
   width: "56px",
   height: "56px",
@@ -172,42 +156,5 @@ const imgStyle = {
   transform: "translate(-50%, -50%)",
   overflow: "visible",
 };
-const itemData = [
-  {
-    path: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    id: 5435,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    id: 6546,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    id: 6546546,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    id: 654677,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    id: 7657,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    id: 7687,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    id: 98989,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    id: 897,
-  },
-  {
-    path: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    id: 987,
-  },
-];
+
 export default CommentsBox;

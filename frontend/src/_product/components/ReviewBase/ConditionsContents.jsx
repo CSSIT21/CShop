@@ -3,7 +3,7 @@ import React from "react";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { Typography } from "@mui/material";
 
-function ConditionsDialog() {
+function ConditionsContents() {
   return (
     <Box sx={{ margin: "16px 2px 10px 2px" }}>
       {/* head */}
@@ -77,4 +77,4 @@ function ConditionsDialog() {
   );
 }
 
-export default ConditionsDialog;
+export default ConditionsContents;
