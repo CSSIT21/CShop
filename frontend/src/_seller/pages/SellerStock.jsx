@@ -9,7 +9,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Button from "@mui/material/Button";
-
+import CategoryPic1 from "~/common/assets/images/category-1.png";
 import AddProduct from "./components/AddProduct";
 import SellerSearch from "./components/SellerSearch";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,7 +25,7 @@ function createData(
   status,
   stdate,
   endate,
-  actions
+  productImage
 ) {
   return {
     id,
@@ -37,7 +37,7 @@ function createData(
     status,
     stdate,
     endate,
-    actions,
+    productImage,
   };
 }
 
@@ -52,7 +52,8 @@ const rows = [
     4.0,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     2,
@@ -63,7 +64,8 @@ const rows = [
     37,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     3,
@@ -74,7 +76,8 @@ const rows = [
     24,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     4,
@@ -85,7 +88,8 @@ const rows = [
     67,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     5,
@@ -96,7 +100,8 @@ const rows = [
     49,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     6,
@@ -107,7 +112,8 @@ const rows = [
     24,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     7,
@@ -118,7 +124,8 @@ const rows = [
     67,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     8,
@@ -129,7 +136,8 @@ const rows = [
     49,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     9,
@@ -140,7 +148,8 @@ const rows = [
     67,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     10,
@@ -151,7 +160,8 @@ const rows = [
     49,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     11,
@@ -162,7 +172,8 @@ const rows = [
     24,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     12,
@@ -173,7 +184,8 @@ const rows = [
     67,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     13,
@@ -184,7 +196,8 @@ const rows = [
     49,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     14,
@@ -195,7 +208,8 @@ const rows = [
     67,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     15,
@@ -206,7 +220,8 @@ const rows = [
     49,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     16,
@@ -217,7 +232,8 @@ const rows = [
     24,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     17,
@@ -228,7 +244,8 @@ const rows = [
     67,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
   createData(
     18,
@@ -239,7 +256,8 @@ const rows = [
     49,
     "success",
     "10/10/2021",
-    "10/10/2021"
+    "10/10/2021",
+    CategoryPic1
   ),
 ].sort((a, b) => (a.id < b.id ? -1 : 1));
 // ------------------------------------
@@ -284,6 +302,7 @@ const SellerStock = () => {
 
   const headerName = [
     "productId",
+    "productImage",
     "products",
     "customername",
     "amount",

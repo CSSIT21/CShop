@@ -7,12 +7,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box } from "@mui/system";
-
+import Avatar from "@mui/material/Avatar";
 // import EditClick from "./EditClick"; // Edit Model (Stock , Order)
 // import DeleteOnClick from "./DeleteOnClick"; //Edit Model (Stock , Order)
 
 const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
-
   return (
     <TableBody>
       {(rowsPerPage > 0
@@ -25,6 +24,20 @@ const LogBody = ({ rowsPerPage, page, emptyRows, rows }) => {
               {row.orderId ? <div>{row.orderId}</div> : <div>{row.avatar}</div>}
             </div>
           </TableCell>
+          {row.productImage ? (
+            <TableCell align="center">
+              <Avatar
+                src={row.productImage}
+                variant="rounded"
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                }}
+              ></Avatar>
+            </TableCell>
+          ) : (
+            ""
+          )}
           <TableCell align="right">{row.products}</TableCell>
           <TableCell align="right">{row.customername}</TableCell>
           <TableCell align="right">{row.amount}</TableCell>
