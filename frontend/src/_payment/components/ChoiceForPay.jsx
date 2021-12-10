@@ -29,7 +29,7 @@ const useStyles = makeStyles({
         flexDirection: 'row',
         position: 'absolute',
         left: '430px',
-        top: '247px',
+        top: '110px',
     },
     creditCardIcon: {
         height: '36px'
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
         flexDirection: 'row',
         position: 'absolute',
         left: '515px',
-        top: '347px',
+        top: '210px',
     },
     confirmButton: {
         fontWeight: 'bold',
@@ -49,22 +49,26 @@ const useStyles = makeStyles({
         alignItems: 'center',
     },
     boxButton: {
-        position: 'static',
+        position: 'absolute',
         display: 'flex',
         flexDirection: 'column',
         whiteSpace: 'normal',
         border: '1px solid #ccc',
         borderRadius: '20px',
+        paddingLeft: '100px',
+        paddingRight: '100px',
         width: '10%',
-        top: '610px',
-        left: '230px',
+        top: '500px',
+        left: '200px',
         alignItems: 'center',
     },
-    fullBox: {
-        display: 'flex',
-        position: 'static',
-        justify: "space-between",
-    }
+    // fullBox: {
+    //     display: 'flex',
+    //     position: 'static',
+    //     justify: "space-between",
+    //     width: "50%",
+    //     left: "0",
+    // }
 });
 
 
@@ -94,10 +98,10 @@ const ChoiceForPay = () => {
     // }
 
     return (
-        <Box className={classes.fullBox}>
-            <Grid item xs={6}>
+        <Box>
+            <Grid>
                 <Typography component="h3" fontSize="30px" fontWeight="bold" sx={{margin: '20px'}}>
-                     Chosing payment gateway
+                    Chosing payment gateway
                 </Typography>
                 <FormGroup>
                     <RadioGroup row aria-label="way" name="way" value={value} onChange={handleRadioChange}>

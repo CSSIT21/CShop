@@ -9,8 +9,17 @@ import OrderSummarize from '../components/OrderSummerize';
 
 const useStyles = makeStyles({
     
-    boxStyle: {
-        position: 'static',
+    boxLeft: {
+        height: "100%",
+        width: "50%",
+        position: "fixed",
+        left: "125px",
+    },
+    boxRight: {
+        width: "45%",
+        position: "static",
+        float: 'right',
+        marginTop: '100px',
     }
 })
 
@@ -23,10 +32,10 @@ const payment = () => {
 
     return (
         <Box>
-            <Box className = {classes.boxStyle}>
+            <Box className = {classes.boxLeft}>
                 <ChoiceForPay />
             </Box>
-            <Box className = {classes.boxStyle}>
+            <Box className = {classes.boxRight}>
                 <OrderSummarize />
             </Box>
         </Box>

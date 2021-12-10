@@ -43,11 +43,11 @@ const OrderSummarize = () => {
     auth.user.postalCode;
   return (
     <Box
-      sx={{
-        width: "45%",
-        position: "static",
-        float: 'right'
-      }}
+      // sx={{
+      //   width: "45%",
+      //   position: "static",
+      //   float: 'right'
+      // }}
     >
       <Box className={classes.boxStyle}>
         <Box className={classes.boxHead}>Order Summary</Box>
