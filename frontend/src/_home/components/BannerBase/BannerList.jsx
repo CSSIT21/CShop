@@ -52,7 +52,7 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		// console.log(items);
 	}
 	return (
-		<Container sx={{ width: "70%", margin: "50px auto", height, position: "relative" }}>
+		<Container sx={{ height, width: "70%", margin: "50px auto", position: "relative" }}>
 			{transitions.map(({ item, props: { y, ...rest }, key }, index) => (
 				<animated.div
 					key={key}

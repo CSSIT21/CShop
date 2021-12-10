@@ -21,8 +21,9 @@ const BannerItem = ({
 	onDelete = noop
 }) => {
 	const classes = useStyles();
-	const [open, setOpen] = useState(false);
 	const wrapper = useRef(null);
+	const [open, setOpen] = useState(false);
+
 	const item = items[index];
 	const { head, children = [] } = item.pictures;
 
@@ -64,21 +65,28 @@ const BannerItem = ({
 		}
 	};
 
-	const onInputChange = (value, index, attr) => {
+	const onDeleteSubImg = (subIndex) => {
+		setItems(items => {
+			items[index].pictures.children.splice(subIndex, 1);
+			return [...items];
+		});
+	};
+
+	const onInputChange = (value, attr) => {
 		setItems(items => {
 			items[index][attr] = value;
 			return [...items];
 		});
 	};
 
-	const onChipAdd = (value, index) => {
+	const onChipAdd = (value) => {
 		setItems(items => {
 			items[index].keywords.push(value);
 			return [...items];
 		});
 	};
 
-	const onChipDelete = (index, kwIndex) => {
+	const onChipDelete = (kwIndex) => {
 		setItems(items => {
 			items[index].keywords.splice(kwIndex, 1);
 			return [...items];
@@ -92,7 +100,7 @@ const BannerItem = ({
 	return (
 		<Box className={classes.bannerBlock} ref={wrapper}>
 			{index > 0 &&
-				<Button sx={arrowButton} onClick={() => onPrev(index)} aria-label="prev">
+				<Button aria-label="prev" sx={arrowButton} onClick={() => onPrev(index)}>
 					<ArrowDropUpRoundedIcon sx={{ fontSize: "2.5rem" }} />
 				</Button>
 			}
@@ -101,32 +109,18 @@ const BannerItem = ({
 			<Stack direction="column" gap={4}>
 				{/* Main Image */}
 				<Stack justifyContent="center">
-					<Box sx={{
-						position: "relative",
-						"&:hover img": {
-							opacity: "0.5",
-						},
-						"&:hover .MuiSvgIcon-root": {
-							opacity: "1",
-						},
-						"& .MuiSvgIcon-root": {
-							opacity: "0",
-						},
-					}}>
+					<Box className={classes.hoverImage}>
 						<img
 							width="100%"
 							src={head}
 							alt={`Banner ${item.id}`}
 							style={{ display: "block", transition: "0.25s all ease-in-out" }}
 						/>
-						<DeleteRoundedIcon onClick={() => onDelete(index)} style={{
-							top: "50%",
-							left: "50%",
-							position: "absolute",
-							transform: "translate(-50%, -50%)",
-							transition: "0.25s all ease-in-out",
-							cursor: "pointer"
-						}} />
+						<DeleteRoundedIcon
+							className={classes.iconStyle}
+							sx={{ fontSize: "2rem" }}
+							onClick={() => onDelete(index)}
+						/>
 					</Box>
 				</Stack>
 
@@ -137,7 +131,7 @@ const BannerItem = ({
 					alignItems="center"
 					my={3}
 				>
-					<Typography fontSize={20} fontWeight={500}>More about banner</Typography>
+					<Typography fontSize={20} fontWeight={500}>More About Banner</Typography>
 
 					<Stack direction="row" spacing={2}>
 						<CButton
@@ -154,13 +148,23 @@ const BannerItem = ({
 							disabled={children.length === 4}
 						/>
 					</Stack>
+
+					{/* Input form */}
+					<BannerInfo
+						item={item}
+						onInputChange={onInputChange}
+						onChipAdd={onChipAdd}
+						onChipDelete={onChipDelete}
+						open={open}
+						onClose={onClickDialog}
+					/>
 				</Stack>
 
 				{/* Sub Image */}
 				{children.length !== 0 &&
 					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
-						{children.map((item) => (
-							<SubImage path={item.path} title="Banner!" key={item.id} />
+						{children.map((item, index) => (
+							<SubImage path={item.path} index={index} title={`subImage ${item.id}`} key={index} onDelete={onDeleteSubImg} />
 						))}
 					</Box>
 				}
@@ -173,21 +177,10 @@ const BannerItem = ({
 				>
 					{children.length + 1}/5
 				</Typography>
-
-				{/* Input form */}
-				<BannerInfo
-					item={item}
-					index={index}
-					onInputChange={onInputChange}
-					onChipAdd={onChipAdd}
-					onChipDelete={onChipDelete}
-					open={open}
-					onClose={onClickDialog}
-				/>
 			</Stack>
 
 			{index < items.length - 1 &&
-				<Button sx={arrowButton} onClick={() => onNext(index)} aria-label="next" >
+				<Button aria-label="next" sx={arrowButton} onClick={() => onNext(index)}>
 					<ArrowDropDownRoundedIcon sx={{ fontSize: "2.5rem" }} />
 				</Button>
 			}
@@ -202,6 +195,30 @@ const useStyles = makeStyles({
 		width: "100%",
 		height: "auto",
 		borderBottom: '1px solid #C4C4C4',
+	},
+
+	hoverImage: {
+		position: "relative",
+
+		"&:hover img": {
+			opacity: "0.5",
+		},
+		"&:hover .MuiSvgIcon-root": {
+			opacity: "1",
+		},
+		"& .MuiSvgIcon-root": {
+			opacity: "0",
+		},
+	},
+
+	iconStyle: {
+		color: "#FD6637",
+		top: "50%",
+		left: "50%",
+		position: "absolute",
+		transform: "translate(-50%, -50%)",
+		transition: "0.25s all ease-in-out",
+		cursor: "pointer"
 	},
 });
 

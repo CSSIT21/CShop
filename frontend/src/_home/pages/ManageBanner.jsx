@@ -11,6 +11,7 @@ import UploadButton from '../components/BannerBase/UploadButton';
 const bannerList = [
 	{
 		id: 0,
+		order: 1,
 		description: "banner about washing",
 		start_date: "",
 		end_date: "",
@@ -32,6 +33,7 @@ const bannerList = [
 	},
 	{
 		id: 1,
+		order: 2,
 		description: "banner about washing",
 		start_date: "",
 		end_date: "",
@@ -126,10 +128,7 @@ const ManageBanner = () => {
 				/>
 			</Box>
 
-			<BannerList
-				items={items}
-				setItems={setItems}
-			/>
+			<BannerList items={items} setItems={setItems} />
 		</Box>
 	);
 };
