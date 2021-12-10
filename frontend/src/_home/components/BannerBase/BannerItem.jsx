@@ -15,6 +15,7 @@ import { noop } from '~/common/utils';
 const BannerItem = ({
 	index = 0,
 	items = [],
+	item = {},
 	setItems = noop,
 	onNext = noop,
 	onPrev = noop,
@@ -23,9 +24,9 @@ const BannerItem = ({
 	const classes = useStyles();
 	const wrapper = useRef(null);
 	const [open, setOpen] = useState(false);
-
-	const item = items[index];
 	const { head, children = [] } = item.pictures;
+
+	console.log("item", item, items[index]);
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
@@ -119,7 +120,7 @@ const BannerItem = ({
 						<DeleteRoundedIcon
 							className={classes.iconStyle}
 							sx={{ fontSize: "2rem" }}
-							onClick={() => onDelete(index)}
+							onClick={onDelete}
 						/>
 					</Box>
 				</Stack>
@@ -164,7 +165,13 @@ const BannerItem = ({
 				{children.length !== 0 &&
 					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
 						{children.map((item, index) => (
-							<SubImage path={item.path} index={index} title={`subImage ${item.id}`} key={index} onDelete={onDeleteSubImg} />
+							<SubImage
+								path={item.path}
+								index={index}
+								title={`subImage ${index}`}
+								key={index}
+								onDelete={onDeleteSubImg}
+							/>
 						))}
 					</Box>
 				}

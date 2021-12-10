@@ -114,12 +114,7 @@ const ManageBanner = () => {
 				/>
 			</Box>
 
-			<Box
-				className={classes.header}
-				mt={8}
-				pb={4}
-				sx={{ borderBottom: '1px solid #C4C4C4' }}
-			>
+			<Box className={classes.header} sx={{ borderBottom: '1px solid #C4C4C4' }}>
 				<Typography fontSize={20} fontWeight={500}>Create Banner</Typography>
 				<UploadButton
 					Icon={<AddIcon />}
@@ -137,6 +132,7 @@ const useStyles = makeStyles({
 	header: {
 		width: "90%",
 		margin: "0 auto",
+		paddingBottom: "32px",
 		display: "flex",
 		justifyContent: "space-between",
 		alignItems: "center",

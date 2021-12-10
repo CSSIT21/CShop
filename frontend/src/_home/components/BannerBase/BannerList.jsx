@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTransition, animated } from 'react-spring';
 import { Container } from '@mui/material';
 import BannerItem from './BannerItem';
@@ -5,16 +6,14 @@ import { noop } from '~/common/utils';
 
 const BannerList = ({ items = [], setItems = noop }) => {
 	let height = 0;
-	const transitions = useTransition(
-		items.map((data) => {
-			return { ...data, y: (height += data.height || 0) - data.height || 0 }
-		}),
-		d => d.id,
+	const transitions = useTransition(items.map(item => (
+		{ ...item, y: (height += item.height || 0) - item.height || 0 })),
 		{
+			key: item => item.id,
 			from: { height: 0, opacity: 0 },
 			leave: { height: 0, opacity: 0 },
 			enter: ({ y, height }) => ({ y, height, opacity: 1 }),
-			update: ({ y, height }) => ({ y, height })
+			update: ({ y, height }) => ({ y, height }),
 		}
 	);
 
@@ -46,31 +45,35 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		})
 	};
 
-	const onDelete = (index) => {
-		// setItems(items.filter((item) => item.id !== items[index].id));
-		// setItems(items.splice(0, 1))
-		// console.log(items);
-	}
+	const onDelete = (key) => {
+		setItems(items => {
+			let clonedItems = [...items];
+			console.log('CLONED!', clonedItems.filter(item => item.id !== key));
+			return clonedItems.filter(item => item.id !== key);
+		})
+	};
+
 	return (
 		<Container sx={{ height, width: "70%", margin: "50px auto", position: "relative" }}>
-			{transitions.map(({ item, props: { y, ...rest }, key }, index) => (
+			{transitions((style, item, t, index) => (
 				<animated.div
-					key={key}
+					key={item.id}
 					style={{
 						position: "absolute",
 						willChange: "transform, height, opacity",
 						width: "100%",
 						zIndex: items.length - index,
-						transform: y.interpolate(y => `translate3d(0,${y}px,0)`),
-						...rest
-					}}>
+						...style
+					}}
+				>
 					<BannerItem
-						setItems={setItems}
 						index={index}
 						items={items}
+						item={item}
+						setItems={setItems}
 						onNext={onNext}
 						onPrev={onPrev}
-						onDelete={onDelete}
+						onDelete={() => onDelete(item.id)}
 					/>
 				</animated.div>
 			))}

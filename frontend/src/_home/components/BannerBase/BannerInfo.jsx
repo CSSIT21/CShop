@@ -39,8 +39,8 @@ const BannerInfo = ({
                     <Grid item md={12}>
                         <Typography fontSize={18} fontWeight={500} mb={2}>Description</Typography>
                         <TextField
-                            id="outlined-multiline-static"
                             label="Description"
+                            id="outlined-multiline-static"
                             fullWidth
                             multiline
                             rows={3}
@@ -79,8 +79,8 @@ const BannerInfo = ({
                             value={item.status}
                             onChange={(e) => onInputChange(e.target.value, "status")}
                         >
-                            <FormControlLabel value="true" control={<Radio />} label="Visible" />
-                            <FormControlLabel value="false" control={<Radio />} label="Invisible" />
+                            <FormControlLabel label="Visible" value="true" control={<Radio />} />
+                            <FormControlLabel label="Invisible" value="false" control={<Radio />} />
                         </RadioGroup>
                     </Grid>
 
