@@ -49,6 +49,7 @@ function ReviewDialog() {
     let chipCheck = false;
     let imageCheck = false;
     let commentCheck = false;
+    let scoreCheck = false;
     let allCheck = false;
     chipData.forEach((el) => {
       if (el.clicked) chipCheck = true;
@@ -57,10 +58,10 @@ function ReviewDialog() {
       if (imageList) imageCheck = true;
     });
     if (commentText) commentCheck = true;
-    if (chipCheck || imageCheck || commentCheck) allCheck = true;
-
+    if (starScore != 0) scoreCheck = true;
+    if (chipCheck || imageCheck || commentCheck || scoreCheck) allCheck = true;
     return allCheck;
-  }, [chipData, imageList, commentText]);
+  }, [chipData, imageList, commentText, starScore]);
 
   const handleClickOpen = () => {
     setOpen(true);
