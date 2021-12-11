@@ -21,11 +21,11 @@ const bannerList = [
 			head: BannerPic,
 			children: [
 				{
-					id: 0,
+					order: 0,
 					path: BannerPic,
 				},
 				{
-					id: 1,
+					order: 1,
 					path: BannerPic,
 				},
 			]
@@ -43,19 +43,19 @@ const bannerList = [
 			head: BannerPic,
 			children: [
 				{
-					id: 0,
+					order: 0,
 					path: BannerPic,
 				},
 				{
-					id: 1,
+					order: 1,
 					path: BannerPic,
 				},
 				{
-					id: 2,
+					order: 2,
 					path: BannerPic,
 				},
 				{
-					id: 3,
+					order: 3,
 					path: BannerPic,
 				},
 			]
@@ -77,7 +77,7 @@ const ManageBanner = () => {
 			setItems([
 				...items,
 				{
-					id: items.length,
+					order: items[items.length - 1].order + 1,
 					description: "",
 					start_date: "",
 					end_date: "",

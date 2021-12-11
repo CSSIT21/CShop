@@ -26,8 +26,6 @@ const BannerItem = ({
 	const [open, setOpen] = useState(false);
 	const { head, children = [] } = item.pictures;
 
-	console.log("item", item, items[index]);
-
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
 		setTimeout(() => onSetItem(), 500);
@@ -40,7 +38,7 @@ const BannerItem = ({
 
 	const onSetItem = () => {
 		setItems(items => {
-			if (items[index].height != wrapper.current.offsetHeight) {
+			if (index < items.length && wrapper && wrapper.current && items[index].height != wrapper.current.offsetHeight) {
 				items[index].height = wrapper.current.offsetHeight;
 				return [...items];
 			}
@@ -54,7 +52,7 @@ const BannerItem = ({
 
 			setItems(items => {
 				items[index].pictures.children.push({
-					id: items[index].pictures.children.length,
+					order: items[index].pictures.children.length,
 					path,
 				})
 
@@ -106,7 +104,6 @@ const BannerItem = ({
 				</Button>
 			}
 
-			{/* Banner Images */}
 			<Stack direction="column" gap={4}>
 				{/* Main Image */}
 				<Stack justifyContent="center">
@@ -114,13 +111,13 @@ const BannerItem = ({
 						<img
 							width="100%"
 							src={head}
-							alt={`Banner ${item.id}`}
+							alt={`Banner ${item.order}`}
 							style={{ display: "block", transition: "0.25s all ease-in-out" }}
 						/>
 						<DeleteRoundedIcon
 							className={classes.iconStyle}
 							sx={{ fontSize: "2rem" }}
-							onClick={onDelete}
+							onClick={() => onDelete(index)}
 						/>
 					</Box>
 				</Stack>
