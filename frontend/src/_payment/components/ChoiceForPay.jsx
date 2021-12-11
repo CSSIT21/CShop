@@ -42,6 +42,7 @@ const useStyles = makeStyles({
         top: '210px',
     },
     confirmButton: {
+        width: '200px',
         fontWeight: 'bold',
 		textTransform: 'capitalize',
         fontSize: 16,
