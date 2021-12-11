@@ -404,25 +404,24 @@ model product_picture {
 }
 
 model product_reviews {
-    id                               Int                       @id @default(autoincrement())
+    id                               Int                      @id @default(autoincrement())
     product_id                       Int
-    product_id_from_product_reviews  product                   @relation(fields: [product_id], references: [id])
+    product_id_from_product_reviews  product                  @relation(fields: [product_id], references: [id])
     customer_id                      Int
-    customer_id_from_product_reviews customer                  @relation(fields: [customer_id], references: [id])
+    customer_id_from_product_reviews customer                 @relation(fields: [customer_id], references: [id])
     rating                           Int
-    comment                          String                    @db.Text
-    review_time                      DateTime                  @default(now()) @db.Timestamp
-    product_reviews_picture          product_reviews_picture[]
+    comment                          String                   @db.Text
+    review_time                      DateTime                 @default(now()) @db.Timestamp
     product_comment_rating           product_comment_rating[]
+    review_picture_id                Int[]
 }
 
 model product_reviews_picture {
-    product_review_id                              Int             @id
-    product_review_id_from_product_reviews_picture product_reviews @relation(fields: [product_review_id], references: [id])
-    title                                          String          @db.VarChar(50)
-    path                                           String          @db.Text
-    thumbnail                                      String          @db.Text
-    mime_type                                      String          @db.VarChar(20)
+    id        Int    @id @default(autoincrement())
+    title     String @db.VarChar(50)
+    path      String @db.Text
+    thumbnail String @db.Text
+    mime_type String @db.VarChar(20)
 }
 
 model product_short_link {
@@ -1389,6 +1388,8 @@ model home_banner {
     picture_id                  Int
     picture_id_from_home_banner home_banner_picture @relation(fields: [picture_id], references: [id])
     description                 String              @db.Text
+    keyword                     String[]            @db.VarChar(20)
+    visible                     Boolean             @default(true)
 }
 
 model home_popup {
@@ -1424,7 +1425,6 @@ model home_partner {
     end_date    DateTime @db.Timestamp
     join_date   DateTime @db.Timestamp
     description String   @db.Text
-    keyword     String   @db.VarChar(20)
     title_pic   String   @db.VarChar(50)
     path        String   @db.Text
     thumbnail   String   @db.Text
