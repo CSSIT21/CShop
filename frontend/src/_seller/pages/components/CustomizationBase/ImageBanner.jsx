@@ -16,24 +16,27 @@ const ImageBanner = ({
   const [image, setImage] = useState("");
   const classes = useStyles();
   useLayoutEffect(() => {
-    if(id in information){
+    if (id in information) {
       setImage(information[id].img);
-    }else{
+    } else {
+      console.log("image not found");
       setImage(content.img);
     }
-  }, [])
+  }, []);
   // useLayoutEffect(() => {
   //   setInformation(info => ({...info,
   //     [id]: content
   //   }));
   // },[order]);
 
-  const uploadFile = (e) => {
+  const uploadFile = (e, id) => {
+    console.log(id);
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target.files[0]);
       setImage(path);
-      setInformation(info => ({...info,
-        [id]: {...info[id] || content, img: path}
+      setInformation((info) => ({
+        ...info,
+        [id]: { ...(info[id] || content), img: path },
       }));
     }
   };
@@ -55,7 +58,7 @@ const ImageBanner = ({
         Banner#{order}
       </Typography>
       <img src={image} alt={type} width="100%" className={classes.img} />
-      <label htmlFor={`outlined-button-file`}>
+      <label htmlFor={`outlined-button-file-${id}`}>
         <Button
           component="span"
           variant="outlined"
@@ -65,8 +68,10 @@ const ImageBanner = ({
             accept="image/*"
             type="file"
             style={{ display: "none" }}
-            id={`outlined-button-file`}
-            onChange={uploadFile}
+            id={`outlined-button-file-${id}`}
+            onChange={(e) => {
+              uploadFile(e, id);
+            }}
           />
           Upload
         </Button>

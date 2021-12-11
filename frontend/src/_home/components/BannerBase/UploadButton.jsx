@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import Button from '@mui/material/Button';
+import { Button, Typography } from '@mui/material';
 import { noot, noop } from '~/common/utils';
 import { nanoid } from 'nanoid';
 
@@ -26,9 +26,11 @@ const UploadButton = ({
 					id={`outlined-button-file-${id}`}
 					type="file"
 					style={{ display: 'none' }}
-					onInput={onUploadImg}
+					onChange={onUploadImg}
 				/>
-				{title}
+				<Typography sx={{ textTransform: "capitalize" }}>
+					{title}
+				</Typography>
 			</Button>
 		</label>
 	);

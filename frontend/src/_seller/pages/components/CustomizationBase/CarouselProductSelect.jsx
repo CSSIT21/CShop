@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
-import { Typography, Button, formControlLabelClasses } from "@mui/material";
-import React, { useState } from "react";
+import { Typography, Button } from "@mui/material";
+import React, { useState, useLayoutEffect } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { makeStyles } from "@mui/styles";
@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ProductCard from "~/common/components/ProductCard";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { nanoid } from "nanoid";
 import AddIcon from "@mui/icons-material/Add";
@@ -23,20 +22,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Avatar from "@mui/material/Avatar";
 
 const CarouselProductSelect = ({
-  section = {
-    id: "0",
-    page: {
-      type: 2,
-      id: 1,
-      content: [],
-    },
-  },
-  order = 0,
+  id = "0",
+  information,
+  setInformation = () => {},
   ...rest
 }) => {
-  const originSectionImages = [];
   const [products, setproducts] = useState(fakeProducts);
-  const [sectionImages, setSectionImages] = useState(originSectionImages);
+  const [sectionImages, setSectionImages] = useState([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openAddProduct, setopenAddProduct] = useState(false);
@@ -44,20 +36,35 @@ const CarouselProductSelect = ({
   const [unCommittedTopic, setunCommittedTopic] = useState("");
   const [selectedValue, setSelectedValue] = useState();
 
+  useLayoutEffect(() => {
+    if (id in information) {
+      setTopic(information[id].header);
+      setSectionImages(information[id].img);
+    } else {
+      console.log("products not found");
+    }
+  }, []);
+
   const handleChange = (event) => {
     console.log(event.target.value);
     setSelectedValue(event.target.value);
   };
   const addImage = () => {
     if (selectedValue) {
-      setSectionImages(sectionImages.concat(products[selectedValue]));
+      setSectionImages([...sectionImages, products[selectedValue]]);
       handleCloseProduct();
     }
   };
 
   const updateTopic = () => {
-    if (unCommittedTopic !== "" && Topic !== unCommittedTopic) {
-      setTopic(unCommittedTopic);
+    if (Topic !== "") {
+      setTimeout(() => {
+        setInformation((info) => ({
+          ...info,
+          [id]: { ...info[id], header: Topic, img: sectionImages },
+        }));
+      }, 500);
+
       handleClose();
     }
   };
@@ -191,15 +198,16 @@ const CarouselProductSelect = ({
               sx={{ color: "#FD6637", margin: "0 0 50px 0" }}
               fullWidth
               placeholder="Topic"
-              value={unCommittedTopic}
+              value={Topic}
               onChange={(e) => {
-                setunCommittedTopic(e.target.value);
+                setTopic(e.target.value);
               }}
             />
             <Button
               onClick={updateTopic}
               sx={{ width: "100px", height: "56px", marginLeft: "10px" }}
               variant="contained"
+              disabled={!(Topic !== "")}
             >
               Save
             </Button>
