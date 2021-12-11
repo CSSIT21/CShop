@@ -22,12 +22,18 @@ function GeneratedComments({ generatedComments, setChipData }) {
         }}
       >
         {generatedComments.slice(0, 3).map((e) => (
-          <StyledChip
+          <Chip
             label={e.label}
             clickable
             color={e.clicked ? "primary" : "default"}
             onClick={() => handleClick(e)}
             key={e.key}
+            variant="outlined"
+            sx={{
+              backgroundColor: `${e.clicked ? "#FFF1EC" : "default"}`,
+              color: `${e.clicked ? "#FD6637" : "default"}`,
+              borderColor: `${e.clicked ? "#FD6637" : "default"}`,
+            }}
           />
         ))}
       </Box>
@@ -40,28 +46,22 @@ function GeneratedComments({ generatedComments, setChipData }) {
         }}
       >
         {generatedComments.slice(3, 5).map((e) => (
-          <StyledChip
+          <Chip
             label={e.label}
             clickable
-            color={e.clicked ? "primary" : "default"}
             onClick={() => handleClick(e)}
             key={e.key}
+            variant="outlined"
+            sx={{
+              backgroundColor: `${e.clicked ? "#FFF1EC" : "default"}`,
+              color: `${e.clicked ? "#FD6637" : "default"}`,
+              borderColor: `${e.clicked ? "#FD6637" : "default"}`,
+            }}
           />
         ))}
       </Box>
     </Box>
   );
 }
-
-const StyledChip = styled(Chip)({
-  ".MuiChip-root": {
-    ".MuiChip-clickableColorPrimary": {
-      color: "#FD6637",
-    },
-    ".css-1ncfxsu-MuiButtonBase-root-MuiChip-root:hover": {
-      background: "#FD6637",
-    },
-  },
-});
 
 export default GeneratedComments;
