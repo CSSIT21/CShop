@@ -42,6 +42,8 @@ const CardWrapper = ({ items = [], status }) => {
             shape="rounded"
             size="large"
             page={page}
+            // color="primary"
+
             onChange={handleChange}
           />
         </Box>
