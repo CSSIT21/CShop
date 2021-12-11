@@ -346,7 +346,7 @@ model product {
   id                              Int                               @id @default(autoincrement())
   shop_id                         Int
   shop_id_from_product            shop_info                         @relation(fields: [shop_id], references: [id])
-  title                           String                            @db.VarChar(100)
+  title                           String                            @db.VarChar(512)
   sub_title                       String                            @db.VarChar(70)
   category_id                     Int
   category_id_from_product        category                          @relation(fields: [category_id], references: [id])
@@ -357,7 +357,6 @@ model product {
   suggest_products                Int[]
   rating                          Decimal                           @db.Decimal(1, 1)
   product_detail                  product_detail[]
-  product_picture                 product_picture[]
   product_reviews                 product_reviews[]
   product_short_link              product_short_link[]
   product_options                 product_options[]
@@ -392,17 +391,6 @@ model product_detail {
   product_id                     Int     @id
   product_id_from_product_detail product @relation(fields: [product_id], references: [id])
   info                           String  @db.Text
-}
-
-model product_picture {
-  product_id                      Int
-  product_id_from_product_picture product           @relation(fields: [product_id], references: [id])
-  photo_id                        Int               @id @default(autoincrement())
-  title                           String            @db.VarChar(50)
-  path                            String            @db.Text
-  thumbnail                       String            @db.Text
-  mime_type                       String            @db.VarChar(20)
-  product_choices                 product_choices[]
 }
 
 model product_reviews {
@@ -456,8 +444,6 @@ model product_choices {
   name                                    String          @db.VarChar(30)
   price                                   Int
   quantity                                Int
-  picture_id                              Int
-  picture_id_from_product_choices         product_picture @relation(fields: [picture_id], references: [photo_id])
 }
 
 //--------------------------------------------------------------------------------------------
