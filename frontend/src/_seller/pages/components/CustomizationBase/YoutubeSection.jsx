@@ -1,10 +1,36 @@
-import { makeStyles, Box, TextField } from "@mui/material";
-import { useState } from "react";
+import { Box, TextField, Button } from "@mui/material";
+import { useState, useLayoutEffect } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import InputAdornment from "@mui/material/InputAdornment";
 
-function YoutubeSection({ id: ID, ...rest }) {
-  const [id, setId] = useState(ID);
+function YoutubeSection({
+  id = "0",
+  videoLink = "UbYPG1GsZEI",
+  information,
+  setInformation = () => {},
+  ...rest
+}) {
+  const [link, setLink] = useState();
+
+  useLayoutEffect(() => {
+    if (id in information) {
+      setLink(information[id].img);
+    } else {
+      console.log("link not found");
+      setLink(videoLink);
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setLink(e.target.value);
+  };
+
+  const confirmChange = () => {
+    setInformation((info) => ({
+      ...info,
+      [id]: { ...(info[id] || videoLink), img: link },
+    }));
+  };
   return (
     <>
       <Box
@@ -20,7 +46,7 @@ function YoutubeSection({ id: ID, ...rest }) {
         {...rest}
       >
         <img
-          src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+          src={`https://img.youtube.com/vi/${link}/hqdefault.jpg`}
           alt="thumnail"
         ></img>
         <img
@@ -39,8 +65,8 @@ function YoutubeSection({ id: ID, ...rest }) {
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TextField
           sx={{ width: "40%" }}
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={link}
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -49,6 +75,13 @@ function YoutubeSection({ id: ID, ...rest }) {
             ),
           }}
         />
+        <Button
+          onClick={confirmChange}
+          sx={{ marginLeft: "20px" }}
+          variant="contained"
+        >
+          Confirm
+        </Button>
       </Box>
     </>
   );
