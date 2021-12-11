@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from 'react';
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Typography, Button, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CButton from '~/common/components/CButton';
 import BannerList from '../components/BannerBase/BannerList';
@@ -11,16 +11,21 @@ import UploadButton from '../components/BannerBase/UploadButton';
 const bannerList = [
 	{
 		id: 0,
+		order: 1,
 		description: "banner about washing",
+		start_date: "",
+		end_date: "",
+		status: true,
+		keywords: ["Free Shipping", "Flash sale", "Free Shipping", "Flash sale"],
 		pictures: {
 			head: BannerPic,
 			children: [
 				{
-					id: 0,
+					order: 0,
 					path: BannerPic,
 				},
 				{
-					id: 1,
+					order: 1,
 					path: BannerPic,
 				},
 			]
@@ -28,24 +33,29 @@ const bannerList = [
 	},
 	{
 		id: 1,
+		order: 2,
 		description: "banner about washing",
+		start_date: "",
+		end_date: "",
+		status: true,
+		keywords: ["Free Shipping"],
 		pictures: {
 			head: BannerPic,
 			children: [
 				{
-					id: 0,
+					order: 0,
 					path: BannerPic,
 				},
 				{
-					id: 1,
+					order: 1,
 					path: BannerPic,
 				},
 				{
-					id: 2,
+					order: 2,
 					path: BannerPic,
 				},
 				{
-					id: 3,
+					order: 3,
 					path: BannerPic,
 				},
 			]
@@ -67,8 +77,12 @@ const ManageBanner = () => {
 			setItems([
 				...items,
 				{
-					id: items.length,
+					order: items[items.length - 1].order + 1,
 					description: "",
+					start_date: "",
+					end_date: "",
+					status: true,
+					keywords: [],
 					pictures: {
 						head,
 						children: []
@@ -100,12 +114,7 @@ const ManageBanner = () => {
 				/>
 			</Box>
 
-			<Box
-				className={classes.header}
-				mt={8}
-				pb={4}
-				sx={{ borderBottom: '1px solid #C4C4C4' }}
-			>
+			<Box className={classes.header} sx={{ borderBottom: '1px solid #C4C4C4' }}>
 				<Typography fontSize={20} fontWeight={500}>Create Banner</Typography>
 				<UploadButton
 					Icon={<AddIcon />}
@@ -114,10 +123,7 @@ const ManageBanner = () => {
 				/>
 			</Box>
 
-			<BannerList
-				items={items}
-				setItems={setItems}
-			/>
+			<BannerList items={items} setItems={setItems} />
 		</Box>
 	);
 };
@@ -126,9 +132,11 @@ const useStyles = makeStyles({
 	header: {
 		width: "90%",
 		margin: "0 auto",
+		paddingBottom: "32px",
 		display: "flex",
 		justifyContent: "space-between",
 		alignItems: "center",
 	},
 });
+
 export default ManageBanner;
