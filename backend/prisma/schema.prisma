@@ -181,9 +181,9 @@ model shop_info {
   shop_name                      String                          @db.VarChar(40)
   join_date                      DateTime                        @default(now())
   phone_number                   String                          @db.VarChar(10)
-  last_active                    DateTime?
+  last_active                    DateTime                        @default(now())
   description                    String                          @db.Text
-  followers                      Int?
+  followers                      Int?                            @default(0)
   shop_picture                   shop_picture[]
   shop_comment                   shop_comment[]
   shop_section_log               shop_section_log[]
