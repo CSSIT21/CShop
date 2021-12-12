@@ -7,15 +7,26 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 import axios from "axios";
-import { For } from "~/common/utils";
 import GridTitle from "../components/AddressBase/GridTitle";
 
 const AddressPage = () => {
   const classes = useStyles();
-  const [openShopping, setopenShopping] = useState(true);
+  const [openAddress, setopenAddress] = useState(false);
   const [open, setOpen] = useState(false);
   const addNewAddress = () => {
     setOpen(true);
+  };
+  const clearAddress = () => {
+    setuserAddress({
+      ...userAddress,
+      name: "",
+      phoneNumber: "",
+      addressLine: "",
+      province: "",
+      district: "",
+      subDistrict: "",
+      postalCode: "",
+    });
   };
   useEffect(() => {
     getData();
@@ -110,8 +121,8 @@ const AddressPage = () => {
             title="Add New Address"
             subTitle="Please check the correct address and phone number registration
             for accurate and fast delivery"
-            open={openShopping}
-            setOpen={setopenShopping}
+            open={openAddress}
+            setOpen={setopenAddress}
           >
             <Box sx={{ marginBottom: "24px" }}>
               <Grid container>
@@ -306,6 +317,7 @@ const AddressPage = () => {
                   fontSize: "16px",
                 }}
                 variant="outlined"
+                onClick={clearAddress}
               >
                 Cancel
               </Button>
@@ -328,6 +340,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     width: "70%",
+    "@media (max-width:780px)": {
+      width: "100%",
+    },
   },
   buttonGroup: {
     margin: "56px 0",
