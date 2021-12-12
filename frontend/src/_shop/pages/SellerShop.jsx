@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/sellerShopBase/Header";
 import TabsController from "../components/sellerShopBase/TabsController";
 import Voucher from "../components/sellerShopBase/Voucher";
@@ -11,83 +11,85 @@ import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
+import axios from "axios";
+import { useParams } from "react-router";
 
-const sections = [
-  {
-    id: "4",
-    page: {
-      type: 3,
-      id: "4",
-      filter: "Computer",
-      content: fakeProducts,
-    },
-  },
-  {
-    id: "1",
-    page: {
-      type: 1,
-      id: "1",
-      content: { img: CategoryPic1 },
-    },
-  },
-  {
-    id: "2",
-    page: {
-      type: 1,
-      id: "2",
-      content: { img: CategoryPic2 },
-    },
-  },
-  {
-    id: "4",
-    page: {
-      type: 3,
-      id: "4",
-      filter: "Refrigerator",
-      content: fakeProducts,
-    },
-  },
-  {
-    id: "3",
-    page: {
-      type: 2,
-      id: "3",
-      content: [
-        {
-          id: 0,
-          url: BannerImage,
-        },
-        {
-          id: 1,
-          url: BannerImage,
-        },
-        {
-          id: 2,
-          url: BannerImage,
-        },
-      ],
-    },
-  },
+// const sections = [
+//   {
+//     id: "4",
+//     page: {
+//       type: 3,
+//       id: "4",
+//       filter: "Computer",
+//       content: fakeProducts,
+//     },
+//   },
+//   {
+//     id: "1",
+//     page: {
+//       type: 1,
+//       id: "1",
+//       content: { img: CategoryPic1 },
+//     },
+//   },
+//   {
+//     id: "2",
+//     page: {
+//       type: 1,
+//       id: "2",
+//       content: { img: CategoryPic2 },
+//     },
+//   },
+//   {
+//     id: "4",
+//     page: {
+//       type: 3,
+//       id: "4",
+//       filter: "Refrigerator",
+//       content: fakeProducts,
+//     },
+//   },
+//   {
+//     id: "3",
+//     page: {
+//       type: 2,
+//       id: "3",
+//       content: [
+//         {
+//           id: 0,
+//           url: BannerImage,
+//         },
+//         {
+//           id: 1,
+//           url: BannerImage,
+//         },
+//         {
+//           id: 2,
+//           url: BannerImage,
+//         },
+//       ],
+//     },
+//   },
 
-  {
-    id: "4",
-    page: {
-      type: 3,
-      id: "4",
-      filter: "TV & Entertainments",
-      content: fakeProducts,
-    },
-  },
-  {
-    id: "5",
-    page: {
-      type: 4,
-      content: "https://www.youtube.com/embed/F5tSoaJ93ac",
-    },
-  },
-];
+//   {
+//     id: "4",
+//     page: {
+//       type: 3,
+//       id: "4",
+//       filter: "TV & Entertainments",
+//       content: fakeProducts,
+//     },
+//   },
+//   {
+//     id: "5",
+//     page: {
+//       type: 4,
+//       content: "https://www.youtube.com/embed/F5tSoaJ93ac",
+//     },
+//   },
+// ];
 
-const menus = [
+const axiousmenus = [
   {
     cateId: 3,
     title: "Games",
@@ -105,11 +107,15 @@ const menus = [
     title: "Umbar",
   },
 ];
-
 const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
 const SellerShop = () => {
   const classes = useStyles();
+  const { id, cateId } = useParams();
+  const [shopInfo, setshopInfo] = useState();
+  const [sections, setsections] = useState([]);
+  const [products, setproducts] = useState();
+  const [menus, setmenus] = useState();
   const [flashItems, setflashItems] = useState(flashSaleData.products);
   const onFavourite = (index) => {
     setflashItems((flashItems) => {
@@ -118,17 +124,35 @@ const SellerShop = () => {
       return [...flashItems];
     });
   };
+  useEffect(() => {
+    axios.get(`http://localhost:8080/sellershop/${id}`).then(({ data }) => {
+      setshopInfo(data.shopinfo);
+      setmenus(data.shopInfo.categories);
+    });
+    axios
+      .get("http://localhost:8080/sellershop/1/products")
+      .then(({ data }) => {
+        setproducts(data.products);
+      });
+    axios
+      .get("http://localhost:8080/sellershop/1/sections")
+      .then(({ data }) => {
+        setsections(data.sections);
+      });
+  }, []);
+  console.log(sections);
   return (
     <>
       <Box className={classes.body}>
         <Box className={classes.container}>
           <Box
             sx={{
+              width: "80vw",
               marginBottom: "30px",
               padding: "25px 75px",
             }}
           >
-            <Header />
+            <Header shopInfo={shopInfo} />
           </Box>
           <Box
             sx={{
@@ -152,12 +176,12 @@ const SellerShop = () => {
           <Box className={classes.categoryBox}>
             <Box className={classes.category}>
               {sections.map((section, idx) => {
-                return <Content key={idx} section={section} />;
+                return <Content key={section.id} section={section} />;
               })}
             </Box>
           </Box>
           <Box className={classes.containerWhite}>
-            <Filter categories={menus} />
+            <Filter categories={menus} products={products} />
           </Box>
         </Box>
       </Box>

@@ -31,13 +31,13 @@ export class AuthenticationController {
 	@Post('/register')
 	@Public()
 	public async register(@Body() data: RegisterDto) {
-		return await this.authenticationService.register(data);
+		// return await this.authenticationService.register(data);
 	}
 
 	@Get('/')
 	@Public()
 	public async findAll() {
-		return await this.authenticationService.findAll();
+		// return await this.authenticationService.findAll();
 	}
 
 	// @Post('login')
