@@ -246,7 +246,7 @@ model shop_section_log {
 model shop_section {
   shop_id                   Int       @id
   shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
-  sections                  Json
+  sections                  String[]
 }
 
 model shop_flashsale {
