@@ -97,7 +97,6 @@ model customer_picture_file {
   title            String             @db.VarChar(50)
   path             String             @db.Text
   thumbnail        String             @db.Text
-  mime_type        String             @db.VarChar(20)
   primary          Boolean            @default(false)
   customer_picture customer_picture[]
 }
@@ -220,7 +219,6 @@ model shop_picture {
   title                     String    @db.VarChar(50)
   path                      String    @db.Text
   thumbnail                 String    @db.Text
-  mime_type                 String    @db.VarChar(20)
 }
 
 model shop_comment {
@@ -246,7 +244,7 @@ model shop_section_log {
 model shop_section {
   shop_id                   Int       @id
   shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
-  sections                  String[]
+  sections                  Json[]
 }
 
 model shop_flashsale {
@@ -255,12 +253,11 @@ model shop_flashsale {
   shop_id_from_shop_flashsale shop_info                @relation(fields: [shop_id], references: [id])
   started_date                DateTime                 @default(now())
   ended_date                  DateTime                 @default(now())
-  products                    Json
-  title                       String                   @db.Text
-  path                        String                   @db.Text
-  thumbnail                   String                   @db.Text
-  mime_type                   String                   @db.VarChar(20)
-  description                 String                   @db.Text
+  products                    Json[]
+  title                       String?                  @db.Text
+  path                        String?                  @db.Text
+  thumbnail                   String?                  @db.Text
+  description                 String?                  @db.Text
   shop_flashsale_history      shop_flashsale_history[]
   sconsole_flashsale_log      sconsole_flashsale_log[]
 }
@@ -272,7 +269,7 @@ model shop_flashsale_history {
   shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
   started_date                             DateTime       @default(now())
   ended_date                               DateTime       @default(now())
-  products                                 Json
+  products                                 Json[]
   quantity                                 Json
 }
 
@@ -281,25 +278,23 @@ model shop_banner {
   title     String @db.VarChar(50)
   path      String @db.Text
   thumbnail String @db.Text
-  mime_type String @db.VarChar(20)
 }
 
 model shop_banner_carousel {
   id      String @id
-  banners Json
+  banners Json[]
 }
 
 model shop_product_carousel {
-  id       String @id
-  products Int[]
+  id          String @id
+  filter_name String
+  products    Int[]
 }
 
 model shop_video {
-  id        String @id
-  title     String @db.VarChar(50)
-  path      String @db.Text
-  thumbnail String @db.Text
-  mime_type String @db.VarChar(20)
+  id    String @id
+  title String @db.VarChar(50)
+  path  String @db.Text
 }
 
 model shop_category {
@@ -324,7 +319,6 @@ model category_icon_picture {
   title     String     @db.VarChar(50)
   path      String     @db.Text
   thumbnail String     @db.Text
-  mime_type String     @db.VarChar(20)
   category  category[]
 }
 
@@ -333,7 +327,6 @@ model category_banner_picture {
   title     String     @db.VarChar(50)
   path      String     @db.Text
   thumbnail String     @db.Text
-  mime_type String     @db.VarChar(20)
   category  category[]
 }
 
@@ -417,7 +410,6 @@ model product_reviews_picture {
   title     String @db.VarChar(50)
   path      String @db.Text
   thumbnail String @db.Text
-  mime_type String @db.VarChar(20)
 }
 
 model product_short_link {
@@ -1004,7 +996,6 @@ model chat_image {
   title                      String       @db.VarChar(50)
   path                       String       @db.Text
   thumbnail                  String       @db.Text
-  mime_type                  String       @db.VarChar(20)
 }
 
 model chat_video {
@@ -1013,7 +1004,6 @@ model chat_video {
   title                      String       @db.VarChar(50)
   path                       String       @db.Text
   thumbnail                  String       @db.Text
-  mime_type                  String       @db.VarChar(20)
 }
 
 model chat_sticker_lookup {
@@ -1021,7 +1011,6 @@ model chat_sticker_lookup {
   title        String         @db.VarChar(50)
   path         String         @db.Text
   thumbnail    String         @db.Text
-  mime_type    String         @db.VarChar(20)
   chat_sticker chat_sticker[]
 }
 
@@ -1265,7 +1254,6 @@ model admin_support_picture {
   title                      String                       @db.VarChar(50)
   path                       String                       @db.Text
   thumbnail                  String                       @db.Text
-  mime_type                  String                       @db.VarChar(20)
   admin_support              admin_support[]
   admin_customer_suspensions admin_customer_suspensions[]
   admin_shop_suspensions     admin_shop_suspensions[]
@@ -1367,24 +1355,21 @@ enum homePartnerType {
 }
 
 model home_banner_picture {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(50)
-  path        String        @db.Text
-  thumbnail   String        @db.Text
-  mime_type   String        @db.VarChar(20)
-  home_banner home_banner[]
+  id        Int    @id @default(autoincrement())
+  title     String @db.VarChar(50)
+  path      String @db.Text
+  thumbnail String @db.Text
 }
 
 model home_banner {
-  id                          Int                 @id @default(autoincrement())
-  description                 String              @db.Text
-  start_date                  DateTime            @db.Timestamp
-  end_date                    DateTime            @db.Timestamp
-  picture_id                  Int
-  picture_id_from_home_banner home_banner_picture @relation(fields: [picture_id], references: [id])
-  order                       Int
-  keywords                    String[]            @db.VarChar(20)
-  visible                     Boolean             @default(true)
+  id          Int      @id @default(autoincrement())
+  description String   @db.Text
+  start_date  DateTime @db.Timestamp
+  end_date    DateTime @db.Timestamp
+  picture_id  Int[]
+  order       Int
+  keywords    String[] @db.VarChar(20)
+  visible     Boolean  @default(true)
 }
 
 model home_popup {
@@ -1395,7 +1380,6 @@ model home_popup {
   title       String   @db.VarChar(50)
   path        String   @db.Text
   thumbnail   String   @db.Text
-  mime_type   String   @db.VarChar(20)
 }
 
 model home_app_review {
@@ -1409,7 +1393,6 @@ model home_app_review {
   title       String   @db.VarChar(50)
   path        String   @db.Text
   thumbnail   String   @db.Text
-  mime_type   String   @db.VarChar(20)
 }
 
 model home_partner {
@@ -1423,7 +1406,6 @@ model home_partner {
   title_pic   String   @db.VarChar(50)
   path        String   @db.Text
   thumbnail   String   @db.Text
-  mime_type   String   @db.VarChar(20)
 }
 
 model home_product_log {
