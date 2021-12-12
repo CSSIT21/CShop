@@ -24,7 +24,7 @@ enum Gender {
 
 model customer {
   id                            Int                             @id @default(autoincrement())
-  email                         String                          @db.VarChar(60)
+  email                         String                          @unique @db.VarChar(60)
   password                      String                          @db.VarChar(255)
   date                          DateTime                        @default(now())
   customer_info                 customer_info[]
