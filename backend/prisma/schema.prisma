@@ -1371,12 +1371,13 @@ model home_banner_picture {
 
 model home_banner {
   id                          Int                 @id @default(autoincrement())
+  description                 String              @db.Text
   start_date                  DateTime            @db.Timestamp
   end_date                    DateTime            @db.Timestamp
   picture_id                  Int
   picture_id_from_home_banner home_banner_picture @relation(fields: [picture_id], references: [id])
-  description                 String              @db.Text
-  keyword                     String[]            @db.VarChar(20)
+  order                       Int
+  keywords                    String[]            @db.VarChar(20)
   visible                     Boolean             @default(true)
 }
 
