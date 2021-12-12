@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 const authState = atom({
   key: "authState",
   default: {
-    isLoggedIn: true,
+    isLoggedIn: false,
     user: {
       first_name: "Sirawit",
       last_name: "Pratoomsuwan",
