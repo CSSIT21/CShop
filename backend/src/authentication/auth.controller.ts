@@ -28,17 +28,17 @@ import { customer } from '@prisma/client';
 export class AuthenticationController {
 	constructor(private readonly authenticationService: AuthenticationService) {}
 
-	@Post('/register')
-	@Public()
-	public async register(@Body() data: RegisterDto) {
-		return await this.authenticationService.register(data);
-	}
+	// @Post('/register')
+	// @Public()
+	// public async register(@Body() data: RegisterDto) {
+	// 	return await this.authenticationService.register(data);
+	// }
 
-	@Get('/')
-	@Public()
-	public async findAll() {
-		return await this.authenticationService.findAll();
-	}
+	// @Get('/')
+	// @Public()
+	// public async findAll() {
+	// 	return await this.authenticationService.findAll();
+	//}
 
 	// @Post('login')
 	// @Public()
