@@ -9,23 +9,70 @@ import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import { assign } from "~/common/utils/";
 import authState from "~/common/store/authState";
+import config from "../../common/constants";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const RegisterAddress = ({
   activeStep,
   handleBack = () => {},
   handleRegister = () => {},
 }) => {
-  useEffect(() => {
-    getData();
-  }, []);
   const [addressData, setAddressData] = useState([]);
   const [userInfo, setUserInfo] = useRecoilState(registerState);
-  const [auth, setAuth] = useRecoilState(authState);
   const [province, setProvince] = useState([]);
   const [district, setDistrict] = useState([]);
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const classes = useStyles();
+
+  const register = () => {
+    if (userInfo.addressLine == "") {
+      setaddressLineError("This field is required");
+    }
+    if (userInfo.province == "") {
+      setprovinceError("This field is required");
+    }
+    if (userInfo.district == "") {
+      setdistrictError("This field is required");
+    }
+    if (userInfo.subDistrict == "") {
+      setsubDistrictError("This field is required");
+    }
+    if (userInfo.postalCode == "") {
+      setpostalCodeError("This field is required");
+    }
+    if (
+      userInfo.addressLine != "" &&
+      userInfo.province != "" &&
+      userInfo.district != "" &&
+      userInfo.subDistrict != "" &&
+      userInfo.postalCode != ""
+    ) {
+      console.log(userInfo);
+      setIsLoading(true);
+      axios
+        .post(config.SERVER_URL + "/auth/register", userInfo, {
+          validateStatus: (status) => {
+            return true; // I'm always returning true, you may want to do it depending on the status received
+          },
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            handleRegister();
+          } else {
+            Swal.fire("Register Error!", data.message, "error");
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          Swal.fire("Register Error!", err.message, "error");
+          setIsLoading(false);
+        });
+    }
+  };
+
   const getData = async () => {
     const fetchedData = await axios.get(
       "https://cshop-mock.mixkoap.com/thailand.json"
@@ -33,6 +80,10 @@ const RegisterAddress = ({
     setAddressData(fetchedData.data);
     setProvince([...new Set(fetchedData.data.map((el) => el.province))].sort());
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     setDistrict(
@@ -76,34 +127,7 @@ const RegisterAddress = ({
   const [districtError, setdistrictError] = useState("");
   const [subDistrictError, setsubDistrictError] = useState("");
   const [postalCodeError, setpostalCodeError] = useState("");
-  const register = () => {
-    if (userInfo.addressLine == "") {
-      setaddressLineError("This field is required");
-    }
-    if (userInfo.province == "") {
-      setprovinceError("This field is required");
-    }
-    if (userInfo.district == "") {
-      setdistrictError("This field is required");
-    }
-    if (userInfo.subDistrict == "") {
-      setsubDistrictError("This field is required");
-    }
-    if (userInfo.postalCode == "") {
-      setpostalCodeError("This field is required");
-    }
-    if (
-      userInfo.addressLine != "" &&
-      userInfo.province != "" &&
-      userInfo.district != "" &&
-      userInfo.subDistrict != "" &&
-      userInfo.postalCode != ""
-    ) {
-      handleRegister();
-      console.log(userInfo);
-      return setAuth({ ...auth, isLoggedIn: true });
-    }
-  };
+
   return (
     <Box>
       <Box className={classes.header}>Address</Box>
@@ -287,17 +311,31 @@ const RegisterAddress = ({
         >
           Back
         </Button>
-        <Button
-          variant="contained"
-          onClick={register}
-          sx={{
-            width: "300px",
-            height: "55px",
-            textTransform: "capitalize",
-          }}
-        >
-          Register
-        </Button>
+        {!isLoading ? (
+          <Button
+            variant="contained"
+            onClick={register}
+            sx={{
+              width: "300px",
+              height: "55px",
+              textTransform: "capitalize",
+            }}
+          >
+            Register
+          </Button>
+        ) : (
+          <LoadingButton
+            loading
+            variant="contained"
+            sx={{
+              width: "300px",
+              textTransform: "capitalize",
+              height: "55px",
+            }}
+          >
+            Register
+          </LoadingButton>
+        )}
       </Box>
     </Box>
   );
