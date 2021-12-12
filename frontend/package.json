@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@date-io/date-fns": "^2.11.0",
+    "@date-io/dayjs": "^2.11.0",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -17,6 +17,8 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.24.0",
+    "crypto-js": "^4.1.1",
+    "dayjs": "^1.10.7",
     "faker": "^5.5.3",
     "nanoid": "^3.1.30",
     "qs": "^6.7.0",

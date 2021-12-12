@@ -169,13 +169,17 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 justifyContent: "space-between",
               }}
             >
-              {fnError.length != 0 && (
+              {fnError.length != 0 ? (
                 <Box className={classes.error} style={{ marginRight: "3%" }}>
                   {fnError}
                 </Box>
+              ) : (
+                <Box className={classes.error}></Box>
               )}
-              {lnError.length != 0 && (
+              {lnError.length != 0 ? (
                 <Box className={classes.error}>{lnError}</Box>
+              ) : (
+                <Box className={classes.error}></Box>
               )}
             </Box>
 

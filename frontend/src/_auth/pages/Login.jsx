@@ -9,6 +9,8 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import authState from "~/common/store/authState";
+import * as CryptoJS from "crypto-js";
+import axios from "axios";
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -18,23 +20,27 @@ const LoginPage = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const [emailError, setemailError] = useState("");
   const [passwordError, setpasswordError] = useState("");
-  const onLogin = () => {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const valid = re.test(email);
-    if (email == "") {
+  const onLogin = async () => {
+    if (email === "") {
       setemailError("This field is required");
-    } else if (!valid) {
-      setemailError("Email is invalid");
     }
-    if (password == "") {
+    if (password === "") {
       setpasswordError("This field is required");
-    } else if (email != auth.user.email || password != auth.user.password) {
-      setpasswordError("Email or password is incorrect");
     }
-    if (email === auth.user.email && password === auth.user.password) {
-      router.push("/home");
-      setAuth({ ...auth, isLoggedIn: true });
+    if (email != "" && password != "") {
+      let encryptPassword = CryptoJS.HmacSHA512(
+        password,
+        process.env.PASSWORD_KEY
+      ).toString();
+      const user = await axios.post(`http://localhost:8080/auth/login`, {
+        email: email,
+        password: encryptPassword,
+      });
+      if (user.data.success) {
+        router.push("/home");
+      } else {
+        setpasswordError("Email or password is incorrect");
+      }
     }
   };
 
