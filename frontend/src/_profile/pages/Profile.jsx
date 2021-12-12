@@ -62,7 +62,7 @@ const ProfilePage = () => {
               to="/profile/history"
             />
             <ProfileBox
-              title="Followed Shop"
+              title="Following Shop"
               icon={<StoreIcon style={iconStyles} />}
               to="/profile/followedshop"
             />
