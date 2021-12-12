@@ -277,7 +277,7 @@ model shop_flashsale_history {
 }
 
 model shop_banner {
-  id        Int    @id @default(autoincrement())
+  id        String @id
   title     String @db.VarChar(50)
   path      String @db.Text
   thumbnail String @db.Text
@@ -285,17 +285,17 @@ model shop_banner {
 }
 
 model shop_banner_carousel {
-  id      Int  @id @default(autoincrement())
+  id      String @id
   banners Json
 }
 
 model shop_product_carousel {
-  id       Int   @id @default(autoincrement())
+  id       String @id
   products Int[]
 }
 
 model shop_video {
-  id        Int    @id @default(autoincrement())
+  id        String @id
   title     String @db.VarChar(50)
   path      String @db.Text
   thumbnail String @db.Text
