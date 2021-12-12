@@ -8,6 +8,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 // import { resizedDir } from 'src/common/constant/storage';
 import { Prisma, customer, Gender, customer_address } from '.prisma/client';
 import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 
 // import { RegisterDto } from './dto/register.dts';
 @Injectable()
@@ -108,5 +109,21 @@ export class AuthenticationService {
 
 	public async remove(id: number) {
 		return `This action removes a #${id} authentication`;
+	}
+
+	public async login(data: LoginDto) {
+		const user = await this.prisma.customer.findFirst({
+			where: {
+				email: data.email,
+				password: data.password,
+			},
+		});
+		//test@gmail.com
+		//12345678
+		if (user) {
+			//JWT
+			return true;
+		}
+		return false;
 	}
 }
