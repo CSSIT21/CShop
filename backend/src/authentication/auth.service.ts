@@ -12,7 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 // import { RegisterDto } from './dto/register.dts';
 @Injectable()
 export class AuthenticationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	public async register(data: RegisterDto) {
 		const {
@@ -54,7 +54,7 @@ export class AuthenticationService {
 						create: [
 							{
 								primary: true,
-								address_id_address: {
+								address_id_from_customer_address: {
 									create: {
 										address_line: addressLine,
 										district,
