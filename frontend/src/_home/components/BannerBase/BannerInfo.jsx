@@ -14,7 +14,7 @@ import {
     FormControlLabel,
     Grid,
 } from '@mui/material';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import DateAdapter from '@mui/lab/AdapterDayjs';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -51,7 +51,7 @@ const BannerInfo = ({
 
                     <Grid item md={6}>
                         <Typography fontSize={18} fontWeight={500} mb={2}>Start Date</Typography>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
                                 value={item.start_date}
                                 renderInput={(params) => <TextField {...params} />}
@@ -62,7 +62,7 @@ const BannerInfo = ({
 
                     <Grid item md={6}>
                         <Typography fontSize={18} fontWeight={500} mb={2}>End Date</Typography>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
                                 value={item.end_date}
                                 renderInput={(params) => <TextField {...params} />}
