@@ -202,7 +202,7 @@ const SellerShopCustomization = () => {
 
   const GetComponent = ({ type, ...rest }) => {
     const Components = {
-      Youtube: <YoutubeSection {...rest} vid="UbYPG1GsZEI" />,
+      Youtube: <YoutubeSection {...rest} />,
       ImageBanner: <ImageBanner {...rest} />,
       CarouselProduct: <CarouselProduct {...rest} />,
       CarouselBanner: <CarouselBanner {...rest} />,
@@ -342,7 +342,6 @@ const SellerShopCustomization = () => {
                                   <GetComponent
                                     type={item.content}
                                     id={item.id}
-                                    vid="FmfGvRPFOTE"
                                     information={sectionInfos}
                                     setInformation={setSectionInfos}
                                     {...provided.dragHandleProps}
