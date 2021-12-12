@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ManageaccountService } from './manageaccount.service';
 import { CreateManageaccountDto } from './dto/create-manageaccount.dto';
 import { UpdateManageaccountDto } from './dto/update-manageaccount.dto';
@@ -21,13 +21,27 @@ export class ManageaccountController {
   }
 
   @Get('message')
-  getMessage(@Param('i') i: string){
-    //return this.prisma.product.findFirst({
-    //  where: {
-    //    id: parseInt(i)
-    //  }
-    //});
-    return i
+  getMessage(@Query('id') i: string){
+    return this.prisma.product.findFirst({
+      where: {
+        id: parseInt(i)
+      }
+    });
+  }
+
+  //Research from this
+  @Get('search')
+  searchAll(@Query('s') query:string){
+    return this.prisma.product.findMany({
+      where:{
+        title:{contains:query,mode:'insensitive'}
+      }
+    });
+  }
+
+  @Get('products')
+  getUsers(){
+    return this.prisma.product.findMany();
   }
 
   @Get(':id')

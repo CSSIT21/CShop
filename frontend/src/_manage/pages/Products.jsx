@@ -1,13 +1,11 @@
 import Paper from '@mui/material/Paper';
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { List } from "@mui/material";
-import { For } from "~/common/utils/index";
 import { styled } from '@mui/material/styles';
 import { Pagination } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
-import { Grid } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import { Checkbox } from '@mui/material';
@@ -17,16 +15,12 @@ import { FormControl } from '@mui/material'
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
-import { FormHelperText } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import { createTheme } from '@mui/material';
-import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { grey, red, orange } from '@mui/material/colors';
+import axios from "axios";
 
 const cardStyle = {
     width: '100%',
@@ -44,7 +38,8 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let products = [
+
+/*let products = [
     {
         id: 786645,
         avatarInitials: 'SD',
@@ -81,12 +76,26 @@ let products = [
         ratings: 4.75,
         comments: 65,
     },
-];
+];*/
 
 let resId = 1000;
 
+const getData = async () => {
+    this.setProducts();
+    console.log(this.products);
+  };
+
 const ManageAccountPage = () => {
     const classes = useStyles();
+    
+    const [products, setProductsList] = React.useState([]);
+    const setProducts = async () => {
+        const fetchedData = await axios.get(
+          "http://localhost:8080/manageaccount/products"
+        );
+        setProductsList(fetchedData.data);
+      };
+    
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
@@ -167,7 +176,7 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '12%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Products ({products.filter(product => product.name.toUpperCase().includes(search.toUpperCase())).length})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Products ({products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length})</Typography>
                         </Box>
                         <Box sx={{ width: '18%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Name</Typography>
@@ -197,7 +206,7 @@ const ManageAccountPage = () => {
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
                         {
-                        (products.filter(product => product.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { 
+                        (products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { 
                             return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
@@ -213,9 +222,16 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(products.filter(product => product.name.toUpperCase().includes(search.toUpperCase())).length - 1)/10} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    {
+                        products.length > 0 ?
+                        <Pagination count={Math.ceil((products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length - 1)/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>:
+                        <Pagination count={1}/>
+                    }
                 </div>
             </CardContent>
+            <Button onClick={setProducts}>
+                TEST
+            </Button>
         </div>
     );
 };

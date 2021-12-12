@@ -2,12 +2,10 @@ import Paper from '@mui/material/Paper';
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { List } from "@mui/material";
-import { For } from "~/common/utils/index";
 import { styled } from '@mui/material/styles';
 import { Pagination } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
-import { Grid } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import { Checkbox } from '@mui/material';
@@ -17,16 +15,12 @@ import { FormControl } from '@mui/material'
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
-import { FormHelperText } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import { createTheme } from '@mui/material';
-import CButton from "../../common/components/CButton";
-import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import React from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
 import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import axios from "axios";
 
 const cardStyle = {
     width: '100%',
