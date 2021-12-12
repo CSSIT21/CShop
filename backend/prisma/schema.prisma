@@ -181,6 +181,9 @@ model shop_info {
   shop_name                      String                          @db.VarChar(40)
   join_date                      DateTime                        @default(now())
   phone_number                   String                          @db.VarChar(10)
+  last_active                    DateTime?
+  description                    String                          @db.Text
+  followers                      Int?
   shop_picture                   shop_picture[]
   shop_comment                   shop_comment[]
   shop_section_log               shop_section_log[]
@@ -208,6 +211,7 @@ model shop_info {
   admin_reported_shop            admin_reported_shop[]
   home_shop_log                  home_shop_log[]
   customer_followed_shop         customer_followed_shop[]
+  shop_category                  shop_category[]
 }
 
 model shop_picture {
@@ -299,9 +303,11 @@ model shop_video {
 }
 
 model shop_category {
-  id       Int    @id @default(autoincrement())
-  title    String @db.VarChar(20)
-  products Int[]
+  id                         Int       @id @default(autoincrement())
+  shop_id                    Int
+  shop_id_from_shop_category shop_info @relation(fields: [shop_id], references: [id])
+  title                      String    @db.VarChar(20)
+  products                   Int[]
 }
 
 //--------------------------------------------------------------------------------------------
