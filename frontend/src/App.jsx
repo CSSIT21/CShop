@@ -228,15 +228,6 @@ function App() {
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
-                      <Route path="/profile/history">
-                        <HistoryPage />
-                      </Route>
-                      <Route path="/profile/followedshop">
-                        <FollowedShop />
-                      </Route>
-                      <Route path="/profile/history">
-                        <HistoryPage />
-                      </Route>
                       <Route path="/profile/followedshop">
                         <FollowedShop />
                       </Route>
