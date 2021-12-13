@@ -30,7 +30,7 @@ const ProductPage = (props) => {
       setProductDetails(data.product_details);
     });
     console.log(productDetails);
-  }, []);
+  }, [id]);
 
   return (
     <Box

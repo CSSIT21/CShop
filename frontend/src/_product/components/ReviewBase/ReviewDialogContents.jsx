@@ -8,8 +8,10 @@ import CommentsBox from "./CommentsBox";
 function ReviewDialogContents({
   generatedCommentsData,
   setChipData,
-  value,
-  setValue,
+  commentProduct,
+  setCommentProduct,
+  commentShop,
+  setCommentShop,
   handleChange,
   imageList,
   setImageList,
@@ -17,6 +19,8 @@ function ReviewDialogContents({
   deleteImage,
   starScore,
   setStarScore,
+  handleChangeCommentProduct,
+  handleChangeCommentShop,
 }) {
   return (
     <Box>
@@ -28,9 +32,12 @@ function ReviewDialogContents({
         setChipData={setChipData}
       />
       <CommentsBox
-        value={value}
-        setValue={setValue}
-        handleChange={handleChange}
+        commentProduct={commentProduct}
+        setCommentProduct={setCommentProduct}
+        commentShop={commentShop}
+        setCommentShop={setCommentShop}
+        handleChangeCommentProduct={handleChangeCommentProduct}
+        handleChangeCommentShop={handleChangeCommentShop}
         imageList={imageList}
         setImageList={setImageList}
         onUploadFile={onUploadFile}

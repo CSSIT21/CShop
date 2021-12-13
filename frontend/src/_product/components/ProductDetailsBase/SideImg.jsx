@@ -6,14 +6,13 @@ const sideImage = ({ img, ...rest }) => {
     <>
       <Box
         sx={{
-          width: "116px",
-          height: "116px",
+          width: "135.4px",
+          height: "135.4px",
 
-          border: "1px solid #EFF0F6",
           margin: "0px 13px 13px 0px",
           borderRadius: "10px",
 
-          backgroundColor: "#EFF0F6",
+          backgroundColor: "#EFEFF1B2",
           cursor: "pointer",
 
           display: "flex",

@@ -13,7 +13,8 @@ import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 function ReviewDialog() {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
-  const [commentText, setCommentText] = useState("");
+  const [commentProductText, setCommentProductText] = useState("");
+  const [commentShopText, setCommentShopText] = useState("");
   const [chipData, setChipData] = useState([
     { key: 0, label: "Good Quality", clicked: false },
     { key: 1, label: "Worth Buying", clicked: false },
@@ -57,11 +58,11 @@ function ReviewDialog() {
     imageList.forEach((el) => {
       if (imageList) imageCheck = true;
     });
-    if (commentText) commentCheck = true;
+    if (commentProductText) commentCheck = true;
     if (starScore != 0) scoreCheck = true;
     if (chipCheck || imageCheck || commentCheck || scoreCheck) allCheck = true;
     return allCheck;
-  }, [chipData, imageList, commentText, starScore]);
+  }, [chipData, imageList, commentProductText, starScore]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -78,8 +79,11 @@ function ReviewDialog() {
     setOpen(false);
   };
 
-  const handleChange = (e) => {
-    setCommentText(e.target.value.slice(0, 120));
+  const handleChangeCommentProduct = (e) => {
+    setCommentProductText(e.target.value.slice(0, 500));
+  };
+  const handleChangeCommentShop = (e) => {
+    setCommentShopText(e.target.value.slice(0, 500));
   };
 
   return (
@@ -105,9 +109,12 @@ function ReviewDialog() {
           <ReviewDialogContents
             generatedCommentsData={chipData}
             setChipData={setChipData}
-            value={commentText}
-            setValue={setCommentText}
-            handleChange={handleChange}
+            commentProduct={commentProductText}
+            setCommentProduct={setCommentProductText}
+            commentShop={commentShopText}
+            setCommentShop={setCommentShopText}
+            handleChangeCommentProduct={handleChangeCommentProduct}
+            handleChangeCommentShop={handleChangeCommentShop}
             imageList={imageList}
             setImageList={setImageList}
             onUploadFile={onUploadFile}

@@ -12,24 +12,51 @@ import {
   FavoriteRounded as FavoriteRoundedIcon,
   FavoriteBorderRounded as FavoriteBorderRoundedIcon,
 } from "@mui/icons-material";
+import OptionsChip from "../components/ProductDetailsBase/OptionsChip";
 
-const ProductDetails = ({ productDetails }) => {
+const ProductDetails = ({
+  productDetails,
+  opt = {
+    name: "Color",
+    options: [
+      { id: 1, name: "Red", enable: false },
+      { id: 2, name: "Greensadsdsadsd", enable: false },
+      { id: 3, name: "Yellowdsadsdad", enable: false },
+      { id: 4, name: "Pink", enable: false },
+      { id: 5, name: "Bluedsaddsadsad", enable: false },
+      { id: 6, name: "Black", enable: false },
+    ],
+  },
+  // opt,
+  cho = {
+    name: "Size",
+    choices: [
+      { id: 1, name: "XS", enable: false },
+      { id: 2, name: "S", enable: false },
+      { id: 3, name: "M", enable: false },
+      { id: 4, name: "L", enable: false },
+      { id: 5, name: "XL", enable: false },
+      { id: 6, name: "XXL", enable: false },
+    ],
+  },
+  // cho,
+}) => {
   const [product, setProduct] = useState({
     id: 0,
-    title: "Cheese Pizza very อร่อย มากๆๆๆ",
+    title: "CheesePizzaverydiliciousCheese Pizza very dilic1234567890",
     price: "500",
     status: "Hot sale",
     favourite: true,
+    sub_title:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitatione",
+    quantity: 20,
   });
-
-  const productName = "Product Name";
-  const productDetail = "Product Detail";
-  const price = "500";
-  const stock = "20";
-
+  const [options, setOptions] = useState(opt);
+  const [choices, setChoices] = useState(cho);
   const [open, setOpen] = useState(false);
+  const [count, setCount] = useState(1);
 
-  const handleClose = () => {
+  const handleClickClose = () => {
     setOpen(false);
   };
   const handleClickOpen = () => {
@@ -38,6 +65,20 @@ const ProductDetails = ({ productDetails }) => {
 
   const onFavourite = () => {
     setProduct({ ...product, favourite: !product.favourite });
+  };
+
+  const handleClickOption = (e) => {
+    const changedOptions = options.options.map((el) =>
+      el.id == e.id ? { ...el, enable: !el.enable } : { ...el, enable: false }
+    );
+    setOptions({ ...options, options: changedOptions });
+    console.log(options);
+  };
+  const handleClickChoice = (e) => {
+    const changedChoices = choices.choices.map((el) =>
+      el.id == e.id ? { ...el, enable: !el.enable } : { ...el, enable: false }
+    );
+    setChoices({ ...choices, choices: changedChoices });
   };
 
   return (
@@ -51,17 +92,23 @@ const ProductDetails = ({ productDetails }) => {
       <Box>
         <DisplayImage />
       </Box>
-      {/*ProductDetail*/}
-      <Box sx={{ margin: "0 90px" }}>
+      {/*sub_title.suProductDetail*/}
+      <Box sx={{ margin: "0 60px" }}>
         <Typography
-          sx={{ fontWeight: "500", fontSize: "36px", lineHeight: "54px" }}
+          sx={{
+            fontWeight: "500",
+            fontSize: "26px",
+            lineHeight: "36px",
+            marginBottom: "5px",
+          }}
         >
-          {productName}
+          {product.title.slice(0, 50)}
+          {product.title.length > 50 ? "..." : ""}
         </Typography>
         <Box sx={boxShareLike}>
           <Box>
             <IconButton>
-              <ShareIcon sx={{ color: "#A0A3BD", fontSize: "28px" }} />
+              <ShareIcon sx={{ color: "#A0A3BD", fontSize: "22px" }} />
             </IconButton>
             <IconButton
               onClick={(e) => {
@@ -70,7 +117,7 @@ const ProductDetails = ({ productDetails }) => {
               }}
               sx={{
                 fontWeight: "bold",
-                fontSize: "30px",
+                fontSize: "22px",
               }}
             >
               {product.favourite ? (
@@ -89,57 +136,75 @@ const ProductDetails = ({ productDetails }) => {
         </Box>
         <Typography
           sx={{
-            fontSize: "24px",
-            lineHeight: "36px",
+            fontSize: "18px",
+            lineHeight: "26px",
             color: "#A0A3BD",
+            marginTop: "10px",
           }}
         >
-          {productDetail}
+          {product.sub_title}
         </Typography>
         <Typography
           sx={{
-            fontSize: "36px",
-            lineHeight: "54px",
+            fontSize: "28px",
+            lineHeight: "36px",
             color: "#FD6637",
-            marginTop: "20px",
+            margin: "28px 0 0 0",
           }}
         >
-          {price} B.
+          {product.price} B.
         </Typography>
+        {/* options */}
+        {opt && (
+          <Box sx={optionStyle}>
+            <OptionsChip
+              handleClick={handleClickOption}
+              list={options.options}
+              name={options.name}
+            />
+          </Box>
+        )}
+        {/* choice */}
+        {cho && (
+          <Box sx={optionStyle}>
+            <OptionsChip
+              handleClick={handleClickChoice}
+              list={choices.choices}
+              name={choices.name}
+            />
+          </Box>
+        )}
         {/*Button*/}
-        <Box sx={{ display: "flex", alignItems: "center", marginTop: "70px" }}>
-          <Amount stock={stock} />
-          <Box sx={{ marginLeft: "20px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "30px",
+            width: "300px",
+          }}
+        >
+          <Amount count={count} setCount={setCount} stock={product.quantity} />
+          <Box sx={{ marginLeft: "15px" }}>
             <AddToCartButton
               title="Add to cart"
               icon={<ShoppingCartOutlinedIcon />}
-              width="200px"
-              height="56px"
+              width="190px"
+              height="38px"
               onClick={handleClickOpen}
-              sx={{ marginLeft: "0px" }}
+              sx={{ margin: "0px" }}
+              fontSize="12px"
             />
             <ConfirmDialogs
               text="The item already added in the cart"
               open={open}
-              handleClose={handleClose}
+              handleClose={handleClickClose}
             />
           </Box>
         </Box>
-        <Box sx={{ display: "flex", marginTop: "20px" }}>
-          <Typography
-            sx={{
-              fontSize: "18px",
-              color: "#A0A3BD",
-              marginLeft: "4px",
-            }}
-          >
-            Stock:
-          </Typography>
-          <Typography
-            sx={{ fontSize: "18px", marginLeft: "5px", color: "#A0A3BD" }}
-          >
-            {stock}
-          </Typography>
+        <Box sx={{ display: "flex", marginTop: "12px", fontSize: "16px" }}>
+          <Typography sx={stockStyle}>Stock:</Typography>
+          <Typography sx={stockStyle}>{product.quantity}</Typography>
         </Box>
       </Box>
     </Box>
@@ -148,10 +213,18 @@ const ProductDetails = ({ productDetails }) => {
 
 const boxShareLike = {
   display: "flex",
-  width: "475px",
-  height: "40px",
+  width: "425px",
+  height: "30px",
   alignItems: "center",
   justifyContent: "flex-end",
-  margin: "0 0 1px 0",
+  margin: "0 0 0px 0",
+};
+const optionStyle = {
+  margin: "20px 0 0px 0",
+  width: "375px",
+};
+const stockStyle = {
+  color: "#A0A3BD",
+  marginLeft: "5px",
 };
 export default ProductDetails;
