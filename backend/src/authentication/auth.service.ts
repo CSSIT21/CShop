@@ -4,17 +4,15 @@ import { v4 as uuid_gen } from 'uuid';
 import { nanoid } from 'nanoid';
 
 import { PrismaService } from 'src/prisma/prisma.service';
-// import { mkdirSync } from 'fs';
-// import { resizedDir } from 'src/common/constant/storage';
 import { Prisma, customer, Gender, customer_address } from '.prisma/client';
 import { RegisterDto } from './dto/register.dto';
-
-// import { RegisterDto } from './dto/register.dts';
+import { LoginDto } from './dto/login.dto';
 @Injectable()
 export class AuthenticationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	public async register(data: RegisterDto) {
+		console.log(data);
 		const {
 			email,
 			password,
@@ -32,52 +30,49 @@ export class AuthenticationService {
 			province,
 			subDistrict,
 		} = data;
-
+		let user;
 		if (password !== confirmPassword) throw new HttpException('Password mismatched!', 500);
+
+		if (await this.prisma.customer.findFirst({ where: { email } }))
+			throw new HttpException('Email already exists!', 500);
+
 		try {
-			const user = await this.prisma.customer.create({
+			user = await this.prisma.customer.create({
 				data: {
 					email,
-					password: CryptoJs.HmacSHA256(password, process.env.PASSWORD_KEY).toString(),
+					password: CryptoJs.HmacSHA512(password, process.env.PASSWORD_KEY).toString(),
 					customer_info: {
-						create: [
-							{
-								firstname,
-								lastname,
-								gender: Gender[gender.replace('preferNotToSay', 'PreferNotToSay')],
-								birthdate: new Date(year, month, day),
-								phone_number: phoneNumber,
-							},
-						],
+						create: {
+							firstname,
+							lastname,
+							gender: Gender[gender.replace('preferNotToSay', 'PreferNotToSay')],
+							birthdate: new Date(year, month, day),
+							phone_number: phoneNumber,
+						},
 					},
 					customer_address: {
-						create: [
-							{
-								primary: true,
-								address_id_from_customer_address: {
-									create: {
-										address_line: addressLine,
-										district,
-										postal_code: postalCode.toString(),
-										province,
-										sub_district: subDistrict,
+						create: {
+							primary: true,
+							address_id_from_customer_address: {
+								create: {
+									address_line: addressLine,
+									district,
+									postal_code: postalCode.toString(),
+									province,
+									sub_district: subDistrict,
+									recipient_name: firstname + ' ' + lastname,
+									phone_number: phoneNumber,
+									order_detail: {
+										create: [],
+									},
+									shop_info: {
+										create: [],
 									},
 								},
 							},
-						],
+						},
 					},
-					old_password: {
-						create: [],
-					},
-					wishlist: {
-						create: [],
-					},
-					customer_picture: {
-						create: [],
-					},
-					followed_shop: {
-						create: [],
-					},
+					// customer_picture: {},
 				},
 			});
 		} catch (e) {
@@ -90,7 +85,12 @@ export class AuthenticationService {
 			console.log(e.message);
 			throw new HttpException('Error create profile request body incorrect', 500);
 		}
-		return 'Complete!';
+		return {
+			message: 'Register success!',
+			user,
+			success: true,
+			statusCode: 200,
+		};
 	}
 
 	public async findAll() {
@@ -108,5 +108,21 @@ export class AuthenticationService {
 
 	public async remove(id: number) {
 		return `This action removes a #${id} authentication`;
+	}
+
+	public async login(data: LoginDto) {
+		const user = await this.prisma.customer.findFirst({
+			where: {
+				email: data.email,
+				password: data.password,
+			},
+		});
+		//test@gmail.com
+		//12345678
+		if (user) {
+			//JWT
+			return true;
+		}
+		return false;
 	}
 }

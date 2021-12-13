@@ -117,7 +117,7 @@ const Carousel = ({
   setPageState,
   children,
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(pageState);
   const [isHover, setIsHover] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const [cols, setCols] = useState(colsProp);
