@@ -5,7 +5,7 @@ import {
 export const EMPTY_ARR = [];
 export const EMPTY_OBJ = {};
 export const noot = <></>;
-export const noop = () => {};
+export const noop = () => { };
 export const isObj = t => typeof t === 'object';
 export const isDef = t => typeof t === 'undefined';
 export const isFunc = t => typeof t === 'function';
@@ -32,18 +32,31 @@ export const {
   random
 } = Math;
 
+export const convertFileBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+};
+
 export const shuffle = arr => arr.sort((a, b) => 0.5 - Math.random());
 
 export const assign = (obj, ...sources) => {
-  for(let props of sources){
+  for (let props of sources) {
     for (let i in props) obj[i] = props[i];
   }
   return (obj);
 };
 
 export const define = (obj, ...sources) => {
-  const newObj = {...obj};
-  for(let props of sources){
+  const newObj = { ...obj };
+  for (let props of sources) {
     for (let i in props) newObj[i] = props[i];
   }
   return (newObj);
@@ -60,7 +73,7 @@ export function For(props) {
   return <>{each.map(cb)}</>;
 }
 
-export function Json({children}){
+export function Json({ children }) {
   return JSON.stringify(children);
 }
 

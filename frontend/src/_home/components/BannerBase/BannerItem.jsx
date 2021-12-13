@@ -8,6 +8,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AddIcon from '@mui/icons-material/Add';
 import UploadButton from './UploadButton';
 import SubImage from './SubImage';
+import MainImage from './MainImage';
 import BannerInfo from './BannerInfo';
 import CButton from '~/common/components/CButton';
 import { noop } from '~/common/utils';
@@ -24,7 +25,7 @@ const BannerItem = ({
 	const classes = useStyles();
 	const wrapper = useRef(null);
 	const [open, setOpen] = useState(false);
-	const { head, children = [] } = item.pictures;
+	const { main, children = [] } = item.pictures;
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
@@ -71,27 +72,6 @@ const BannerItem = ({
 		});
 	};
 
-	const onInputChange = (value, attr) => {
-		setItems(items => {
-			items[index][attr] = value;
-			return [...items];
-		});
-	};
-
-	const onChipAdd = (value) => {
-		setItems(items => {
-			items[index].keywords.push(value);
-			return [...items];
-		});
-	};
-
-	const onChipDelete = (kwIndex) => {
-		setItems(items => {
-			items[index].keywords.splice(kwIndex, 1);
-			return [...items];
-		});
-	};
-
 	const onClickDialog = () => {
 		setOpen(!open);
 	};
@@ -107,19 +87,12 @@ const BannerItem = ({
 			<Stack direction="column" gap={4}>
 				{/* Main Image */}
 				<Stack justifyContent="center">
-					<Box className={classes.hoverImage}>
-						<img
-							width="100%"
-							src={head}
-							alt={`Banner ${item.order}`}
-							style={{ display: "block", transition: "0.25s all ease-in-out" }}
-						/>
-						<DeleteRoundedIcon
-							className={classes.iconStyle}
-							sx={{ fontSize: "2rem" }}
-							onClick={() => onDelete(index)}
-						/>
-					</Box>
+					<MainImage
+						path={main}
+						title={`Banner ${item.order}`}
+						Icon={<DeleteRoundedIcon />}
+						onClickHandler={() => onDelete(index)}
+					/>
 				</Stack>
 
 				{/* Add picture button */}
@@ -150,9 +123,6 @@ const BannerItem = ({
 					{/* Input form */}
 					<BannerInfo
 						item={item}
-						onInputChange={onInputChange}
-						onChipAdd={onChipAdd}
-						onChipDelete={onChipDelete}
 						open={open}
 						onClose={onClickDialog}
 					/>
@@ -199,30 +169,6 @@ const useStyles = makeStyles({
 		width: "100%",
 		height: "auto",
 		borderBottom: '1px solid #C4C4C4',
-	},
-
-	hoverImage: {
-		position: "relative",
-
-		"&:hover img": {
-			opacity: "0.5",
-		},
-		"&:hover .MuiSvgIcon-root": {
-			opacity: "1",
-		},
-		"& .MuiSvgIcon-root": {
-			opacity: "0",
-		},
-	},
-
-	iconStyle: {
-		color: "#FD6637",
-		top: "50%",
-		left: "50%",
-		position: "absolute",
-		transform: "translate(-50%, -50%)",
-		transition: "0.25s all ease-in-out",
-		cursor: "pointer"
 	},
 });
 
