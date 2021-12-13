@@ -39,62 +39,61 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 
-/*let products = [
+let products = [
     {
-        id: 786645,
+        id: 12,
         avatarInitials: 'SD',
         avatarColor: red[400],
-        name: 'Sanguine Desire',
-        price: '150.00$',
-        stock: 5,
+        path: '',
+        title: 'Sanguine Desire',
+        price: 150,
+        quantity: 5,
         sold: 2,
-        shop: 'The Library',
-        ratings: 3.8,
+        shop_id: 1,
+        rating: 3.8,
         comments: 30,
     },
     {
-        id: 834535,
-        avatarInitials: 'NH',
-        avatarColor: grey[800],
-        name: 'Nihil',
-        price: '8500.00$',
-        stock: 1,
-        sold: 0,
-        shop: 'The Library',
-        ratings: 0,
-        comments: 0,
+        id: 13,
+        avatarInitials: 'SD',
+        avatarColor: red[400],
+        path: '',
+        title: 'Furioso',
+        price: 300,
+        quantity: 9,
+        sold: 3,
+        shop_id: 2,
+        rating: 4.2,
+        comments: 35,
     },
     {
-        id: 756122,
-        avatarInitials: 'FM',
-        avatarColor: orange[500],
-        name: 'Fourth Match Flame',
-        price: '75.00$',
-        stock: 10,
-        sold: 4,
-        shop: 'The Library',
-        ratings: 4.75,
-        comments: 65,
+        id: 1412,
+        avatarInitials: 'SD',
+        avatarColor: red[400],
+        path: '',
+        title: 'Paradise Lost',
+        price: 666,
+        quantity: 6,
+        sold: 6,
+        shop_id: 6,
+        rating: 0.6,
+        comments: 66,
     },
-];*/
+];
 
 let resId = 1000;
-
-const getData = async () => {
-    this.setProducts();
-    console.log(this.products);
-  };
 
 const ManageAccountPage = () => {
     const classes = useStyles();
     
-    const [products, setProductsList] = React.useState([]);
+    /*const [products, setProductsList] = React.useState([]);
     const setProducts = async () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/products"
         );
         setProductsList(fetchedData.data);
-      };
+        console.log(products);
+      };*/
     
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -155,13 +154,13 @@ const ManageAccountPage = () => {
                               className={classes.root}
                               onChange={setSort}
                             >
-                              <MenuItem value={'name'}>Product Name</MenuItem>
+                              <MenuItem value={'title'}>Product Name</MenuItem>
                               <MenuItem value={'price'}>Price</MenuItem>
-                              <MenuItem value={'stock'}>Stock</MenuItem>
+                              <MenuItem value={'quantity'}>Stock</MenuItem>
                               <MenuItem value={'sold'}>Sold</MenuItem>
-                              <MenuItem value={'shop'}>Shop Name</MenuItem>
+                              <MenuItem value={'shop_id'}>Shop Name</MenuItem>
                               <MenuItem value={'rating'}>Ratings</MenuItem>
-                              <MenuItem value={'Comments'}>Comments</MenuItem>
+                              <MenuItem value={'comments'}>Comments</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -224,12 +223,12 @@ const ManageAccountPage = () => {
                 <div style={{ display:'flex', justifyContent:'center' }}>
                     {
                         products.length > 0 ?
-                        <Pagination count={Math.ceil((products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length - 1)/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>:
+                        <Pagination count={Math.ceil((products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length)/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>:
                         <Pagination count={1}/>
                     }
                 </div>
             </CardContent>
-            <Button onClick={setProducts}>
+            <Button>
                 TEST
             </Button>
         </div>

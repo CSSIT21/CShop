@@ -40,7 +40,7 @@ export class ManageaccountController {
   }
 
   @Get('products')
-  getUsers(){
+  getProducts(){
     return this.prisma.product.findMany();
   }
 

@@ -2,12 +2,10 @@ import Paper from '@mui/material/Paper';
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { List } from "@mui/material";
-import { For } from "~/common/utils/index";
 import { styled } from '@mui/material/styles';
 import { Pagination } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
-import { Grid } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import { Checkbox } from '@mui/material';
@@ -18,13 +16,10 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import SellerCard from "../components/SellerCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { brown } from '@mui/material/colors';
 const cardStyle = {
     width: '100%',
     padding: '0px',
@@ -46,69 +41,158 @@ let sellers = [
         id: 2000,
         avatarInitials: 'LB',
         avatarColor: brown[600],
-        name: 'The Library',
+        path: '',
+        shop_name: 'The Library',
         productCount: 46,
         followers: 254685,
-        joinDate: '15/05/2020',
+        date: '15/05/2020',
         cancelRate: '2%',
         rating: 3.2,
-        restrictions: [
-            {id:2, type:'Nest Relocation', assigner:'CuteArbiterZena', startTime:'08/10/2020', endTime:'01/12/2021', desc:'Violating the AI Ethics Amendment'}
-        ]
-    },
-    {
-        id: 4444,
-        avatarInitials: '死',
-        avatarColor: red[800],
-        name: 'Shi Association',
-        productCount: 44,
-        followers: 44444,
-        joinDate: '04/04/2014',
-        cancelRate: '4%',
-        rating: 4.4,
         restrictions: []
     },
     {
-        id: 1201,
-        avatarInitials: 'LC',
-        avatarColor: red[400],
-        name: 'Lobotomy Corporation',
-        productCount: 128,
-        followers: 123463,
-        joinDate: '12/07/2016',
-        cancelRate: '21%',
-        rating: 1.3,
-        restrictions: [
-            {id:24, type:'Transaction Restrictions', assigner:'AdminGarion', startTime:'22/11/2016', endTime:'22/12/2016', desc:'Improper Handling of Products'},
-            {id:25, type:'Full Restrictions', assigner:'AdminGarion', startTime:'22/12/2016', endTime:'31/12/2999', desc:'Improper Handling of Products'}
-        ]
+        id: 2001,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
     },
     {
-        id: 9898,
-        avatarInitials: 'H',
-        avatarColor: orange[300],
-        name: 'The Head',
-        productCount: 0,
-        followers: 34581245,
-        joinDate: '08/03/1978',
-        cancelRate: '0%',
-        rating: 5.0,
-        restrictions: [
-        ]
+        id: 2002,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
     },
     {
-        id: 1019,
-        avatarInitials: 'NS',
-        avatarColor: lightGreen[600],
-        name: 'A Normal Shop',
-        productCount: 12,
-        followers: 492,
-        joinDate: '20/02/2018',
-        cancelRate: '0.8%',
-        rating: 4.1,
-        restrictions: [
-        ]
-    }
+        id: 2003,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2004,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2005,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2006,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2007,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2008,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2009,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2010,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
+    {
+        id: 2011,
+        avatarInitials: 'LB',
+        avatarColor: brown[600],
+        path: '',
+        shop_name: 'The Library',
+        productCount: 46,
+        followers: 254685,
+        date: '15/05/2020',
+        cancelRate: '2%',
+        rating: 3.2,
+        restrictions: []
+    },
 ];
 
 let resId = 1000;
@@ -194,12 +278,12 @@ const ManageSellerAccountPage = () => {
                               className={classes.root}
                               onChange={setSort}
                             >
-                              <MenuItem value={'name'}>Name</MenuItem>
+                              <MenuItem value={'shop_name'}>Name</MenuItem>
                               <MenuItem value={'id'}>User ID</MenuItem>
                               <MenuItem value={'productCount'}>Products</MenuItem>
                               <MenuItem value={'followers'}>Followers</MenuItem>
                               <MenuItem value={'cancelRate'}>Cancel Rate</MenuItem>
-                              <MenuItem value={'joinDate'}>Join Date</MenuItem>
+                              <MenuItem value={'date'}>Join Date</MenuItem>
                               <MenuItem value={'rating'}>Rating</MenuItem>
                             </Select>
                         </FormControl>
@@ -215,7 +299,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '25%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : sellers.filter(seller => seller.name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Shop Name</Typography>
@@ -243,11 +327,11 @@ const ManageSellerAccountPage = () => {
                     <CardContent>
                         {
                         (showRestricted ? 
-                            (sellers.filter(seller => seller.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
                                 return obj.restrictions.length > 0;
                             })
-                            : (sellers.filter(seller => seller.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            : (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
                             <li key={key.id.toString()}>
@@ -262,7 +346,7 @@ const ManageSellerAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (sellers.filter(seller => seller.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Restricted';})).length : sellers.filter(seller => seller.name.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Restricted';})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>

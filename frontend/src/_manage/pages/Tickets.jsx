@@ -47,56 +47,16 @@ const Item = styled(Paper)(({ theme }) => ({
 let tickets = [
     {
         id: 89547,
-        name: 'Missing Coffee',
-        desc: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type: 'User Report',
-        filer: 'Daniel Chesed',
+        title: 'Missing Coffee',
+        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
+        type_title: 'User Report',
+        customer_id: 'Daniel Chesed',
         target: 'Garion Binah',
-        filedDate: '01/08/2020',
-        assignee: 'AdminAngela',
+        sent_date: '01/08/2020',
+        admin_id: 'AdminAngela',
         status: 'Open',
-        title: 'fake support picture',
-        image: "https://via.placeholder.com/410x360"
+        path: "https://via.placeholder.com/410x360"
     },
-    {
-        id: 89548,
-        name: 'Missing Tea',
-        desc: 'That blue nobel boy spiked my perfectly good tea with coffee. Maybe I should do a Daniel on him once more.',
-        type: 'User Report',
-        filer: 'Garion Binah',
-        target: 'Daniel Chesed',
-        filedDate: '02/08/2020',
-        assignee: 'AdminAngela',
-        status: 'Open',
-        title: 'fake support picture',
-        image: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89429,
-        name: 'Missing Category',
-        desc: 'I cant seem to buy the things I want from CShop? There isnt a category for weapons of mass destruction on here. Is this a bug?',
-        type: 'Bug Report',
-        filer: 'Lisa Tiphereth',
-        target: 'Category System',
-        filedDate: '10/06/2020',
-        assignee: 'AdminAngela',
-        status: 'Closed',
-        title: 'fake support picture',
-        image: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 87429,
-        name: 'Lorem ipsum dolor sit amet',
-        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ornare erat accumsan justo tempor efficitur. Donec convallis libero sit amet odio auctor, luctus auctor est euismod. Etiam in sem at lectus consectetur laoreet venenatis eget lacus. Donec quis turpis laoreet, aliquam diam eu, molestie leo. Nunc dapibus sapien id ornare fringilla. Fusce tempor pulvinar dolor, vitae condimentum felis bibendum nec. Quisque facilisis congue pulvinar. Praesent ut massa pulvinar, ullamcorper elit sed, egestas tortor. Mauris nec sollicitudin lorem. Vestibulum quis eleifend nibh.',
-        type: 'Seller Report',
-        filer: 'Don Quixote',
-        target: 'The Library',
-        filedDate: '21/02/2020',
-        assignee: 'Vergilius',
-        status: 'Open',
-        title: 'fake support picture',
-        image: "https://via.placeholder.com/410x360"
-    }
 ];
 
 const ManageSellerAccountPage = () => {
@@ -173,7 +133,7 @@ const ManageSellerAccountPage = () => {
                               className={classes.root}
                               onChange={setSort}
                             >
-                              <MenuItem value={'desc'}>Content</MenuItem>
+                              <MenuItem value={'description'}>Content</MenuItem>
                               <MenuItem value={'type'}>Type</MenuItem>
                               <MenuItem value={'filer'}>Filer</MenuItem>
                               <MenuItem value={'target'}>Target</MenuItem>
@@ -194,7 +154,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '50%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Tickets ({(!showClosed ? (tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status != 'Closed';})).length : tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Tickets ({(!showClosed ? (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status != 'Closed';})).length : tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '16%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Type</Typography>
@@ -224,8 +184,8 @@ const ManageSellerAccountPage = () => {
                     <CardContent>
                         {
                         (showClosed ? 
-                            (tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
-                            : (tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            : (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
                                 return obj.status != 'Closed';
                             })
@@ -243,7 +203,7 @@ const ManageSellerAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showClosed ? (tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Closed';})).length : tickets.filter(ticket => ticket.desc.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showClosed ? (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Closed';})).length : tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>

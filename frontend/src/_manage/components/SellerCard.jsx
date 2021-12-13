@@ -1,14 +1,10 @@
 import React from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
 import { Collapse } from "@mui/material";
-import { IconButton } from "@mui/material";
 import { Typography } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
-import { grey, lightBlue, amber } from '@mui/material/colors';
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
@@ -17,7 +13,6 @@ import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import DeleteIcon from '@mui/icons-material/Delete';
 import RestrictionCard from "../components/RestrictionCard";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -98,13 +93,13 @@ export class SellerCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '7%' }} className={classes.header}>
-              <Avatar sx={{ bgcolor: this.props.seller.avatarColor, width: 60, height: 60 }}>{this.props.seller.avatarInitials}</Avatar>
+              <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography noWrap style={{ fontSize: '15px'}}>#{this.props.seller.id}</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.seller.name}</Typography>
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.seller.shop_name}</Typography>
             </Box>
             <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.productCount}</Typography>
@@ -116,7 +111,7 @@ export class SellerCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.cancelRate}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.joinDate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.date}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>

@@ -1,28 +1,18 @@
 import React from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
 import { Collapse } from "@mui/material";
-import { IconButton } from "@mui/material";
 import { Typography } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CardLayout } from "./UserCardStyled";
-import { Avatar } from "@mui/material";
-import { grey, lightBlue, amber } from '@mui/material/colors';
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
-import { Grid } from "@mui/material";
-import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
-import { FormGroup } from "@mui/material";
 import { FormControl } from "@mui/material";
-import { FormControlLabel } from "@mui/material";
 import { Select } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import DeleteIcon from '@mui/icons-material/Delete';
 import SupportMedia from "../components/SupportMedia";
 
 export class TicketCard extends React.Component {
@@ -56,7 +46,7 @@ export class TicketCard extends React.Component {
   };
 
   addRes = () => {
-    this.props.addRestriction(this.props.ticket.id, this.type, this.desc, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
+    this.props.addRestriction(this.props.ticket.id, this.type_title, this.description, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
     this.forceUpdate();
     this.dialogClose();
   };
@@ -75,22 +65,22 @@ export class TicketCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '30%', overflow: "hidden", textOverflow: "ellipsis", display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', wordWrap: 'break-word', lineClamp: 1}}>{this.props.ticket.name}</Typography>
+              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', wordWrap: 'break-word', lineClamp: 1}}>{this.props.ticket.title}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.type}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.type_title}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.filer}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.customer_id}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.target}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.filedDate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.sent_date}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.assignee}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.admin_id}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
@@ -130,7 +120,7 @@ export class TicketCard extends React.Component {
                 border: 'none',
                 margin: '10px'}}>
                   <Box sx={{ display:'flex', flexDirection: 'column', justifyContent: 'left' }}>  
-                  <Typography style={{ fontSize: '15px', margin:'25px'}}>{this.props.ticket.desc}</Typography>
+                  <Typography style={{ fontSize: '15px', margin:'25px'}}>{this.props.ticket.description}</Typography>
                   </Box>
                 </Card>
               </Box>
@@ -138,7 +128,7 @@ export class TicketCard extends React.Component {
               </Box>
 
               <Box sx={{width:'25%', display:'flex', flexDirection: 'column', justifyContent: 'center', margin:'16px'}}>
-                <SupportMedia image={this.props.ticket.image} title={this.props.ticket.title} />
+                <SupportMedia image={this.props.ticket.path} title={this.props.ticket.path} />
               </Box>
 
               <Box sx={{display:'flex', flexDirection: 'column', margin:'25px'}}>

@@ -43,164 +43,144 @@ let users = [
         id: 24578,
         avatarInitials: 'HB',
         avatarColor: grey[400],
+        path: '',
         name: 'Hokma Benjamin',
-        address: 'Nest of former L Corp, District 12, The City',
+        address_line: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
-        postal: '10120',
-        joinDate: '10/10/2020',
-        birthDate: '02/08/1987',
-        restrictions: [
-            {id:1, type:'Comment Restriction', assigner:'Admin007', startTime:'10/10/2020', endTime:'17/10/2020', desc:'Rude Comment'},
-            {id:2, type:'Transaction Restriction', assigner:'muumel', startTime:'10/10/2020', endTime:'10/11/2020', desc:'Unexpected Chargeback'},
-            {id:3, type:'Terms of Service Violation, Pretty much a War Crime', assigner:'IHateAyinSoMuchYouDontEvenKnow', startTime:'10/10/2020', endTime:'31/12/2999', desc:'Collaborated with Lady Dias, Leader of the Udjats to start the Smoke War, toppling the previous L Corp to establish Lobotomy Corporation'},
-          ]
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
     },
     {
-        id: 10695,
-        avatarInitials: 'TA',
-        avatarColor: amber[400],
-        name: 'Lisa Tiphereth',
-        address: 'Nest of former L Corp, District 12, The City',
-        gender: 'Female',
-        postal: '10120',
-        joinDate: '02/03/2019',
-        birthDate: '11/11/2004',
-        restrictions: [
-          ]
-    },
-    {
-        id: 10696,
-        avatarInitials: 'TB',
-        avatarColor: orange[400],
-        name: 'Enoch Tiphereth',
-        address: 'Nest of former L Corp, District 12, The City',
+        id: 24571,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
-        postal: '10120',
-        joinDate: '02/03/2019',
-        birthDate: '28/07/2004',
-        restrictions: [
-            {id:10, type:'Full Restriction', assigner:'Admin007', startTime:'12/09/2014', endTime:'31/12/2999', desc:'Carmen is a coward'}
-          ]
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
     },
     {
-        id: 31237,
-        avatarInitials: 'GB',
-        avatarColor: red[500],
-        name: 'Kali "The Red Mist" Gebura',
-        address: 'Nest of former L Corp, District 12, The City',
-        gender: 'Female',
-        postal: '10120',
-        joinDate: '12/01/2020',
-        birthDate: '31/08/1998',
-        restrictions: [
-          ]
-    },
-    {
-        id: 64531,
-        avatarInitials: 'CC',
-        avatarColor: grey[700],
-        name: 'Captain Catt',
-        address: 'Wonderlab Branch, District 21, The City',
-        gender: 'Female',
-        postal: '10172',
-        joinDate: '01/01/2021',
-        birthDate: '13/03/2000',
-        restrictions: [
-          ]
-    },
-    {
-        id: 85411,
-        avatarInitials: 'TA',
-        avatarColor: pink[300],
-        name: 'Taii',
-        address: 'Wonderlab Branch, District 21, The City',
-        gender: 'N/A',
-        postal: '10172',
-        joinDate: '12/9/2021',
-        birthDate: '14/02/2001',
-        restrictions: [
-          ]
-    },
-    {
-        id: 12374,
-        avatarInitials: 'EM',
-        avatarColor: orange[800],
-        name: 'Elijah Malkuth',
-        address: 'Nest of former L Corp, District 12, The City',
-        gender: 'Female',
-        postal: '10120',
-        joinDate: '08/11/2018',
-        birthDate: '03/12/1998',
-        restrictions: [
-          ]
-    },
-    {
-        id: 25487,
-        avatarInitials: 'YE',
-        avatarColor: deepPurple[400],
-        name: 'Gabriel Yesod',
-        address: 'Nest of former L Corp, District 12, The City',
+        id: 24572,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
-        postal: '10120',
-        joinDate: '06/02/2015',
-        birthDate: '11/07/1996',
-        restrictions: [
-          ]
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
     },
     {
-        id: 38875,
-        avatarInitials: 'HO',
-        avatarColor: brown[700],
-        name: 'Michelle Hod',
-        address: 'Nest of former L Corp, District 12, The City',
-        gender: 'Female',
-        postal: '10120',
-        joinDate: '21/10/2018',
-        birthDate: '30/11/1997',
-        restrictions: [
-            {id:90, type:'Full Restriction', assigner:'Ayin', startTime:'15/08/2014', endTime:'31/12/2999', desc:'"Snitch..." -Ayin'}
-          ]
-    },
-    {
-        id: 31238,
-        avatarInitials: 'CH',
-        avatarColor: blue[500],
-        name: 'Daniel Chesed',
-        address: 'Nest of former L Corp, District 12, The City',
+        id: 24573,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
-        postal: '10120',
-        joinDate: '21/08/2017',
-        birthDate: '03/12/1992',
-        restrictions: [
-          ]
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
     },
     {
-        id: 97112,
-        avatarInitials: 'OF',
-        avatarColor: grey[900],
-        name: 'Roland "The Black Slience"',
-        address: 'Nest of former L Corp, District 12, The City',
+        id: 24574,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
-        postal: '10120',
-        joinDate: '10/11/2021',
-        birthDate: '09/10/1992',
-        restrictions: [
-          ]
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
     },
-    ,
     {
-        id: 47121,
-        avatarInitials: 'NZ',
-        avatarColor: lightGreen[500],
-        name: 'Giovanni Netzach',
-        address: 'Nest of former L Corp, District 12, The City',
+        id: 24575,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
         gender: 'Male',
-        postal: '10120',
-        joinDate: '18/01/2018',
-        birthDate: '09/04/1990',
-        restrictions: [
-            {id:11, type:'Transaction Restriction', assigner:'Admin007', startTime:'25/12/2015', endTime:'25/02/2016', desc:'Unregulated Transaction of Alcohol'}
-          ]
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
+    },
+    {
+        id: 24576,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
+    },
+    {
+        id: 34578,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
+    },
+    {
+        id: 24278,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
+    },
+    {
+        id: 24518,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
+    },
+    {
+        id: 24378,
+        avatarInitials: 'HB',
+        avatarColor: grey[400],
+        path: '',
+        name: 'Hokma Benjamin',
+        address_line: 'Nest of former L Corp, District 12, The City',
+        gender: 'Male',
+        postal_code: '10120',
+        date: '10/10/2020',
+        birthdate: '02/08/1987',
+        restrictions: [],
     },
 ];
 
@@ -289,11 +269,11 @@ const ManageAccountPage = () => {
                             >
                               <MenuItem value={'name'}>Name</MenuItem>
                               <MenuItem value={'id'}>User ID</MenuItem>
-                              <MenuItem value={'address'}>Address</MenuItem>
+                              <MenuItem value={'address_line'}>Address</MenuItem>
                               <MenuItem value={'gender'}>Gender</MenuItem>
-                              <MenuItem value={'postal'}>Postal Code</MenuItem>
-                              <MenuItem value={'joinDate'}>Join Date</MenuItem>
-                              <MenuItem value={'birthDate'}>Birthday</MenuItem>
+                              <MenuItem value={'postal_code'}>Postal Code</MenuItem>
+                              <MenuItem value={'date'}>Join Date</MenuItem>
+                              <MenuItem value={'birthdate'}>Birthday</MenuItem>
                               <MenuItem value={'status'}>Status</MenuItem>
                             </Select>
                         </FormControl>
@@ -356,7 +336,7 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>

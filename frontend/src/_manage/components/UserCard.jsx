@@ -1,23 +1,17 @@
 import React from "react";
 import { Card, TextField } from "@mui/material";
 import { CardContent } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
 import { Collapse } from "@mui/material";
-import { IconButton } from "@mui/material";
 import { Typography } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
-import { grey, lightBlue, amber } from '@mui/material/colors';
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { MenuItem } from "@mui/material";
 import { Grid } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import DeleteIcon from '@mui/icons-material/Delete';
 import RestrictionCard from "../components/RestrictionCard";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -98,26 +92,26 @@ export class UserCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '7%' }} className={classes.header}>
-              <Avatar sx={{ bgcolor: this.props.user.avatarColor, width: 60, height: 60 }}>{this.props.user.avatarInitials}</Avatar>
+              <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.user.name}</Typography>
               <Typography noWrap style={{ fontSize: '15px'}}>#{this.props.user.id}</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px'}}>{this.props.user.address}</Typography>
+              <Typography style={{ fontSize: '15px'}}>{this.props.user.address_line}</Typography>
             </Box>
             <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.gender}</Typography>
             </Box>
             <Box sx={{ width: '9.5%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.postal}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.postal_code}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.joinDate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.date}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.birthDate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.birthdate}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
