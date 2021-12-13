@@ -386,6 +386,7 @@ CREATE TABLE "product_options" (
     "id" SERIAL NOT NULL,
     "product_id" INTEGER NOT NULL,
     "name" VARCHAR(20) NOT NULL,
+    "enable" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "product_options_pkey" PRIMARY KEY ("id")
 );
@@ -395,6 +396,7 @@ CREATE TABLE "product_choices" (
     "id" SERIAL NOT NULL,
     "product_options_id" INTEGER NOT NULL,
     "name" VARCHAR(30) NOT NULL,
+    "enable" BOOLEAN NOT NULL DEFAULT false,
     "price" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
 
@@ -1174,6 +1176,10 @@ CREATE TABLE "admin_support_picture" (
 -- CreateTable
 CREATE TABLE "admin_support" (
     "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "target" TEXT NOT NULL,
+    "admin_id" INTEGER NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "support_type_id" INTEGER NOT NULL,
     "sent_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1281,7 +1287,6 @@ CREATE TABLE "home_banner" (
     "picture_id" INTEGER[],
     "order" INTEGER NOT NULL,
     "keywords" VARCHAR(20)[],
-    "type" "homePartnerType" NOT NULL,
     "visible" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "home_banner_pkey" PRIMARY KEY ("id")
@@ -1325,6 +1330,7 @@ CREATE TABLE "home_partner" (
     "end_date" TIMESTAMP(6) NOT NULL,
     "join_date" TIMESTAMP(6) NOT NULL,
     "description" TEXT NOT NULL,
+    "type" "homePartnerType" NOT NULL,
     "title_pic" VARCHAR(50) NOT NULL,
     "path" TEXT NOT NULL,
     "thumbnail" TEXT NOT NULL,

@@ -390,6 +390,7 @@ model product_options {
   id                              Int               @id @default(autoincrement())
   product_id                      Int
   name                            String            @db.VarChar(20)
+  enable                          Boolean           @default(false)
   product_id_from_product_options product           @relation(fields: [product_id], references: [id])
   product_choices                 product_choices[]
 }
@@ -398,6 +399,7 @@ model product_choices {
   id                                      Int             @id @default(autoincrement())
   product_options_id                      Int
   name                                    String          @db.VarChar(30)
+  enable                                  Boolean         @default(false)
   price                                   Int
   quantity                                Int
   product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
