@@ -1227,15 +1227,14 @@ model home_banner_picture {
 }
 
 model home_banner {
-  id          Int             @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   description String
-  start_date  DateTime        @db.Timestamp(6)
-  end_date    DateTime        @db.Timestamp(6)
+  start_date  DateTime @db.Timestamp(6)
+  end_date    DateTime @db.Timestamp(6)
   picture_id  Int[]
   order       Int
-  keywords    String[]        @db.VarChar(20)
-  type        homePartnerType
-  visible     Boolean         @default(true)
+  keywords    String[] @db.VarChar(20)
+  visible     Boolean  @default(true)
 }
 
 model home_popup {
@@ -1262,14 +1261,15 @@ model home_app_review {
 }
 
 model home_partner {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
-  title       String   @db.VarChar(100)
-  start_date  DateTime @db.Timestamp(6)
-  end_date    DateTime @db.Timestamp(6)
-  join_date   DateTime @db.Timestamp(6)
+  title       String          @db.VarChar(100)
+  start_date  DateTime        @db.Timestamp(6)
+  end_date    DateTime        @db.Timestamp(6)
+  join_date   DateTime        @db.Timestamp(6)
   description String
-  title_pic   String   @db.VarChar(50)
+  type        homePartnerType
+  title_pic   String          @db.VarChar(50)
   path        String
   thumbnail   String
 }
