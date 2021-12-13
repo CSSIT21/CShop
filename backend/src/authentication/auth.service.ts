@@ -54,7 +54,7 @@ export class AuthenticationService {
 						create: [
 							{
 								primary: true,
-								address_id_address: {
+								address_id_from_customer_address: {
 									create: {
 										address_line: addressLine,
 										district,
