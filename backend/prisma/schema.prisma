@@ -429,6 +429,7 @@ model discount_shop {
   discount_id                    Int       @id
   shop_id                        Int
   quantity                       Int
+  max_quantity                   Int
   discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
   shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -449,6 +450,7 @@ model discount_event {
   shop_id                         Int
   event_id                        Int
   quantity                        Int
+  max_quantity                    Int
   discount_id_from_discount_event discount  @relation(fields: [discount_id], references: [id])
   event_id_from_discount_event    event     @relation(fields: [event_id], references: [id])
   shop_id_from_discount_event     shop_info @relation(fields: [shop_id], references: [id])
@@ -457,6 +459,7 @@ model discount_event {
 model discount_app {
   discount_id                   Int      @id
   quantity                      Int
+  max_quantity                  Int
   discount_id_from_discount_app discount @relation(fields: [discount_id], references: [id])
 }
 
@@ -464,6 +467,7 @@ model discount_category {
   discount_id                        Int      @id
   category_id                        Int
   quantity                           Int
+  max_quantity                       Int
   category_id_from_discount_category category @relation(fields: [category_id], references: [id])
   discount_id_from_discount_category discount @relation(fields: [discount_id], references: [id])
 }
@@ -475,20 +479,21 @@ model discount_user_code {
   discount_id_from_iscount_user_code  discount @relation(fields: [discount_id], references: [id])
 }
 
-model discount_spend_types {
+model discount_reward {
   id                      Int                       @id @default(autoincrement())
   type                    DiscountUserTypes
-  amonut                  Int
+  quantity                Int
   description             String
+  max_quantity            Int
   discount_customer_spend discount_customer_spend[]
 }
 
 model discount_customer_spend {
-  customer_id                                Int                  @id
+  customer_id                                Int             @id
   total_spend                                Int
   spend_type_id                              Int
-  customer_id_from_discount_customer_spend   customer             @relation(fields: [customer_id], references: [id])
-  spend_type_id_from_discount_customer_spend discount_spend_types @relation(fields: [spend_type_id], references: [id])
+  customer_id_from_discount_customer_spend   customer        @relation(fields: [customer_id], references: [id])
+  spend_type_id_from_discount_customer_spend discount_reward @relation(fields: [spend_type_id], references: [id])
 }
 
 model discount_coin_information {

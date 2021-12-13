@@ -422,6 +422,7 @@ CREATE TABLE "discount_shop" (
     "discount_id" INTEGER NOT NULL,
     "shop_id" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "max_quantity" INTEGER NOT NULL,
 
     CONSTRAINT "discount_shop_pkey" PRIMARY KEY ("discount_id")
 );
@@ -441,6 +442,7 @@ CREATE TABLE "discount_event" (
     "shop_id" INTEGER NOT NULL,
     "event_id" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "max_quantity" INTEGER NOT NULL,
 
     CONSTRAINT "discount_event_pkey" PRIMARY KEY ("discount_id")
 );
@@ -449,6 +451,7 @@ CREATE TABLE "discount_event" (
 CREATE TABLE "discount_app" (
     "discount_id" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "max_quantity" INTEGER NOT NULL,
 
     CONSTRAINT "discount_app_pkey" PRIMARY KEY ("discount_id")
 );
@@ -458,6 +461,7 @@ CREATE TABLE "discount_category" (
     "discount_id" INTEGER NOT NULL,
     "category_id" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "max_quantity" INTEGER NOT NULL,
 
     CONSTRAINT "discount_category_pkey" PRIMARY KEY ("discount_id")
 );
@@ -471,13 +475,14 @@ CREATE TABLE "discount_user_code" (
 );
 
 -- CreateTable
-CREATE TABLE "discount_spend_types" (
+CREATE TABLE "discount_reward" (
     "id" SERIAL NOT NULL,
     "type" "DiscountUserTypes" NOT NULL,
-    "amonut" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
+    "max_quantity" INTEGER NOT NULL,
 
-    CONSTRAINT "discount_spend_types_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "discount_reward_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -499,6 +504,24 @@ CREATE TABLE "discount_coin_information" (
     "get_from" TEXT NOT NULL,
 
     CONSTRAINT "discount_coin_information_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "discount_used_coin" (
+    "customer_id" INTEGER NOT NULL,
+    "used_time" TIMESTAMP NOT NULL,
+    "used_amount" INTEGER NOT NULL,
+    "user_for" TEXT NOT NULL,
+
+    CONSTRAINT "discount_used_coin_pkey" PRIMARY KEY ("customer_id")
+);
+
+-- CreateTable
+CREATE TABLE "discount_daily_coin" (
+    "customer_id" INTEGER NOT NULL,
+    "got_date" DATE NOT NULL,
+
+    CONSTRAINT "discount_daily_coin_pkey" PRIMARY KEY ("customer_id")
 );
 
 -- CreateTable
@@ -1674,10 +1697,16 @@ ALTER TABLE "discount_user_code" ADD CONSTRAINT "discount_user_code_discount_id_
 ALTER TABLE "discount_customer_spend" ADD CONSTRAINT "discount_customer_spend_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "discount_customer_spend" ADD CONSTRAINT "discount_customer_spend_spend_type_id_fkey" FOREIGN KEY ("spend_type_id") REFERENCES "discount_spend_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "discount_customer_spend" ADD CONSTRAINT "discount_customer_spend_spend_type_id_fkey" FOREIGN KEY ("spend_type_id") REFERENCES "discount_reward"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "discount_coin_information" ADD CONSTRAINT "discount_coin_information_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "discount_used_coin" ADD CONSTRAINT "discount_used_coin_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "discount_daily_coin" ADD CONSTRAINT "discount_daily_coin_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "discount_customer_coin" ADD CONSTRAINT "discount_customer_coin_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
