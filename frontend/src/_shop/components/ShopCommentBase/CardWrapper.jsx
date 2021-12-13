@@ -5,36 +5,57 @@ import Comment from "./Comment";
 import Pagination from "@mui/material/Pagination";
 import DoDisturbAltRoundedIcon from "@mui/icons-material/DoDisturbAltRounded";
 import { Typography } from "@mui/material";
+import axios from "axios";
+import { useParams } from "react-router";
 
-const CardWrapper = ({ items = [], type }) => {
+const CardWrapper = ({ type }) => {
+  const [items, setitems] = useState([]);
+  const { id, cateId } = useParams();
   const [page, setPage] = useState(1);
-  const filteredItems = items.filter((item) => item.type === type);
-  const [comments, setComments] = useState(items.slice(0, 10));
   const handleChange = (event, value) => {
     setPage(value);
   };
+
   useEffect(() => {
-    setComments(items.slice(10 * (page - 1), 10 * page));
+    if (type == "shop") {
+      axios
+        .get(`http://localhost:8080/sellershop/${id}/shopcomments?page=${page}`)
+        .then(({ data }) => {
+          setitems(data.shopcomments);
+        });
+    }
+    if (type == "product") {
+      axios
+        .get(
+          `http://localhost:8080/sellershop/${id}/shopproductscomments?page=${page}`
+        )
+        .then(({ data }) => {
+          setitems(data.shopproductscomments);
+        });
+    }
     window.scrollTo(0, 0);
   }, [page]);
 
-  if (filteredItems.length !== 0) {
+  if (items.length !== 0) {
     return (
       <Box>
         <Box
           sx={{
             width: "100%",
+            minHeight: "50vh",
           }}
         >
-          <For each={comments}>
+          <For each={items}>
             {(item, idx) => (
               <Comment
-                imageURL={item.imageURL}
-                username={item.username}
+                imageURL={item.customer_picture}
+                username={
+                  item.customer_id_from_shop_comment.customer_info.firstname
+                }
                 rating={item.rating}
                 comment={item.comment}
                 productDetail={item.productDetail}
-                key={idx}
+                key={item.id}
               />
             )}
           </For>
@@ -56,13 +77,12 @@ const CardWrapper = ({ items = [], type }) => {
     <Box
       sx={{
         weight: "100%",
-        height: "50vh",
+        minHeight: "50vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
         color: "#A0A3BD",
-        marginTop: "60px",
       }}
     >
       <DoDisturbAltRoundedIcon sx={{ fontSize: 100, marginBottom: "30px" }} />

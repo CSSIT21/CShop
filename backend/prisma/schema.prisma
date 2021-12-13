@@ -426,6 +426,7 @@ model discount {
 model discount_shop {
   discount_id                    Int       @id
   shop_id                        Int
+  quantity                       Int
   discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
   shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -1192,23 +1193,23 @@ model admin_audit {
 }
 
 model home_banner_picture {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(50)
-  path        String
-  thumbnail   String
-  home_banner home_banner[]
+  id        Int                       @id @default(autoincrement())
+  title     String                    @db.VarChar(50)
+  position  homeBannerPicturePosition
+  path      String
+  thumbnail String
 }
 
 model home_banner {
-  id                          Int                 @id @default(autoincrement())
-  description                 String
-  start_date                  DateTime            @db.Timestamp(6)
-  end_date                    DateTime            @db.Timestamp(6)
-  picture_id                  Int
-  order                       Int
-  keywords                    String[]            @db.VarChar(20)
-  visible                     Boolean             @default(true)
-  picture_id_from_home_banner home_banner_picture @relation(fields: [picture_id], references: [id])
+  id          Int             @id @default(autoincrement())
+  description String
+  start_date  DateTime        @db.Timestamp(6)
+  end_date    DateTime        @db.Timestamp(6)
+  picture_id  Int[]
+  order       Int
+  keywords    String[]        @db.VarChar(20)
+  type        homePartnerType
+  visible     Boolean         @default(true)
 }
 
 model home_popup {
@@ -1549,4 +1550,9 @@ enum SConsoleRefundTypes {
 enum homePartnerType {
   PaymentMethod
   Delivery
+}
+
+enum homeBannerPicturePosition {
+  Main
+  Sub
 }

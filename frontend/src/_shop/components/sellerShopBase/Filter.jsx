@@ -10,7 +10,6 @@ import CategoryFilterAvailability from "./FilterBase/CategoryFilterAvailability"
 
 import ProductCard from "~/common/components/ProductCard";
 import { For } from "~/common/utils";
-import { useParams } from "react-router";
 
 const Bestseller1 =
   "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg";

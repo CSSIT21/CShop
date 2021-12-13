@@ -80,7 +80,9 @@ export default function HeaderRight({ shopInfo = {} }) {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <Link to={`/shop/${id}/comment`}>4.7</Link>
+            <Link to={`/shop/${id}/comment`}>
+              {shopInfo.rating !== null ? shopInfo.rating : 0}
+            </Link>
           </Grid>
         </Grid>
       </Box>

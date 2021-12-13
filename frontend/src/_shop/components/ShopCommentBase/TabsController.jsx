@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -7,14 +7,27 @@ import CardWrapper from "./CardWrapper";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
+import { useParams } from "react-router";
 import Rating from "@mui/material/Rating";
+import axios from "axios";
 
-const TabsController = ({ productComments = [], comments = [], ...rest }) => {
+const TabsController = ({ ...rest }) => {
   const classes = useStyles();
+  const { id, cateId } = useParams();
   const [value, setValue] = React.useState(0);
+  const [rating, setrating] = useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  useEffect(() => {
+    axios.get(`http://localhost:8080/sellershop/${id}`).then(({ data }) => {
+      if (data.shopinfo.rating) {
+        setrating(data.shopinfo.rating);
+      } else {
+        setrating(0);
+      }
+    });
+  }, []);
   return (
     <Box sx={{ width: "100%", padding: "20px" }} {...rest}>
       <Tabs
@@ -41,10 +54,10 @@ const TabsController = ({ productComments = [], comments = [], ...rest }) => {
         <Typography
           sx={{ fontSize: "30px", fontWeight: "500", marginBottom: 0.5 }}
         >
-          Rating 4.7 out of 5
+          Rating {rating} out of 5
         </Typography>
         <Rating
-          defaultValue={4.7}
+          defaultValue={rating}
           precision={0.5}
           readOnly
           icon={
@@ -60,10 +73,10 @@ const TabsController = ({ productComments = [], comments = [], ...rest }) => {
         />
       </Box>
       <TabPanel value={value} index={0}>
-        <CardWrapper items={comments} />
+        <CardWrapper type="shop" />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CardWrapper items={productComments} />
+        <CardWrapper type="product" />
       </TabPanel>
     </Box>
   );

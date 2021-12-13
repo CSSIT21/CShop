@@ -13,110 +13,20 @@ import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
 import axios from "axios";
 import { useParams } from "react-router";
+import { useHistory } from "react-router-dom";
 
-// const sections = [
-//   {
-//     id: "4",
-//     page: {
-//       type: 3,
-//       id: "4",
-//       filter: "Computer",
-//       content: fakeProducts,
-//     },
-//   },
-//   {
-//     id: "1",
-//     page: {
-//       type: 1,
-//       id: "1",
-//       content: { img: CategoryPic1 },
-//     },
-//   },
-//   {
-//     id: "2",
-//     page: {
-//       type: 1,
-//       id: "2",
-//       content: { img: CategoryPic2 },
-//     },
-//   },
-//   {
-//     id: "4",
-//     page: {
-//       type: 3,
-//       id: "4",
-//       filter: "Refrigerator",
-//       content: fakeProducts,
-//     },
-//   },
-//   {
-//     id: "3",
-//     page: {
-//       type: 2,
-//       id: "3",
-//       content: [
-//         {
-//           id: 0,
-//           url: BannerImage,
-//         },
-//         {
-//           id: 1,
-//           url: BannerImage,
-//         },
-//         {
-//           id: 2,
-//           url: BannerImage,
-//         },
-//       ],
-//     },
-//   },
-
-//   {
-//     id: "4",
-//     page: {
-//       type: 3,
-//       id: "4",
-//       filter: "TV & Entertainments",
-//       content: fakeProducts,
-//     },
-//   },
-//   {
-//     id: "5",
-//     page: {
-//       type: 4,
-//       content: "https://www.youtube.com/embed/F5tSoaJ93ac",
-//     },
-//   },
-// ];
-
-const axiousmenus = [
-  {
-    cateId: 3,
-    title: "Games",
-  },
-  {
-    cateId: 4,
-    title: "PC",
-  },
-  {
-    cateId: 5,
-    title: "Fan",
-  },
-  {
-    cateId: 6,
-    title: "Umbar",
-  },
-];
 const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
 const SellerShop = () => {
+  const history = useHistory();
   const classes = useStyles();
   const { id, cateId } = useParams();
+  const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
   const [products, setproducts] = useState();
-  const [menus, setmenus] = useState();
-  const [flashItems, setflashItems] = useState(flashSaleData.products);
+  const [menus, setmenus] = useState([]);
+  const [flashSale, setflashSale] = useState(flashSaleData);
   const onFavourite = (index) => {
     setflashItems((flashItems) => {
       const target = flashItems[index];
@@ -124,23 +34,33 @@ const SellerShop = () => {
       return [...flashItems];
     });
   };
-  useEffect(() => {
-    axios.get(`http://localhost:8080/sellershop/${id}`).then(({ data }) => {
-      setshopInfo(data.shopinfo);
-      setmenus(data.shopInfo.categories);
-    });
+  useEffect(async () => {
+    await axios
+      .get(`http://localhost:8080/sellershop/${id}`)
+      .then(({ data }) => {
+        setshopInfo(data.shopinfo);
+        setmenus(data.shopinfo.categories);
+      })
+      .catch((e) => {
+        console.log(e.message);
+        history.push("/*");
+      });
     axios
-      .get("http://localhost:8080/sellershop/1/products")
+      .get(`http://localhost:8080/sellershop/${id}/products`)
       .then(({ data }) => {
         setproducts(data.products);
       });
     axios
-      .get("http://localhost:8080/sellershop/1/sections")
+      .get(`http://localhost:8080/sellershop/${id}/sections`)
       .then(({ data }) => {
         setsections(data.sections);
       });
+    axios
+      .get(`http://localhost:8080/sellershop/${id}/shopdiscounts`)
+      .then(({ data }) => {
+        setcoupons(data.shopvouchers);
+      });
   }, []);
-  console.log(sections);
   return (
     <>
       <Box className={classes.body}>
@@ -164,15 +84,14 @@ const SellerShop = () => {
           <Box className={classes.containerWhite}>
             <TabsController categories={menus} />
           </Box>
-          <FlashSale
-            items={flashItems}
-            endAt={flashSaleData.endAt}
-            onFavourite={onFavourite}
-          />
-          <Box className={classes.containerWhite}>
-            <Voucher />
-          </Box>
-
+          {flashSale && (
+            <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
+          )}
+          {coupons > 0 && (
+            <Box className={classes.containerWhite}>
+              <Voucher shopcoupons={coupons} />
+            </Box>
+          )}
           <Box className={classes.categoryBox}>
             <Box className={classes.category}>
               {sections.map((section, idx) => {
