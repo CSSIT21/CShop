@@ -8,7 +8,6 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import { assign } from "~/common/utils/";
-import authState from "~/common/store/authState";
 import config from "../../common/constants";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -27,6 +26,14 @@ const RegisterAddress = ({
   const [isLoading, setIsLoading] = useState(false);
   const classes = useStyles();
 
+  const back = () => {
+    setUserInfo({ ...userInfo, province: "" });
+    setUserInfo({ ...userInfo, district: "" });
+    setUserInfo({ ...userInfo, subDistrict: "" });
+    setUserInfo({ ...userInfo, postalCode: "" });
+    console.log(userInfo);
+    handleBack();
+  };
   const register = () => {
     if (userInfo.addressLine == "") {
       setaddressLineError("This field is required");
@@ -64,10 +71,6 @@ const RegisterAddress = ({
           } else {
             Swal.fire("Register Error!", data.message, "error");
           }
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          Swal.fire("Register Error!", err.message, "error");
           setIsLoading(false);
         });
     }
@@ -298,7 +301,7 @@ const RegisterAddress = ({
       <Box className={classes.button}>
         <Button
           disabled={activeStep === 0}
-          onClick={handleBack}
+          onClick={back}
           sx={{
             backgroundColor: "#ffffff",
             boxShadow: "none",

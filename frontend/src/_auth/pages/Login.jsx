@@ -7,8 +7,6 @@ import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import authState from "~/common/store/authState";
 import * as CryptoJS from "crypto-js";
 import axios from "axios";
 
@@ -17,7 +15,6 @@ const LoginPage = () => {
   const router = useHistory();
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [auth, setAuth] = useRecoilState(authState);
   const [emailError, setemailError] = useState("");
   const [passwordError, setpasswordError] = useState("");
   const onLogin = async () => {
@@ -30,7 +27,7 @@ const LoginPage = () => {
     if (email != "" && password != "") {
       let encryptPassword = CryptoJS.HmacSHA512(
         password,
-        process.env.PASSWORD_KEY
+        "CS21-1212312121"
       ).toString();
       const user = await axios.post(`http://localhost:8080/auth/login`, {
         email: email,

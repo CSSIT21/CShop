@@ -12,7 +12,6 @@ export class AuthenticationService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	public async register(data: RegisterDto) {
-		console.log(data);
 		const {
 			email,
 			password,

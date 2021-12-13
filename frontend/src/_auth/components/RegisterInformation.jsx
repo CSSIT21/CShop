@@ -5,9 +5,15 @@ import { Box } from "@mui/system";
 import { years, months, days, genders } from "../../common/constants/register";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useHistory } from "react-router";
+import DateAdapter from "@mui/lab/AdapterDayjs";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
+  const router = useHistory();
   const [userInfo, setUserInfo] = useRecoilState(registerState);
   const [passwordError, setpasswordError] = useState("");
   const [confirmPasswordError, setconfirmPasswordError] = useState("");
@@ -18,7 +24,16 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   const [dayError, setdayError] = useState("");
   const [monthError, setmonthError] = useState("");
   const [yearError, setyearError] = useState("");
+  const [date, setDate] = useState(new Date());
   const checkInfo = () => {
+    if (userInfo.email == "") {
+      Swal.fire(
+        "Register Error!",
+        "Please proceed back to enter email",
+        "error"
+      );
+      router.push("/register");
+    }
     if (userInfo.password != userInfo.confirmPassword) {
       setconfirmPasswordError("Password does not match");
     }
@@ -233,7 +248,16 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
           <Box className={classes.birthdate}>
             <Box className={classes.contextHeader}>Birthdate</Box>
             <Box className={classes.birthdateSelect}>
-              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <DatePicker
+                  value={date}
+                  renderInput={(params) => <TextField {...params} />}
+                  onChange={(e) => {
+                    setDate(e);
+                  }}
+                />
+              </LocalizationProvider>
+              {/* <Box className={classes.textFieldBox} style={{ width: "30%" }}>
                 <TextField
                   id="day"
                   variant="outlined"
@@ -274,8 +298,8 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Box>
-              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
+              </Box> */}
+              {/* <Box className={classes.textFieldBox} style={{ width: "30%" }}>
                 <TextField
                   id="year"
                   variant="outlined"
@@ -295,7 +319,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Box>
+              </Box> */}
             </Box>
             <Box
               sx={{
