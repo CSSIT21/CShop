@@ -2,265 +2,105 @@ const { search } = require('./search_scraper');
 
 const array = async (browser) => {
 	const searchResultComputer = [
-		
-		// * Fashion category
-		
-		// Men clothes
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+		...await mapper(
+			30,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Men-Clothes-cat.11044945?page=${i}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Mobile-Gadgets-cat.11013350?filters=4%2C5&page=${i}`,
+					{ category: 'mobile' },
+				),
+		),
+		...await mapper(
+			30,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Men-Clothes-cat.11044945?page=${i + 10}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Computers-Peripherals-cat.11013247?filters=5&page=${i}`,
+					{ category: 'computer' },
+				),
+		),
+		...await mapper(
+			20,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Men-Clothes-cat.11044945?page=${i + 20}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Stationery-Supplies-cat.11000001.11011392?filters=5&page=${i}`,
+					{ category: 'stationary' },
+				),
+		),
+		...await mapper(
+			20,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Men-Clothes-cat.11044945?page=${i + 30}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		
-		// Women clothes
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Books-cat.11011760.11027338?filters=5&page=${i}`,
+					{ category: 'book' },
+				),
+		),
+		...await mapper(
+			20,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Women-Clothes-cat.11044944?page=${i}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Women's-Apparel-cat.11012819?filters=5&page=${i}`,
+					{ category: 'fashion' },
+				),
+		),
+		...await mapper(
+			20,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Women-Clothes-cat.11044944?page=${i + 10}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Men's-wear-cat.11012963?filters=5&page=${i}`,
+					{ category: 'fashion' },
+				),
+		),
+		...await mapper(
+			20,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Women-Clothes-cat.11044944?page=${i + 20}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
+					`https://shopee.sg/Toys-Kids-Babies-cat.11011538?filters=5&page=${i}`,
+					{ category: 'kids' },
+				),
+		),
+		...await mapper(
+			20,
+			5,
+			(_, i) =>
+				search(
 					browser,
-					`https://shopee.co.th/Women-Clothes-cat.11044944?page=${i + 30}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		
-		// Bags
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Bags-cat.11044964?page=${i}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Bags-cat.11044964?page=${i + 10}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		
-		// Men shoes
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Men-Shoes-cat.11044949?page=${i}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		
-		// Women shoes
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Women-Shoes-cat.11044948?page=${i}`,
-					{ category: 'fashion' }),
-			),
-		)).flat(),
-		
-		// * Kids category
-		// Kids
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Baby-Toys-cat.11044960?page=${i}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Baby-Toys-cat.11044960?page=${i + 10}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Baby-Toys-cat.11044960?page=${i + 20}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Baby-Toys-cat.11044960?page=${i + 30}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		
-		// Gaming
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Gaming-Hobbies-cat.11044961?page=${i}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Gaming-Hobbies-cat.11044961?page=${i + 10}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Gaming-Hobbies-cat.11044961?page=${i + 20}`,
-					{ category: 'kids' }),
-			),
-		)).flat(),
-		
-		// * Beauty category
-		// Beauty
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Beauty-Personal-Care-cat.11044959?page=${i}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Beauty-Personal-Care-cat.11044959?page=${i + 10}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Beauty-Personal-Care-cat.11044959?page=${i + 20}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Beauty-Personal-Care-cat.11044959?page=${i + 30}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
-		
-		// Fashion accessories
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Fashion-Accessories-cat.11044954?page=${i}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Fashion-Accessories-cat.11044954?page=${i + 10}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
-		...(await Promise.all(
-			Array.from(
-				Array(10),
-				(_, i) => search(
-					browser,
-					`https://shopee.co.th/Fashion-Accessories-cat.11044954?page=${i + 20}`,
-					{ category: 'beauty' }),
-			),
-		)).flat(),
+					`https://shopee.sg/Kids-Fashion-cat.11012218?filters=5&page=${i}`,
+					{ category: 'kids' },
+				),
+		),
 	];
 	
 	return { searchResultComputer };
 };
 
+const mapper = async (page, size, mapfn) => {
+	const results = [];
+	
+	for (const p of Array(page / size).keys()) {
+		results.concat(
+			(await Promise.all(
+				Array.from(
+					Array(10),
+					mapfn,
+				),
+			)).flat(),
+		);
+	}
+	
+	return results;
+};
 module.exports = array;
