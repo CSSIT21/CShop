@@ -3,24 +3,25 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
+import { noop, convertFileBase64 } from "~/common/utils";
 
 const ImageBanner = ({
   id = "",
   type = 1,
   content = { img: CategoryPic1 },
   information,
-  setInformation = () => {},
+  setInformation = noop,
   order = 0,
   ...rest
 }) => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState({ path: "", fileBase64: "" });
   const classes = useStyles();
   useLayoutEffect(() => {
     if (id in information) {
-      setImage(information[id].img);
+      setImage({ path: information[id].img, fileBase64: "" });
     } else {
       console.log("image not found");
-      setImage(content.img);
+      setImage({ path: content.img, fileBase64: "" });
     }
   }, []);
   // useLayoutEffect(() => {
@@ -29,14 +30,21 @@ const ImageBanner = ({
   //   }));
   // },[order]);
 
-  const uploadFile = (e, id) => {
+  const uploadFile = async (e, id) => {
     console.log(id);
+    const path = URL.createObjectURL(e.target.files[0]);
     if (e.target.files.length) {
-      const path = URL.createObjectURL(e.target.files[0]);
-      setImage(path);
+      setImage({
+        path: path,
+        fileBase64: await convertFileBase64(e.target.files[0]),
+      });
+
       setInformation((info) => ({
         ...info,
-        [id]: { ...(info[id] || content), img: path },
+        [id]: {
+          ...(info[id] || content),
+          img: path,
+        },
       }));
     }
   };
@@ -57,7 +65,7 @@ const ImageBanner = ({
       >
         Banner#{order}
       </Typography>
-      <img src={image} alt={type} width="100%" className={classes.img} />
+      <img src={image.path} alt={type} width="100%" className={classes.img} />
       <label htmlFor={`outlined-button-file-${id}`}>
         <Button
           component="span"

@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import { nanoid } from "nanoid";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { noop, convertFileBase64 } from "~/common/utils";
 
 const CarouselBanner = ({
   id = "0",
@@ -24,7 +25,7 @@ const CarouselBanner = ({
   ],
 
   information,
-  setInformation = () => {},
+  setInformation = noop,
   order = 0,
   ...rest
 }) => {
@@ -54,16 +55,16 @@ const CarouselBanner = ({
     setOpen(false);
   };
 
-  const uploadFile = (e) => {
+  const uploadFile = async (e) => {
     if (e.target.files.length) {
+      let fileBase64 = await convertFileBase64(e.target.files[0]);
       const path = URL.createObjectURL(e.target.files[0]);
-
       setSectionImages((sectionImages) => {
         sectionImages.push({
           id: nanoid(),
           path: path,
+          fileBase64: fileBase64,
         });
-
         return [...sectionImages];
       });
 
