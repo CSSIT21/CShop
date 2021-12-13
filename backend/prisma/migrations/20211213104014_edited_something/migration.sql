@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "homeBannerPicturePosition" AS ENUM ('Main', 'Sub');
+
+-- CreateEnum
 CREATE TYPE "Gender" AS ENUM ('Male', 'Female', 'Others', 'PreferNotToSay');
 
 -- CreateEnum
@@ -120,7 +123,7 @@ CREATE TABLE "customer_address" (
 CREATE TABLE "customer_old_password" (
     "customer_id" INTEGER NOT NULL,
     "password" VARCHAR(255) NOT NULL,
-    "changed_date" TIMESTAMP NOT NULL,
+    "changed_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "customer_old_password_pkey" PRIMARY KEY ("customer_id")
 );
@@ -148,7 +151,7 @@ CREATE TABLE "customer_email_verification" (
     "id" SERIAL NOT NULL,
     "email" VARCHAR(60) NOT NULL,
     "token" TEXT NOT NULL,
-    "expire_date" TIMESTAMP NOT NULL,
+    "expire_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "customer_email_verification_pkey" PRIMARY KEY ("id")
 );
@@ -322,7 +325,7 @@ CREATE TABLE "product" (
     "price" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
     "sold" INTEGER NOT NULL,
-    "added_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "added_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "suggest_products" INTEGER[],
     "rating" DECIMAL(1,1) NOT NULL,
 
@@ -344,7 +347,7 @@ CREATE TABLE "product_reviews" (
     "customer_id" INTEGER NOT NULL,
     "rating" INTEGER NOT NULL,
     "comment" TEXT NOT NULL,
-    "review_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "review_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "review_picture_id" INTEGER[],
 
     CONSTRAINT "product_reviews_pkey" PRIMARY KEY ("id")
@@ -373,7 +376,7 @@ CREATE TABLE "product_comment_rating" (
     "review_id" INTEGER NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "rate" "Comment_Raitng" NOT NULL,
-    "comment_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "comment_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "product_comment_rating_pkey" PRIMARY KEY ("review_id")
 );
@@ -402,14 +405,14 @@ CREATE TABLE "product_choices" (
 CREATE TABLE "discount" (
     "id" SERIAL NOT NULL,
     "code" VARCHAR(6) NOT NULL,
-    "start_date" TIMESTAMP NOT NULL,
-    "end_date" TIMESTAMP NOT NULL,
+    "start_date" TIMESTAMP(6) NOT NULL,
+    "end_date" TIMESTAMP(6) NOT NULL,
     "description" TEXT NOT NULL,
     "class" "DiscountClass" NOT NULL,
     "min_price" INTEGER DEFAULT 0,
     "reduce_price" INTEGER,
     "discount_types" "DiscountTypes" NOT NULL,
-    "added_date" TIMESTAMP NOT NULL,
+    "added_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "discount_pkey" PRIMARY KEY ("id")
 );
@@ -418,6 +421,7 @@ CREATE TABLE "discount" (
 CREATE TABLE "discount_shop" (
     "discount_id" INTEGER NOT NULL,
     "shop_id" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
 
     CONSTRAINT "discount_shop_pkey" PRIMARY KEY ("discount_id")
 );
@@ -490,8 +494,8 @@ CREATE TABLE "discount_coin_information" (
     "id" SERIAL NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "amount" INTEGER NOT NULL,
-    "got_date" TIMESTAMP NOT NULL,
-    "expire_date" TIMESTAMP NOT NULL,
+    "got_date" TIMESTAMP(6) NOT NULL,
+    "expire_date" TIMESTAMP(6) NOT NULL,
     "get_from" TEXT NOT NULL,
 
     CONSTRAINT "discount_coin_information_pkey" PRIMARY KEY ("id")
@@ -510,7 +514,7 @@ CREATE TABLE "payment_seller_income" (
     "shop_id" INTEGER NOT NULL,
     "order_id" INTEGER NOT NULL,
     "total_price" INTEGER NOT NULL,
-    "time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "payment_seller_income_pkey" PRIMARY KEY ("shop_id")
 );
@@ -519,7 +523,7 @@ CREATE TABLE "payment_seller_income" (
 CREATE TABLE "payment_seller_income_receipt" (
     "shop_id" INTEGER NOT NULL,
     "total_income" INTEGER NOT NULL,
-    "time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "receipt" TEXT NOT NULL,
 
     CONSTRAINT "payment_seller_income_receipt_pkey" PRIMARY KEY ("shop_id")
@@ -541,7 +545,7 @@ CREATE TABLE "wallet" (
     "id" SERIAL NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "balance" INTEGER NOT NULL DEFAULT 0,
-    "updated_time" TIMESTAMP NOT NULL,
+    "updated_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "wallet_pkey" PRIMARY KEY ("id")
 );
@@ -572,8 +576,8 @@ CREATE TABLE "payment" (
     "type" "PaymentTypes" NOT NULL,
     "amount" INTEGER NOT NULL,
     "status" "PaymentStatus" NOT NULL,
-    "created_date" TIMESTAMP NOT NULL,
-    "updated_date" TIMESTAMP NOT NULL,
+    "created_date" TIMESTAMP(6) NOT NULL,
+    "updated_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "payment_pkey" PRIMARY KEY ("id")
 );
@@ -582,7 +586,7 @@ CREATE TABLE "payment" (
 CREATE TABLE "payment_transaction" (
     "id" SERIAL NOT NULL,
     "amount" INTEGER NOT NULL,
-    "time" TIMESTAMP NOT NULL,
+    "time" TIMESTAMP(6) NOT NULL,
     "desc" VARCHAR(64) NOT NULL,
 
     CONSTRAINT "payment_transaction_pkey" PRIMARY KEY ("id")
@@ -652,7 +656,7 @@ CREATE TABLE "payment_deeplink" (
 CREATE TABLE "order_deleted_item" (
     "customer_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "time" TIMESTAMP NOT NULL,
+    "time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "order_deleted_item_pkey" PRIMARY KEY ("customer_id")
 );
@@ -663,7 +667,7 @@ CREATE TABLE "order_rebuy" (
     "product_id" INTEGER NOT NULL,
     "product_options" INTEGER[],
     "price" INTEGER NOT NULL,
-    "date" TIMESTAMP NOT NULL,
+    "date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "order_rebuy_pkey" PRIMARY KEY ("customer_id")
 );
@@ -674,7 +678,7 @@ CREATE TABLE "order_cart_item" (
     "product_id" INTEGER NOT NULL,
     "product_options" INTEGER[],
     "quantity" INTEGER NOT NULL,
-    "added_time" TIMESTAMP NOT NULL,
+    "added_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "order_cart_item_pkey" PRIMARY KEY ("customer_id")
 );
@@ -684,7 +688,7 @@ CREATE TABLE "order" (
     "id" SERIAL NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "total_price" INTEGER NOT NULL,
-    "order_date" TIMESTAMP NOT NULL,
+    "order_date" TIMESTAMP(6) NOT NULL,
     "status" "OrderStatus" NOT NULL,
 
     CONSTRAINT "order_pkey" PRIMARY KEY ("id")
@@ -717,8 +721,8 @@ CREATE TABLE "order_cancel_refund" (
     "order_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "product_options" INTEGER[],
-    "start_time" TIMESTAMP NOT NULL,
-    "canceled_time" TIMESTAMP NOT NULL,
+    "start_time" TIMESTAMP(6) NOT NULL,
+    "canceled_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "order_cancel_refund_pkey" PRIMARY KEY ("id")
 );
@@ -737,7 +741,7 @@ CREATE TABLE "order_detail" (
 CREATE TABLE "order_billing" (
     "order_id" INTEGER NOT NULL,
     "request" BOOLEAN NOT NULL DEFAULT false,
-    "request_time" TIMESTAMP NOT NULL,
+    "request_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "order_billing_pkey" PRIMARY KEY ("order_id")
 );
@@ -749,7 +753,7 @@ CREATE TABLE "order_refund_item" (
     "product_id" INTEGER NOT NULL,
     "product_options" INTEGER[],
     "request" BOOLEAN NOT NULL DEFAULT false,
-    "time_remaining" TIMESTAMP NOT NULL,
+    "time_remaining" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "order_refund_item_pkey" PRIMARY KEY ("id")
 );
@@ -841,7 +845,7 @@ CREATE TABLE "chat_notification" (
 CREATE TABLE "chat_reported_conversation" (
     "id" SERIAL NOT NULL,
     "conversation_id" INTEGER NOT NULL,
-    "report_date" TIMESTAMP NOT NULL,
+    "report_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "chat_reported_conversation_pkey" PRIMARY KEY ("id")
 );
@@ -908,7 +912,7 @@ CREATE TABLE "chat_deleted_message" (
     "message_id" INTEGER NOT NULL,
     "conversation_id" INTEGER NOT NULL,
     "from_customer" BOOLEAN NOT NULL DEFAULT false,
-    "message_time" TIMESTAMP NOT NULL,
+    "message_time" TIMESTAMP(6) NOT NULL,
     "content_type" "ChatMessageTypes" NOT NULL,
 
     CONSTRAINT "chat_deleted_message_pkey" PRIMARY KEY ("message_id")
@@ -920,7 +924,7 @@ CREATE TABLE "rem_number_view_product" (
     "product_id" INTEGER NOT NULL,
     "total_view" INTEGER NOT NULL,
     "event_id" INTEGER NOT NULL,
-    "added_time" TIMESTAMP NOT NULL,
+    "added_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "rem_number_view_product_pkey" PRIMARY KEY ("customer_id")
 );
@@ -930,7 +934,7 @@ CREATE TABLE "rem_number_product_in_cart" (
     "customer_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "sum_in_cart" INTEGER NOT NULL,
-    "added_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "added_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "event_id" INTEGER NOT NULL,
 
     CONSTRAINT "rem_number_product_in_cart_pkey" PRIMARY KEY ("customer_id")
@@ -941,7 +945,7 @@ CREATE TABLE "rem_number_payment_product" (
     "customer_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "sum_buy" INTEGER NOT NULL,
-    "added_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "added_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "event_id" INTEGER NOT NULL,
 
     CONSTRAINT "rem_number_payment_product_pkey" PRIMARY KEY ("customer_id")
@@ -952,7 +956,7 @@ CREATE TABLE "rem_number_interaction_user" (
     "customer_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "interaction_score" INTEGER NOT NULL,
-    "added_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "added_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "rem_number_interaction_user_pkey" PRIMARY KEY ("customer_id")
 );
@@ -1004,7 +1008,7 @@ CREATE TABLE "rem_promotion_type_interaction" (
     "event_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "interaction_score" INTEGER NOT NULL,
-    "added_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "added_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "rem_promotion_type_interaction_pkey" PRIMARY KEY ("event_id")
 );
@@ -1015,7 +1019,7 @@ CREATE TABLE "sconsole_stock_history" (
     "product_id" INTEGER NOT NULL,
     "shop_id" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "updated_date" TIMESTAMP NOT NULL,
+    "updated_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "sconsole_stock_history_pkey" PRIMARY KEY ("id")
 );
@@ -1026,7 +1030,7 @@ CREATE TABLE "sconsole_order_status" (
     "order_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "shop_id" INTEGER NOT NULL,
-    "started_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "started_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" JSONB NOT NULL,
 
     CONSTRAINT "sconsole_order_status_pkey" PRIMARY KEY ("id")
@@ -1039,7 +1043,7 @@ CREATE TABLE "sconsole_discount_log" (
     "product_id" INTEGER NOT NULL,
     "shop_id" INTEGER NOT NULL,
     "customer_id" INTEGER NOT NULL,
-    "used_date" TIMESTAMP NOT NULL,
+    "used_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "sconsole_discount_log_pkey" PRIMARY KEY ("id")
 );
@@ -1049,8 +1053,8 @@ CREATE TABLE "sconsole_flashsale_log" (
     "id" SERIAL NOT NULL,
     "shop_id" INTEGER NOT NULL,
     "flashsale_id" INTEGER NOT NULL,
-    "added_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "ended_date" TIMESTAMP,
+    "added_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ended_date" TIMESTAMP(6),
 
     CONSTRAINT "sconsole_flashsale_log_pkey" PRIMARY KEY ("id")
 );
@@ -1061,8 +1065,8 @@ CREATE TABLE "sconsole_order_history" (
     "order_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "shop_id" INTEGER NOT NULL,
-    "started_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "ended_date" TIMESTAMP NOT NULL,
+    "started_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ended_date" TIMESTAMP(6) NOT NULL,
     "status" JSONB NOT NULL,
 
     CONSTRAINT "sconsole_order_history_pkey" PRIMARY KEY ("id")
@@ -1071,7 +1075,7 @@ CREATE TABLE "sconsole_order_history" (
 -- CreateTable
 CREATE TABLE "sconsole_set_lanch_product" (
     "product_id" INTEGER NOT NULL,
-    "lanch_time" TIMESTAMP NOT NULL,
+    "lanch_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "sconsole_set_lanch_product_pkey" PRIMARY KEY ("product_id")
 );
@@ -1084,7 +1088,7 @@ CREATE TABLE "sconsole_refund" (
     "shop_id" INTEGER NOT NULL,
     "type" "SConsoleRefundTypes" NOT NULL,
     "description" TEXT NOT NULL,
-    "refund_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "refund_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "quantity" INTEGER NOT NULL,
 
     CONSTRAINT "sconsole_refund_pkey" PRIMARY KEY ("id")
@@ -1104,7 +1108,7 @@ CREATE TABLE "sconsole_refund_money" (
     "amount" INTEGER NOT NULL,
     "payment_id" INTEGER NOT NULL,
     "refund" BOOLEAN NOT NULL,
-    "refund_time" TIMESTAMP NOT NULL,
+    "refund_time" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "sconsole_refund_money_pkey" PRIMARY KEY ("refund_id")
 );
@@ -1117,8 +1121,8 @@ CREATE TABLE "sconsole_refund_history" (
     "shop_id" INTEGER NOT NULL,
     "type" "SConsoleRefundTypes" NOT NULL,
     "description" TEXT NOT NULL,
-    "started_time" TIMESTAMP NOT NULL,
-    "ended_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "started_time" TIMESTAMP(6) NOT NULL,
+    "ended_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "quantity" INTEGER NOT NULL,
     "status" JSONB NOT NULL,
 
@@ -1149,8 +1153,8 @@ CREATE TABLE "admin_support" (
     "id" SERIAL NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "support_type_id" INTEGER NOT NULL,
-    "sent_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "ended_date" TIMESTAMP,
+    "sent_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ended_date" TIMESTAMP(6),
     "picture_id" INTEGER NOT NULL,
 
     CONSTRAINT "admin_support_pkey" PRIMARY KEY ("id")
@@ -1176,8 +1180,8 @@ CREATE TABLE "admin_suspension_type" (
 -- CreateTable
 CREATE TABLE "admin_customer_suspensions" (
     "customer_id" INTEGER NOT NULL,
-    "start_date" TIMESTAMP NOT NULL,
-    "end_date" TIMESTAMP NOT NULL,
+    "start_date" TIMESTAMP(6) NOT NULL,
+    "end_date" TIMESTAMP(6) NOT NULL,
     "description" TEXT NOT NULL,
     "picture_id" INTEGER NOT NULL,
     "suspension_type_id" INTEGER NOT NULL,
@@ -1189,8 +1193,8 @@ CREATE TABLE "admin_customer_suspensions" (
 -- CreateTable
 CREATE TABLE "admin_shop_suspensions" (
     "shop_id" INTEGER NOT NULL,
-    "start_date" TIMESTAMP NOT NULL,
-    "end_date" TIMESTAMP NOT NULL,
+    "start_date" TIMESTAMP(6) NOT NULL,
+    "end_date" TIMESTAMP(6) NOT NULL,
     "description" TEXT NOT NULL,
     "picture_id" INTEGER NOT NULL,
     "suspension_type_id" INTEGER NOT NULL,
@@ -1204,8 +1208,8 @@ CREATE TABLE "admin_reported_shop" (
     "id" SERIAL NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "reported_shop_id" INTEGER NOT NULL,
-    "sent_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "ended_date" TIMESTAMP,
+    "sent_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ended_date" TIMESTAMP(6),
     "picture_id" INTEGER NOT NULL,
     "status" JSONB NOT NULL,
 
@@ -1217,8 +1221,8 @@ CREATE TABLE "admin_reported_customer" (
     "id" SERIAL NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "reported_customer_id" INTEGER NOT NULL,
-    "sent_date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "ended_date" TIMESTAMP,
+    "sent_date" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ended_date" TIMESTAMP(6),
     "picture_id" INTEGER NOT NULL,
     "status" JSONB NOT NULL,
 
@@ -1228,7 +1232,7 @@ CREATE TABLE "admin_reported_customer" (
 -- CreateTable
 CREATE TABLE "admin_audit" (
     "admin_id" INTEGER NOT NULL,
-    "login_date" TIMESTAMP NOT NULL,
+    "login_date" TIMESTAMP(6) NOT NULL,
     "action" TEXT NOT NULL,
 
     CONSTRAINT "admin_audit_pkey" PRIMARY KEY ("admin_id")
@@ -1238,6 +1242,8 @@ CREATE TABLE "admin_audit" (
 CREATE TABLE "home_banner_picture" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(50) NOT NULL,
+    "position" "homeBannerPicturePosition" NOT NULL,
+    "type" "homePartnerType" NOT NULL,
     "path" TEXT NOT NULL,
     "thumbnail" TEXT NOT NULL,
 
@@ -1248,8 +1254,8 @@ CREATE TABLE "home_banner_picture" (
 CREATE TABLE "home_banner" (
     "id" SERIAL NOT NULL,
     "description" TEXT NOT NULL,
-    "start_date" TIMESTAMP NOT NULL,
-    "end_date" TIMESTAMP NOT NULL,
+    "start_date" TIMESTAMP(6) NOT NULL,
+    "end_date" TIMESTAMP(6) NOT NULL,
     "picture_id" INTEGER[],
     "order" INTEGER NOT NULL,
     "keywords" VARCHAR(20)[],
@@ -1261,8 +1267,8 @@ CREATE TABLE "home_banner" (
 -- CreateTable
 CREATE TABLE "home_popup" (
     "id" SERIAL NOT NULL,
-    "start_date" TIMESTAMP NOT NULL,
-    "end_date" TIMESTAMP NOT NULL,
+    "start_date" TIMESTAMP(6) NOT NULL,
+    "end_date" TIMESTAMP(6) NOT NULL,
     "description" TEXT NOT NULL,
     "title" VARCHAR(50) NOT NULL,
     "path" TEXT NOT NULL,
@@ -1277,7 +1283,7 @@ CREATE TABLE "home_app_review" (
     "firstname" VARCHAR(20) NOT NULL,
     "lastname" VARCHAR(20) NOT NULL,
     "nickname" VARCHAR(20) NOT NULL,
-    "review_date" TIMESTAMP NOT NULL,
+    "review_date" TIMESTAMP(6) NOT NULL,
     "comment" TEXT NOT NULL,
     "theme_color" TEXT NOT NULL,
     "title" VARCHAR(50) NOT NULL,
@@ -1292,9 +1298,9 @@ CREATE TABLE "home_partner" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "title" VARCHAR(100) NOT NULL,
-    "start_date" TIMESTAMP NOT NULL,
-    "end_date" TIMESTAMP NOT NULL,
-    "join_date" TIMESTAMP NOT NULL,
+    "start_date" TIMESTAMP(6) NOT NULL,
+    "end_date" TIMESTAMP(6) NOT NULL,
+    "join_date" TIMESTAMP(6) NOT NULL,
     "description" TEXT NOT NULL,
     "title_pic" VARCHAR(50) NOT NULL,
     "path" TEXT NOT NULL,
@@ -1307,7 +1313,7 @@ CREATE TABLE "home_partner" (
 CREATE TABLE "home_product_log" (
     "customer_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "view_date" TIMESTAMP NOT NULL,
+    "view_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "home_product_log_pkey" PRIMARY KEY ("customer_id")
 );
@@ -1316,7 +1322,7 @@ CREATE TABLE "home_product_log" (
 CREATE TABLE "home_add_to_cart_log" (
     "customer_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "added_date" TIMESTAMP NOT NULL,
+    "added_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "home_add_to_cart_log_pkey" PRIMARY KEY ("customer_id")
 );
@@ -1333,7 +1339,7 @@ CREATE TABLE "home_shop_log" (
 CREATE TABLE "home_payment_log" (
     "customer_id" INTEGER NOT NULL,
     "payment_id" INTEGER NOT NULL,
-    "issue_at" TIMESTAMP NOT NULL,
+    "issue_at" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "home_payment_log_pkey" PRIMARY KEY ("customer_id")
 );
@@ -1342,7 +1348,7 @@ CREATE TABLE "home_payment_log" (
 CREATE TABLE "home_discount_log" (
     "customer_id" INTEGER NOT NULL,
     "discount_id" INTEGER NOT NULL,
-    "view_date" TIMESTAMP NOT NULL,
+    "view_date" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "home_discount_log_pkey" PRIMARY KEY ("customer_id")
 );
@@ -1351,7 +1357,7 @@ CREATE TABLE "home_discount_log" (
 CREATE TABLE "search_history" (
     "customer_id" INTEGER NOT NULL,
     "query" TEXT NOT NULL,
-    "search_time" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "search_time" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "search_history_pkey" PRIMARY KEY ("customer_id")
 );
@@ -1360,7 +1366,7 @@ CREATE TABLE "search_history" (
 CREATE TABLE "search_keyword_interacts" (
     "keyword" VARCHAR(16) NOT NULL,
     "customer_id" INTEGER NOT NULL,
-    "timestamp" TIMESTAMP,
+    "timestamp" TIMESTAMP(6),
 
     CONSTRAINT "search_keyword_interacts_pkey" PRIMARY KEY ("keyword")
 );
@@ -1369,7 +1375,7 @@ CREATE TABLE "search_keyword_interacts" (
 CREATE TABLE "search_suggestion_matchpoint" (
     "start_key" VARCHAR(16) NOT NULL,
     "next_key" VARCHAR(16) NOT NULL,
-    "timestamp" TIMESTAMP,
+    "timestamp" TIMESTAMP(6),
 
     CONSTRAINT "search_suggestion_matchpoint_pkey" PRIMARY KEY ("start_key")
 );
@@ -1406,7 +1412,7 @@ CREATE TABLE "search_trend_summaries" (
 -- CreateTable
 CREATE TABLE "search_trend_records" (
     "keyword" VARCHAR(16) NOT NULL,
-    "timestamp" TIMESTAMP NOT NULL,
+    "timestamp" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "search_trend_records_pkey" PRIMARY KEY ("keyword")
 );
@@ -1415,7 +1421,7 @@ CREATE TABLE "search_trend_records" (
 CREATE TABLE "search_mispelling_log" (
     "sentence" TEXT NOT NULL,
     "customer_id" INTEGER NOT NULL,
-    "timestamp" TIMESTAMP,
+    "timestamp" TIMESTAMP(6),
 
     CONSTRAINT "search_mispelling_log_pkey" PRIMARY KEY ("sentence")
 );
@@ -1462,7 +1468,7 @@ CREATE TABLE "business_page_view_records" (
     "referer_page_type_id" INTEGER NOT NULL,
     "duration" INTEGER NOT NULL,
     "customer_id" INTEGER NOT NULL,
-    "timestamp" TIMESTAMP NOT NULL,
+    "timestamp" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "business_page_view_records_pkey" PRIMARY KEY ("page_type_id")
 );
@@ -1472,7 +1478,7 @@ CREATE TABLE "business_product_view_records" (
     "product_id" INTEGER NOT NULL,
     "customer_id" INTEGER NOT NULL,
     "duration" INTEGER NOT NULL,
-    "timestamp" TIMESTAMP NOT NULL,
+    "timestamp" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "business_product_view_records_pkey" PRIMARY KEY ("product_id")
 );
@@ -1481,7 +1487,7 @@ CREATE TABLE "business_product_view_records" (
 CREATE TABLE "business_conversation_records" (
     "conversation_id" INTEGER NOT NULL,
     "referer_page_types_id" INTEGER NOT NULL,
-    "timestamp" TIMESTAMP NOT NULL,
+    "timestamp" TIMESTAMP(6) NOT NULL,
 
     CONSTRAINT "business_conversation_records_pkey" PRIMARY KEY ("conversation_id")
 );
@@ -1548,10 +1554,10 @@ ALTER TABLE "customer_picture" ADD CONSTRAINT "customer_picture_customer_id_fkey
 ALTER TABLE "customer_picture" ADD CONSTRAINT "customer_picture_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "customer_picture_file"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "customer_address" ADD CONSTRAINT "customer_address_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "customer_address" ADD CONSTRAINT "customer_address_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "address"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "customer_address" ADD CONSTRAINT "customer_address_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "address"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "customer_address" ADD CONSTRAINT "customer_address_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "customer_old_password" ADD CONSTRAINT "customer_old_password_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1599,34 +1605,34 @@ ALTER TABLE "shop_flashsale_history" ADD CONSTRAINT "shop_flashsale_history_shop
 ALTER TABLE "shop_category" ADD CONSTRAINT "shop_category_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "category" ADD CONSTRAINT "category_icon_id_fkey" FOREIGN KEY ("icon_id") REFERENCES "category_icon_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "category" ADD CONSTRAINT "category_banner_id_fkey" FOREIGN KEY ("banner_id") REFERENCES "category_banner_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product" ADD CONSTRAINT "product_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "category" ADD CONSTRAINT "category_icon_id_fkey" FOREIGN KEY ("icon_id") REFERENCES "category_icon_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product" ADD CONSTRAINT "product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_detail" ADD CONSTRAINT "product_detail_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product" ADD CONSTRAINT "product_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_detail" ADD CONSTRAINT "product_detail_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "product_short_link" ADD CONSTRAINT "product_short_link_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_comment_rating" ADD CONSTRAINT "product_comment_rating_review_id_fkey" FOREIGN KEY ("review_id") REFERENCES "product_reviews"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_comment_rating" ADD CONSTRAINT "product_comment_rating_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_comment_rating" ADD CONSTRAINT "product_comment_rating_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_comment_rating" ADD CONSTRAINT "product_comment_rating_review_id_fkey" FOREIGN KEY ("review_id") REFERENCES "product_reviews"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product_options" ADD CONSTRAINT "product_options_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1644,19 +1650,19 @@ ALTER TABLE "discount_shop" ADD CONSTRAINT "discount_shop_shop_id_fkey" FOREIGN 
 ALTER TABLE "discount_event" ADD CONSTRAINT "discount_event_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "discount_event" ADD CONSTRAINT "discount_event_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "discount_event" ADD CONSTRAINT "discount_event_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "discount_event" ADD CONSTRAINT "discount_event_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "discount_event" ADD CONSTRAINT "discount_event_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "discount_app" ADD CONSTRAINT "discount_app_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "discount_category" ADD CONSTRAINT "discount_category_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "discount_category" ADD CONSTRAINT "discount_category_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "discount_category" ADD CONSTRAINT "discount_category_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "discount_category" ADD CONSTRAINT "discount_category_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "discount_user_code" ADD CONSTRAINT "discount_user_code_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1689,22 +1695,19 @@ ALTER TABLE "payment_shop_bank_account" ADD CONSTRAINT "payment_shop_bank_accoun
 ALTER TABLE "wallet" ADD CONSTRAINT "wallet_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payment_credit_card_owner" ADD CONSTRAINT "payment_credit_card_owner_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payment_credit_card_owner" ADD CONSTRAINT "payment_credit_card_owner_credit_card_id_fkey" FOREIGN KEY ("credit_card_id") REFERENCES "payment_credit_card"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payment_credit_card_owner" ADD CONSTRAINT "payment_credit_card_owner_credit_card_id_fkey" FOREIGN KEY ("credit_card_id") REFERENCES "payment_credit_card"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payment_credit_card_owner" ADD CONSTRAINT "payment_credit_card_owner_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "payment_credit_card_transaction" ADD CONSTRAINT "payment_credit_card_transaction_card_id_fkey" FOREIGN KEY ("card_id") REFERENCES "payment_credit_card"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payment_credit_card_transaction" ADD CONSTRAINT "payment_credit_card_transaction_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "payment_transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "payment_credit_card_transaction" ADD CONSTRAINT "payment_credit_card_transaction_refund_id_fkey" FOREIGN KEY ("refund_id") REFERENCES "order_refund_item"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payment_card" ADD CONSTRAINT "payment_card_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payment_credit_card_transaction" ADD CONSTRAINT "payment_credit_card_transaction_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "payment_transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "payment_card" ADD CONSTRAINT "payment_card_card_id_fkey" FOREIGN KEY ("card_id") REFERENCES "payment_credit_card"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1713,13 +1716,16 @@ ALTER TABLE "payment_card" ADD CONSTRAINT "payment_card_card_id_fkey" FOREIGN KE
 ALTER TABLE "payment_card" ADD CONSTRAINT "payment_card_credit_card_transaction_id_fkey" FOREIGN KEY ("credit_card_transaction_id") REFERENCES "payment_credit_card_transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payment_wallet_transaction" ADD CONSTRAINT "payment_wallet_transaction_wallet_id_fkey" FOREIGN KEY ("wallet_id") REFERENCES "wallet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payment_card" ADD CONSTRAINT "payment_card_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "payment_wallet_transaction" ADD CONSTRAINT "payment_wallet_transaction_refund_id_fkey" FOREIGN KEY ("refund_id") REFERENCES "order_refund_item"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "payment_wallet_transaction" ADD CONSTRAINT "payment_wallet_transaction_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "payment_transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payment_wallet_transaction" ADD CONSTRAINT "payment_wallet_transaction_refund_id_fkey" FOREIGN KEY ("refund_id") REFERENCES "order_refund_item"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payment_wallet_transaction" ADD CONSTRAINT "payment_wallet_transaction_wallet_id_fkey" FOREIGN KEY ("wallet_id") REFERENCES "wallet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "payment_wallet" ADD CONSTRAINT "payment_wallet_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1779,16 +1785,16 @@ ALTER TABLE "order_cancel_refund" ADD CONSTRAINT "order_cancel_refund_order_id_f
 ALTER TABLE "order_cancel_refund" ADD CONSTRAINT "order_cancel_refund_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "address"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "order_detail" ADD CONSTRAINT "order_detail_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "order_billing" ADD CONSTRAINT "order_billing_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1806,10 +1812,10 @@ ALTER TABLE "chat_shop_label" ADD CONSTRAINT "chat_shop_label_shop_id_fkey" FORE
 ALTER TABLE "chat_shop_stat" ADD CONSTRAINT "chat_shop_stat_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "chat_shop_preference" ADD CONSTRAINT "chat_shop_preference_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "chat_shop_preference" ADD CONSTRAINT "chat_shop_preference_automation_id_fkey" FOREIGN KEY ("automation_id") REFERENCES "chat_automated_response"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "chat_shop_preference" ADD CONSTRAINT "chat_shop_preference_automation_id_fkey" FOREIGN KEY ("automation_id") REFERENCES "chat_automated_response"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "chat_shop_preference" ADD CONSTRAINT "chat_shop_preference_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "chat_preference" ADD CONSTRAINT "chat_preference_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1830,10 +1836,10 @@ ALTER TABLE "chat_notification" ADD CONSTRAINT "chat_notification_message_id_fke
 ALTER TABLE "chat_reported_conversation" ADD CONSTRAINT "chat_reported_conversation_conversation_id_fkey" FOREIGN KEY ("conversation_id") REFERENCES "chat_conversation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "chat_reported_message" ADD CONSTRAINT "chat_reported_message_report_id_fkey" FOREIGN KEY ("report_id") REFERENCES "chat_reported_conversation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "chat_reported_message" ADD CONSTRAINT "chat_reported_message_message_id_fkey" FOREIGN KEY ("message_id") REFERENCES "chat_message"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "chat_reported_message" ADD CONSTRAINT "chat_reported_message_message_id_fkey" FOREIGN KEY ("message_id") REFERENCES "chat_message"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "chat_reported_message" ADD CONSTRAINT "chat_reported_message_report_id_fkey" FOREIGN KEY ("report_id") REFERENCES "chat_reported_conversation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "chat_reported_message" ADD CONSTRAINT "chat_reported_message_reviewed_by_fkey" FOREIGN KEY ("reviewed_by") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1860,28 +1866,28 @@ ALTER TABLE "chat_deleted_message" ADD CONSTRAINT "chat_deleted_message_conversa
 ALTER TABLE "rem_number_view_product" ADD CONSTRAINT "rem_number_view_product_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_number_view_product" ADD CONSTRAINT "rem_number_view_product_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_number_view_product" ADD CONSTRAINT "rem_number_view_product_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_number_view_product" ADD CONSTRAINT "rem_number_view_product_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_number_view_product" ADD CONSTRAINT "rem_number_view_product_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rem_number_product_in_cart" ADD CONSTRAINT "rem_number_product_in_cart_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_number_product_in_cart" ADD CONSTRAINT "rem_number_product_in_cart_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_number_product_in_cart" ADD CONSTRAINT "rem_number_product_in_cart_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_number_product_in_cart" ADD CONSTRAINT "rem_number_product_in_cart_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_number_product_in_cart" ADD CONSTRAINT "rem_number_product_in_cart_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rem_number_payment_product" ADD CONSTRAINT "rem_number_payment_product_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_number_payment_product" ADD CONSTRAINT "rem_number_payment_product_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_number_payment_product" ADD CONSTRAINT "rem_number_payment_product_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_number_payment_product" ADD CONSTRAINT "rem_number_payment_product_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_number_payment_product" ADD CONSTRAINT "rem_number_payment_product_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rem_number_interaction_user" ADD CONSTRAINT "rem_number_interaction_user_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1899,10 +1905,10 @@ ALTER TABLE "rem_suggestion_homepage" ADD CONSTRAINT "rem_suggestion_homepage_cu
 ALTER TABLE "rem_may_favorite_product" ADD CONSTRAINT "rem_may_favorite_product_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_product_promotion" ADD CONSTRAINT "rem_product_promotion_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_product_promotion" ADD CONSTRAINT "rem_product_promotion_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rem_product_promotion" ADD CONSTRAINT "rem_product_promotion_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rem_product_promotion" ADD CONSTRAINT "rem_product_promotion_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rem_promotion_type_interaction" ADD CONSTRAINT "rem_promotion_type_interaction_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1926,6 +1932,9 @@ ALTER TABLE "sconsole_order_status" ADD CONSTRAINT "sconsole_order_status_produc
 ALTER TABLE "sconsole_order_status" ADD CONSTRAINT "sconsole_order_status_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "sconsole_discount_log" ADD CONSTRAINT "sconsole_discount_log_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "sconsole_discount_log" ADD CONSTRAINT "sconsole_discount_log_discount_id_fkey" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1935,13 +1944,10 @@ ALTER TABLE "sconsole_discount_log" ADD CONSTRAINT "sconsole_discount_log_produc
 ALTER TABLE "sconsole_discount_log" ADD CONSTRAINT "sconsole_discount_log_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "sconsole_discount_log" ADD CONSTRAINT "sconsole_discount_log_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "sconsole_flashsale_log" ADD CONSTRAINT "sconsole_flashsale_log_flashsale_id_fkey" FOREIGN KEY ("flashsale_id") REFERENCES "shop_flashsale"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sconsole_flashsale_log" ADD CONSTRAINT "sconsole_flashsale_log_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "sconsole_flashsale_log" ADD CONSTRAINT "sconsole_flashsale_log_flashsale_id_fkey" FOREIGN KEY ("flashsale_id") REFERENCES "shop_flashsale"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sconsole_order_history" ADD CONSTRAINT "sconsole_order_history_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1968,10 +1974,10 @@ ALTER TABLE "sconsole_refund" ADD CONSTRAINT "sconsole_refund_shop_id_fkey" FORE
 ALTER TABLE "sconsole_refund_status" ADD CONSTRAINT "sconsole_refund_status_refund_id_fkey" FOREIGN KEY ("refund_id") REFERENCES "sconsole_refund"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "sconsole_refund_money" ADD CONSTRAINT "sconsole_refund_money_refund_id_fkey" FOREIGN KEY ("refund_id") REFERENCES "sconsole_refund"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "sconsole_refund_money" ADD CONSTRAINT "sconsole_refund_money_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "sconsole_refund_money" ADD CONSTRAINT "sconsole_refund_money_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "sconsole_refund_money" ADD CONSTRAINT "sconsole_refund_money_refund_id_fkey" FOREIGN KEY ("refund_id") REFERENCES "sconsole_refund"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sconsole_refund_history" ADD CONSTRAINT "sconsole_refund_history_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -1986,10 +1992,10 @@ ALTER TABLE "sconsole_refund_history" ADD CONSTRAINT "sconsole_refund_history_sh
 ALTER TABLE "admin_support" ADD CONSTRAINT "admin_support_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_support" ADD CONSTRAINT "admin_support_support_type_id_fkey" FOREIGN KEY ("support_type_id") REFERENCES "admin_support_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin_support" ADD CONSTRAINT "admin_support_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "admin_support_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_support" ADD CONSTRAINT "admin_support_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "admin_support_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin_support" ADD CONSTRAINT "admin_support_support_type_id_fkey" FOREIGN KEY ("support_type_id") REFERENCES "admin_support_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admin_support_status" ADD CONSTRAINT "admin_support_status_support_id_fkey" FOREIGN KEY ("support_id") REFERENCES "admin_support"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -2004,10 +2010,10 @@ ALTER TABLE "admin_customer_suspensions" ADD CONSTRAINT "admin_customer_suspensi
 ALTER TABLE "admin_customer_suspensions" ADD CONSTRAINT "admin_customer_suspensions_suspension_type_id_fkey" FOREIGN KEY ("suspension_type_id") REFERENCES "admin_suspension_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_shop_suspensions" ADD CONSTRAINT "admin_shop_suspensions_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin_shop_suspensions" ADD CONSTRAINT "admin_shop_suspensions_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "admin_support_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_shop_suspensions" ADD CONSTRAINT "admin_shop_suspensions_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "admin_support_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin_shop_suspensions" ADD CONSTRAINT "admin_shop_suspensions_shop_id_fkey" FOREIGN KEY ("shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admin_shop_suspensions" ADD CONSTRAINT "admin_shop_suspensions_suspension_type_id_fkey" FOREIGN KEY ("suspension_type_id") REFERENCES "admin_suspension_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -2016,10 +2022,10 @@ ALTER TABLE "admin_shop_suspensions" ADD CONSTRAINT "admin_shop_suspensions_susp
 ALTER TABLE "admin_reported_shop" ADD CONSTRAINT "admin_reported_shop_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_reported_shop" ADD CONSTRAINT "admin_reported_shop_reported_shop_id_fkey" FOREIGN KEY ("reported_shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin_reported_shop" ADD CONSTRAINT "admin_reported_shop_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "admin_support_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_reported_shop" ADD CONSTRAINT "admin_reported_shop_picture_id_fkey" FOREIGN KEY ("picture_id") REFERENCES "admin_support_picture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "admin_reported_shop" ADD CONSTRAINT "admin_reported_shop_reported_shop_id_fkey" FOREIGN KEY ("reported_shop_id") REFERENCES "shop_info"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admin_reported_customer" ADD CONSTRAINT "admin_reported_customer_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -2070,16 +2076,16 @@ ALTER TABLE "search_mispelling_log" ADD CONSTRAINT "search_mispelling_log_custom
 ALTER TABLE "search_mispelling_edits" ADD CONSTRAINT "search_mispelling_edits_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "business_page_view_records" ADD CONSTRAINT "business_page_view_records_page_type_id_fkey" FOREIGN KEY ("page_type_id") REFERENCES "business_page_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "business_page_view_records" ADD CONSTRAINT "business_page_view_records_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "business_product_view_records" ADD CONSTRAINT "business_product_view_records_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "business_page_view_records" ADD CONSTRAINT "business_page_view_records_page_type_id_fkey" FOREIGN KEY ("page_type_id") REFERENCES "business_page_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "business_product_view_records" ADD CONSTRAINT "business_product_view_records_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "business_product_view_records" ADD CONSTRAINT "business_product_view_records_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "business_conversation_records" ADD CONSTRAINT "business_conversation_records_conversation_id_fkey" FOREIGN KEY ("conversation_id") REFERENCES "business_conversation_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

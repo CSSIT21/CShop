@@ -426,6 +426,7 @@ model discount {
 model discount_shop {
   discount_id                    Int       @id
   shop_id                        Int
+  quantity                       Int
   discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
   shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -1191,9 +1192,16 @@ model admin_audit {
   action     String
 }
 
+enum homeBannerPicturePosition {
+  Main
+  Sub
+}
+
 model home_banner_picture {
-  id        Int    @id @default(autoincrement())
-  title     String @db.VarChar(50)
+  id        Int                       @id @default(autoincrement())
+  title     String                    @db.VarChar(50)
+  position  homeBannerPicturePosition
+  type      homePartnerType
   path      String
   thumbnail String
 }
