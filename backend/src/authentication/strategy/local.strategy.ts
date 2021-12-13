@@ -20,7 +20,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 			throw new HttpException('Account is not found.', 500);
 		}
 
-		if (user.password !== CryptoJs.HmacSHA256(password, process.env.PASSWORD_KEY).toString()) {
+		if (user.password !== CryptoJs.HmacSHA512(password, process.env.PASSWORD_KEY).toString()) {
 			throw new HttpException('Password is incorrect.', 500);
 		}
 
