@@ -8,6 +8,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Indicator from "./components/Indicator";
+import { Chart } from "./components/TableContent/Chart";
 
 const SellerDashboard = () => {
   const indicatorData = [
@@ -66,6 +67,7 @@ const SellerDashboard = () => {
           />
         ))}
       </Box>
+      <Chart/>
     </Box>
   );
 };
