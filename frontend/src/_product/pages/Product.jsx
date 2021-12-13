@@ -7,9 +7,13 @@ import ProductSuggestion from "../sections/ProductSuggestion";
 import fakeProducts from "~/common/faker/fakeProducts";
 import { Box } from "@mui/material";
 import ReviewsFromCustomer from "../sections/ReviewsFromCustomer";
+import { useParams } from "react-router";
+import axios from "axios";
 
 const ProductPage = (props) => {
   const [products, setProducts] = useState(fakeProducts);
+  const [productDetails, setProductDetails] = useState({});
+  const { id } = useParams();
 
   const onFavourite = (index) => {
     setProducts((products) => {
@@ -22,6 +26,10 @@ const ProductPage = (props) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    axios.get(`http://localhost:8080/product/${id}`).then(({ data }) => {
+      setProductDetails(data.product_details);
+    });
+    console.log(productDetails);
   }, []);
 
   return (
@@ -32,13 +40,9 @@ const ProductPage = (props) => {
         justifyContent: "center",
       }}
     >
-      <Box
-        sx={{
-          maxWidth: "1200px",
-        }}
-      >
+      <Box maxWidth="1200px">
         <ReviewsFromCustomer />
-        <ProductDetails />
+        <ProductDetails productDetails={productDetails} />
         <ShopDetails />
         <ProductSuggestion
           suggestionItems={products}

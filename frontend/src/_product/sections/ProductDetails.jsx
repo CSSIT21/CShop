@@ -13,7 +13,7 @@ import {
   FavoriteBorderRounded as FavoriteBorderRoundedIcon,
 } from "@mui/icons-material";
 
-const ProductDetails = () => {
+const ProductDetails = ({ productDetails }) => {
   const [product, setProduct] = useState({
     id: 0,
     title: "Cheese Pizza very อร่อย มากๆๆๆ",
