@@ -7,8 +7,11 @@ import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import * as CryptoJS from "crypto-js";
 import axios from "axios";
+import config from '../../common/constants/index';
+import Swal from 'sweetalert2';
+import { useRecoilState } from "recoil";
+import authState from "../../common/store/authState";
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -17,6 +20,8 @@ const LoginPage = () => {
   const [password, setpassword] = useState("");
   const [emailError, setemailError] = useState("");
   const [passwordError, setpasswordError] = useState("");
+  const [auth, setAuth] = useRecoilState(authState);
+
   const onLogin = async () => {
     if (email === "") {
       setemailError("This field is required");
@@ -24,20 +29,40 @@ const LoginPage = () => {
     if (password === "") {
       setpasswordError("This field is required");
     }
-    if (email != "" && password != "") {
-      let encryptPassword = CryptoJS.HmacSHA512(
+    if (email.trim() != "" && password.trim() != "") {
+      axios.post(config.SERVER_URL + '/auth/login', {
+        username: email,
         password,
-        "CS21-1212312121"
-      ).toString();
-      const user = await axios.post(`http://localhost:8080/auth/login`, {
-        email: email,
-        password: encryptPassword,
+      }, { 
+        withCredentials: true,
+        validateStatus: () => true
+      }).then(({data}) => {
+        console.log(data);
+        if (data.success) {
+          setAuth(({user, isLoggedIn}) => {
+            return {isLoggedIn: true, user: data.user};
+          });
+          Swal.fire({
+            title: 'Success',
+            text: 'Login Successful!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            router.push("/home");
+          });
+        } else {
+          setpasswordError("Email or password is incorrect");
+          Swal.fire({
+            title: 'Login Failed!',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          setAuth(({user, isLoggedIn}) => {
+            return {isLoggedIn: false, user};
+          });
+        }
       });
-      if (user.data.success) {
-        router.push("/home");
-      } else {
-        setpasswordError("Email or password is incorrect");
-      }
     }
   };
 
@@ -47,6 +72,7 @@ const LoginPage = () => {
   }, []);
   return (
     <Fragment>
+      {JSON.stringify(auth)}
       <Box className={classes.container}>
         <Box className={classes.bigbox}>
           <Box className={classes.header}>Sign In</Box>

@@ -55,15 +55,15 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
     if (userInfo.gender == "Select Gender") {
       setgenderError("This field is required");
     }
-    if (userInfo.day == "Select Day") {
-      setdayError("This field is required");
-    }
-    if (userInfo.month == 0) {
-      setmonthError("This field is required");
-    }
-    if (userInfo.year == "Select Year") {
-      setyearError("This field is required");
-    }
+    // if (userInfo.day == "Select Day") {
+    //   setdayError("This field is required");
+    // }
+    // if (userInfo.month == 0) {
+    //   setmonthError("This field is required");
+    // }
+    // if (userInfo.year == "Select Year") {
+    //   setyearError("This field is required");
+    // }
     if (
       userInfo.email != "" &&
       userInfo.password != "" &&
@@ -72,10 +72,11 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
       userInfo.firstname != "" &&
       userInfo.lastname != "" &&
       userInfo.phoneNumber != "" &&
-      userInfo.gender != "Select Gender" &&
-      userInfo.day != "Select Day" &&
-      userInfo.month != 0 &&
-      userInfo.year != "Select Year"
+      userInfo.gender != "Select Gender" 
+      // &&
+      // userInfo.day != "Select Day" &&
+      // userInfo.month != 0 &&
+      // userInfo.year != "Select Year"
     ) {
       handleNext();
     }
