@@ -1,4 +1,3 @@
-import { makeStyles } from '@mui/styles';
 import { Fab } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Box } from "@mui/system"
@@ -13,7 +12,6 @@ const ReviewCarousel = ({
 	itemsPerRow = 0,
 	loop = false,
 }) => {
-	const classes = useStyles();
 
 	const onPrev = () => {
 		if (currentPage === 0) {
@@ -49,6 +47,7 @@ const ReviewCarousel = ({
 					pageState={currentPage}
 					setPageState={pageHandle}
 					itemsPerRow={itemsPerRow}
+					loop={loop}
 				>
 					{(item) => (
 						<AppReviewCard review={item} key={item.id} />
@@ -68,9 +67,6 @@ const ReviewCarousel = ({
 		</>
 	);
 };
-
-const useStyles = makeStyles({
-});
 
 const fabStyle = {
 	backgroundColor: "white",

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
+import { Typography, Dialog, DialogContent, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import AddressDetail from "./AddressDetail";
 import { For } from "../../../common/utils";
+import Slide from "@mui/material/Slide";
+
 const data = [
   {
     id: 1,
@@ -36,15 +38,75 @@ const data = [
     phoneNumber: "0908738834",
   },
 ];
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const AddressInfo = () => {
   const classes = useStyles();
   const [address, setAddress] = useState(data);
-  const handleDeleteAddress = (id) => {
-    setAddress(address.filter((e) => e.id !== id));
+  const [deleteId, setdeleteId] = useState(0);
+  const [open, setOpen] = useState(false);
+
+  const handleDeleteAddress = () => {
+    setAddress(address.filter((e) => e.id !== deleteId));
+    setOpen(false);
   };
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+
   return (
     <Box sx={{ width: "100%", marginTop: "50px", paddingBottom: "170px" }}>
-      <Box sx={{ width: "98%", padding: "0px 16px" }}>
+      <Dialog
+        open={open}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        TransitionComponent={Transition}
+      >
+        <DialogContent
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            padding: "60px",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "24px",
+              fontWeight: "500",
+              textAlign: "center",
+              marginBottom: "30px",
+            }}
+          >
+            Are you sure you want to delete this address?
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              variant="outlined"
+              className={classes.button}
+              onClick={handleCloseDialog}
+            >
+              No
+            </Button>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={handleDeleteAddress}
+            >
+              Yes
+            </Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
+      <Box sx={{ width: "100%", padding: "0px 16px" }}>
         <Typography
           sx={{ fontSize: "24px", fontWeight: 600, marginBottom: "35px" }}
         >
@@ -75,7 +137,10 @@ const AddressInfo = () => {
                 key={idx}
                 data={item}
                 index={idx}
-                handleDeleteAddress={() => handleDeleteAddress(item.id)}
+                handleDeleteAddress={() => {
+                  setdeleteId(item.id);
+                  setOpen(true);
+                }}
               />
             )}
           </For>
@@ -99,6 +164,10 @@ const useStyles = makeStyles({
     textAlign: "start",
     boxShadow: "0px 3.55484px 3.55484px rgba(196, 196, 196, 0.26)",
     borderRadius: "0px 0px 10px 10px",
+  },
+  button: {
+    width: "80px",
+    height: "45px",
   },
 });
 

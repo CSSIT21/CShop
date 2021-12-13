@@ -20,8 +20,8 @@ import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { LoggedIn } from 'src/common/decorators/loggedIn.decorator';
-
 import { customer } from '@prisma/client';
+import { LoginDto } from './dto/login.dto';
 
 // @ApiTags("Authentication")
 @Controller('auth')
@@ -34,11 +34,14 @@ export class AuthenticationController {
 		return await this.authenticationService.register(data);
 	}
 
-	@Get('/')
-	@Public()
-	public async findAll() {
-		return await this.authenticationService.findAll();
-	}
+	// @Post('/login')
+	// @Public()
+	// public async login(@Body() data: LoginDto, @Req() Req: any, @Res() res: any) {
+	// 	const check = await this.authenticationService.login(data);
+	// 	res.send({
+	// 		success: check,
+	// 	});
+	// }
 
 	// @Post('login')
 	// @Public()

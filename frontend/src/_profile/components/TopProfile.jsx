@@ -80,8 +80,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "40px 120px",
-
+    padding: "20px 100px",
     boxShadow: " 0px 4px 4px rgba(196, 196, 196, 0.25)",
   },
   profile: {
