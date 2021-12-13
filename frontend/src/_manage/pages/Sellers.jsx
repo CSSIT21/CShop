@@ -19,7 +19,9 @@ import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import SellerCard from "../components/SellerCard";
 import { Search } from '@mui/icons-material';
-import { brown } from '@mui/material/colors';
+import { Button } from '@mui/material';
+import axios from "axios";
+
 const cardStyle = {
     width: '100%',
     padding: '0px',
@@ -36,7 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let sellers = [
+/*let sellers = [
     {
         id: 2000,
         avatarInitials: 'LB',
@@ -45,160 +47,27 @@ let sellers = [
         shop_name: 'The Library',
         productCount: 46,
         followers: 254685,
-        date: '15/05/2020',
+        join_date: '15/05/2020',
         cancelRate: '2%',
         rating: 3.2,
-        restrictions: []
+        admin_reported_shop: []
     },
-    {
-        id: 2001,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2002,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2003,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2004,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2005,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2006,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2007,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2008,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2009,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2010,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-    {
-        id: 2011,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
-        path: '',
-        shop_name: 'The Library',
-        productCount: 46,
-        followers: 254685,
-        date: '15/05/2020',
-        cancelRate: '2%',
-        rating: 3.2,
-        restrictions: []
-    },
-];
+];*/
 
 let resId = 1000;
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
+
+    const [sellers, setSellersList] = React.useState([]);
+    const setSellers = async () => {
+        const fetchedData = await axios.get(
+          "http://localhost:8080/manageaccount/sellers"
+        );
+        setSellersList(fetchedData.data);
+        console.log(fetchedData.data);
+      };
+
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
@@ -226,11 +95,11 @@ const ManageSellerAccountPage = () => {
     }
 
     const deleteRestriction = (sellerid, restrictionid) => {
-        sellers.filter(seller => seller.id === sellerid)[0].restrictions = sellers.filter(seller => seller.id === sellerid)[0].restrictions.filter(res => res.id != restrictionid);
+        sellers.filter(seller => seller.id === sellerid)[0].admin_reported_shop = sellers.filter(seller => seller.id === sellerid)[0].admin_reported_shop.filter(res => res.id != restrictionid);
     }
 
     const addRestriction = (sellerid, type, desc, date) => {
-        sellers.filter(seller => seller.id === sellerid)[0].restrictions.push(
+        sellers.filter(seller => seller.id === sellerid)[0].admin_reported_shop.push(
             {id:resId, type:type, assigner:'CurrentUser', startTime:'11/18/2021', endTime:date, desc:desc}
         );
         resId++;
@@ -299,7 +168,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '25%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_reported_shop.length > 0;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Shop Name</Typography>
@@ -329,7 +198,7 @@ const ManageSellerAccountPage = () => {
                         (showRestricted ? 
                             (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.restrictions.length > 0;
+                                return obj.admin_reported_shop.length > 0;
                             })
                             : (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
@@ -349,6 +218,9 @@ const ManageSellerAccountPage = () => {
                     <Pagination count={Math.ceil(((showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Restricted';})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
+            <Button onClick={setSellers}>
+                TEST
+            </Button>
         </div>
     );
 };

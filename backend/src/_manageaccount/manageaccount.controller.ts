@@ -44,6 +44,18 @@ export class ManageaccountController {
     return this.prisma.product.findMany();
   }
 
+  @Get('sellers')
+  getSellers(){
+    return this.prisma.shop_info.findMany({
+      include:{
+        shop_picture: true,
+        product: true,
+        customer_followed_shop: true,
+        admin_reported_shop: true,
+      }
+    });
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.manageaccountService.findOne(+id);

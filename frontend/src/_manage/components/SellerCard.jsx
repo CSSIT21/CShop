@@ -111,7 +111,7 @@ export class SellerCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.cancelRate}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.date}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.join_date}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
@@ -149,11 +149,11 @@ export class SellerCard extends React.Component {
         </CardContent>
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
-            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.props.seller.restrictions.length})</Typography>
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.props.seller.admin_reported_shop.length})</Typography>
             <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>
           </CardContent>
           <CardContent>
-          {this.props.seller.restrictions.map((res) => (
+          {this.props.seller.admin_reported_shop.map((res) => (
                             <div key={res.id.toString()}>
                                 <RestrictionCard res={res} deleteRestriction={this.props.deleteRestriction} objid={this.props.seller.id} update={() => this.update()}/>
                             </div>
