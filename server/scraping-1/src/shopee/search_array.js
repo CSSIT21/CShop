@@ -3,23 +3,83 @@ const { search } = require('./search_scraper');
 const array = async (browser) => {
 	const searchResultComputer = [
 		...await mapper(
-			30,
+			40,
 			5,
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Mobile-Gadgets-cat.11013350?filters=4%2C5&page=${i}`,
-					{ category: 'mobile' },
+					`https://shopee.sg/Beauty-Personal-Care-cat.11012301?filters=5&page=${i}`,
+					{ category: 'beauty' },
 				),
 		),
 		...await mapper(
-			30,
+			10,
 			5,
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Computers-Peripherals-cat.11013247?filters=5&page=${i}`,
-					{ category: 'computer' },
+					`https://shopee.sg/Furniture-cat.11000001.11001566?filters=5&page=${i}`,
+					{ category: 'furniture' },
+				),
+		),
+		...await mapper(
+			3,
+			3,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Bathroom-cat.11000001.11011195?filters=5&page=${i}`,
+					{ category: 'furniture' },
+				),
+		),
+		...await mapper(
+			3,
+			3,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Beddings-cat.11000001.11011220?filters=5&page=${i}`,
+					{ category: 'furniture' },
+				),
+		),
+		...await mapper(
+			10,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Home-Decor-cat.11000001.11011273?filters=5&page=${i}`,
+					{ category: 'furniture' },
+				),
+		),
+		...await mapper(
+			5,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Home-Organisation-cat.11000001.11011297?filters=5&page=${i}`,
+					{ category: 'furniture' },
+				),
+		),
+		...await mapper(
+			5,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Kitchen-Dining-cat.11000001.11011332?filters=5&page=${i}`,
+					{ category: 'furniture' },
+				),
+		),
+		...await mapper(
+			5,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Lighting-cat.11000001.11011364?filters=5&page=${i}`,
+					{ category: 'furniture' },
 				),
 		),
 		...await mapper(
@@ -28,8 +88,38 @@ const array = async (browser) => {
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Stationery-Supplies-cat.11000001.11011392?filters=5&page=${i}`,
-					{ category: 'stationary' },
+					`https://shopee.sg/Home-Appliances-cat.11027421?filters=5&page=${i}`,
+					{ category: 'electronics' },
+				),
+		),
+		...await mapper(
+			5,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Cameras-Drones-cat.11013548?filters=5&page=${i}`,
+					{ category: 'electronics' },
+				),
+		),
+		...await mapper(
+			15,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Food-Beverages-cat.11011871?filters=5&page=${i}`,
+					{ category: 'food' },
+				),
+		),
+		...await mapper(
+			5,
+			5,
+			(_, i) =>
+				search(
+					browser,
+					`https://shopee.sg/Health-Wellness-cat.11027491?filters=5&page=${i}`,
+					{ category: 'food' },
 				),
 		),
 		...await mapper(
@@ -38,48 +128,48 @@ const array = async (browser) => {
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Books-cat.11011760.11027338?filters=5&page=${i}`,
-					{ category: 'book' },
+					`https://shopee.sg/Sports-Outdoors-cat.11012018?filters=5&page=${i}`,
+					{ category: 'sports' },
 				),
 		),
 		...await mapper(
-			20,
-			5,
+			6,
+			3,
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Women's-Apparel-cat.11012819?filters=5&page=${i}`,
-					{ category: 'fashion' },
+					`https://shopee.sg/Women's-Bags-cat.11012592?filters=5&page=${i}`,
+					{ category: 'accessories' },
 				),
 		),
 		...await mapper(
-			20,
-			5,
+			6,
+			3,
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Men's-wear-cat.11012963?filters=5&page=${i}`,
-					{ category: 'fashion' },
+					`https://shopee.sg/Men's-Bags-cat.11012659?filters=5&page=${i}`,
+					{ category: 'accessories' },
 				),
 		),
 		...await mapper(
-			20,
-			5,
+			9,
+			3,
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Toys-Kids-Babies-cat.11011538?filters=5&page=${i}`,
-					{ category: 'kids' },
+					`https://shopee.sg/Jewellery-Accessories-cat.11013077?filters=5&page=${i}`,
+					{ category: 'accessories' },
 				),
 		),
 		...await mapper(
-			20,
-			5,
+			6,
+			3,
 			(_, i) =>
 				search(
 					browser,
-					`https://shopee.sg/Kids-Fashion-cat.11012218?filters=5&page=${i}`,
-					{ category: 'kids' },
+					`https://shopee.sg/Watches-cat.11012515?filters=5&page=${i}`,
+					{ category: 'accessories' },
 				),
 		),
 	];
@@ -103,4 +193,5 @@ const mapper = async (page, size, mapfn) => {
 	
 	return results;
 };
+
 module.exports = array;
