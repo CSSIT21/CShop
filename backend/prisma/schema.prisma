@@ -58,6 +58,8 @@ model customer {
   shop_comment                  shop_comment[]
   shop_info                     shop_info[]
   wallet                        wallet[]
+  discount_used_coin            discount_used_coin[]
+  discount_daily_coin           discount_daily_coin[]
 }
 
 model customer_info {
@@ -497,6 +499,20 @@ model discount_coin_information {
   expire_date                                DateTime @db.Timestamp(6)
   get_from                                   String
   customer_id_from_discount_coin_information customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_used_coin {
+  customer_id                         Int      @id
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
+  used_time                           DateTime @db.Timestamp
+  used_amount                         Int
+  user_for                            String   @db.Text
+}
+
+model discount_daily_coin {
+  customer_id                          Int      @id
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
+  got_date                             DateTime @db.Date
 }
 
 model discount_customer_coin {
