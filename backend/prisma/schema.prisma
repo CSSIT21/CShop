@@ -1131,6 +1131,10 @@ model admin_support_picture {
 
 model admin_support {
   id                                 Int                   @id @default(autoincrement())
+  title                              String
+  description                        String                @db.Text
+  target                             String
+  admin_id                           Int
   customer_id                        Int
   support_type_id                    Int
   sent_date                          DateTime              @default(now()) @db.Timestamp(6)
