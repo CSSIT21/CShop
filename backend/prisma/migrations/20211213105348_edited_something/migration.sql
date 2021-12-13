@@ -1243,7 +1243,6 @@ CREATE TABLE "home_banner_picture" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(50) NOT NULL,
     "position" "homeBannerPicturePosition" NOT NULL,
-    "type" "homePartnerType" NOT NULL,
     "path" TEXT NOT NULL,
     "thumbnail" TEXT NOT NULL,
 
@@ -1259,6 +1258,7 @@ CREATE TABLE "home_banner" (
     "picture_id" INTEGER[],
     "order" INTEGER NOT NULL,
     "keywords" VARCHAR(20)[],
+    "type" "homePartnerType" NOT NULL,
     "visible" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "home_banner_pkey" PRIMARY KEY ("id")

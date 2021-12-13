@@ -1201,20 +1201,20 @@ model home_banner_picture {
   id        Int                       @id @default(autoincrement())
   title     String                    @db.VarChar(50)
   position  homeBannerPicturePosition
-  type      homePartnerType
   path      String
   thumbnail String
 }
 
 model home_banner {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   description String
-  start_date  DateTime @db.Timestamp(6)
-  end_date    DateTime @db.Timestamp(6)
+  start_date  DateTime        @db.Timestamp(6)
+  end_date    DateTime        @db.Timestamp(6)
   picture_id  Int[]
   order       Int
-  keywords    String[] @db.VarChar(20)
-  visible     Boolean  @default(true)
+  keywords    String[]        @db.VarChar(20)
+  type        homePartnerType
+  visible     Boolean         @default(true)
 }
 
 model home_popup {
