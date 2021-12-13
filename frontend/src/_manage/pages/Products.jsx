@@ -39,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 
-let products = [
+/*let products = [
     {
         id: 12,
         avatarInitials: 'SD',
@@ -79,21 +79,21 @@ let products = [
         rating: 0.6,
         comments: 66,
     },
-];
+];*/
 
 let resId = 1000;
 
 const ManageAccountPage = () => {
     const classes = useStyles();
     
-    /*const [products, setProductsList] = React.useState([]);
+    const [products, setProductsList] = React.useState([]);
     const setProducts = async () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/products"
         );
         setProductsList(fetchedData.data);
         console.log(products);
-      };*/
+      };
     
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -228,7 +228,7 @@ const ManageAccountPage = () => {
                     }
                 </div>
             </CardContent>
-            <Button>
+            <Button onClick={setProducts}>
                 TEST
             </Button>
         </div>

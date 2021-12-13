@@ -56,6 +56,18 @@ export class ManageaccountController {
     });
   }
 
+  @Get('users')
+  getUsers(){
+    return this.prisma.customer.findMany({
+      include:{
+        customer_picture: true,
+        customer_info: true,
+        customer_address: true,
+        admin_reported_customer: true,
+      }
+    });
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.manageaccountService.findOne(+id);

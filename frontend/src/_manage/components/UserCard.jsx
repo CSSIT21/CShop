@@ -95,27 +95,27 @@ export class UserCard extends React.Component {
               <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.user.name}</Typography>
+              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{(this.props.user.customer_info.firstname + " " + this.props.user.customer_info.lastname)}</Typography>
               <Typography noWrap style={{ fontSize: '15px'}}>#{this.props.user.id}</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px'}}>{this.props.user.address_line}</Typography>
+              <Typography style={{ fontSize: '15px'}}>{this.props.user.customer_address.address_line}</Typography>
             </Box>
             <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.gender}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_info.gender}</Typography>
             </Box>
             <Box sx={{ width: '9.5%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.postal_code}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_address.postal_code}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.date}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.birthdate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_info.birthdate}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
-              { this.props.user.restrictions.length > 0 ?
+              { this.props.user.admin_reported_customer.length > 0 ?
               <Card variant="outlined" style={{
                     backgroundColor: "#E04A4A33",
                     border: 'none',
@@ -140,11 +140,11 @@ export class UserCard extends React.Component {
         </CardContent>
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
-            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.props.user.restrictions.length})</Typography>
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.props.user.admin_reported_customer.length})</Typography>
             <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>
           </CardContent>
           <CardContent>
-          {this.props.user.restrictions.map((res) => (
+          {this.props.user.admin_reported_customer.map((res) => (
                             <div key={res.id.toString()}>
                                 <RestrictionCard res={res} deleteRestriction={this.props.deleteRestriction} objid={this.props.user.id} update={() => this.update()}/>
                             </div>

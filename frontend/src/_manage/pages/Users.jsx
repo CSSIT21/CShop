@@ -19,7 +19,7 @@ import { InputAdornment } from '@mui/material';
 import React from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
+import { Button } from '@mui/material';
 import axios from "axios";
 
 const cardStyle = {
@@ -38,7 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let users = [
+/*let users = [
     {
         id: 24578,
         avatarInitials: 'HB',
@@ -50,144 +50,24 @@ let users = [
         postal_code: '10120',
         date: '10/10/2020',
         birthdate: '02/08/1987',
-        restrictions: [],
+        admin_reported_customer: [],
     },
-    {
-        id: 24571,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24572,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24573,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24574,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24575,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24576,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 34578,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24278,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24518,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-    {
-        id: 24378,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
-        path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
-        date: '10/10/2020',
-        birthdate: '02/08/1987',
-        restrictions: [],
-    },
-];
+];*/
 
 let resId = 1000;
 
 const ManageAccountPage = () => {
     const classes = useStyles();
+
+    const [users, setUsersList] = React.useState([]);
+    const setUsers = async () => {
+        const fetchedData = await axios.get(
+          "http://localhost:8080/manageaccount/users"
+        );
+        setUsersList(fetchedData.data);
+        console.log(fetchedData.data);
+      };
+
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
@@ -215,11 +95,11 @@ const ManageAccountPage = () => {
     }
 
     const deleteRestriction = (userid, restrictionid) => {
-        users.filter(user => user.id === userid)[0].restrictions = users.filter(user => user.id === userid)[0].restrictions.filter(res => res.id != restrictionid);
+        users.filter(user => user.id === userid)[0].admin_reported_customer = users.filter(user => user.id === userid)[0].admin_reported_customer.filter(res => res.id != restrictionid);
     }
 
     const addRestriction = (userid, type, desc, date) => {
-        users.filter(user => user.id === userid)[0].restrictions.push(
+        users.filter(user => user.id === userid)[0].admin_reported_customer.push(
             {id:resId, type:type, assigner:'CurrentUser', startTime:'11/18/2021', endTime:date, desc:desc}
         );
         resId++;
@@ -289,7 +169,7 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '27%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_reported_customer.length > 0;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
@@ -317,11 +197,11 @@ const ManageAccountPage = () => {
                     <CardContent>
                         {
                         (showRestricted ? 
-                            (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.restrictions.length > 0;
+                                return obj.admin_reported_customer.length > 0;
                             })
-                            : (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            : (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
                             <li key={key.id.toString()}>
@@ -336,9 +216,12 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.restrictions.length > 0;})).length : users.filter(user => user.name.toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_reported_customer.length > 0;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
+            <Button onClick={setUsers}>
+                TEST
+            </Button>
         </div>
     );
 };
