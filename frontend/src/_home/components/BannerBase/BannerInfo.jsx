@@ -22,16 +22,40 @@ import { noop } from '~/common/utils';
 
 const BannerInfo = ({
     item = {},
-    onInputChange = noop,
-    onChipAdd = noop,
-    onChipDelete = noop,
     open = false,
-    onClose = noop
+    onClose = noop,
 }) => {
     const [tempKeyword, setTempKeyword] = useState("");
+    const [description, setDescription] = useState(item.description);
+    const [startDate, setStartDate] = useState(item.start_date);
+    const [endDate, setEndDate] = useState(item.end_date);
+    const [visible, setVisible] = useState(item.visible);
+    const [keywords, setKeywords] = useState(item.keywords);
+
+    const onChipAdd = (value) => {
+        if (keywords.includes(value)) return;
+
+        setKeywords(keywords => {
+            return [...keywords, value];
+        });
+    };
+
+    const onChipDelete = (value) => {
+        setKeywords(keywords => {
+            return keywords.filter(keyword => keyword !== value);
+        });
+    };
+
+    const onClearChange = () => {
+        setDescription(item.description);
+        setStartDate(item.start_date);
+        setEndDate(item.end_date);
+        setVisible(item.visible);
+        setKeywords(item.keywords);
+    };
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+        <Dialog open={open} fullWidth maxWidth="md">
             <DialogTitle>Banner Information</DialogTitle>
 
             <DialogContent>
@@ -44,8 +68,8 @@ const BannerInfo = ({
                             fullWidth
                             multiline
                             rows={3}
-                            value={item.description}
-                            onChange={(e) => onInputChange(e.target.value, "description")}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </Grid>
 
@@ -53,9 +77,9 @@ const BannerInfo = ({
                         <Typography fontSize={18} fontWeight={500} mb={2}>Start Date</Typography>
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                value={item.start_date}
+                                value={startDate}
                                 renderInput={(params) => <TextField {...params} />}
-                                onChange={(e) => onInputChange(e, "start_date")}
+                                onChange={(e) => setStartDate(e)}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -64,9 +88,9 @@ const BannerInfo = ({
                         <Typography fontSize={18} fontWeight={500} mb={2}>End Date</Typography>
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                value={item.end_date}
+                                value={endDate}
                                 renderInput={(params) => <TextField {...params} />}
-                                onChange={(e) => onInputChange(e, "end_date")}
+                                onChange={(e) => setEndDate(e)}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -76,8 +100,8 @@ const BannerInfo = ({
                         <RadioGroup
                             aria-label="status"
                             name="controlled-radio-buttons-group"
-                            value={item.status}
-                            onChange={(e) => onInputChange(e.target.value, "status")}
+                            value={visible}
+                            onChange={(e) => setVisible(e.target.value)}
                         >
                             <FormControlLabel label="Visible" value="true" control={<Radio />} />
                             <FormControlLabel label="Invisible" value="false" control={<Radio />} />
@@ -87,7 +111,7 @@ const BannerInfo = ({
                     <Grid item md={6}>
                         <Typography fontSize={18} fontWeight={500} mb={2}>Keywords</Typography>
                         <Grid container>
-                            {item.keywords.map((keyword, kwIndex) => (
+                            {keywords.map((keyword, kwIndex) => (
                                 <Grid item md={4} mb={2} mr={1} key={kwIndex}>
                                     <Chip
                                         label={keyword}
@@ -99,7 +123,7 @@ const BannerInfo = ({
                                             backgroundColor: "#FFF1EC"
                                         }}
                                         deleteIcon={<CancelRoundedIcon style={{ color: "#FD6637" }} />}
-                                        onDelete={() => onChipDelete(kwIndex)}
+                                        onDelete={() => onChipDelete(keyword)}
                                     />
                                 </Grid>
                             ))}
@@ -111,7 +135,7 @@ const BannerInfo = ({
                                 id="outlined-size-small"
                                 size="small"
                                 value={tempKeyword}
-                                disabled={item.keywords.length === 6}
+                                disabled={keywords.length === 6}
                                 onChange={(e) => setTempKeyword(e.target.value)}
                                 onKeyPress={(e) => {
                                     if (e.key === 'Enter') {
@@ -122,7 +146,7 @@ const BannerInfo = ({
                             />
 
                             <Typography fontSize={13} color="#A0A3BD" >
-                                {item.keywords.length}/6
+                                {keywords.length}/6
                             </Typography>
                         </Stack>
                     </Grid>
@@ -130,7 +154,11 @@ const BannerInfo = ({
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={onClose}>Finish</Button>
+                <Button onClick={() => {
+                    onClearChange();
+                    onClose();
+                }}>Cancel</Button>
+                <Button onClick={onClose}>Save</Button>
             </DialogActions>
         </Dialog>
     );

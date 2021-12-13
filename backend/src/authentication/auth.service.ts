@@ -9,7 +9,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 @Injectable()
 export class AuthenticationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	public async register(data: RegisterDto) {
 		console.log(data);
