@@ -6,9 +6,11 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { PromotionModule } from './promotion/promotion.module';
+
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule],
+	imports: [HttpModule, AuthenticationModule, PrismaModule, PromotionModule],
 	controllers: [AppController],
 	providers: [
 		// AppService,

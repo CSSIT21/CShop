@@ -99,6 +99,7 @@ const Couponshop = () => {
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
+                
               }}
             />
           );
@@ -118,6 +119,7 @@ const Couponshop = () => {
               claimProps={{
                 disabled: coupon.claimed,
                 title: "Claim",
+                
               }}
             />
           );
