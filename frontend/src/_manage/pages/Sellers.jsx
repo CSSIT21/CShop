@@ -38,11 +38,9 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-/*let sellers = [
+let sellers = [
     {
         id: 2000,
-        avatarInitials: 'LB',
-        avatarColor: brown[600],
         path: '',
         shop_name: 'The Library',
         productCount: 46,
@@ -50,23 +48,30 @@ const Item = styled(Paper)(({ theme }) => ({
         join_date: '15/05/2020',
         cancelRate: '2%',
         rating: 3.2,
-        admin_reported_shop: []
+        admin_shop_suspensions: 
+        {
+            suspension_type_id: 1,
+            admin_id: 1,
+            start_date: '15/05/2020',
+            end_date: '15/05/2020',
+            description: 'Test'
+        },
     },
-];*/
+];
 
 let resId = 1000;
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
 
-    const [sellers, setSellersList] = React.useState([]);
+    /*const [sellers, setSellersList] = React.useState([]);
     const setSellers = async () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/sellers"
         );
         setSellersList(fetchedData.data);
         console.log(fetchedData.data);
-      };
+      };*/
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -95,19 +100,16 @@ const ManageSellerAccountPage = () => {
     }
 
     const deleteRestriction = (sellerid, restrictionid) => {
-        sellers.filter(seller => seller.id === sellerid)[0].admin_reported_shop = sellers.filter(seller => seller.id === sellerid)[0].admin_reported_shop.filter(res => res.id != restrictionid);
+        sellers.filter(seller => seller.id === sellerid)[0].admin_shop_suspensions = null;
     }
 
     const addRestriction = (sellerid, type, desc, date) => {
-        sellers.filter(seller => seller.id === sellerid)[0].admin_reported_shop.push(
-            {id:resId, type:type, assigner:'CurrentUser', startTime:'11/18/2021', endTime:date, desc:desc}
-        );
-        resId++;
+        sellers.filter(seller => seller.id === sellerid)[0].admin_shop_suspensions = {suspension_type_id:type, admin_id:'CurrentUser', start_date:'11/18/2021', end_date:date, description:desc};
     }
 
-    useEffect(()=>{
+    /*useEffect(()=>{
         setSellers(); 
-    }, [])
+    }, [])*/
 
     return (
         <div>
@@ -172,7 +174,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '25%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_reported_shop.length > 0;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_shop_suspensions.length > 0;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Shop Name</Typography>
@@ -202,7 +204,7 @@ const ManageSellerAccountPage = () => {
                         (showRestricted ? 
                             (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.admin_reported_shop.length > 0;
+                                return obj.admin_shop_suspensions.length > 0;
                             })
                             : (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)

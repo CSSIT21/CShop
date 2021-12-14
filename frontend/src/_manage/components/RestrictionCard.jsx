@@ -32,26 +32,26 @@ export class SellerCard extends React.Component {
               <CardContent className={classes.header} sx={{ padding:'28px' }}>
                 <Box sx={{ width: '22%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Restriction Type</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.type}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.suspension_type_id}</Typography>
                 </Box>
                 <Box sx={{ width: '15%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Assigner</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.assigner}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.admin_id}</Typography>
                 </Box>
                 <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Start Time</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.startTime}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.start_date}</Typography>
                 </Box>
                 <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>End Time</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.endTime}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.end_date}</Typography>
                 </Box>
                 <Box sx={{ width: '30%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography style={{ fontSize: '15px', color: '#FD6637'}}>Description</Typography>
-                  <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.desc}</Typography>
+                  <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.description}</Typography>
                 </Box>
                 <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                  <Button variant="contained" sx={{ width: '50%', marginLeft: '35px'}} onClick={() => {this.props.deleteRestriction(this.props.objid, this.props.res.id); this.props.update();}}><DeleteIcon/></Button>
+                  <Button variant="contained" sx={{ width: '50%', marginLeft: '35px'}} onClick={() => {this.props.deleteRestriction(this.props.objid); this.props.update();}}><DeleteIcon/></Button>
                 </Box>
               </CardContent>
             </Card>

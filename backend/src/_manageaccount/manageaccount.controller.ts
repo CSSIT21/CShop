@@ -51,7 +51,7 @@ export class ManageaccountController {
         shop_picture: true,
         product: true,
         customer_followed_shop: true,
-        admin_reported_shop: true,
+        admin_shop_suspensions: true,
       }
     });
   }
