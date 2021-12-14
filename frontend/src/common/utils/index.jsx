@@ -36,17 +36,13 @@ export const convertFileBase64 = (file) => {
   });
 };
 
-export const getUrl = async (fileBase64) => {
-  const file = {
-    raw: fileBase64.split(",")[1],
-    mime: fileBase64.split(",")[0].split(";")[0].split("/")[1],
-  };
+export const getUrl = async (file) => {
+  const formdata = new FormData();
+  formdata.append("file", file);
+  formdata.append("mime", file.type.split("/")[1]);
   const { data } = await axios.post(
-    `https://drive.cshop.cscms.ml/upload/base64`,
-    {
-      payload: file.raw,
-      mime: file.mime,
-    },
+    `https://drive.cshop.cscms.ml/api/upload/form`,
+    formdata,
     { headers: { Authorization: "Bearer abcd1234cs21" } }
   );
   return data;
