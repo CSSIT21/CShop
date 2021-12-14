@@ -1,26 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLogSystemDto } from './dto/create-log-system.dto';
-import { UpdateLogSystemDto } from './dto/update-log-system.dto';
+import { HttpException, Injectable } from '@nestjs/common';
+import { CreateAddToCardLogDto } from './dto/create-add-to-card-log.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class LogSystemService {
-  create(createLogSystemDto: CreateLogSystemDto) {
-    return 'This action adds a new logSystem';
-  }
+  constructor(private readonly prisma: PrismaService) { }
+  async createAddToCard(addToCardDto: CreateAddToCardLogDto, customer_id: number, product_id: number) {
+    return this.prisma.home_add_to_cart_log.create({
+      data: {
+        added_date: addToCardDto.added_date,
+        customer_id,
+        product_id
+      }
 
-  findAll() {
-    return `This action returns all logSystem`;
+    })
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} logSystem`;
+  throwError(err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      console.log(err.message);
+      throw new HttpException('Error querying comments please check your information!', 500);
+    }
+    console.log(err.message);
+    throw new HttpException('Error querying comments request body incorrect', 500);
   }
-
-  update(id: number, updateLogSystemDto: UpdateLogSystemDto) {
-    return `This action updates a #${id} logSystem`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} logSystem`;
-  }
+  
 }
