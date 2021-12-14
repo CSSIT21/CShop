@@ -1,11 +1,11 @@
 import { Fragment } from "react";
 
 import Coupon from "../components/Coupon";
-import Nametype from "../components/Nametype";
+// import Nametype from "../components/Nametype";
 import { makeStyles } from "@mui/styles";
 
 import Couponshop from "../components/Couponshop";
-import Showpic from "../components/Showpic";
+// import Showpic from "../components/Showpic";
 
 const Promotion = () => {
   const classes = useStyles();
