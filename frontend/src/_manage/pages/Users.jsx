@@ -38,35 +38,45 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-/*let users = [
+let users = [
     {
         id: 24578,
-        avatarInitials: 'HB',
-        avatarColor: grey[400],
         path: '',
-        name: 'Hokma Benjamin',
-        address_line: 'Nest of former L Corp, District 12, The City',
-        gender: 'Male',
-        postal_code: '10120',
+        customer_info:{
+            firstname: 'Hokma',
+            lastname: 'Benjamin',
+            gender: 'Male',
+            birthdate: '02/08/1987',
+        },
+        customer_address:{
+            address_line: 'Nest of former L Corp, District 12, The City',
+            postal_code: '10120',
+        },
         date: '10/10/2020',
-        birthdate: '02/08/1987',
-        admin_reported_customer: [],
+        admin_customer_suspensions: 
+        {
+            suspension_type_id: 1,
+            admin_id: 1,
+            start_date: '15/05/2020',
+            end_date: '15/05/2020',
+            description: 'Test'
+        },
     },
-];*/
+];
 
 let resId = 1000;
 
 const ManageAccountPage = () => {
     const classes = useStyles();
 
-    const [users, setUsersList] = React.useState([]);
+    /*const [users, setUsersList] = React.useState([]);
     const setUsers = async () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/users"
         );
         setUsersList(fetchedData.data);
         console.log(fetchedData.data);
-      };
+      };*/
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -95,19 +105,16 @@ const ManageAccountPage = () => {
     }
 
     const deleteRestriction = (userid, restrictionid) => {
-        users.filter(user => user.id === userid)[0].admin_reported_customer = users.filter(user => user.id === userid)[0].admin_reported_customer.filter(res => res.id != restrictionid);
+        users.filter(user => user.id === userid)[0].admin_customer_suspensions = null;
     }
 
     const addRestriction = (userid, type, desc, date) => {
-        users.filter(user => user.id === userid)[0].admin_reported_customer.push(
-            {id:resId, type:type, assigner:'CurrentUser', startTime:'11/18/2021', endTime:date, desc:desc}
-        );
-        resId++;
+        users.filter(user => user.id === userid)[0].admin_customer_suspensions = {suspension_type_id:type, admin_id:'CurrentUser', start_date:'11/18/2021', end_date:date, description:desc};
     }
 
-    useEffect(()=>{
+    /*useEffect(()=>{
         setUsers(); 
-    }, [])
+    }, [])*/
 
     return (
         <div>
@@ -173,7 +180,7 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '27%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_reported_customer.length > 0;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_customer_suspensions != null;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
@@ -203,7 +210,7 @@ const ManageAccountPage = () => {
                         (showRestricted ? 
                             (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.admin_reported_customer.length > 0;
+                                return obj.admin_customer_suspensions != null;
                             })
                             : (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
@@ -220,7 +227,7 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_reported_customer.length > 0;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_customer_suspensions != null;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>

@@ -115,7 +115,7 @@ export class UserCard extends React.Component {
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
-              { this.props.user.admin_reported_customer.length > 0 ?
+              { this.props.user.admin_customer_suspensions != null ?
               <Card variant="outlined" style={{
                     backgroundColor: "#E04A4A33",
                     border: 'none',
@@ -140,15 +140,19 @@ export class UserCard extends React.Component {
         </CardContent>
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
-            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions ({this.props.user.admin_reported_customer.length})</Typography>
-            <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions</Typography>
+            {
+              this.props.user.admin_customer_suspensions == null ?
+              <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>:
+              <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Update</Button>
+            }
           </CardContent>
           <CardContent>
-          {this.props.user.admin_reported_customer.map((res) => (
-                            <div key={res.id.toString()}>
-                                <RestrictionCard res={res} deleteRestriction={this.props.deleteRestriction} objid={this.props.user.id} update={() => this.update()}/>
-                            </div>
-                        ))}
+            {
+              this.props.user.admin_customer_suspensions == null ?
+              <div></div>:
+              <RestrictionCard res={this.props.user.admin_customer_suspensions} deleteRestriction={this.props.deleteRestriction} objid={this.props.user.id} update={() => this.update()}/>
+            }
           </CardContent>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
             <Button variant="outlined" sx={{ marginLeft:'30px' }}>Go to Order History</Button>

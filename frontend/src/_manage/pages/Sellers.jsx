@@ -174,7 +174,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '25%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_shop_suspensions.length > 0;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Sellers ({(showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_shop_suspensions != null;})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '20%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Shop Name</Typography>
@@ -204,7 +204,7 @@ const ManageSellerAccountPage = () => {
                         (showRestricted ? 
                             (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.admin_shop_suspensions.length > 0;
+                                return obj.admin_shop_suspensions != null;
                             })
                             : (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)

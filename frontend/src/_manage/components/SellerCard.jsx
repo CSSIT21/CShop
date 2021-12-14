@@ -150,7 +150,11 @@ export class SellerCard extends React.Component {
         <Collapse in={this.state.expand} timeout="auto" unmountOnExit>
           <CardContent className={classes.header} sx={{ padding:'0px' }}>
             <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Restrictions</Typography>
-            <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>
+            {
+              this.props.seller.admin_shop_suspensions == null ?
+              <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>:
+              <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Update</Button>
+            }
           </CardContent>
           <CardContent>
             {
