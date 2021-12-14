@@ -16,7 +16,6 @@ const PageHeader = ({ Pagename }) => {
           />
         }
         <Typography
-          variant
           sx={{
             color: "black",
             fontWeight: "700",

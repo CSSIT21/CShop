@@ -13,7 +13,7 @@ const SellerSearch = ({ Pagename }) => {
       <Button sx={{ p: "10px", mr: "10px", flexShrink:0 }}>
         {<AllInboxIcon />}
         <Typography
-          variant
+          
           sx={{
             color: "black",
             fontWeight: "700",
