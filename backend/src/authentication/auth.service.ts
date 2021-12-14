@@ -4,12 +4,9 @@ import { v4 as uuid_gen } from 'uuid';
 import { nanoid } from 'nanoid';
 
 import { PrismaService } from 'src/prisma/prisma.service';
-// import { mkdirSync } from 'fs';
-// import { resizedDir } from 'src/common/constant/storage';
 import { Prisma, customer, Gender, customer_address } from '.prisma/client';
 import { RegisterDto } from './dto/register.dto';
-
-// import { RegisterDto } from './dto/register.dts';
+import { LoginDto } from './dto/login.dto';
 @Injectable()
 export class AuthenticationService {
     constructor(private readonly prisma: PrismaService) {}
@@ -106,7 +103,23 @@ export class AuthenticationService {
         return `This action updates a #${id} authentication`;
     }
 
-    public async remove(id: number) {
-        return `This action removes a #${id} authentication`;
-    }
+	public async remove(id: number) {
+		return `This action removes a #${id} authentication`;
+	}
+
+	public async login(data: LoginDto) {
+		const user = await this.prisma.customer.findFirst({
+			where: {
+				email: data.email,
+				password: data.password,
+			},
+		});
+		//test@gmail.com
+		//12345678
+		if (user) {
+			//JWT
+			return true;
+		}
+		return false;
+	}
 }

@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Typography, Button } from "@mui/material";
+import React, { useState, useLayoutEffect } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { makeStyles } from "@mui/styles";
@@ -10,25 +10,28 @@ import ProductCard from "~/common/components/ProductCard";
 import MenuItem from "@mui/material/MenuItem";
 
 const CarouselProduct = ({
-  section = {
-    id: "0",
-    page: {
-      type: 2,
-      id: 1,
-      content: [],
-    },
-  },
+  id = "0",
+  information,
+  setInformation = () => {},
   order = 0,
   ...rest
 }) => {
   const classes = useStyles();
   const categories = ["Baba1", "Baba2", "Baba3"];
-  const [selectCategory, setSelectCategory] = useState();
+
+  console.log(information);
+
+  const handleChange = (e) => {
+    setInformation((info) => ({
+      ...info,
+      [id]: { ...(info[id] || ""), img: e.target.value },
+    }));
+  };
 
   return (
     <>
-      <Box
-        sx={{
+      <div
+        style={{
           padding: "70px",
           backgroundColor: "#EFEFF1",
           borderRadius: "20px",
@@ -78,7 +81,7 @@ const CarouselProduct = ({
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </div>
       <Box
         sx={{ display: "flex", justifyContent: "flex-end", margin: "20px 0" }}
       >
@@ -86,10 +89,8 @@ const CarouselProduct = ({
           id="outlined-select-currency"
           select
           label="Select Category"
-          value={selectCategory}
-          onChange={(e) => {
-            setSelectCategory(e.target.value);
-          }}
+          value={information[id] ? information[id].img : null}
+          onChange={handleChange}
           sx={{ width: "30%" }}
         >
           {categories.map((category, idx) => (
