@@ -27,11 +27,6 @@ const useStyles = makeStyles({
     },
 });
 
-const Header = {
-    title: "Favorite",
-    icon: FavoriteIcon,
-};
-
 const FavouritePage = (props) => {
     const classes = useStyles();
 
@@ -54,7 +49,7 @@ const FavouritePage = (props) => {
     return (
         <Box className={classes.FavoriteWrapper}>
             <Box className={classes.content}>
-                <HeaderWithIcon header={Header} />
+                <HeaderWithIcon title="Favorite" ItemIcon={FavoriteIcon} />
                 <CardAndPagination products={products} onFavorite={onFavourite} />
             </Box>
         </Box>
