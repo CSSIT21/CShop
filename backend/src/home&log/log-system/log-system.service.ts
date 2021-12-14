@@ -7,6 +7,7 @@ import { CreateDiscountLogDto } from './dto/create-discount-log.dto';
 @Injectable()
 export class LogSystemService {
   constructor(private readonly prisma: PrismaService) { }
+
   async createAddToCard(addToCardDto: CreateAddToCardLogDto, customer_id: number, product_id: number) {
     return this.prisma.home_add_to_cart_log.create({
       data: {
@@ -16,25 +17,17 @@ export class LogSystemService {
       },
     });
   }
-      async createDiscount(discountDto: CreateDiscountLogDto , customer_id: number, discount_id: number) { 
-        return this.prisma.home_discount_log.create({
-          data: {
-            view_date: new Date(discountDto.view_date).toISOString(),
-            customer_id,
-            discount_id
 
-          },
-          
-        });
-   }
+  async createDiscount(discountDto: CreateDiscountLogDto, customer_id: number, discount_id: number) {
+    return this.prisma.home_discount_log.create({
+      data: {
+        view_date: new Date(discountDto.view_date).toISOString(),
+        customer_id,
+        discount_id
+      },
+    });
+  }
 
-   
-
-
-
-
-  
-  
   throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       console.log(err.message);
@@ -42,11 +35,8 @@ export class LogSystemService {
     }
     console.log(err.message);
     throw new HttpException('Error querying comments request body incorrect', 500);
+  }
 }
 
 
-
-  }
-  
-  
 
