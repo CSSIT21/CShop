@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client';
 import { CreateDiscountLogDto } from './dto/create-discount-log.dto';
 import { CreatePaymentLogDto } from './dto/create-payment-log.dto';
 import { CreateProductLogDto } from './dto/create-prouduct-log.dto';
+import { CreateShopLogDto } from './dto/create-shop-log.dto';
 
 @Injectable()
 export class LogSystemService {
@@ -52,7 +53,16 @@ export class LogSystemService {
     });
     
   }
-  
+
+  async crateShop(shopDto: CreateShopLogDto,customer_id:number,shop_id:number) {
+    return this.prisma.home_shop_log.create({
+      data: {
+        customer_id,
+        shop_id,
+      }
+    })
+  }
+
 
   throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {

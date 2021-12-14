@@ -4,6 +4,7 @@ import { CreateAddToCardLogDto } from './dto/create-add-to-card-log.dto';
 import { CreateDiscountLogDto } from './dto/create-discount-log.dto';
 import { CreatePaymentLogDto } from './dto/create-payment-log.dto';
 import { CreateProductLogDto } from './dto/create-prouduct-log.dto';
+import { CreateShopLogDto } from './dto/create-shop-log.dto';
 
 @Controller('log-system')
 export class LogSystemController {
@@ -47,8 +48,16 @@ export class LogSystemController {
     }
     catch (err) { 
       this.logSystemService.throwError(err);
-    }
+    }    
+  }
 
-    
+  @Post("shop/:customer_id/:shop_id")
+  async createShop(@Param('customer_id',ParseIntPipe)customer_id:number,@Param('shop_id',ParseIntPipe) shop_id: number,@Body() shopDto:CreateShopLogDto) {
+    try {
+      return this.logSystemService.crateShop(shopDto, customer_id, shop_id)
+    }
+    catch (err) { 
+      this.logSystemService.throwError(err);
+    }
   }
 }
