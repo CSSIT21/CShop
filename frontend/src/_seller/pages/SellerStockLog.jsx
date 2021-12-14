@@ -19,8 +19,8 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import StockLogBody from "./components/TableContent/StockLogBody";
 import PageHeader from "./components/PageHeader";
 
-function createData(productId, productName, Quantity, TradeType, Update_date) {
-  return { productId, productName, Quantity, TradeType, Update_date };
+function createData(productId, productName, Quantity, TradeType, Update_Date) {
+  return { productId, productName, Quantity, TradeType, Update_Date };
 }
 
 export default function SellerStockLog() {
