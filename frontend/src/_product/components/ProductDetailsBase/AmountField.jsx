@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 
-const Products = () => {
+const AmountField = ({stock= 0}) => {
   const [products, setProducts] = useState({
     count: 1,
   });
@@ -15,6 +15,7 @@ const Products = () => {
     setProducts({ count: e.target.value || 1 });
   };
 
+  // Decrease
   const decrease = (e) => {
     if (products.count <= 1) {
       return;
@@ -22,15 +23,22 @@ const Products = () => {
     setProducts({ count: products.count - 1 });
   };
 
+  // Increase
+  const increase = (e) => {
+    if (products.count >= stock) {
+      return;
+    }
+    setProducts({ count: products.count + 1 });
+  };
+
   const IncreaseButton = () => (
     <IconButton
       sx={{ width: "10px", height: "10px" }}
-      onClick={() => setProducts({ count: products.count + 1 })}
+      onClick={increase}
     >
       <Increase style={{ fontSize: "22px" }} />
     </IconButton>
   );
-
   const DecreaseButton = () => (
     <IconButton sx={{ width: "10px", height: "10px" }} onClick={decrease}>
       <Decrease style={{ fontSize: "22px" }} />
@@ -38,28 +46,23 @@ const Products = () => {
   );
 
   const classes = useStyles();
+
   return (
     <Box
-      sx={{
-        width: "116px",
-        height: "56px",
-        position: "relative",
-      }}
+      className={classes.wrapper}
     >
       <TextField
         type="text"
         value={products.count}
         onChange={handleChange}
         className={classes.show}
+        InputProps={{
+            readOnly: true,
+          }}
       ></TextField>
       <Box
-        sx={{
-          position: "absolute",
-          display: "flex",
-          flexDirection: "column",
-          top: "11px",
-          right: "5px",
-        }}
+        className={classes.button}
+        
       >
         <IncreaseButton />
         <DecreaseButton />
@@ -69,10 +72,24 @@ const Products = () => {
 };
 
 const useStyles = makeStyles({
-  show: {
-    position: "absolute",
+  wrapper: {
     width: "116px",
+    height: "56px",
+    
+    position: "relative",
   },
+  show: {
+    width: "100%",
+    position: "absolute",
+  },
+  button: {
+    position: "absolute",
+    top: "13px",
+    right: "8px",
+    
+    display: "flex",
+    flexDirection: "column",
+  }
 });
 
-export default Products;
+export default AmountField;
