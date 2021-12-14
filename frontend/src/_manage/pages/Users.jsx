@@ -16,7 +16,7 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React from "react";
+import React, { useEffect } from "react";
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
@@ -104,6 +104,10 @@ const ManageAccountPage = () => {
         );
         resId++;
     }
+
+    useEffect(()=>{
+        setUsers(); 
+    }, [])
 
     return (
         <div>

@@ -36,7 +36,7 @@ export class ProductCard extends React.Component {
               <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '18%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.product.title}</Typography>
+              <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.product.title}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px'}}>{this.props.product.price}</Typography>

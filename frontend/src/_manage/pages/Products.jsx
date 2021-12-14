@@ -91,8 +91,8 @@ const ManageAccountPage = () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/products"
         );
+        console.log(fetchedData.data)
         setProductsList(fetchedData.data);
-        console.log(products);
       };
     
     const [sortBy, setSortBy] = React.useState('');
@@ -114,6 +114,10 @@ const ManageAccountPage = () => {
     const handleSearch = (event) => {
         setSearch(event.target.value);
     }
+    
+    useEffect(()=>{
+        setProducts(); 
+    }, [])
 
     return (
         <div>
@@ -228,9 +232,6 @@ const ManageAccountPage = () => {
                     }
                 </div>
             </CardContent>
-            <Button onClick={setProducts}>
-                TEST
-            </Button>
         </div>
     );
 };

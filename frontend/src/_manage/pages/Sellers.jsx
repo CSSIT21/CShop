@@ -105,6 +105,10 @@ const ManageSellerAccountPage = () => {
         resId++;
     }
 
+    useEffect(()=>{
+        setSellers(); 
+    }, [])
+
     return (
         <div>
             <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
@@ -218,9 +222,6 @@ const ManageSellerAccountPage = () => {
                     <Pagination count={Math.ceil(((showRestricted ? (sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Restricted';})).length : sellers.filter(seller => seller.shop_name.toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
-            <Button onClick={setSellers}>
-                TEST
-            </Button>
         </div>
     );
 };
