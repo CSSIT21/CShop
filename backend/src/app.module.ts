@@ -6,10 +6,19 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
-import { SellerconsoleModule } from './sellerconsole/sellerconsole.module';
+import { BannerModule } from './home&log/banner/banner.module';
+import { HomeModule } from './home&log/home/home.module';
+import { LogSystemModule } from './home&log/log-system/log-system.module';
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule, SellerconsoleModule],
+	imports: [
+		HttpModule,
+		AuthenticationModule,
+		PrismaModule,
+		BannerModule,
+		HomeModule,
+		LogSystemModule,
+	],
 	controllers: [AppController],
 	providers: [
 		// AppService,
@@ -19,4 +28,4 @@ import { SellerconsoleModule } from './sellerconsole/sellerconsole.module';
 		// },
 	],
 })
-export class AppModule {}
+export class AppModule { }

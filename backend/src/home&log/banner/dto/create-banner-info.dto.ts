@@ -1,27 +1,22 @@
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsDate, IsInt, IsNotEmpty, IsOptional } from "class-validator";
 
-export class UpdateBannerDto {
+export class CreateBannerInfoDto {
 	@IsNotEmpty()
-	@IsOptional()
-	description?: string;
+	description: string;
 
 	@IsDate()
-	@IsOptional()
-	start_date?: Date;
+	start_date: Date;
 
 	@IsDate()
-	@IsOptional()
-	end_date?: Date;
+	end_date: Date;
 
 	@IsInt()
-	@IsOptional()
-	order?: number;
+	order: number;
 
 	@IsArray()
 	@ArrayMinSize(1)
 	@ArrayMaxSize(6)
-	@IsOptional()
-	keywords?: string[];
+	keywords: string[];
 
 	@IsBoolean()
 	@IsOptional()
