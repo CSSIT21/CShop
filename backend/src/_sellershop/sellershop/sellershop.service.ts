@@ -89,6 +89,8 @@ export class SellershopService {
 			if (shopsections.sections !== null) {
 				var parsedsections = JSON.parse(JSON.stringify(sections));
 				let resultSections = [];
+				console.log(sections);
+
 				for (let index = 0; index < parsedsections.length; index++) {
 					let section;
 

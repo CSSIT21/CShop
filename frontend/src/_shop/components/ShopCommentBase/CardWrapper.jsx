@@ -7,6 +7,7 @@ import DoDisturbAltRoundedIcon from "@mui/icons-material/DoDisturbAltRounded";
 import { Typography } from "@mui/material";
 import axios from "axios";
 import { useParams } from "react-router";
+import config from "~/common/constants";
 
 const CardWrapper = ({ type }) => {
   const [items, setitems] = useState([]);
@@ -19,7 +20,7 @@ const CardWrapper = ({ type }) => {
   useEffect(() => {
     if (type == "shop") {
       axios
-        .get(`http://localhost:8080/sellershop/${id}/shopcomments?page=${page}`)
+        .get(`${config.SERVER_URL}/sellershop/${id}/shopcomments?page=${page}`)
         .then(({ data }) => {
           setitems(data.shopcomments);
         });
@@ -27,7 +28,7 @@ const CardWrapper = ({ type }) => {
     if (type == "product") {
       axios
         .get(
-          `http://localhost:8080/sellershop/${id}/shopproductscomments?page=${page}`
+          `${config.SERVER_URL}/sellershop/${id}/shopproductscomments?page=${page}`
         )
         .then(({ data }) => {
           setitems(data.shopproductscomments);

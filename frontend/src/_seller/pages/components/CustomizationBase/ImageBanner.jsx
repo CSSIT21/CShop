@@ -18,7 +18,7 @@ const ImageBanner = ({
   const classes = useStyles();
   useLayoutEffect(() => {
     if (id in information) {
-      setImage({ path: information[id].img, fileBase64: "" });
+      setImage(information[id].content);
     } else {
       console.log("image not found");
       setImage({ path: content.img, fileBase64: "" });
@@ -31,22 +31,25 @@ const ImageBanner = ({
   // },[order]);
 
   const uploadFile = async (e, id) => {
-    console.log(id);
     const path = URL.createObjectURL(e.target.files[0]);
+    const fileBase64 = await convertFileBase64(e.target.files[0]);
+    const imagesetter = {
+      path: path,
+      fileBase64: fileBase64,
+    };
+    console.log(fileBase64);
     if (e.target.files.length) {
-      setImage({
-        path: path,
-        fileBase64: await convertFileBase64(e.target.files[0]),
-      });
+      setImage(imagesetter);
 
       setInformation((info) => ({
         ...info,
         [id]: {
           ...(info[id] || content),
-          img: path,
+          content: imagesetter,
         },
       }));
     }
+    e.target.value = null;
   };
   return (
     <Box

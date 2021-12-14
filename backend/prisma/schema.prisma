@@ -30,6 +30,8 @@ model customer {
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend?
+  discount_daily_coin           discount_daily_coin?
+  discount_used_coin            discount_used_coin?
   discount_user_code            discount_user_code?
   home_add_to_cart_log          home_add_to_cart_log?
   home_discount_log             home_discount_log?
@@ -388,6 +390,7 @@ model product_options {
   id                              Int               @id @default(autoincrement())
   product_id                      Int
   name                            String            @db.VarChar(20)
+  enable                          Boolean           @default(false)
   product_id_from_product_options product           @relation(fields: [product_id], references: [id])
   product_choices                 product_choices[]
 }
@@ -398,6 +401,7 @@ model product_choices {
   name                                    String          @db.VarChar(30)
   price                                   Int
   quantity                                Int
+  enable                                  Boolean         @default(false)
   product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
 }
 
@@ -427,6 +431,7 @@ model discount_shop {
   discount_id                    Int       @id
   shop_id                        Int
   quantity                       Int
+  max_quantity                   Int
   discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
   shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -447,6 +452,7 @@ model discount_event {
   shop_id                         Int
   event_id                        Int
   quantity                        Int
+  max_quantity                    Int
   discount_id_from_discount_event discount  @relation(fields: [discount_id], references: [id])
   event_id_from_discount_event    event     @relation(fields: [event_id], references: [id])
   shop_id_from_discount_event     shop_info @relation(fields: [shop_id], references: [id])
@@ -455,6 +461,7 @@ model discount_event {
 model discount_app {
   discount_id                   Int      @id
   quantity                      Int
+  max_quantity                  Int
   discount_id_from_discount_app discount @relation(fields: [discount_id], references: [id])
 }
 
@@ -462,6 +469,7 @@ model discount_category {
   discount_id                        Int      @id
   category_id                        Int
   quantity                           Int
+  max_quantity                       Int
   category_id_from_discount_category category @relation(fields: [category_id], references: [id])
   discount_id_from_discount_category discount @relation(fields: [discount_id], references: [id])
 }
@@ -473,20 +481,12 @@ model discount_user_code {
   discount_id_from_iscount_user_code  discount @relation(fields: [discount_id], references: [id])
 }
 
-model discount_spend_types {
-  id                      Int                       @id @default(autoincrement())
-  type                    DiscountUserTypes
-  amonut                  Int
-  description             String
-  discount_customer_spend discount_customer_spend[]
-}
-
 model discount_customer_spend {
-  customer_id                                Int                  @id
-  total_spend                                Int
-  spend_type_id                              Int
-  customer_id_from_discount_customer_spend   customer             @relation(fields: [customer_id], references: [id])
-  spend_type_id_from_discount_customer_spend discount_spend_types @relation(fields: [spend_type_id], references: [id])
+  customer_id                              Int             @id
+  total_spend                              Int
+  spend_type_id                            Int
+  customer_id_from_discount_customer_spend customer        @relation(fields: [customer_id], references: [id])
+  discount_reward                          discount_reward @relation(fields: [spend_type_id], references: [id])
 }
 
 model discount_coin_information {
@@ -1115,6 +1115,10 @@ model admin_support {
   sent_date                          DateTime              @default(now()) @db.Timestamp(6)
   ended_date                         DateTime?             @db.Timestamp(6)
   picture_id                         Int
+  admin_id                           Int
+  description                        String
+  target                             String
+  title                              String
   customer_id_from_admin_support     customer              @relation(fields: [customer_id], references: [id])
   picture_id_from_admin_support      admin_support_picture @relation(fields: [picture_id], references: [id])
   support_type_id_from_admin_support admin_support_type    @relation(fields: [support_type_id], references: [id])
@@ -1201,15 +1205,14 @@ model home_banner_picture {
 }
 
 model home_banner {
-  id          Int             @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   description String
-  start_date  DateTime        @db.Timestamp(6)
-  end_date    DateTime        @db.Timestamp(6)
+  start_date  DateTime @db.Timestamp(6)
+  end_date    DateTime @db.Timestamp(6)
   picture_id  Int[]
   order       Int
-  keywords    String[]        @db.VarChar(20)
-  type        homePartnerType
-  visible     Boolean         @default(true)
+  keywords    String[] @db.VarChar(20)
+  visible     Boolean  @default(true)
 }
 
 model home_popup {
@@ -1236,16 +1239,17 @@ model home_app_review {
 }
 
 model home_partner {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
-  title       String   @db.VarChar(100)
-  start_date  DateTime @db.Timestamp(6)
-  end_date    DateTime @db.Timestamp(6)
-  join_date   DateTime @db.Timestamp(6)
+  title       String          @db.VarChar(100)
+  start_date  DateTime        @db.Timestamp(6)
+  end_date    DateTime        @db.Timestamp(6)
+  join_date   DateTime        @db.Timestamp(6)
   description String
-  title_pic   String   @db.VarChar(50)
+  title_pic   String          @db.VarChar(50)
   path        String
   thumbnail   String
+  type        homePartnerType
 }
 
 model home_product_log {
@@ -1435,6 +1439,29 @@ model business_conversation_count_summaries {
 model business_interaction_weight {
   weight Int      @id
   date   DateTime @db.Date
+}
+
+model discount_daily_coin {
+  customer_id Int      @id
+  got_date    DateTime @db.Date
+  customer    customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_reward {
+  id                      Int                       @id @default(autoincrement())
+  type                    DiscountUserTypes
+  quantity                Int
+  description             String
+  max_quantity            Int
+  discount_customer_spend discount_customer_spend[]
+}
+
+model discount_used_coin {
+  customer_id Int      @id
+  used_time   DateTime @db.Timestamp(6)
+  used_amount Int
+  user_for    String
+  customer    customer @relation(fields: [customer_id], references: [id])
 }
 
 enum Gender {

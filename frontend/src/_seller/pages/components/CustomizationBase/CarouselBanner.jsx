@@ -35,7 +35,7 @@ const CarouselBanner = ({
 
   useLayoutEffect(() => {
     if (id in information) {
-      setSectionImages(information[id].img);
+      setSectionImages(information[id].content);
     } else {
       console.log("image not found");
     }
@@ -57,14 +57,15 @@ const CarouselBanner = ({
 
   const uploadFile = async (e) => {
     if (e.target.files.length) {
-      let fileBase64 = await convertFileBase64(e.target.files[0]);
       const path = URL.createObjectURL(e.target.files[0]);
+      const fileBase64 = await convertFileBase64(e.target.files[0]);
+      const imagesetter = {
+        id: nanoid(),
+        path: path,
+        fileBase64: fileBase64,
+      };
       setSectionImages((sectionImages) => {
-        sectionImages.push({
-          id: nanoid(),
-          path: path,
-          fileBase64: fileBase64,
-        });
+        sectionImages.push(imagesetter);
         return [...sectionImages];
       });
 
@@ -76,7 +77,7 @@ const CarouselBanner = ({
   const saveUpload = () => {
     setInformation((info) => ({
       ...info,
-      [id]: { ...(info[id] || contents), img: sectionImages },
+      [id]: { ...info[id], content: sectionImages },
     }));
   };
   return (

@@ -17,6 +17,9 @@ import YoutubeEmbedIcon from "./components/CustomizationBase/DragableIcon/Youtub
 import ProductCarouselIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselIcon";
 import ProductCarouselSelectIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselSelectIcon";
 import Button from "@mui/material/Button";
+import { getUrl } from "~/common/utils";
+import axios from "axios";
+import config from "~/common/constants";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -113,26 +116,25 @@ const Notice = styled.div`
 const ITEMS = [
   {
     id: nanoid(),
-    content: "ImageBanner",
+    type: "Banner",
   },
   {
     id: nanoid(),
-    content: "CarouselBanner",
+    type: "BannerCarousel",
   },
   {
     id: nanoid(),
-    content: "Youtube",
+    type: "Video",
   },
   {
     id: nanoid(),
-    content: "CarouselProduct",
+    type: "ProductCarousel",
   },
   {
     id: nanoid(),
-    content: "CarouselProductSelect",
+    type: "ProductCarouselSelect",
   },
 ];
-
 const SellerShopCustomization = () => {
   const shopName = "Shop name";
   const dropArea = "area";
@@ -149,10 +151,62 @@ const SellerShopCustomization = () => {
     setAnchorEl(null);
   };
 
+  const saveChange = async () => {
+    await axios
+      .patch(`${config.SERVER_URL}/shopcustomization`, state.area)
+      .then(() => {
+        Object.entries(sectionInfos).forEach(async (e) => {
+          const item = state.area.find((item) => e[0]);
+          console.log("file", item, e);
+          switch (item.type) {
+            case "Banner":
+              const url = await getUrl(e[1].content.fileBase64);
+              console.log(url);
+              axios
+                .post(`${config.SERVER_URL}/shopcustomization/banner`, {
+                  id: e[0],
+                  path: url.original_link,
+                  thumbnail: url,
+                  title: e[1].path,
+                })
+                .catch((e) => {
+                  axios.patch(`${config.SERVER_URL}/shopcustomization/banner`, {
+                    id: e[0],
+                    path: url.original_link,
+                    thumbnail: url,
+                    title: e[1].path,
+                  });
+                }); //shop_banner table
+              break;
+            case "BannerCarousel":
+              //axios.post() shop_banner_carousel table
+              break;
+            case "Video":
+              //axios.post() shop_video table
+              break;
+            case "ProductCarousel":
+              //axios.post() shop_product_carousel table
+              break;
+            case "ProductCarouselSelect":
+              //axios.post() shop_product_carousel table
+              break;
+          }
+        });
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
   const deleteItem = (source, id) => {
     const target = source.find((item) => item.id === id);
     const index = source.indexOf(target);
     const cloneSource = [...source];
+    if (typeof sectionInfos[id] !== "undefined") {
+      setSectionInfos((sectionInfos) => {
+        delete sectionInfos[id];
+        return sectionInfos;
+      });
+    }
     cloneSource.splice(index, 1);
     return cloneSource;
   };
@@ -202,26 +256,26 @@ const SellerShopCustomization = () => {
 
   const GetComponent = ({ type, ...rest }) => {
     const Components = {
-      Youtube: <YoutubeSection {...rest} />,
-      ImageBanner: <ImageBanner {...rest} />,
-      CarouselProduct: <CarouselProduct {...rest} />,
-      CarouselBanner: <CarouselBanner {...rest} />,
-      CarouselProductSelect: <CarouselProductSelect {...rest} />,
+      Video: <YoutubeSection {...rest} />,
+      Banner: <ImageBanner {...rest} />,
+      ProductCarousel: <CarouselProduct {...rest} />,
+      BannerCarousel: <CarouselBanner {...rest} />,
+      ProductCarouselSelect: <CarouselProductSelect {...rest} />,
     };
 
-    return Components[type] || Components["ImageBanner"];
+    return Components[type] || Components["Banner"];
   };
 
   const GetIcon = ({ type, ...rest }) => {
     const Components = {
-      ImageBanner: <ImageBannerIcon {...rest} />,
-      CarouselBanner: <CarouselBannerIcon {...rest} />,
-      Youtube: <YoutubeEmbedIcon {...rest} />,
-      CarouselProduct: <ProductCarouselIcon {...rest} />,
-      CarouselProductSelect: <ProductCarouselSelectIcon {...rest} />,
+      Banner: <ImageBannerIcon {...rest} />,
+      BannerCarousel: <CarouselBannerIcon {...rest} />,
+      Video: <YoutubeEmbedIcon {...rest} />,
+      ProductCarousel: <ProductCarouselIcon {...rest} />,
+      ProductCarouselSelect: <ProductCarouselSelectIcon {...rest} />,
     };
 
-    return Components[type] || Components["ImageBanner"];
+    return Components[type] || Components["Banner"];
   };
 
   return (
@@ -247,7 +301,9 @@ const SellerShopCustomization = () => {
         >
           {shopName}
         </Typography>
-        <Button variant="contained">Save</Button>
+        <Button variant="contained" onClick={saveChange}>
+          Save
+        </Button>
       </Box>
       <Box>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -276,11 +332,11 @@ const SellerShopCustomization = () => {
                           isDragging={snapshot.isDragging}
                           style={provided.draggableProps.style}
                         >
-                          <GetIcon type={item.content} />
+                          <GetIcon type={item.type} />
                         </Item>
                         {snapshot.isDragging && (
                           <Clone>
-                            <GetIcon type={item.content} />
+                            <GetIcon type={item.type} />
                           </Clone>
                         )}
                       </React.Fragment>

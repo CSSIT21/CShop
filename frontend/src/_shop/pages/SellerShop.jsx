@@ -5,15 +5,13 @@ import Voucher from "../components/sellerShopBase/Voucher";
 import Content from "../components/sellerShopBase/Content";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import CategoryPic1 from "~/common/assets/images/category-1.png";
-import CategoryPic2 from "~/common/assets/images/category-2.png";
-import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
 import axios from "axios";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
+import config from "~/common/constants";
 
 const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
@@ -36,7 +34,7 @@ const SellerShop = () => {
   };
   useEffect(async () => {
     await axios
-      .get(`http://localhost:8080/sellershop/${id}`)
+      .get(`${config.SERVER_URL}:8080/sellershop/${id}`)
       .then(({ data }) => {
         setshopInfo(data.shopinfo);
         setmenus(data.shopinfo.categories);
@@ -46,17 +44,17 @@ const SellerShop = () => {
         history.push("/*");
       });
     axios
-      .get(`http://localhost:8080/sellershop/${id}/products`)
+      .get(`${config.SERVER_URL}/sellershop/${id}/products`)
       .then(({ data }) => {
         setproducts(data.products);
       });
     axios
-      .get(`http://localhost:8080/sellershop/${id}/sections`)
+      .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
       .then(({ data }) => {
         setsections(data.sections);
       });
     axios
-      .get(`http://localhost:8080/sellershop/${id}/shopdiscounts`)
+      .get(`${config.SERVER_URL}/sellershop/${id}/shopdiscounts`)
       .then(({ data }) => {
         setcoupons(data.shopvouchers);
       });

@@ -10,6 +10,7 @@ import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
 import { useParams } from "react-router";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
+import config from "~/common/constants";
 
 const TabsController = ({ ...rest }) => {
   const classes = useStyles();
@@ -20,7 +21,7 @@ const TabsController = ({ ...rest }) => {
     setValue(newValue);
   };
   useEffect(() => {
-    axios.get(`http://localhost:8080/sellershop/${id}`).then(({ data }) => {
+    axios.get(`${config.SERVER_URL}/sellershop/${id}`).then(({ data }) => {
       if (data.shopinfo.rating) {
         setrating(data.shopinfo.rating);
       } else {

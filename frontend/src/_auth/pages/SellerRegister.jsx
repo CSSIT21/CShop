@@ -8,6 +8,7 @@ import Success from "../components/Success";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import config from "~/common/constants";
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
@@ -154,7 +155,7 @@ const SellerRegister = ({}) => {
   const createShop = () => {
     try {
       axios
-        .post("http://localhost:8080/sellershop", {
+        .post(`${config.SERVER_URL}/sellershop`, {
           customer_id: 1,
           shop_address_id: 1,
           name: sellerInfo.shopName,

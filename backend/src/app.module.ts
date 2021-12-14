@@ -7,9 +7,10 @@ import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
+import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule, SellershopModule],
+	imports: [HttpModule, AuthenticationModule, PrismaModule, SellershopModule, ShopcustomizationModule],
 	controllers: [AppController],
 	providers: [
 		// AppService,

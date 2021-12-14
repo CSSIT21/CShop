@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import CarouselButton from "~/common/components/CarouselButton";
 import Carousel from "~/common/components/Carousel";
 import Coupon from "./Coupon";
-import axios from "axios";
 import { useParams } from "react-router";
 const couponsMock = [
   {
