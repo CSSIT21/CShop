@@ -21,11 +21,11 @@ const bannerList = [
 			main: BannerPic,
 			children: [
 				{
-					order: 0,
+					id: 0,
 					path: BannerPic,
 				},
 				{
-					order: 1,
+					id: 1,
 					path: BannerPic,
 				},
 			]
@@ -43,19 +43,19 @@ const bannerList = [
 			main: BannerPic,
 			children: [
 				{
-					order: 0,
+					id: 0,
 					path: BannerPic,
 				},
 				{
-					order: 1,
+					id: 1,
 					path: BannerPic,
 				},
 				{
-					order: 2,
+					id: 2,
 					path: BannerPic,
 				},
 				{
-					order: 3,
+					id: 3,
 					path: BannerPic,
 				},
 			]

@@ -9,7 +9,7 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		{ ...item, y: (height += item.height || 0) - item.height || 0 })
 	),
 		{
-			keys: item => item.order,
+			keys: item => item.id,
 			from: { height: 0, opacity: 0 },
 			leave: { height: 0, opacity: 0 },
 			enter: ({ y, height }) => ({ y, height, opacity: 1 }),

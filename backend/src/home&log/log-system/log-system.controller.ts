@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { LogSystemService } from './log-system.service';
-import { CreateLogSystemDto } from './dto/create-log-system.dto';
-import { UpdateLogSystemDto } from './dto/update-log-system.dto';
+import { CreateAddToCardLogDto } from './dto/create-add-to-card-log.dto';
+import { CreateDiscountLogDto } from './dto/create-discount-log.dto';
 
 @Controller('log-system')
 export class LogSystemController {
-  constructor(private readonly logSystemService: LogSystemService) {}
+  constructor(private readonly logSystemService: LogSystemService) { }
 
-  @Post()
-  create(@Body() createLogSystemDto: CreateLogSystemDto) {
-    return this.logSystemService.create(createLogSystemDto);
+  @Post("addToCard/:customer_id/:product_id")
+  async createAddToCard(@Param('customer_id', ParseIntPipe) customer_id: number, @Param('product_id', ParseIntPipe) product_id: number, @Body() addTocardDto: CreateAddToCardLogDto) {
+    try {
+      return this.logSystemService.createAddToCard(addTocardDto, customer_id, product_id)
+    }
+    catch (err) {
+      this.logSystemService.throwError(err);
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.logSystemService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.logSystemService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLogSystemDto: UpdateLogSystemDto) {
-    return this.logSystemService.update(+id, updateLogSystemDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.logSystemService.remove(+id);
+  @Post("discount/:customer_id/:discount_id")
+  async createDiscount(@Param('customer_id', ParseIntPipe) customer_id: number, @Param('discount_id', ParseIntPipe) discount_id: number, @Body() discountDto: CreateDiscountLogDto) {
+    try {
+      return this.logSystemService.createDiscount(discountDto, customer_id, discount_id,)
+    }
+    catch (err) {
+      this.logSystemService.throwError(err);
+    }
   }
 }
