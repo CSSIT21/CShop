@@ -17,16 +17,11 @@ import { FormControl } from '@mui/material'
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
-import { FormHelperText } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import { createTheme } from '@mui/material';
-import CButton from "../../common/components/CButton";
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import TicketCard from "../components/TicketCard";
 import { Search } from '@mui/icons-material';
-import { grey, red, amber, orange, pink, deepPurple, blue, lightGreen, brown } from '@mui/material/colors';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import axios from "axios";
 
 const cardStyle = {
     width: '100%',
@@ -44,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let tickets = [
+/*let tickets = [
     {
         id: 89547,
         title: 'Missing Coffee',
@@ -57,190 +52,20 @@ let tickets = [
         status: 'Open',
         path: "https://via.placeholder.com/410x360"
     },
-    {
-        id: 19547,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89537,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 84547,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89548,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89549,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89147,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89347,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 29547,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 39547,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 895327,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 9547,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 893447,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 895247,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89540,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-    {
-        id: 89512,
-        title: 'Missing Coffee',
-        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
-        type_title: 'User Report',
-        customer_id: 'Daniel Chesed',
-        target: 'Garion Binah',
-        sent_date: '01/08/2020',
-        admin_id: 'AdminAngela',
-        status: 'Open',
-        path: "https://via.placeholder.com/410x360"
-    },
-];
+];*/
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
+
+    const [tickets, setTicketsList] = React.useState([]);
+    const setTickets = async () => {
+        const fetchedData = await axios.get(
+          "http://localhost:8080/manageaccount/tickets"
+        );
+        console.log(fetchedData.data)
+        setTicketsList(fetchedData.data);
+      };
+
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
@@ -270,6 +95,10 @@ const ManageSellerAccountPage = () => {
     const setStatus = (ticketid, status) => {
         tickets.filter(ticket => ticket.id === ticketid)[0].status = status;
     }
+
+    useEffect(()=>{
+        setTickets(); 
+    }, [])
 
     return (
         <div>

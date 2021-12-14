@@ -68,6 +68,15 @@ export class ManageaccountController {
     });
   }
 
+  @Get('tickets')
+  getTickets(){
+    return this.prisma.admin_support_picture.findMany({
+      include:{
+        admin_support: true,
+      }
+    });
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.manageaccountService.findOne(+id);
