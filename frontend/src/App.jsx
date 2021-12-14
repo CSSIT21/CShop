@@ -50,6 +50,8 @@ import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
 import SellerOrderStatus from "./_seller/pages/SellerOrderStatus";
 import Promotion from "./_promotion/pages/Promotion";
+import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
+import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
 
 /** pages lazy loading*/
@@ -74,6 +76,14 @@ import NotFoundPage from "./common/pages/404";
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from "./common/utils/catch";
 import ErrorPage from "./common/utils/error";
+
+// import CoinHistoryPage from "./_coin/pages/coinHistory";
+// import CoinRedeemPage from "./_coin/pages/coinRedeem";
+import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
+import FollowedShop from "./_profile/pages/FollowedShop";
+import SellerRegister from "./_auth/pages/SellerRegister";
+import ManageBanner from "./_home/pages/ManageBanner";
+
 
 function App() {
   return (
@@ -110,6 +120,11 @@ function App() {
                       <Route exact path="/manage/bannedusers">
                         <BannedUsersPage />
                       </Route>
+
+                      <Route exact path="/manage/banner">
+                        <ManageBanner />
+                      </Route>
+
                     </Suspense>
                   </SidebarLayout>
                 </Route>
@@ -179,6 +194,15 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
+                <Route path="/register/seller" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <SellerRegister />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
                 <Route path="/profile" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -201,6 +225,18 @@ function App() {
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
+
+                      <Route path="/profile/followedshop">
+                        <FollowedShop />
+                      </Route>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/shop/:id/comment" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShopComment />
+
                     </Suspense>
                   </MainLayout>
                 </Route>
@@ -225,6 +261,29 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
+                {/* <Route exact path="/coin/history">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CoinHistoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route> */}
+                {/* <Route exact path="/coin">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CoinRedeemPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route> */}
+                <Route exact path="/cart">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShoppingCartPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}
@@ -234,6 +293,11 @@ function App() {
                       <Route path="/seller/:id/dashboard">
                         <SellerDashboard />
                       </Route>
+
+                      <Route path="/seller/:id/customize">
+                        <SellerShopCustomizationPage />
+                      </Route>
+
                       <Route path="/seller/:id/stock">
                         <SellerStock />
                       </Route>
@@ -252,9 +316,12 @@ function App() {
                       <Route path="/seller/:id/discountlog">
                         <SellerDiscountLog />
                       </Route>
+
                       <Route path="/seller/:id/orderstatus">
                         <SellerOrderStatus />
                       </Route>
+
+
                     </Suspense>
                   </SellerConsoleSidebarLayout>
                 </Route>

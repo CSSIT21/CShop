@@ -27,11 +27,6 @@ const useStyles = makeStyles({
     },
 });
 
-const Header = {
-    title: "Suggestion",
-    icon: HighlightIcon,
-};
-
 const SuggestionPage = props => {
     const classes = useStyles();
 
@@ -54,8 +49,13 @@ const SuggestionPage = props => {
     return (
         <Box className={classes.suggestionWrapper}>
             <Box className={classes.content}>
-                <HeaderWithIcon header={Header} />
-                <CardAndPagination products={products} onFavorite={onFavorite} onPageChange={onPageChange} page={page} />
+                <HeaderWithIcon title="Suggestion" ItemIcon={HighlightIcon}  />
+                <CardAndPagination 
+                    products={products} 
+                    onFavorite={onFavorite} 
+                    onPageChange={onPageChange} 
+                    page={page} 
+                />
             </Box>
         </Box>
     );

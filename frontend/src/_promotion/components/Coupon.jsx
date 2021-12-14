@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';

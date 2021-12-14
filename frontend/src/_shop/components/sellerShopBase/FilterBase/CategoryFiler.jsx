@@ -7,8 +7,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router";
 const CateGoryFilter = ({ categories = [] }) => {
-
-    const { id, cateId } = useParams();
+  const { id, cateId } = useParams();
   return (
     <>
       <Box sx={{ padding: "0px 0px 10px" }}>
@@ -19,9 +18,8 @@ const CateGoryFilter = ({ categories = [] }) => {
           {categories.map((category, idx) => {
             return (
               <FormControlLabel
-                control={
-                  <Checkbox />
-                }
+                key={idx}
+                control={<Checkbox />}
                 label={category.title}
               />
             );

@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import CButton from "../../common/components/CButton";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
+import { Link } from "react-router-dom";
 
 const ShopDetails = (props) => {
   const shopName = "Shop Name";
@@ -70,6 +71,9 @@ const ShopDetails = (props) => {
 
           {/* Buttom */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Link
+              to="/chat/4"
+            >
             <CButton
               title="Chat now"
               icon={<ShoppingCartOutlinedIcon sx={{ fontSize: "12px"}} />}
@@ -77,6 +81,11 @@ const ShopDetails = (props) => {
               height="45px"
               fontSize = "13px"
             />
+            </Link>
+            <Link
+              to="/shop/4"
+            >
+            
             <CButton
               title="Go to shop"
               icon={<StoreOutlinedIcon sx={{ fontSize: "12px"}}/>}
@@ -86,6 +95,7 @@ const ShopDetails = (props) => {
               backgroundColor="#FFFFFF"
               style={goToShopStyle}
             />
+            </Link>
           </Box>
         </Box>
       </Box>
