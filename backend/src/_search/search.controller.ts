@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseBoolPipe, DefaultValuePipe, ParseFloatPipe } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	Query,
+	ParseBoolPipe,
+	DefaultValuePipe,
+	ParseFloatPipe,
+} from '@nestjs/common';
 import { SearchService } from './search.service';
 import { CreateSearchDto } from './dto/create-search.dto';
 import { UpdateSearchDto } from './dto/update-search.dto';
@@ -23,6 +35,8 @@ export class SearchController {
 	@Get()
 	findAll(
 		@Query('q') query: string,
+		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
+		@Query('priceHigh' , new DefaultValuePipe(0), ParseFloatPipe) priceHigh: number,
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,
@@ -33,7 +47,10 @@ export class SearchController {
 					title: { contains: query, mode: 'insensitive' },
 					rating: {
 						gte: rating,
-            
+					},
+					price: {
+						gte: priceLow,
+						lte: priceHigh
 					},
 				},
 			});
@@ -47,6 +64,10 @@ export class SearchController {
 					rating: {
 						gte: rating,
 					},
+					price: {
+						gte: priceLow,
+						lte :  priceHigh
+					},
 				},
 			});
 		}
@@ -56,6 +77,10 @@ export class SearchController {
 				title: { contains: query, mode: 'insensitive' },
 				rating: {
 					gte: rating,
+				},
+				price: {
+					gte: priceLow,
+					lte : priceHigh
 				},
 			},
 		});
