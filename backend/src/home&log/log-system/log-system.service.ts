@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { CreateDiscountLogDto } from './dto/create-discount-log.dto';
 import { CreatePaymentLogDto } from './dto/create-payment-log.dto';
+import { CreateProductLogDto } from './dto/create-prouduct-log.dto';
 
 @Injectable()
 export class LogSystemService {
@@ -40,6 +41,18 @@ export class LogSystemService {
       },
     });
   }
+
+  async createProduct(productDto: CreateProductLogDto, customer_id: number, product_id: number) {
+    return this.prisma.home_product_log.create({
+      data: {
+        view_date: new Date(productDto.view_date).toISOString(),
+        customer_id,
+        product_id
+      },
+    });
+    
+  }
+  
 
   throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
