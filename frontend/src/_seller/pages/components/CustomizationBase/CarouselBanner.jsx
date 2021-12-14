@@ -18,7 +18,7 @@ const CarouselBanner = ({
   id = "0",
   contents = [
     {
-      name: "placeholder",
+      title: "placeholder",
       id: 1,
       img: "https://cloudfour.com/wp-content/uploads/2020/01/default.svg",
     },
@@ -58,11 +58,12 @@ const CarouselBanner = ({
   const uploadFile = async (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target.files[0]);
-      const fileBase64 = await convertFileBase64(e.target.files[0]);
+      const title = e.target.files[0].name;
       const imagesetter = {
         id: nanoid(),
         path: path,
-        fileBase64: fileBase64,
+        title: title,
+        file: e.target.files[0],
       };
       setSectionImages((sectionImages) => {
         sectionImages.push(imagesetter);
@@ -126,7 +127,7 @@ const CarouselBanner = ({
             <img
               onClick={handleClickOpen}
               src={contents[0].img}
-              alt={contents[0].name}
+              alt={contents[0].title}
               width="100%"
               style={{
                 transition: "0.25s all ease-in-out",
@@ -136,7 +137,7 @@ const CarouselBanner = ({
             <img
               onClick={handleClickOpen}
               src={sectionImages[0].path}
-              alt={sectionImages[0].id}
+              alt={sectionImages[0].title}
               width="100%"
               style={{
                 transition: "0.25s all ease-in-out",

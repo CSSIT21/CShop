@@ -45,6 +45,36 @@ export class ShopcustomizationController {
 		}
 	}
 
+	@Post('/bannercarousel')
+	public async createBannerCarousel(
+		@Body() shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput,
+		@Res() res,
+	) {
+		const result = await this.shopcustomizationService.createBannerCarousel(shop_banner_carouselCreateInput);
+		if (result) {
+			res.send({ Success: true, result });
+		} else {
+			res.send({ Success: false });
+		}
+	}
+
+	@Patch('/bannercarousel')
+	public async updateBannerCarousel(
+		@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
+		@Body() shop_banner_carouselUpdateInput: Prisma.shop_banner_carouselUpdateInput,
+		@Res() res,
+	) {
+		const result = await this.shopcustomizationService.updateBannerCarousel(
+			shop_banner_carouselWhereUniqueInput,
+			shop_banner_carouselUpdateInput,
+		);
+		if (result) {
+			res.send({ Success: true, result });
+		} else {
+			res.send({ Success: false });
+		}
+	}
+
 	@Get()
 	findAll() {
 		return this.shopcustomizationService.findAll();

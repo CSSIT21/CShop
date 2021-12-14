@@ -150,36 +150,62 @@ const SellerShopCustomization = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  console.log("sectionInfos", sectionInfos);
+  useEffect(() => {
+    axios.get();
+  }, []);
   const saveChange = async () => {
     await axios
-      .patch(`${config.SERVER_URL}/shopcustomization`, state.area)
+      .patch(`${config.SERVER_URL}/shopcustomization`, { sections: state.area })
       .then(() => {
         Object.entries(sectionInfos).forEach(async (e) => {
           const item = state.area.find((item) => e[0]);
           console.log("file", item, e);
           switch (item.type) {
             case "Banner":
-              const url = await getUrl(e[1].content.fileBase64);
-              console.log(url);
+              const url = await getUrl(e[1].content.file);
               axios
                 .post(`${config.SERVER_URL}/shopcustomization/banner`, {
                   id: e[0],
                   path: url.original_link,
-                  thumbnail: url,
-                  title: e[1].path,
+                  thumbnail: url.original_link,
+                  title: e[1].content.title,
                 })
-                .catch((e) => {
+                .catch((error) => {
                   axios.patch(`${config.SERVER_URL}/shopcustomization/banner`, {
                     id: e[0],
                     path: url.original_link,
-                    thumbnail: url,
-                    title: e[1].path,
+                    thumbnail: url.original_link,
+                    title: e[1].content.title,
                   });
                 }); //shop_banner table
               break;
             case "BannerCarousel":
-              //axios.post() shop_banner_carousel table
+              let banners = [];
+              e[1].content.forEach(async (element) => {
+                // const url = await getUrl(element.file);
+                banners = [
+                  ...banners,
+                  {
+                    id: element.id,
+                    path: "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
+                  },
+                ];
+              });
+              axios
+                .post(`${config.SERVER_URL}/shopcustomization/bannercarousel`, {
+                  id: e[0],
+                  banners: banners,
+                })
+                .catch((error) => {
+                  axios.patch(
+                    `${config.SERVER_URL}/shopcustomization/bannercarousel`,
+                    {
+                      id: e[0],
+                      banners: banners,
+                    }
+                  );
+                });
               break;
             case "Video":
               //axios.post() shop_video table
@@ -396,7 +422,7 @@ const SellerShopCustomization = () => {
                                     </IconButton>
                                   </Box>
                                   <GetComponent
-                                    type={item.content}
+                                    type={item.type}
                                     id={item.id}
                                     information={sectionInfos}
                                     setInformation={setSectionInfos}

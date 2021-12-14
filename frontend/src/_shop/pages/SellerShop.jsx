@@ -5,6 +5,9 @@ import Voucher from "../components/sellerShopBase/Voucher";
 import Content from "../components/sellerShopBase/Content";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
+import CategoryPic1 from "~/common/assets/images/category-1.png";
+import CategoryPic2 from "~/common/assets/images/category-2.png";
+import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
@@ -34,7 +37,7 @@ const SellerShop = () => {
   };
   useEffect(async () => {
     await axios
-      .get(`${config.SERVER_URL}:8080/sellershop/${id}`)
+      .get(`${config.SERVER_URL}/sellershop/${id}`)
       .then(({ data }) => {
         setshopInfo(data.shopinfo);
         setmenus(data.shopinfo.categories);

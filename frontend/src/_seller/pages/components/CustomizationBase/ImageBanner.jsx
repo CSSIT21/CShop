@@ -3,7 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
-import { noop, convertFileBase64 } from "~/common/utils";
+import { noop } from "~/common/utils";
 
 const ImageBanner = ({
   id = "",
@@ -14,14 +14,14 @@ const ImageBanner = ({
   order = 0,
   ...rest
 }) => {
-  const [image, setImage] = useState({ path: "", fileBase64: "" });
+  const [image, setImage] = useState({ path: "", title: "", fileBase64: "" });
   const classes = useStyles();
   useLayoutEffect(() => {
     if (id in information) {
       setImage(information[id].content);
     } else {
       console.log("image not found");
-      setImage({ path: content.img, fileBase64: "" });
+      setImage({ path: content.img });
     }
   }, []);
   // useLayoutEffect(() => {
@@ -32,12 +32,12 @@ const ImageBanner = ({
 
   const uploadFile = async (e, id) => {
     const path = URL.createObjectURL(e.target.files[0]);
-    const fileBase64 = await convertFileBase64(e.target.files[0]);
+    const title = e.target.files[0].name;
     const imagesetter = {
       path: path,
-      fileBase64: fileBase64,
+      title: title,
+      file: e.target.files[0],
     };
-    console.log(fileBase64);
     if (e.target.files.length) {
       setImage(imagesetter);
 
