@@ -1,12 +1,6 @@
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsDate, IsInt, IsNotEmpty, IsOptional } from "class-validator";
 
-export class CreateBannerDto {
-	@IsNotEmpty()
-	title: string;
-
-	@IsNotEmpty()
-	fileBase64: string;
-
+export class CreateBannerInfoDto {
 	@IsNotEmpty()
 	description: string;
 
