@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
 	Button,
 	Dialog,
@@ -27,7 +27,7 @@ const NewBannerDialog = ({
 	open = false,
 	onClose = noop,
 }) => {
-	const [file, setFile] = useState({ path: "", fileBase64: "" });
+	const [file, setFile] = useState({ path: "", title: "", fileBase64: "" });
 	const [description, setDescription] = useState("");
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
@@ -37,12 +37,11 @@ const NewBannerDialog = ({
 
 	const onUploadMainImg = async (e) => {
 		if (e.target.files.length) {
-			// const fileTemp = { path: "", fileBase64: "" };
 			setFile({
 				path: URL.createObjectURL(e.target.files[0]),
+				title: e.target.files[0].name,
 				fileBase64: await convertFileBase64(e.target.files[0])
 			});
-			console.log("file", file.path, file.fileBase64);
 			e.target.value = null;
 		}
 	};
@@ -62,7 +61,7 @@ const NewBannerDialog = ({
 	};
 
 	const onClearChange = () => {
-		setFile({ path: "", fileBase64: "" });
+		setFile({ path: "", title: "", fileBase64: "" });
 		setDescription("");
 		setStartDate("");
 		setEndDate("");

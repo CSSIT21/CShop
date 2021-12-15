@@ -8,6 +8,7 @@ import Success from "../components/Success";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import config from "~/common/constants";
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
@@ -34,6 +35,7 @@ const SellerRegister = ({}) => {
     },
   });
   const banks = ["SCB", "KBANK", "KTB", "BBL", "BAY", "CIMBT", "UOBT"];
+
   useEffect(() => {
     getData();
   }, []);
@@ -147,7 +149,32 @@ const SellerRegister = ({}) => {
       sellerInfo.bankInfo.lastName != "" &&
       sellerInfo.bankInfo.accountNumber != ""
     ) {
-      setstate(false);
+      createShop();
+    }
+  };
+  const createShop = () => {
+    try {
+      axios
+        .post(`${config.SERVER_URL}/sellershop`, {
+          customer_id: 1,
+          shop_address_id: 1,
+          name: sellerInfo.shopName,
+          phoneNumber: sellerInfo.phone,
+          province: sellerInfo.province,
+          subDistrict: sellerInfo.subDistrict,
+          district: sellerInfo.district,
+          postalCode: sellerInfo.postalCode,
+          addressLine: sellerInfo.address,
+          bank: sellerInfo.bankInfo.name,
+          firstname: sellerInfo.bankInfo.firstName,
+          lastname: sellerInfo.bankInfo.lastName,
+          accountNum: sellerInfo.bankInfo.accountNumber,
+        })
+        .then(({ data }) => {
+          setstate(false);
+        });
+    } catch (e) {
+      console.log(e.message);
     }
   };
   return (
@@ -183,11 +210,12 @@ const SellerRegister = ({}) => {
                 variant="outlined"
                 placeholder="Phone"
                 fullWidth
+                value={sellerInfo.phone}
                 error={phoneError.length === 0 ? false : true}
                 onChange={(e) => {
                   setSellerInfo({
                     ...sellerInfo,
-                    phone: e.target.value,
+                    phone: e.target.value.slice(0, 10),
                   });
                   setPhoneError("");
                 }}
@@ -430,7 +458,7 @@ const SellerRegister = ({}) => {
                   id="lastname"
                   variant="outlined"
                   placeholder="Lastname"
-                  value={sellerInfo.lastname}
+                  value={sellerInfo.bankInfo.lastname}
                   fullWidth
                   error={lastnameError.length === 0 ? false : true}
                   onChange={(e) => {
@@ -455,7 +483,7 @@ const SellerRegister = ({}) => {
                 id="accountNumber"
                 variant="outlined"
                 placeholder="Account Number"
-                value={sellerInfo.accountNumber}
+                value={sellerInfo.bankInfo.accountNumber}
                 fullWidth
                 error={accountNumberError.length === 0 ? false : true}
                 onChange={(e) => {
@@ -463,7 +491,7 @@ const SellerRegister = ({}) => {
                     ...sellerInfo,
                     bankInfo: {
                       ...sellerInfo.bankInfo,
-                      accountNumber: e.target.value,
+                      accountNumber: e.target.value.slice(0, 10),
                     },
                   });
                   setAccountNumberError("");

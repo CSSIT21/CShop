@@ -12,37 +12,33 @@ import { MenuItem, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { For } from "~/common//utils";
 import StyledMenu from "../../StyledMenu";
-import { useRecoilState } from 'recoil';
-import authState from '~/common/store/authState';
-
-const menuLists = [
-  {
-    title: "My Account",
-    icon: PersonIcon,
-    to: "/profile",
-  },
-  {
-    title: "My Shop",
-    icon: StoreIcon,
-    to: "/shop/1",
-  },
-  {
-    title: "Order History",
-    icon: RestoreIcon,
-    to: "/profile/history",
-  },
-  {
-    title: "Favorite",
-    icon: FavoriteIcon,
-    to: "/home/favourite",
-  },
-];
+import { useRecoilState, useResetRecoilState } from "recoil";
+import authState from "~/common/store/authState";
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useHistory();
   const open = Boolean(anchorEl);
   const [auth, setAuth] = useRecoilState(authState);
+  const resetAuth = useResetRecoilState(authState);
+
+  const menuLists = [
+    {
+      title: "My Account",
+      icon: PersonIcon,
+      to: "/profile",
+    },
+    {
+      title: "Order History",
+      icon: RestoreIcon,
+      to: "/profile/history",
+    },
+    {
+      title: "Favorite",
+      icon: FavoriteIcon,
+      to: "/home/favourite",
+    },
+  ];
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -52,8 +48,9 @@ const DropdownDetail = ({ children }) => {
   };
 
   const onLogOut = () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/home");
-    return setAuth({ ...auth, isLoggedIn: false });
+    return resetAuth();
   };
 
   return (
@@ -98,7 +95,18 @@ const DropdownDetail = ({ children }) => {
             </MenuItem>
           )}
         </For>
-
+        {auth.user.role === "SELLER" && (
+          <MenuItem
+            onClick={() => {
+              router.push(`/shop/${auth.user.shop_info[0].id}`);
+              handleClose();
+            }}
+            disableRipple
+          >
+            <StoreIcon />
+            My Shop
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             onLogOut();
