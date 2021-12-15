@@ -7,14 +7,13 @@ import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-const ShopDetails = ({ shopDetails }) => {
+const ShopDetails = ({ shopDetails, shopId }) => {
   const shopName = "Shop Name";
   const activeTime = "19 minutes ago";
   const rating = "4.7";
   const followers = "7.4k";
   const products = "6666";
   const joined = "4 years ago";
-  const [shopId, setShopId] = useState(0);
 
   return (
     <Box

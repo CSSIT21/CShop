@@ -15,6 +15,7 @@ const ProductPage = (props) => {
   const [productDetails, setProductDetails] = useState({ title: "" });
   const [shopDetail, setShopDetails] = useState({});
   const [comments, setComments] = useState({});
+  const [shopId, setShopId] = useState(0);
   const localhost = "http://localhost:8080/";
   const { id } = useParams();
 
@@ -42,9 +43,9 @@ const ProductPage = (props) => {
     axios.get(`${localhost}product/${id}`).then(({ data }) => {
       if (data.success) {
         setProductDetails(data.product_details.product);
+        setShopId(data.product_details.product.shop_id);
         setShopDetails(data.product_details.shop_id_from_product);
-        // setProductsSuggestion(data.product_details.product.suggest_products);
-        console.log(data);
+        setProductsSuggestion(data.product_details.product.suggest_products);
       } else alert("Fail to fetch data :(");
     });
     // Comments
@@ -66,7 +67,7 @@ const ProductPage = (props) => {
       <Box maxWidth="1200px">
         <ReviewsFromCustomer />
         <ProductDetails productDetails={productDetails} copyLink={copyLink} />
-        <ShopDetails />
+        <ShopDetails shopId={shopId} />
         <ProductSuggestion
           suggestionItems={productsSuggestion}
           onFavourite={onFavourite}
