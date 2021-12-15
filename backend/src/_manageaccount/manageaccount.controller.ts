@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res } from '@nestjs/common';
 import { ManageaccountService } from './manageaccount.service';
 import { CreateManageaccountDto } from './dto/create-manageaccount.dto';
 import { UpdateManageaccountDto } from './dto/update-manageaccount.dto';
+import { CreateUserSuspensionDto } from './dto/create_usersuspension.dto';
 import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
@@ -20,9 +21,9 @@ export class ManageaccountController {
     return this.prisma.product.findMany();
   }
 
-  @Get('message')
-  getMessage(@Query('id') i: string){
-    return this.prisma.product.findFirst({
+  @Get('customer')
+  getCustomer(@Query('id') i: string){
+    return this.prisma.customer.findFirst({
       where: {
         id: parseInt(i)
       }
@@ -37,6 +38,35 @@ export class ManageaccountController {
         title:{contains:query,mode:'insensitive'}
       }
     });
+  }
+
+  @Post('suspension/users')
+  suspendUser(@Query('s') i:number){
+    const a = +i;
+    return this.prisma.customer.update({
+      where: {
+        id: 1
+      },
+      data: {
+        admin_customer_suspensions:{
+          update:{
+            description: 'Testing: 1',
+          }
+        }
+      },
+    });
+  }
+
+  @Post('suspension/users/create')
+  createUserSus(@Body() createUserSuspensionDto: CreateUserSuspensionDto, @Res() res){
+    const userSus = this.manageaccountService.create(createUserSuspensionDto);
+    if(userSus){
+      res.send({Success: true, userSus});
+    } else {
+      res.send({
+        Success : false,
+      });
+    }
   }
 
   @Get('products')
@@ -63,7 +93,7 @@ export class ManageaccountController {
         customer_picture: true,
         customer_info: true,
         customer_address: true,
-        admin_reported_customer: true,
+        admin_customer_suspensions: true,
       }
     });
   }

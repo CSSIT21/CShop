@@ -38,7 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let sellers = [
+/*let sellers = [
     {
         id: 2000,
         path: '',
@@ -57,21 +57,21 @@ let sellers = [
             description: 'Test'
         },
     },
-];
+];*/
 
 let resId = 1000;
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
 
-    /*const [sellers, setSellersList] = React.useState([]);
+    const [sellers, setSellersList] = React.useState([]);
     const setSellers = async () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/sellers"
         );
         setSellersList(fetchedData.data);
         console.log(fetchedData.data);
-      };*/
+      };
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -107,9 +107,9 @@ const ManageSellerAccountPage = () => {
         sellers.filter(seller => seller.id === sellerid)[0].admin_shop_suspensions = {suspension_type_id:type, admin_id:'CurrentUser', start_date:'11/18/2021', end_date:date, description:desc};
     }
 
-    /*useEffect(()=>{
+    useEffect(()=>{
         setSellers(); 
-    }, [])*/
+    }, [])
 
     return (
         <div>

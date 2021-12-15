@@ -1,1 +1,3 @@
-export class CreateManageaccountDto {}
+export class CreateManageaccountDto {
+    
+}

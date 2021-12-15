@@ -38,7 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-let users = [
+/*let users = [
     {
         id: 24578,
         path: '',
@@ -62,21 +62,21 @@ let users = [
             description: 'Test'
         },
     },
-];
+];*/
 
 let resId = 1000;
 
 const ManageAccountPage = () => {
     const classes = useStyles();
 
-    /*const [users, setUsersList] = React.useState([]);
+    const [users, setUsersList] = React.useState([]);
     const setUsers = async () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/users"
         );
         setUsersList(fetchedData.data);
         console.log(fetchedData.data);
-      };*/
+      };
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -112,9 +112,9 @@ const ManageAccountPage = () => {
         users.filter(user => user.id === userid)[0].admin_customer_suspensions = {suspension_type_id:type, admin_id:'CurrentUser', start_date:'11/18/2021', end_date:date, description:desc};
     }
 
-    /*useEffect(()=>{
+    useEffect(()=>{
         setUsers(); 
-    }, [])*/
+    }, [])
 
     return (
         <div>
