@@ -15,15 +15,10 @@ function ReviewDialog({
   img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
   productName = "Product Name",
   productId,
-  options,
-  // options = [
-  //   { option: "Black", choice: "XL" },
-  //   { option: "Pink", choice: "L" },
-  //   { option: "Red", choice: "M" },
-  //   { option: "Black", choice: "XL" },
-  //   { option: "Pink", choice: "L" },
-  //   { option: "Red", choice: "M" },
-  // ],
+  // options,
+  // choices,
+  options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
+  choices = ["XL", "L", "M", "XL", "L", "M"],
 }) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -124,6 +119,7 @@ function ReviewDialog({
             img={img}
             productName={[productName]}
             options={options}
+            choices={choices}
             generatedCommentsData={chipData}
             setChipData={setChipData}
             commentProduct={commentProductText}

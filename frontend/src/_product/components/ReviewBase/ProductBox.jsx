@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import React from "react";
 import Box from "@mui/material/Box";
 
-const ProductBox = ({ img, productName, options }) => {
+const ProductBox = ({ img, productName, options, choices }) => {
   return (
     <Box sx={container}>
       {/* อย่าลบลบborderออก */}
@@ -44,8 +44,6 @@ const ProductBox = ({ img, productName, options }) => {
           }}
         >
           {options ? "Option :" : "Option : none"}
-
-          {/* เชื่อมbackendแล้วเช็คและแก้ตัวแปรoption and choiceอีกรอบนะ */}
           {options && (
             <>
               {options.slice(0, 5).map((e, key) => (
@@ -53,11 +51,11 @@ const ProductBox = ({ img, productName, options }) => {
                   sx={{ marginLeft: "5px", marginRight: "6px" }}
                   key={key}
                 >
-                  {e.option} {e.choice}{" "}
+                  {e} {choices && <>{choices[key]}</>}{" "}
                   {key == options.length - 1 ? <> </> : " , "}
                 </Typography>
               ))}
-              {options.length > 5 ? "....." : " "}
+              {options.length > 5 && options ? "....." : " "}
             </>
           )}
         </Typography>
