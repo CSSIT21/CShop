@@ -1,6 +1,6 @@
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsDate, IsInt, IsNotEmpty, IsOptional } from "class-validator";
 
-export class UpdateBannerDto {
+export class UpdateBannerInfoDto {
 	@IsNotEmpty()
 	@IsOptional()
 	description?: string;

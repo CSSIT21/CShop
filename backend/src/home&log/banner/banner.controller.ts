@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { BannerService } from './banner.service';
 import { CreateBannerInfoDto } from './dto/create-banner-info.dto';
-import { UpdateBannerDto } from './dto/update-banner.dto';
+import { UpdateBannerInfoDto } from './dto/update-banner-info.dto';
 import { CreateBannerImageDto } from './dto/create-banner-image.dto';
 
 @Controller('home/banner')
@@ -106,7 +106,7 @@ export class BannerController {
   }
 
   @Patch(':id')
-  async updateInfo(@Param('id', ParseIntPipe) id: number, @Body() bannerDto: UpdateBannerDto) {
+  async updateInfo(@Param('id', ParseIntPipe) id: number, @Body() bannerDto: UpdateBannerInfoDto) {
     try {
       return this.bannerService.updateInfo({
         data: bannerDto,
