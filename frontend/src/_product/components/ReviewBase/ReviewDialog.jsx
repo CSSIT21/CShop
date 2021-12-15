@@ -10,7 +10,21 @@ import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
-function ReviewDialog() {
+function ReviewDialog({
+  // img = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg",
+  img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
+  productName = "Product Name",
+  productId,
+  options,
+  // options = [
+  //   { option: "Black", choice: "XL" },
+  //   { option: "Pink", choice: "L" },
+  //   { option: "Red", choice: "M" },
+  //   { option: "Black", choice: "XL" },
+  //   { option: "Pink", choice: "L" },
+  //   { option: "Red", choice: "M" },
+  // ],
+}) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
   const [commentProductText, setCommentProductText] = useState("");
@@ -107,6 +121,9 @@ function ReviewDialog() {
         </DialogTitle>
         <DialogContent sx={{ width: "1000px", height: "500px" }}>
           <ReviewDialogContents
+            img={img}
+            productName={[productName]}
+            options={options}
             generatedCommentsData={chipData}
             setChipData={setChipData}
             commentProduct={commentProductText}

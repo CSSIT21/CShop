@@ -2,20 +2,7 @@ import { Typography } from "@mui/material";
 import React from "react";
 import Box from "@mui/material/Box";
 
-const ProductBox = ({
-  // img = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg",
-  img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
-  productName = "Product Name",
-  options,
-  // options = [
-  //   { option: "Black", choice: "XL" },
-  //   { option: "Pink", choice: "L" },
-  //   { option: "Red", choice: "M" },
-  //   { option: "Black", choice: "XL" },
-  //   { option: "Pink", choice: "L" },
-  //   { option: "Red", choice: "M" },
-  // ],
-}) => {
+const ProductBox = ({ img, productName, options }) => {
   return (
     <Box sx={container}>
       {/* อย่าลบลบborderออก */}
@@ -83,7 +70,7 @@ const container = {
   width: "80%",
   height: "100px",
   display: "flex",
-  marginTop: "50px",
+  marginTop: "45px",
 };
 
 export default ProductBox;
