@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res } from '@nestjs/common';
 import { ManageaccountService } from './manageaccount.service';
-import { CreateManageaccountDto } from './dto/create-manageaccount.dto';
-import { UpdateManageaccountDto } from './dto/update-manageaccount.dto';
 import { CreateUserSuspensionDto } from './dto/create_usersuspension.dto';
+import { CreateSellerSuspensionDto } from './dto/create_sellersuspension.dto';
+import { UpdateUserSuspensionDto } from './dto/update_usersuspension.dto';
+import { UpdateSellerSuspensionDto } from './dto/update_sellersuspension.dto';
 import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
@@ -54,9 +55,21 @@ export class ManageaccountController {
 
   @Post('suspension/users/create')
   async createUserSus(@Body() createUserSuspensionDto: CreateUserSuspensionDto, @Res() res){
-    const userSus = await this.manageaccountService.create(createUserSuspensionDto);
+    const userSus = await this.manageaccountService.createUserSuspension(createUserSuspensionDto);
     if(userSus){
       res.send({Success: true, userSus});
+    } else {
+      res.send({
+        Success : false,
+      });
+    }
+  }
+
+  @Post('suspension/sellers/create')
+  async createSellerSus(@Body() createSellerSuspensionDto: CreateSellerSuspensionDto, @Res() res){
+    const sellerSus = await this.manageaccountService.createSellerSuspension(createSellerSuspensionDto);
+    if(sellerSus){
+      res.send({Success: true, sellerSus});
     } else {
       res.send({
         Success : false,
@@ -128,11 +141,6 @@ export class ManageaccountController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.manageaccountService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateManageaccountDto: UpdateManageaccountDto) {
-    return this.manageaccountService.update(+id, updateManageaccountDto);
   }
 
   @Delete(':id')
