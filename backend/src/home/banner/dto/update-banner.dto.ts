@@ -1,4 +1,29 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateBannerDto } from './create-banner.dto';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsDate, IsInt, IsNotEmpty, IsOptional } from "class-validator";
 
-export class UpdateBannerDto extends PartialType(CreateBannerDto) {}
+export class UpdateBannerDto {
+	@IsNotEmpty()
+	@IsOptional()
+	description?: string;
+
+	@IsDate()
+	@IsOptional()
+	start_date?: Date;
+
+	@IsDate()
+	@IsOptional()
+	end_date?: Date;
+
+	@IsInt()
+	@IsOptional()
+	order?: number;
+
+	@IsArray()
+	@ArrayMinSize(1)
+	@ArrayMaxSize(6)
+	@IsOptional()
+	keywords?: string[];
+
+	@IsBoolean()
+	@IsOptional()
+	visible?: boolean;
+}

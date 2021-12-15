@@ -6,4 +6,4 @@ import { BannerController } from './banner.controller';
   controllers: [BannerController],
   providers: [BannerService]
 })
-export class BannerModule {}
+export class BannerModule { }

@@ -36,7 +36,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 		}
 
 		if (typeof isLoggedIn !== 'undefined' && isLoggedIn) {
-			// console.log('CHECKING FOR LOGIN')
+			console.log('CHECKING FOR LOGIN');
 			if (!user) throw new UnauthorizedException();
 			// console.log('อ้าว ผ่านมาได้ไง')
 			// console.log("SUSPECTED -> user ", user)

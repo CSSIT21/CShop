@@ -39,7 +39,7 @@ const CarouselProductSelect = ({
   useLayoutEffect(() => {
     if (id in information) {
       setTopic(information[id].header);
-      setSectionImages(information[id].img);
+      setSectionImages(information[id].content);
     } else {
       console.log("products not found");
     }
@@ -61,7 +61,7 @@ const CarouselProductSelect = ({
       setTimeout(() => {
         setInformation((info) => ({
           ...info,
-          [id]: { ...info[id], header: Topic, img: sectionImages },
+          [id]: { ...info[id], header: Topic, content: sectionImages },
         }));
       }, 500);
 

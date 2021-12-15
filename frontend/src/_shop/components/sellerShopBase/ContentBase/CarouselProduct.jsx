@@ -27,13 +27,21 @@ const useStyles = makeStyles({
   },
 });
 
-const CarouselProduct = ({ items, onFavourite, filterName }) => {
+const CarouselProduct = ({ items, filterName }) => {
   const [products, setProducts] = useState(items);
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;
   const totalPage = Math.ceil(products.length / productsPerRow);
   console.log(page);
+  const onFavourite = (index) => {
+    setitems((items) => {
+      const target = items[index];
+      target.favourite = !target.favourite;
+
+      return [...items];
+    });
+  };
   return (
     <Box className={classes.bestsellerWrapper}>
       <Box className={classes.bestsellerContent}>
