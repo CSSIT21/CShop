@@ -7,10 +7,27 @@ import { AppService } from './app.service';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { PromotionModule } from './promotion/promotion.module';
-
+import { ProfileModule } from './profile/profile.module';
+import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
+import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
+import { BannerModule } from './home/banner/banner.module';
+import { HomeModule } from './home/home/home.module';
+import { LogSystemModule } from './home/log-system/log-system.module';
 
 @Module({
-	imports: [HttpModule, PrismaModule, PromotionModule],
+	imports: [
+		HttpModule,
+		AuthenticationModule,
+		PrismaModule,
+		BannerModule,
+		HomeModule,
+		LogSystemModule,
+		PromotionModule,
+    SellershopModule,
+    ShopcustomizationModule,
+    ProfileModule
+	],
+
 	controllers: [AppController],
 	providers: [
 		// AppService,
@@ -20,4 +37,4 @@ import { PromotionModule } from './promotion/promotion.module';
 		// },
 	],
 })
-export class AppModule {}
+export class AppModule { }

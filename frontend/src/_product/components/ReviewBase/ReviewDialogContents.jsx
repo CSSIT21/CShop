@@ -8,29 +8,44 @@ import CommentsBox from "./CommentsBox";
 function ReviewDialogContents({
   generatedCommentsData,
   setChipData,
-  value,
-  setValue,
-  handleChange,
+  commentProduct,
+  setCommentProduct,
+  commentShop,
+  setCommentShop,
   imageList,
   setImageList,
   onUploadFile,
   deleteImage,
   starScore,
   setStarScore,
+  handleChangeCommentProduct,
+  handleChangeCommentShop,
+  img,
+  productName,
+  options,
+  choices,
 }) {
   return (
     <Box>
       <ConditionAccordion />
-      <ProductBox />
+      <ProductBox
+        img={img}
+        productName={[productName]}
+        options={options}
+        choices={choices}
+      />
       <StarBox starScore={starScore} setStarScore={setStarScore} />
       <GeneratedComments
         generatedComments={generatedCommentsData}
         setChipData={setChipData}
       />
       <CommentsBox
-        value={value}
-        setValue={setValue}
-        handleChange={handleChange}
+        commentProduct={commentProduct}
+        setCommentProduct={setCommentProduct}
+        commentShop={commentShop}
+        setCommentShop={setCommentShop}
+        handleChangeCommentProduct={handleChangeCommentProduct}
+        handleChangeCommentShop={handleChangeCommentShop}
         imageList={imageList}
         setImageList={setImageList}
         onUploadFile={onUploadFile}

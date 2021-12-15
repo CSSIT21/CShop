@@ -5,12 +5,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import { Link } from "react-router-dom";
-const Header = () => {
+const Header = ({ shopInfo = {} }) => {
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <HeaderLeft />
-        <HeaderRight />
+      <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+        <HeaderLeft shopInfo={shopInfo} />
+        <HeaderRight shopInfo={shopInfo} />
       </Box>
       <Box
         sx={{
