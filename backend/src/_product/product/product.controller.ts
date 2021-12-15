@@ -28,4 +28,28 @@ export class ProductController {
 			});
 		}
 	}
+
+	@Get('/:id/shop')
+	public async findShopDetails(@Param('id', ParseIntPipe) id: number, @Res() res) {
+		const shop_details = await this.productService.getShopDetails(id);
+		if (shop_details) {
+			res.send({ success: true, shop_details });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
+
+	@Get('/:id/pictures')
+	public async findProductPictures(@Param('id', ParseIntPipe) id: number, @Res() res) {
+		const pictures = await this.productService.getProductPictures(id);
+		if (pictures) {
+			res.send({ success: true, pictures });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
 }

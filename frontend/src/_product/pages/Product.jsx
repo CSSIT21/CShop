@@ -13,6 +13,7 @@ import axios from "axios";
 const ProductPage = (props) => {
   const [productsSuggestion, setProductsSuggestion] = useState(fakeProducts);
   const [productDetails, setProductDetails] = useState({ title: "" });
+  const [commentPictures, setCommentPictures] = useState();
   const [shopDetail, setShopDetails] = useState({});
   const [comments, setComments] = useState({});
   const [shopId, setShopId] = useState(0);
@@ -31,8 +32,8 @@ const ProductPage = (props) => {
   const copyLink = () => {
     axios.get(`${localhost}product/shortlink/${id}`).then(({ data }) => {
       if (data.success) {
-        navigator.clipboard.writeText(data.link.shorted_link);
-        console.log(data.link.shorted_link);
+        navigator.clipboard.writeText(data.link);
+        console.log(data.link);
       } else alert("Fail to fetch data :(");
     });
   };
@@ -43,15 +44,27 @@ const ProductPage = (props) => {
     axios.get(`${localhost}product/${id}`).then(({ data }) => {
       if (data.success) {
         setProductDetails(data.product_details.product);
-        setShopId(data.product_details.product.shop_id);
-        setShopDetails(data.product_details.shop_id_from_product);
         setProductsSuggestion(data.product_details.product.suggest_products);
+      } else alert("Fail to fetch data :(");
+    });
+    // Shop
+    axios.get(`${localhost}product/${id}/shop`).then(({ data }) => {
+      if (data.success) {
+        setProductDetails(data.product_details.product);
+        setShopId(data.shop_details.id);
+        setShopDetails(data.shop_details);
       } else alert("Fail to fetch data :(");
     });
     // Comments
     axios.get(`${localhost}product/${id}/comments`).then(({ data }) => {
       if (data.success) {
         setCommentList(data.comments);
+      } else alert("Fail to fetch data :(");
+    });
+    // Get comment pictures
+    axios.get(`${localhost}product/1/comments/pictures`).then(({ data }) => {
+      if (data.success) {
+        setCommentPictures(data.pictures);
       } else alert("Fail to fetch data :(");
     });
   }, [id]);

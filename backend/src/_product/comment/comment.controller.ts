@@ -16,4 +16,16 @@ export class CommentController {
 			});
 		}
 	}
+
+    @Get('/:id/comments/pictures')
+	public async findCommentsPictures(@Param('id', ParseIntPipe) id: number, @Res() res) {
+		const pictures = await this.commentService.getCommentPictures(id);
+		if (pictures) {
+			res.send({ success: true, pictures });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
 }

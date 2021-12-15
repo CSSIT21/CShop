@@ -15,10 +15,10 @@ function ReviewDialog({
   img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
   productName = "Product Name",
   productId,
-  // options,
-  // choices,
-  options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
-  choices = ["XL", "L", "M", "XL", "L", "M"],
+  options,
+  choices,
+  // options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
+  // choices = ["XL", "L", "M", "XL", "L", "M"],
   statusOrder = true,
 }) {
   const [open, setOpen] = useState(false);
