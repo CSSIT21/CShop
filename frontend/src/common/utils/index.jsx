@@ -4,7 +4,7 @@ import axios from "axios";
 export const EMPTY_ARR = [];
 export const EMPTY_OBJ = {};
 export const noot = <></>;
-export const noop = () => {};
+export const noop = () => { };
 export const isObj = (t) => typeof t === "object";
 export const isDef = (t) => typeof t === "undefined";
 export const isFunc = (t) => typeof t === "function";

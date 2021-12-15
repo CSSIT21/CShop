@@ -8,9 +8,22 @@ import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
 import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
+import { BannerModule } from './home&log/banner/banner.module';
+import { HomeModule } from './home&log/home/home.module';
+import { LogSystemModule } from './home&log/log-system/log-system.module';
+
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule, SellershopModule, ShopcustomizationModule],
+	imports: [
+		HttpModule,
+		AuthenticationModule,
+		PrismaModule,
+		BannerModule,
+		HomeModule,
+		LogSystemModule,
+    SellershopModule,
+    ShopcustomizationModule
+	],
 	controllers: [AppController],
 	providers: [
 		// AppService,
@@ -20,4 +33,4 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 		// },
 	],
 })
-export class AppModule {}
+export class AppModule { }
