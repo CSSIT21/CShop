@@ -14,6 +14,12 @@ export class SellerconsoleController {
 		return this.sellerconsoleService.seller_dashboard(+id);
 	}
 
+	@Get('history')
+    @Public()
+    getHistoryDiscount(){
+        return this.sellerconsoleService.getHistoryDiscount();
+    }
+
 }
 
 // @Post()

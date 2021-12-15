@@ -1,38 +1,44 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
-import { prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SellerconsoleService {
+	constructor(private readonly prisma: PrismaService) { }
 
 	seller_dashboard(id: number) {
 		return `#${id}`;
 	}
 
-  seller_stock(id: number) {
+  	seller_stock(id: number) {
 		return `#${id}`;
 	}
 
-  seller_stocklog(id: number) {
+  	seller_stocklog(id: number) {
 		return `#${id}`;
 	}
 
-  seller_orderstatus(id: number) {
+  	seller_orderstatus(id: number) {
 		return `#${id}`;
 	}
 
-  seller_orderhistory(id: number) {
+  	seller_orderhistory(id: number) {
 		return `#${id}`;
 	}
 
-  seller_discounthistory(id: number) {
+ 	seller_discounthistory(id: number) {
 		return `#${id}`;
 	}
 
-  seller_refundhistory(id: number) {
+  	seller_refundhistory(id: number) {
 		return `#${id}`;
 	}
+
+	async getHistoryDiscount(){
+        return await this.prisma.discount.findMany()
+    }
 }
 
 // create(createSellerconsoleDto: CreateSellerconsoleDto) {

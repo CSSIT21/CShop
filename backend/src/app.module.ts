@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { BannerModule } from './home&log/banner/banner.module';
 import { HomeModule } from './home&log/home/home.module';
 import { LogSystemModule } from './home&log/log-system/log-system.module';
+import { SellerconsoleModule } from './sellerconsole/sellerconsole.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { LogSystemModule } from './home&log/log-system/log-system.module';
 		BannerModule,
 		HomeModule,
 		LogSystemModule,
+		SellerconsoleModule
 	],
 	controllers: [AppController],
 	providers: [
