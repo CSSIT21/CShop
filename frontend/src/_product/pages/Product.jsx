@@ -11,12 +11,15 @@ import { useParams } from "react-router";
 import axios from "axios";
 
 const ProductPage = (props) => {
-  const [products, setProducts] = useState(fakeProducts);
-  const [productDetails, setProductDetails] = useState({});
+  const [productsSuggestion, setProductsSuggestion] = useState(fakeProducts);
+  const [productDetails, setProductDetails] = useState({ title: "" });
+  const [shopDetail, setShopDetails] = useState({});
+  const [comments, setComments] = useState({});
+  const localhost = "http://localhost:8080/";
   const { id } = useParams();
 
   const onFavourite = (index) => {
-    setProducts((products) => {
+    setProductsSuggestion((products) => {
       const target = products[index];
       target.favourite = !target.favourite;
 
@@ -24,14 +27,34 @@ const ProductPage = (props) => {
     });
   };
 
+  const copyLink = () => {
+    axios.get(`${localhost}product/shortlink/${id}`).then(({ data }) => {
+      if (data.success) {
+        navigator.clipboard.writeText(data.link.shorted_link);
+        console.log(data.link.shorted_link);
+      } else alert("Fail to fetch data :(");
+    });
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    axios.get(`http://localhost:8080/product/${id}`).then(({ data }) => {
-      setProductDetails(data.product_details);
+    // Product
+    axios.get(`${localhost}product/${id}`).then(({ data }) => {
+      if (data.success) {
+        setProductDetails(data.product_details.product);
+        setShopDetails(data.product_details.shop_id_from_product);
+        // setProductsSuggestion(data.product_details.product.suggest_products);
+        console.log(data);
+      } else alert("Fail to fetch data :(");
     });
-    console.log(productDetails);
+    // Comments
+    axios.get(`${localhost}product/${id}/comments`).then(({ data }) => {
+      if (data.success) {
+        setCommentList(data.comments);
+      } else alert("Fail to fetch data :(");
+    });
   }, [id]);
-
+  console.log(productDetails);
   return (
     <Box
       sx={{
@@ -42,10 +65,10 @@ const ProductPage = (props) => {
     >
       <Box maxWidth="1200px">
         <ReviewsFromCustomer />
-        <ProductDetails productDetails={productDetails} />
+        <ProductDetails productDetails={productDetails} copyLink={copyLink} />
         <ShopDetails />
         <ProductSuggestion
-          suggestionItems={products}
+          suggestionItems={productsSuggestion}
           onFavourite={onFavourite}
         />
         <ProductDescription />

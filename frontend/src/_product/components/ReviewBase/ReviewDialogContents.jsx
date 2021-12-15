@@ -12,7 +12,6 @@ function ReviewDialogContents({
   setCommentProduct,
   commentShop,
   setCommentShop,
-  handleChange,
   imageList,
   setImageList,
   onUploadFile,

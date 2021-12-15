@@ -13,8 +13,10 @@ import {
   FavoriteBorderRounded as FavoriteBorderRoundedIcon,
 } from "@mui/icons-material";
 import OptionsChip from "../components/ProductDetailsBase/OptionsChip";
+import Button from "@mui/material/Button";
 
 const ProductDetails = ({
+  copyLink,
   productDetails,
   opt = {
     name: "Color",
@@ -42,24 +44,31 @@ const ProductDetails = ({
   // cho,
 }) => {
   const [product, setProduct] = useState({
-    id: 0,
-    title: "CheesePizzaverydiliciousCheese Pizza very dilic1234567890",
-    price: "500",
-    status: "Hot sale",
-    favourite: true,
-    sub_title:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitatione",
-    quantity: 20,
+    details: {
+      id: 0,
+      title: "CheesePizzaverydiliciousCheese Pizza very dilic1234567890",
+      price: "500",
+      status: "Hot sale",
+      favourite: true,
+      sub_title:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitatione",
+      quantity: 0,
+    },
+    favorite: true,
   });
+
   const [options, setOptions] = useState(opt);
   const [choices, setChoices] = useState(cho);
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(1);
+  const [optionCheck, setOptionCheck] = useState(false);
+  const [choiceCheck, setChoiceCheck] = useState(false);
 
   const handleClickClose = () => {
     setOpen(false);
   };
   const handleClickOpen = () => {
+    // CHECK optionCheck, choiceChek
     setOpen(true);
   };
 
@@ -72,6 +81,7 @@ const ProductDetails = ({
       el.id == e.id ? { ...el, enable: !el.enable } : { ...el, enable: false }
     );
     setOptions({ ...options, options: changedOptions });
+    setOptionCheck(!optionCheck);
     console.log(options);
   };
   const handleClickChoice = (e) => {
@@ -79,6 +89,7 @@ const ProductDetails = ({
       el.id == e.id ? { ...el, enable: !el.enable } : { ...el, enable: false }
     );
     setChoices({ ...choices, choices: changedChoices });
+    setChoiceCheck(!choiceCheck);
   };
 
   return (
@@ -92,7 +103,6 @@ const ProductDetails = ({
       <Box>
         <DisplayImage />
       </Box>
-      {/*sub_title.suProductDetail*/}
       <Box sx={{ margin: "0 60px" }}>
         <Typography
           sx={{
@@ -102,12 +112,12 @@ const ProductDetails = ({
             marginBottom: "5px",
           }}
         >
-          {product.title.slice(0, 50)}
-          {product.title.length > 50 ? "..." : ""}
+          {product.details.title.slice(0, 50)}
+          {product.details.title.length > 50 ? "..." : ""}
         </Typography>
         <Box sx={boxShareLike}>
           <Box>
-            <IconButton>
+            <IconButton onClick={copyLink}>
               <ShareIcon sx={{ color: "#A0A3BD", fontSize: "22px" }} />
             </IconButton>
             <IconButton
@@ -142,7 +152,7 @@ const ProductDetails = ({
             marginTop: "10px",
           }}
         >
-          {product.sub_title}
+          {product.details.sub_title}
         </Typography>
         <Typography
           sx={{
@@ -152,8 +162,9 @@ const ProductDetails = ({
             margin: "28px 0 0 0",
           }}
         >
-          {product.price} B.
+          {product.details.price} B.
         </Typography>
+
         {/* options */}
         {opt && (
           <Box sx={optionStyle}>
@@ -164,6 +175,7 @@ const ProductDetails = ({
             />
           </Box>
         )}
+
         {/* choice */}
         {cho && (
           <Box sx={optionStyle}>
@@ -174,6 +186,7 @@ const ProductDetails = ({
             />
           </Box>
         )}
+
         {/*Button*/}
         <Box
           sx={{
@@ -186,15 +199,20 @@ const ProductDetails = ({
         >
           <Amount count={count} setCount={setCount} stock={product.quantity} />
           <Box sx={{ marginLeft: "15px" }}>
-            <AddToCartButton
-              title="Add to cart"
-              icon={<ShoppingCartOutlinedIcon />}
-              width="190px"
-              height="38px"
+            <Button
+              startIcon={<ShoppingCartOutlinedIcon />}
               onClick={handleClickOpen}
-              sx={{ margin: "0px" }}
+              style={{
+                width: "190px",
+                height: "38px",
+                textTransform: "capitalize",
+              }}
               fontSize="12px"
-            />
+              variant="contained"
+              disabled={(product.details.quantity = 0) ? false : true}
+            >
+              Add to cart
+            </Button>
             <ConfirmDialogs
               text="The item already added in the cart"
               open={open}
@@ -204,7 +222,11 @@ const ProductDetails = ({
         </Box>
         <Box sx={{ display: "flex", marginTop: "12px", fontSize: "16px" }}>
           <Typography sx={stockStyle}>Stock:</Typography>
-          <Typography sx={stockStyle}>{product.quantity}</Typography>
+          <Typography sx={stockStyle}>
+            {product.details.quantity == 0
+              ? "Out of stock"
+              : product.details.quantity}
+          </Typography>
         </Box>
       </Box>
     </Box>

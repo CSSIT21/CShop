@@ -11,7 +11,7 @@ function OptionsChip({ handleClick, list, name }) {
       </Typography>
       <Grid container spacing={0.5}>
         {list.map((e) => (
-          <Grid item xs={4}>
+          <Grid item xs={4} key={e.id}>
             <Chip
               label={e.name}
               clickable

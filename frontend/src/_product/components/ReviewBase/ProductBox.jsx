@@ -6,14 +6,15 @@ const ProductBox = ({
   // img = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg",
   img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
   productName = "Product Name",
-  options = [
-    { option: "Black", choice: "XL" },
-    { option: "Pink", choice: "L" },
-    { option: "Red", choice: "M" },
-    { option: "Black", choice: "XL" },
-    { option: "Pink", choice: "L" },
-    { option: "Red", choice: "M" },
-  ],
+  options,
+  // options = [
+  //   { option: "Black", choice: "XL" },
+  //   { option: "Pink", choice: "L" },
+  //   { option: "Red", choice: "M" },
+  //   { option: "Black", choice: "XL" },
+  //   { option: "Pink", choice: "L" },
+  //   { option: "Red", choice: "M" },
+  // ],
 }) => {
   return (
     <Box sx={container}>
@@ -55,16 +56,23 @@ const ProductBox = ({
             color: "#A0A3BD",
           }}
         >
-          Option :
-          {options.slice(0, 5).map((e, key) => (
-            <Typography
-              sx={{ marginLeft: "5px", marginRight: "6px" }}
-              key={key}
-            >
-              {e.option} {e.choice} {key == options.length - 1 ? <> </> : " , "}
-            </Typography>
-          ))}
-          {options.length > 5 ? "....." : " "}
+          {options ? "Option :" : "Option : none"}
+
+          {/* เชื่อมbackendแล้วเช็คและแก้ตัวแปรoption and choiceอีกรอบนะ */}
+          {options && (
+            <>
+              {options.slice(0, 5).map((e, key) => (
+                <Typography
+                  sx={{ marginLeft: "5px", marginRight: "6px" }}
+                  key={key}
+                >
+                  {e.option} {e.choice}{" "}
+                  {key == options.length - 1 ? <> </> : " , "}
+                </Typography>
+              ))}
+              {options.length > 5 ? "....." : " "}
+            </>
+          )}
         </Typography>
       </Box>
     </Box>
