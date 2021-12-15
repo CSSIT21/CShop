@@ -35,37 +35,13 @@ export class ProductService {
     public async getProductPictures(id: number) {
 		try {
 
-			const product = await this.prisma.product.findUnique({
+			const product_pictures = await this.prisma.product_picture.findMany({
 				where: {
-					id: id,
+					product_id: id,
 				}
 			});
 
-
-
-			// const picture_id_array = await this.prisma.product_reviews.findMany({
-			// 	where: {
-			// 		product_id: id,
-			// 	},
-			// 	select: {
-			// 		review_picture_id: true,
-			// 		id: true
-			// 	},
-			// });
-			// let pictures: Object[] = [];
-			// for (let i = 0; i < picture_id_array.length; i++) {
-			// 	let comment_pictures: Promise<any>[] = [];
-			// 	const id_comment = picture_id_array[i].id
-			// 	for(let id of picture_id_array[i].review_picture_id){
-			// 		comment_pictures.push(this.prisma.product_reviews_picture.findFirst({
-			// 			where: {id},
-			// 		}));
-			// 	}
-			// 	comment_pictures = await Promise.all(comment_pictures);
-			// 	pictures = [...pictures,{ id_comment, comment_pictures}]
-			// }
-			// return pictures
-			return product
+			return product_pictures.slice(0,4)
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
