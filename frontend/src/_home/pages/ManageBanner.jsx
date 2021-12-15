@@ -1,79 +1,36 @@
-import { useState, useLayoutEffect, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Typography, Stack, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CButton from '~/common/components/CButton';
 import BannerList from '../components/BannerBase/BannerList';
-import BannerPic from "../assets/images/TopBanner.png";
 import NewBannerDialog from '../components/BannerBase/NewBannerDialog';
-
-const bannerList = [
-	{
-		id: 0,
-		order: 1,
-		description: "banner about washing",
-		start_date: "",
-		end_date: "",
-		visible: true,
-		keywords: ["Free Shipping", "Flash sale", "Free!!", "Flash!!"],
-		pictures: {
-			main: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-				{
-					id: 1,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-	{
-		id: 1,
-		order: 2,
-		description: "banner about washing",
-		start_date: "",
-		end_date: "",
-		visible: true,
-		keywords: ["Free Shipping"],
-		pictures: {
-			main: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-				{
-					id: 1,
-					path: BannerPic,
-				},
-				{
-					id: 2,
-					path: BannerPic,
-				},
-				{
-					id: 3,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-];
 
 const ManageBanner = () => {
 	const classes = useStyles();
 	const [items, setItems] = useState([]);
 	const [open, setOpen] = useState(false);
 
+	const getData = async () => {
+		axios
+			.get(`${config.SERVER_URL}/home/banner/manage`)
+			.then(({ data }) => {
+				if (data.success) {
+					console.log(data.banners);
+					setItems(data.banners.map(item => ({ ...item, height: 100 })));
+				}
+			})
+			.catch((error) => {
+				return Swal.fire('Cannot Show Banners', data.message, 'error');
+			})
+	};
+
 	useEffect(() => {
-
-	}, []);
-
-	useLayoutEffect(() => {
-		setItems(bannerList.map(item => ({ ...item, height: 100 })));
+		getData();
 	}, []);
 
 	const onClickDialog = () => {
@@ -114,7 +71,7 @@ const ManageBanner = () => {
 					</Typography>
 				</Button>
 
-				<NewBannerDialog open={open} onClose={onClickDialog} />
+				<NewBannerDialog open={open} onClose={onClickDialog} itemCount={items.length} />
 			</Box>
 
 			<BannerList items={items} setItems={setItems} />

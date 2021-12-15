@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants";
 import {
 	Button,
 	Dialog,
@@ -21,19 +24,49 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
 import MainImage from './MainImage';
 import UploadButton from './UploadButton';
-import { noop, convertFileBase64 } from '~/common/utils';
+import { noop, convertFileBase64, getUrl } from '~/common/utils';
 
 const NewBannerDialog = ({
+	itemCount = 0,
 	open = false,
 	onClose = noop,
 }) => {
 	const [file, setFile] = useState({ path: "", title: "", fileBase64: "" });
 	const [description, setDescription] = useState("");
-	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
+	const [start_date, setStart_date] = useState("");
+	const [end_date, setEnd_date] = useState("");
 	const [visible, setVisible] = useState(true);
 	const [keywords, setKeywords] = useState([]);
 	const [tempKeyword, setTempKeyword] = useState("");
+
+	const handleAddBanner = async () => {
+		const url = await getUrl(file.fileBase64)
+		console.log(url);
+
+		// axios
+		// 	.post(`${config.SERVER_URL}/home/banner`, {
+		// 		bannerInfo: {
+		// 			description,
+		// 			start_date,
+		// 			end_date,
+		// 			order: itemCount + 1,
+		// 			keywords,
+		// 			visible,
+		// 		},
+		// 		bannerImage: {
+
+		// 		},
+		// 	})
+		// 	.then(({ data }) => {
+		// 		if (data.success) {
+		// 			console.log(data.banners);
+		// 			setItems(data.banners.map(item => ({ ...item, height: 100 })));
+		// 		}
+		// 	})
+		// 	.catch((error) => {
+		// 		return Swal.fire('Cannot Show Banners', data.message, 'error');
+		// 	})
+	};
 
 	const onUploadMainImg = async (e) => {
 		if (e.target.files.length) {
@@ -63,8 +96,8 @@ const NewBannerDialog = ({
 	const onClearChange = () => {
 		setFile({ path: "", title: "", fileBase64: "" });
 		setDescription("");
-		setStartDate("");
-		setEndDate("");
+		setStart_date("");
+		setEnd_date("");
 		setVisible(true);
 		setKeywords([]);
 	};
@@ -104,9 +137,9 @@ const NewBannerDialog = ({
 						<Typography fontSize={18} fontWeight={500} mb={2}>Start Date</Typography>
 						<LocalizationProvider dateAdapter={DateAdapter}>
 							<DatePicker
-								value={startDate}
+								value={start_date}
 								renderInput={(params) => <TextField {...params} />}
-								onChange={(e) => setStartDate(e)}
+								onChange={(e) => setStart_date(e)}
 							/>
 						</LocalizationProvider>
 					</Grid>
@@ -115,9 +148,9 @@ const NewBannerDialog = ({
 						<Typography fontSize={18} fontWeight={500} mb={2}>End Date</Typography>
 						<LocalizationProvider dateAdapter={DateAdapter}>
 							<DatePicker
-								value={endDate}
+								value={end_date}
 								renderInput={(params) => <TextField {...params} />}
-								onChange={(e) => setEndDate(e)}
+								onChange={(e) => setEnd_date(e)}
 							/>
 						</LocalizationProvider>
 					</Grid>
@@ -185,7 +218,7 @@ const NewBannerDialog = ({
 					onClearChange();
 					onClose();
 				}}>Cancel</Button>
-				<Button onClick={onClose}>Add Banner</Button>
+				<Button onClick={handleAddBanner}>Add Banner</Button>
 			</DialogActions>
 		</Dialog>
 	);
