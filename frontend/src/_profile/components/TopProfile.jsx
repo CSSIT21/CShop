@@ -6,7 +6,6 @@ import { useRecoilValue } from "recoil";
 import authState from "../../common/store/authState";
 import { useHistory } from "react-router";
 import StoreIcon from "@mui/icons-material/Store";
-const userType = "seller";
 
 const TopProfile = () => {
   const classes = useStyles();
@@ -28,32 +27,22 @@ const TopProfile = () => {
     <Box className={classes.container}>
       <Box className={classes.profile}>
         <Avatar
-          src={auth.user.url}
+          src={auth.user.customer_info.url}
           sx={{ width: 80, height: 80, marginRight: "25px" }}
           className={classes.profilePic}
           ref={avatar}
-        >
-          <Box
-            sx={{
-              width: "100%",
-              height: "50px",
-              background: "black",
-              color: "white",
-            }}
-          >
-            Edit
-          </Box>
-        </Avatar>
+        ></Avatar>
         <Box className={classes.nametag}>
           <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-            {auth.user.first_name} {auth.user.last_name}
+            {auth.user.customer_info.firstname}{" "}
+            {auth.user.customer_info.lastname}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            #ID
+            #{auth.user.customer_info.customer_id}
           </Typography>
         </Box>
       </Box>
-      {userType === "seller" && (
+      {auth.user.role === "SELLER" && (
         <Button
           variant="contained"
           startIcon={<StoreIcon />}
@@ -110,5 +99,4 @@ const useStyles = makeStyles({
       transform: "translateY(-100%)",
     },
   },
-  editprofilePic: {},
 });

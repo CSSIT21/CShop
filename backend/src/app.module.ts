@@ -6,12 +6,12 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { ProfileModule } from './profile/profile.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
 import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
 import { BannerModule } from './home&log/banner/banner.module';
 import { HomeModule } from './home&log/home/home.module';
 import { LogSystemModule } from './home&log/log-system/log-system.module';
-
 
 @Module({
 	imports: [
@@ -21,8 +21,9 @@ import { LogSystemModule } from './home&log/log-system/log-system.module';
 		BannerModule,
 		HomeModule,
 		LogSystemModule,
-    SellershopModule,
-    ShopcustomizationModule
+		SellershopModule,
+		ShopcustomizationModule,
+		ProfileModule,
 	],
 	controllers: [AppController],
 	providers: [
@@ -33,4 +34,4 @@ import { LogSystemModule } from './home&log/log-system/log-system.module';
 		// },
 	],
 })
-export class AppModule { }
+export class AppModule {}
