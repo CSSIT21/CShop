@@ -19,6 +19,7 @@ function ReviewDialog({
   // choices,
   options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
   choices = ["XL", "L", "M", "XL", "L", "M"],
+  statusOrder = true,
 }) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -97,7 +98,11 @@ function ReviewDialog({
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        disabled={!statusOrder}
+      >
         Review
       </Button>
 
