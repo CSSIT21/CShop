@@ -16,6 +16,7 @@ export class BannerService {
     return this.prisma.home_banner_picture.create({ data });
   }
 
+  // Get all banners with information and images by 'visible' condition
   async getBanners(checkVisible: boolean) {
     let where = {
       start_date: {
@@ -44,6 +45,7 @@ export class BannerService {
         children: []
       };
 
+      // Push pictures into each banner object
       for (let id of info.picture_id) {
         let picture = await this.getImageById({ id });
 
@@ -85,7 +87,7 @@ export class BannerService {
     });
   }
 
-  // Select a single image from home_banner_picture table
+  // Select a single image from home_banner_picture table by id
   async getImageById(where: Prisma.home_banner_pictureWhereUniqueInput): Promise<home_banner_picture> {
     return this.prisma.home_banner_picture.findUnique({
       where,
@@ -93,7 +95,7 @@ export class BannerService {
     });
   }
 
-  // Select a single image from home_banner_picture table
+  // Select a single image from home_banner_picture table by some conditions
   async getImageByCondition(where: Prisma.home_banner_pictureWhereInput): Promise<home_banner_picture> {
     return this.prisma.home_banner_picture.findFirst({
       where,
@@ -118,8 +120,8 @@ export class BannerService {
     });
   }
 
-  // Update information to home_banner table
-  async updateInfo(params: {
+  // Update information to home_banner table by id
+  async updateInfoById(params: {
     data: Prisma.home_bannerUpdateInput;
     where: Prisma.home_bannerWhereUniqueInput;
   }) {
@@ -129,43 +131,36 @@ export class BannerService {
       where,
     });
 
-    return {
-      success: true,
-      bannerInfo,
-    };
+    return bannerInfo;
   }
 
-  // Delete information and pictures of banner with specific id
-  async deleteBanner(where: Prisma.home_bannerWhereUniqueInput) {
+  // Delete information and pictures of banner by id
+  async deleteBannerById(where: Prisma.home_bannerWhereUniqueInput) {
     const bannerInfo = await this.prisma.home_banner.delete({ where });
 
     // Also delete pictures of this banner
-    bannerInfo.picture_id.forEach(id => this.deleteImage({ id }));
+    bannerInfo.picture_id.forEach(id => this.deleteImageById({ id }));
 
-    return {
-      success: true,
-      bannerInfo,
-    };
+    return bannerInfo;
   }
 
-  // Delete sub image of banner with specific id
+  // Delete a sub image of banner by banner id and subImage id
   async deleteSubImage(bannerId: number, subId: number): Promise<home_banner_picture> {
 
-    // Also remove picture_id from banner
     const bannerInfo = await this.getInfo({ id: bannerId });
-
     const pictureIds = bannerInfo.picture_id.filter(id => id !== subId);
 
-    this.updateInfo({
+    // Also remove picture_id from banner
+    this.updateInfoById({
       where: { id: bannerId },
       data: { picture_id: pictureIds },
     });
 
-    return this.deleteImage({ id: subId });
+    return this.deleteImageById({ id: subId });
   }
 
-  // Delete an image from home_banner_picture table
-  async deleteImage(where: Prisma.home_banner_pictureWhereUniqueInput): Promise<home_banner_picture> {
+  // Delete an image from home_banner_picture table by id
+  async deleteImageById(where: Prisma.home_banner_pictureWhereUniqueInput): Promise<home_banner_picture> {
     return this.prisma.home_banner_picture.delete({ where });
   }
 

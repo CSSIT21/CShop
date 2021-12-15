@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useEffect } from 'react';
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Typography, Stack, Button } from '@mui/material';
@@ -67,6 +67,10 @@ const ManageBanner = () => {
 	const classes = useStyles();
 	const [items, setItems] = useState([]);
 	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+
+	}, []);
 
 	useLayoutEffect(() => {
 		setItems(bannerList.map(item => ({ ...item, height: 100 })));
