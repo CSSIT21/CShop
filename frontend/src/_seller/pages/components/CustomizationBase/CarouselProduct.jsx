@@ -24,7 +24,7 @@ const CarouselProduct = ({
   const handleChange = (e) => {
     setInformation((info) => ({
       ...info,
-      [id]: { ...(info[id] || ""), img: e.target.value },
+      [id]: { ...(info[id] || ""), content: e.target.value },
     }));
   };
 
@@ -89,7 +89,7 @@ const CarouselProduct = ({
           id="outlined-select-currency"
           select
           label="Select Category"
-          value={information[id] ? information[id].img : null}
+          value={information[id] ? information[id].content : null}
           onChange={handleChange}
           sx={{ width: "30%" }}
         >

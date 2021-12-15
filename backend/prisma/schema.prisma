@@ -9,7 +9,7 @@ datasource db {
 
 model customer {
   id                            Int                             @id @default(autoincrement())
-  email                         String                          @db.VarChar(60)
+  email                         String                          @unique @db.VarChar(60)
   password                      String                          @db.VarChar(255)
   date                          DateTime                        @default(now())
   admin_customer_suspensions    admin_customer_suspensions?
@@ -30,6 +30,8 @@ model customer {
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend?
+  discount_daily_coin           discount_daily_coin?
+  discount_used_coin            discount_used_coin?
   discount_user_code            discount_user_code?
   home_add_to_cart_log          home_add_to_cart_log?
   home_discount_log             home_discount_log?
@@ -58,6 +60,8 @@ model customer {
   shop_comment                  shop_comment[]
   shop_info                     shop_info[]
   wallet                        wallet[]
+  discount_used_coin            discount_used_coin[]
+  discount_daily_coin           discount_daily_coin[]
 }
 
 model customer_info {
@@ -82,7 +86,6 @@ model customer_picture_file {
   title            String             @db.VarChar(50)
   path             String
   thumbnail        String
-  mime_type        String             @db.VarChar(20)
   primary          Boolean            @default(false)
   customer_picture customer_picture[]
 }
@@ -94,8 +97,8 @@ model address {
   district         String             @db.VarChar(20)
   sub_district     String             @db.VarChar(20)
   postal_code      String             @db.VarChar(5)
-  phone_number     String             @db.VarChar(10)
   recipient_name   String             @db.VarChar(60)
+  phone_number     String             @db.VarChar(10)
   customer_address customer_address[]
   order_detail     order_detail[]
   shop_info        shop_info[]
@@ -143,11 +146,11 @@ model shop_info {
   customer_id                    Int
   shop_address_id                Int
   shop_name                      String                         @db.VarChar(40)
-  phone_number                   String                         @db.VarChar(10)
   join_date                      DateTime                       @default(now())
+  phone_number                   String                         @db.VarChar(10)
+  last_active                    DateTime                       @default(now())
   description                    String
-  followers                      Int?
-  last_active                    DateTime?
+  followers                      Int?                           @default(0)
   shop_ower_id                   customer                       @relation(fields: [customer_id], references: [id])
   shop_address_id_from_shop_info address                        @relation(fields: [shop_address_id], references: [id])
   admin_reported_shop            admin_reported_shop[]
@@ -171,6 +174,7 @@ model shop_info {
   sconsole_refund                sconsole_refund[]
   sconsole_refund_history        sconsole_refund_history[]
   sconsole_stock_history         sconsole_stock_history[]
+  shop_category                  shop_category[]
   shop_comment                   shop_comment[]
   shop_flashsale                 shop_flashsale[]
   shop_flashsale_history         shop_flashsale_history[]
@@ -184,7 +188,6 @@ model shop_picture {
   title                     String    @db.VarChar(50)
   path                      String
   thumbnail                 String
-  mime_type                 String    @db.VarChar(20)
   shop_id_from_shop_picture shop_info @relation(fields: [shop_id], references: [id])
 }
 
@@ -210,7 +213,7 @@ model shop_section_log {
 
 model shop_section {
   shop_id                   Int       @id
-  sections                  Json
+  sections                  Json[]
   shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
 }
 
@@ -218,59 +221,58 @@ model shop_flashsale {
   shop_id                     Int
   started_date                DateTime                 @default(now())
   ended_date                  DateTime                 @default(now())
-  products                    Json
-  description                 String
-  id                          Int                      @id @default(autoincrement())
-  mime_type                   String                   @db.VarChar(20)
-  path                        String
-  thumbnail                   String
-  title                       String
+  products                    Json[]
+  title                       String?
+  path                        String?
+  thumbnail                   String?
+  description                 String?
   shop_id_from_shop_flashsale shop_info                @relation(fields: [shop_id], references: [id])
   sconsole_flashsale_log      sconsole_flashsale_log[]
   shop_flashsale_history      shop_flashsale_history?
 }
 
 model shop_flashsale_history {
+  flashsale_id                             Int            @id
   shop_id                                  Int
   started_date                             DateTime       @default(now())
   ended_date                               DateTime       @default(now())
-  products                                 Json
+  products                                 Json[]
   quantity                                 Json
-  flashsale_id                             Int            @id
   flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
   shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model shop_banner {
-  id        Int    @id @default(autoincrement())
+  id        String @id
   title     String @db.VarChar(50)
   path      String
   thumbnail String
-  mime_type String @db.VarChar(20)
 }
 
 model shop_banner_carousel {
-  id      Int  @id @default(autoincrement())
-  banners Json
+  id      String @id
+  banners Json[]
 }
 
 model shop_product_carousel {
-  id       Int   @id @default(autoincrement())
-  products Int[]
+  id          String @id
+  filter_name String
+  products    Int[]
 }
 
 model shop_video {
-  id        Int    @id @default(autoincrement())
-  title     String @db.VarChar(50)
-  path      String
-  thumbnail String
-  mime_type String @db.VarChar(20)
+  id    String @id
+  title String @db.VarChar(50)
+  path  String
 }
 
 model shop_category {
-  id       Int    @id @default(autoincrement())
-  title    String @db.VarChar(20)
-  products Int[]
+  id        Int       @id @default(autoincrement())
+  shop_id   Int
+  title     String    @db.VarChar(20)
+  products  Int[]
+  shop_info shop_info @relation(fields: [shop_id], references: [id])
+
 }
 
 model category_icon_picture {
@@ -278,7 +280,6 @@ model category_icon_picture {
   title     String     @db.VarChar(50)
   path      String
   thumbnail String
-  mime_type String     @db.VarChar(20)
   category  category[]
 }
 
@@ -287,7 +288,6 @@ model category_banner_picture {
   title     String     @db.VarChar(50)
   path      String
   thumbnail String
-  mime_type String     @db.VarChar(20)
   category  category[]
 }
 
@@ -370,8 +370,6 @@ model product_reviews_picture {
   title     String @db.VarChar(50)
   path      String
   thumbnail String
-  mime_type String @db.VarChar(20)
-  id        Int    @id @default(autoincrement())
 }
 
 model product_short_link {
@@ -393,6 +391,7 @@ model product_options {
   id                              Int               @id @default(autoincrement())
   product_id                      Int
   name                            String            @db.VarChar(20)
+  enable                          Boolean           @default(false)
   product_id_from_product_options product           @relation(fields: [product_id], references: [id])
   product_choices                 product_choices[]
 }
@@ -401,8 +400,10 @@ model product_choices {
   id                                      Int             @id @default(autoincrement())
   product_options_id                      Int
   name                                    String          @db.VarChar(30)
+  enable                                  Boolean         @default(false)
   price                                   Int
   quantity                                Int
+  enable                                  Boolean         @default(false)
   product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
 }
 
@@ -431,6 +432,8 @@ model discount {
 model discount_shop {
   discount_id                    Int       @id
   shop_id                        Int
+  quantity                       Int
+  max_quantity                   Int
   discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
   shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -451,6 +454,7 @@ model discount_event {
   shop_id                         Int
   event_id                        Int
   quantity                        Int
+  max_quantity                    Int
   discount_id_from_discount_event discount  @relation(fields: [discount_id], references: [id])
   event_id_from_discount_event    event     @relation(fields: [event_id], references: [id])
   shop_id_from_discount_event     shop_info @relation(fields: [shop_id], references: [id])
@@ -459,6 +463,7 @@ model discount_event {
 model discount_app {
   discount_id                   Int      @id
   quantity                      Int
+  max_quantity                  Int
   discount_id_from_discount_app discount @relation(fields: [discount_id], references: [id])
 }
 
@@ -466,6 +471,7 @@ model discount_category {
   discount_id                        Int      @id
   category_id                        Int
   quantity                           Int
+  max_quantity                       Int
   category_id_from_discount_category category @relation(fields: [category_id], references: [id])
   discount_id_from_discount_category discount @relation(fields: [discount_id], references: [id])
 }
@@ -477,20 +483,21 @@ model discount_user_code {
   discount_id_from_iscount_user_code  discount @relation(fields: [discount_id], references: [id])
 }
 
-model discount_spend_types {
+model discount_reward {
   id                      Int                       @id @default(autoincrement())
   type                    DiscountUserTypes
-  amonut                  Int
+  quantity                Int
   description             String
+  max_quantity            Int
   discount_customer_spend discount_customer_spend[]
 }
 
 model discount_customer_spend {
-  customer_id                                Int                  @id
+  customer_id                                Int             @id
   total_spend                                Int
   spend_type_id                              Int
-  customer_id_from_discount_customer_spend   customer             @relation(fields: [customer_id], references: [id])
-  spend_type_id_from_discount_customer_spend discount_spend_types @relation(fields: [spend_type_id], references: [id])
+  customer_id_from_discount_customer_spend   customer        @relation(fields: [customer_id], references: [id])
+  spend_type_id_from_discount_customer_spend discount_reward @relation(fields: [spend_type_id], references: [id])
 }
 
 model discount_coin_information {
@@ -502,6 +509,22 @@ model discount_coin_information {
   get_from                                   String
   customer_id_from_discount_coin_information customer @relation(fields: [customer_id], references: [id])
 }
+
+
+model discount_used_coin {
+  customer_id                         Int      @id
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
+  used_time                           DateTime @db.Timestamp
+  used_amount                         Int
+  user_for                            String   @db.Text
+}
+
+model discount_daily_coin {
+  customer_id                          Int      @id
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
+  got_date                             DateTime @db.Date
+}
+
 
 model discount_customer_coin {
   customer_id                             Int      @id
@@ -863,7 +886,6 @@ model chat_image {
   title                      String       @db.VarChar(50)
   path                       String
   thumbnail                  String
-  mime_type                  String       @db.VarChar(20)
   message_id_from_chat_image chat_message @relation(fields: [message_id], references: [id])
 }
 
@@ -872,7 +894,6 @@ model chat_video {
   title                      String       @db.VarChar(50)
   path                       String
   thumbnail                  String
-  mime_type                  String       @db.VarChar(20)
   message_id_from_chat_video chat_message @relation(fields: [message_id], references: [id])
 }
 
@@ -881,7 +902,6 @@ model chat_sticker_lookup {
   title        String         @db.VarChar(50)
   path         String
   thumbnail    String
-  mime_type    String         @db.VarChar(20)
   chat_sticker chat_sticker[]
 }
 
@@ -895,9 +915,9 @@ model chat_sticker {
 model chat_deleted_message {
   message_id                           Int               @id
   conversation_id                      Int
+  from_customer                        Boolean           @default(false)
   message_time                         DateTime          @db.Timestamp(6)
   content_type                         ChatMessageTypes
-  from_customer                        Boolean           @default(false)
   conversation_id_from_deleted_message chat_conversation @relation(fields: [conversation_id], references: [id])
 }
 
@@ -1108,7 +1128,6 @@ model admin_support_picture {
   title                      String                       @db.VarChar(50)
   path                       String
   thumbnail                  String
-  mime_type                  String                       @db.VarChar(20)
   admin_customer_suspensions admin_customer_suspensions[]
   admin_reported_customer    admin_reported_customer[]
   admin_reported_shop        admin_reported_shop[]
@@ -1118,11 +1137,19 @@ model admin_support_picture {
 
 model admin_support {
   id                                 Int                   @id @default(autoincrement())
+  title                              String
+  description                        String                @db.Text
+  target                             String
+  admin_id                           Int
   customer_id                        Int
   support_type_id                    Int
   sent_date                          DateTime              @default(now()) @db.Timestamp(6)
   ended_date                         DateTime?             @db.Timestamp(6)
   picture_id                         Int
+  admin_id                           Int
+  description                        String
+  target                             String
+  title                              String
   customer_id_from_admin_support     customer              @relation(fields: [customer_id], references: [id])
   picture_id_from_admin_support      admin_support_picture @relation(fields: [picture_id], references: [id])
   support_type_id_from_admin_support admin_support_type    @relation(fields: [support_type_id], references: [id])
@@ -1200,25 +1227,28 @@ model admin_audit {
   action     String
 }
 
+enum homeBannerPicturePosition {
+  Main
+  Sub
+}
+
 model home_banner_picture {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(50)
-  path        String
-  thumbnail   String
-  mime_type   String        @db.VarChar(20)
-  home_banner home_banner[]
+  id        Int                       @id @default(autoincrement())
+  title     String                    @db.VarChar(50)
+  position  homeBannerPicturePosition
+  path      String
+  thumbnail String
 }
 
 model home_banner {
-  id                          Int                 @id @default(autoincrement())
-  start_date                  DateTime            @db.Timestamp(6)
-  end_date                    DateTime            @db.Timestamp(6)
-  picture_id                  Int
-  description                 String
-  visible                     Boolean             @default(true)
-  keywords                    String[]            @db.VarChar(20)
-  order                       Int
-  picture_id_from_home_banner home_banner_picture @relation(fields: [picture_id], references: [id])
+  id          Int      @id @default(autoincrement())
+  description String
+  start_date  DateTime @db.Timestamp(6)
+  end_date    DateTime @db.Timestamp(6)
+  picture_id  Int[]
+  order       Int
+  keywords    String[] @db.VarChar(20)
+  visible     Boolean  @default(true)
 }
 
 model home_popup {
@@ -1229,7 +1259,6 @@ model home_popup {
   title       String   @db.VarChar(50)
   path        String
   thumbnail   String
-  mime_type   String   @db.VarChar(20)
 }
 
 model home_app_review {
@@ -1243,21 +1272,21 @@ model home_app_review {
   title       String   @db.VarChar(50)
   path        String
   thumbnail   String
-  mime_type   String   @db.VarChar(20)
 }
 
 model home_partner {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
-  title       String   @db.VarChar(100)
-  start_date  DateTime @db.Timestamp(6)
-  end_date    DateTime @db.Timestamp(6)
-  join_date   DateTime @db.Timestamp(6)
+  title       String          @db.VarChar(100)
+  start_date  DateTime        @db.Timestamp(6)
+  end_date    DateTime        @db.Timestamp(6)
+  join_date   DateTime        @db.Timestamp(6)
   description String
-  title_pic   String   @db.VarChar(50)
+  type        homePartnerType
+  title_pic   String          @db.VarChar(50)
   path        String
   thumbnail   String
-  mime_type   String   @db.VarChar(20)
+  type        homePartnerType
 }
 
 model home_product_log {
@@ -1448,6 +1477,28 @@ model business_interaction_weight {
   weight Int      @id
   date   DateTime @db.Date
 }
+model discount_daily_coin {
+  customer_id Int      @id
+  got_date    DateTime @db.Date
+  customer    customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_reward {
+  id                      Int                       @id @default(autoincrement())
+  type                    DiscountUserTypes
+  quantity                Int
+  description             String
+  max_quantity            Int
+  discount_customer_spend discount_customer_spend[]
+}
+
+model discount_used_coin {
+  customer_id Int      @id
+  used_time   DateTime @db.Timestamp(6)
+  used_amount Int
+  user_for    String
+  customer    customer @relation(fields: [customer_id], references: [id])
+}
 
 enum Gender {
   Male
@@ -1563,3 +1614,10 @@ enum homePartnerType {
   PaymentMethod
   Delivery
 }
+
+
+enum homeBannerPicturePosition {
+  Main
+  Sub
+}
+

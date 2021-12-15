@@ -34,6 +34,7 @@ const RegisterAddress = ({
     setUserInfo({ ...userInfo, postalCode: "" });
     handleBack();
   };
+
   const register = () => {
     if (userInfo.addressLine == "") {
       setaddressLineError("This field is required");
