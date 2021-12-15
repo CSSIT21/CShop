@@ -148,19 +148,18 @@ export class ShopcustomizationService {
 	}
 
 	async updateBanner(
-		// shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
-		// shop_bannerUpdateInput: Prisma.shop_bannerUpdateInput,
-		body
+		shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
+		shop_bannerUpdateInput: Prisma.shop_bannerUpdateInput,
 	) {
 		try {
 			await this.prisma.shop_banner.update({
 				where: {
-					id: body.id,
+					id: shop_bannerWhereUniqueInput.id,
 				},
 				data: {
-					path: body.path,
-					thumbnail: body.thumbnail,
-					title: body.title,
+					path: shop_bannerUpdateInput.path,
+					thumbnail: shop_bannerUpdateInput.thumbnail,
+					title: shop_bannerUpdateInput.title,
 				},
 			});
 			return 'Banner updated!';

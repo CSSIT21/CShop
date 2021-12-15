@@ -59,13 +59,14 @@ export class ShopcustomizationController {
 
 	@Patch('banner/:id')
 	async updateBanner(
-		// @Body() shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
-		// @Body() shop_bannerCreateInput: Prisma.shop_bannerCreateInput,
-		@Body() body,
-		@Res() res
+		@Body() shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
+		@Body() shop_bannerCreateInput: Prisma.shop_bannerCreateInput,
+		@Res() res,
 	) {
-		console.log(body);
-		const result = await this.shopcustomizationService.updateBanner(body);
+		const result = await this.shopcustomizationService.updateBanner(
+			shop_bannerWhereUniqueInput,
+			shop_bannerCreateInput,
+		);
 		if (result) {
 			res.send({ success: true, result });
 		} else {
