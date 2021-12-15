@@ -343,6 +343,16 @@ model product {
   sconsole_refund_history         sconsole_refund_history[]
   sconsole_set_lanch_product      sconsole_set_lanch_product?
   sconsole_stock_history          sconsole_stock_history[]
+  product_picture                 product_picture[]
+}
+
+model product_picture {
+  id                              Int     @id @default(autoincrement())
+  product_id                      Int
+  product_id_from_product_picture product @relation(fields: [product_id], references: [id])
+  title                           String  @db.VarChar(50)
+  path                            String  @db.Text
+  thumbnail                       String  @db.Text
 }
 
 model product_detail {
