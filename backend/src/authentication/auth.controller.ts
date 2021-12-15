@@ -34,14 +34,11 @@ export class AuthenticationController {
 		return await this.authenticationService.register(data);
 	}
 
-	// @Post('/login')
-	// @Public()
-	// public async login(@Body() data: LoginDto, @Req() Req: any, @Res() res: any) {
-	// 	const check = await this.authenticationService.login(data);
-	// 	res.send({
-	// 		success: check,
-	// 	});
-	// }
+	@Post('/checkemail')
+	@Public()
+	public async checkemail(@Body() data: LoginDto) {
+		return await this.authenticationService.checkemail(data);
+	}
 
 	@Post('login')
 	@Public()

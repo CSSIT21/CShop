@@ -22,6 +22,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 			include: {
 				customer_info: true,
 				shop_info: true,
+				customer_address: {
+					include: {
+						address_id_from_customer_address: true,
+					},
+				},
 			},
 		});
 

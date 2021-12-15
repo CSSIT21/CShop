@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import { assign } from "~/common/utils/";
 import config from "../../common/constants";
@@ -24,6 +24,7 @@ const RegisterAddress = ({
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const resetRegisterState = useResetRecoilState(registerState);
   const classes = useStyles();
 
   const back = () => {
@@ -31,7 +32,6 @@ const RegisterAddress = ({
     setUserInfo({ ...userInfo, district: "" });
     setUserInfo({ ...userInfo, subDistrict: "" });
     setUserInfo({ ...userInfo, postalCode: "" });
-    console.log(userInfo);
     handleBack();
   };
   const register = () => {
@@ -68,6 +68,7 @@ const RegisterAddress = ({
         .then(({ data }) => {
           if (data.success) {
             handleRegister();
+            resetRegisterState();
           } else {
             Swal.fire("Register Error!", data.message, "error");
           }
