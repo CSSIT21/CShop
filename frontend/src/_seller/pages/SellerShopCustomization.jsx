@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -20,6 +20,9 @@ import Button from "@mui/material/Button";
 import { getUrl } from "~/common/utils";
 import axios from "axios";
 import config from "~/common/constants";
+import Swal from "sweetalert2";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -136,6 +139,7 @@ const ITEMS = [
   },
 ];
 const SellerShopCustomization = () => {
+  const auth = useRecoilValue(authState);
   const shopName = "Shop name";
   const dropArea = "area";
   const [state, setState] = useState({
@@ -151,61 +155,93 @@ const SellerShopCustomization = () => {
     setAnchorEl(null);
   };
   console.log("sectionInfos", sectionInfos);
-  useEffect(() => {
-    axios.get();
+  console.log("state", state);
+  useEffect(async () => {
+    await axios
+      .get(
+        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
+      )
+      .then(({ data }) => setState({ area: data.sections }));
+    await axios
+      .get(
+        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}/info`
+      )
+      .then(({ data }) => {
+        setSectionInfos(data.sections_info);
+      });
   }, []);
   const saveChange = async () => {
     await axios
-      .patch(`${config.SERVER_URL}/shopcustomization`, { sections: state.area })
+      .patch(
+        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`,
+        { sections: state.area }
+      )
       .then(() => {
         Object.entries(sectionInfos).forEach(async (e) => {
           const item = state.area.find((item) => e[0]);
           console.log("file", item, e);
           switch (item.type) {
             case "Banner":
-              const url = await getUrl(e[1].content.file);
-              axios
-                .post(`${config.SERVER_URL}/shopcustomization/banner`, {
-                  id: e[0],
-                  path: url.original_link,
-                  thumbnail: url.original_link,
-                  title: e[1].content.title,
-                })
-                .catch((error) => {
-                  axios.patch(`${config.SERVER_URL}/shopcustomization/banner`, {
-                    id: e[0],
-                    path: url.original_link,
-                    thumbnail: url.original_link,
-                    title: e[1].content.title,
-                  });
-                }); //shop_banner table
+              if (e[1].content.file) {
+                const url = await getUrl(e[1].content.file);
+                if (url.success) {
+                  axios
+                    .post(`${config.SERVER_URL}/shopcustomization/banner`, {
+                      id: e[0],
+                      path: url.original_link,
+                      thumbnail: url.original_link,
+                      title: e[1].content.title.slice(0, 50),
+                    })
+                    .catch((error) => {
+                      axios.patch(
+                        `${config.SERVER_URL}/shopcustomization/banner/${auth.user.shop_info[0].id}`,
+                        {
+                          id: e[0],
+                          path: url.original_link,
+                          thumbnail: url.original_link,
+                          title: e[1].content.title,
+                        }
+                      );
+                    }); //shop_banner table
+                }
+              } else {
+                console.log("something went wrong");
+              }
               break;
             case "BannerCarousel":
               let banners = [];
-              e[1].content.forEach(async (element) => {
-                // const url = await getUrl(element.file);
-                banners = [
-                  ...banners,
-                  {
-                    id: element.id,
-                    path: "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
-                  },
-                ];
-              });
-              axios
-                .post(`${config.SERVER_URL}/shopcustomization/bannercarousel`, {
-                  id: e[0],
-                  banners: banners,
-                })
-                .catch((error) => {
-                  axios.patch(
+              if (e[1].content[0].file) {
+                e[1].content.forEach(async (element) => {
+                  // const url = await getUrl(element.file);
+                  // if (url.success) { url.original_link
+                  banners = [
+                    ...banners,
+                    {
+                      id: element.id,
+                      title: element.title,
+                      path: "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
+                    },
+                  ];
+                  // }
+                });
+                axios
+                  .post(
                     `${config.SERVER_URL}/shopcustomization/bannercarousel`,
                     {
                       id: e[0],
                       banners: banners,
                     }
-                  );
-                });
+                  )
+                  .catch((error) => {
+                    axios.patch(
+                      `${config.SERVER_URL}/shopcustomization/bannercarousel`,
+                      {
+                        id: e[0],
+                        banners: banners,
+                      }
+                    );
+                  });
+              }
               break;
             case "Video":
               //axios.post() shop_video table
@@ -218,9 +254,20 @@ const SellerShopCustomization = () => {
               break;
           }
         });
+        Swal.fire({
+          title: "Success",
+          text: "Sections Successfully Save!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
       })
       .catch((e) => {
         console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
   };
   const deleteItem = (source, id) => {

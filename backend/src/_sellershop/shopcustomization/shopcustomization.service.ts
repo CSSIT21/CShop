@@ -2,17 +2,113 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateShopcustomizationDto } from './dto/create-shopcustomization.dto';
 import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '.prisma/client';
+import { Prisma, Shop_section } from '.prisma/client';
 
 @Injectable()
 export class ShopcustomizationService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	public async updateSection(shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput) {
+	async getSection(id: number) {
+		try {
+			const sections = await this.prisma.shop_section.findUnique({
+				where: {
+					shop_id: id,
+				},
+			});
+
+			return sections.sections;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error updating shop sections please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error updating shop sections request body incorrect', 500);
+		}
+	}
+
+	async getSectionInfo(id: number) {
+		try {
+			try {
+				const shopsections = await this.prisma.shop_section.findUnique({
+					where: {
+						shop_id: id,
+					},
+				});
+				const sections = shopsections.sections;
+				if (shopsections.sections !== null) {
+					var parsedsections = JSON.parse(JSON.stringify(sections));
+					let resultSections = {};
+					console.log(sections);
+
+					for (let index = 0; index < parsedsections.length; index++) {
+						let section;
+
+						switch (parsedsections[index].type) {
+							case Shop_section.Banner:
+								section = await this.prisma.shop_banner.findUnique({
+									where: {
+										id: parsedsections[index].id,
+									},
+								});
+								section = { ...section, type: 1 };
+								break;
+							case Shop_section.BannerCarousel:
+								section = await this.prisma.shop_banner_carousel.findUnique({
+									where: {
+										id: parsedsections[index].id,
+									},
+								});
+								section = { ...section, type: 2 };
+								break;
+							case Shop_section.ProductCarousel:
+								section = await this.prisma.shop_product_carousel.findUnique({
+									where: {
+										id: parsedsections[index].id,
+									},
+								});
+								section = { ...section, type: 3 };
+								break;
+							case Shop_section.Video:
+								section = await this.prisma.shop_video.findUnique({
+									where: {
+										id: parsedsections[index].id,
+									},
+								});
+								section = { ...section, type: 4 };
+								break;
+						}
+						let section_id = section.id;
+						resultSections = { ...resultSections, [section_id]: { content: { ...section } } };
+					}
+
+					return resultSections;
+				} else {
+					return [];
+				}
+			} catch (e) {
+				if (e instanceof Prisma.PrismaClientKnownRequestError) {
+					console.log(e.message);
+					throw new HttpException('Error querying sections please check your information!', 500);
+				}
+				console.log(e.message);
+				throw new HttpException('Error querying sections request body incorrect', 500);
+			}
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error updating shop sections please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error updating shop sections request body incorrect', 500);
+		}
+	}
+
+	async updateSection(id: number, shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput) {
 		try {
 			await this.prisma.shop_section.update({
 				where: {
-					shop_id: 1,
+					shop_id: id,
 				},
 				data: {
 					sections: shop_sectionUpdateInput.sections,
@@ -30,7 +126,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async createBanner(shop_bannerCreateInput: Prisma.shop_bannerCreateInput) {
+	async createBanner(shop_bannerCreateInput: Prisma.shop_bannerCreateInput) {
 		try {
 			await this.prisma.shop_banner.create({
 				data: {
@@ -51,19 +147,20 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async updateBanner(
-		shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
-		shop_bannerUpdateInput: Prisma.shop_bannerUpdateInput,
+	async updateBanner(
+		// shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
+		// shop_bannerUpdateInput: Prisma.shop_bannerUpdateInput,
+		body
 	) {
 		try {
 			await this.prisma.shop_banner.update({
 				where: {
-					id: shop_bannerWhereUniqueInput.id,
+					id: body.id,
 				},
 				data: {
-					path: shop_bannerUpdateInput.path,
-					thumbnail: shop_bannerUpdateInput.thumbnail,
-					title: shop_bannerUpdateInput.title,
+					path: body.path,
+					thumbnail: body.thumbnail,
+					title: body.title,
 				},
 			});
 			return 'Banner updated!';
@@ -77,7 +174,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async createBannerCarousel(shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput) {
+	async createBannerCarousel(shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput) {
 		try {
 			console.log(shop_banner_carouselCreateInput);
 
@@ -98,7 +195,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async updateBannerCarousel(
+	async updateBannerCarousel(
 		shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
 		shop_banner_carouselUpdateInput: Prisma.shop_banner_carouselUpdateInput,
 	) {
@@ -122,7 +219,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async createVideo(shop_videoCreateInput: Prisma.shop_videoCreateInput) {
+	async createVideo(shop_videoCreateInput: Prisma.shop_videoCreateInput) {
 		try {
 			await this.prisma.shop_video.create({
 				data: shop_videoCreateInput,
@@ -137,7 +234,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async updateVideo(
+	async updateVideo(
 		shop_videoWhereUniqueInput: Prisma.shop_videoWhereUniqueInput,
 		shop_videoUpdateInput: Prisma.shop_videoUpdateInput,
 	) {
@@ -161,7 +258,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async createProductCarousel(shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput) {
+	async createProductCarousel(shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput) {
 		try {
 			await this.prisma.shop_product_carousel.create({
 				data: shop_product_carouselCreateInput,
@@ -176,7 +273,7 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async updateProductCarousel(
+	async updateProductCarousel(
 		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
 		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
 	) {

@@ -44,7 +44,7 @@ const ImageBanner = ({
       setInformation((info) => ({
         ...info,
         [id]: {
-          ...(info[id] || content),
+          ...(info[id]),
           content: imagesetter,
         },
       }));
