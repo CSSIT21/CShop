@@ -11,14 +11,12 @@ import CategoryFilterAvailability from "./FilterBase/CategoryFilterAvailability"
 import ProductCard from "~/common/components/ProductCard";
 import { For } from "~/common/utils";
 
-import FakeProduct from "~/common/faker/fakeProducts";
-
 const Bestseller1 =
   "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg";
 
-const Filter = ({ categories = [] }) => {
+const Filter = ({ categories = [], products = [] }) => {
   const itemPerPage = 16;
-  const [items, setItems] = useState(FakeProduct);
+  const [items, setItems] = useState(products);
   const [currentItems, setCurrentItems] = useState(items.slice(0, itemPerPage));
   const [page, setPage] = useState(1);
   const onFavourite = (index) => {
