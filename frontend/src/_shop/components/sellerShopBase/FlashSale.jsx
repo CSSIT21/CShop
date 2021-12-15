@@ -12,7 +12,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 const progressBar = () => <LinearProgress />;
 
 const FlashSale = ({ items, onFavourite, endAt }) => {
-  const [products, setProducts] = useState(items);
+  const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;

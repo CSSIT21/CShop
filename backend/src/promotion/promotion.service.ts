@@ -8,6 +8,9 @@ const prisma = new PrismaClient()
 
 @Injectable()
 export class PromotionService{
+    showuser(arg0: Promise<any[]>[]) {
+        throw new Error('Method not implemented.');
+    }
 
     constructor(private httpService: HttpService){}
 
@@ -15,12 +18,54 @@ export class PromotionService{
     public async decodeevent(id : number){
         await prisma.discount_event.update({ 
             where:{
+                discount_id: 1
+            },
+            data:{
+                quantity:{
+                    decrement: 1 ,
+                }
+            }
+        })
+        return prisma.discount_event.findFirst({
+            where:{
+                discount_id:1
+            },
+            select:{
+                quantity:true
+            }
+        })   
+    }
+
+    public async decodeshop(id : number){
+        await prisma.discount_shop.update({ 
+            where:{
                 discount_id: id
             },
             data:{
                 quantity:{
                     decrement: 1 ,
                 
+                }
+            }
+        })
+        return prisma.discount_shop.findFirst({
+            where:{
+                discount_id: id
+            },
+            select:{
+                quantity:true
+            }
+        })   
+    }
+
+    public async decodereward(id : number){
+        await prisma.discount_reward.update({ 
+            where:{
+                id: id
+            },
+            data:{
+                quantity:{
+                    decrement: 1 ,
                 }
             }
         })   
@@ -37,6 +82,14 @@ export class PromotionService{
                 }
             }
         })
+        return prisma.discount_app.findFirst({
+            where:{
+                discount_id:id
+            },
+            select:{
+                quantity:true
+            }
+        })
     }
 
     public async decodecategory(id: number){
@@ -50,40 +103,112 @@ export class PromotionService{
                 }
             }
         })
+        return prisma.discount_category.findFirst({
+            where:{
+                discount_id: id
+            },
+            select:{
+                quantity: true
+            }
+        })
     }
 
-    public async userGetCodeevent(userId: number ,id: number){
+    public async userGetCode(userId: number ,id: number){
         await prisma.discount_user_code.create({
             data:{
                 customer_id: userId,
                 discount_id: id
             }
         })
+        
+    }
+    
+
+    public async checkcodeUser(userId: number){
+        const userDiscount = await prisma.discount_user_code.findMany({
+			where: {
+				customer_id: 1,
+			},
+			select: {
+				discount_id: true,
+			},
+		});
+        let discountId = [];
+		userDiscount.forEach((e) => {
+			discountId = [...discountId, e.discount_id];
+		});
+        return discountId;
+    }
+    
+    public async checkEvent(a: number[]){
+        const appDiscount = await prisma.discount_event.findMany({
+			where: {
+				discount_id: {
+					notIn: a,
+				},
+			},
+		});
     }
 
-    public async Countcode(userId : number){
-       const count =await prisma.discount_user_code.count({
-            where:{
-                customer_id: userId,
-            }
-        })
-        return count;
+    public async checkApp(a:[number]){
+        const appDiscount = await prisma.discount_app.findMany({
+			where: {
+				discount_id: {
+					notIn: a,
+				},
+			},
+		});
     }
 
-    public async Checkcode(userId :number){
-        await prisma.discount_user_code.findMany({
-            where:{
-                customer_id: userId,
-            }
-        })
+    public async checkShop(a:[number]){
+        const appDiscount = await prisma.discount_shop.findMany({
+			where: {
+				discount_id: {
+					notIn: a, 
+				},
+			},
+		});
     }
+
+    public async checkReward(a:[number]){
+        const appDiscount = await prisma.discount_reward.findMany({
+			where: {
+				id: {
+					notIn: a,
+				},
+			},
+		});
+    }
+
+    public async checkCategory(a:[number]){
+        const appDiscount = await prisma.discount_category.findMany({
+			where: {
+				discount_id: {
+					notIn: a,
+				},
+			},
+		});
+    }
+    
+    
+
 
     
-        
+    // public async usecode(id: number , userId: number){
+    //     await prisma.discount_user_code.delete({
+    //         where:{
+    //             customer_id: userId,
+    //         },
+    //         data:{
+                
+                    
+    //             }
+    //         }
+            
+  
+    //     }
+    
 
-    // findAll(): Observable<AxiosResponse<PromotionService[]>> {
-    //     return this.httpService.get('http://localhost:8080');
-    //   }
 
     }
 

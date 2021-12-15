@@ -109,7 +109,7 @@ const menus = [
 
 const SellerShop = () => {
   const classes = useStyles();
-  const [flashItems, setflashItems] = useState(flashSaleData.products);
+  const [flashItems, setflashItems] = useState();
   const onFavourite = (index) => {
     setflashItems((flashItems) => {
       const target = flashItems[index];
@@ -139,11 +139,9 @@ const SellerShop = () => {
           <Box className={classes.containerWhite}>
             <TabsController categories={menus} />
           </Box>
-          <FlashSale
-            items={flashItems}
-            endAt={flashSaleData.endAt}
-            onFavourite={onFavourite}
-          />
+          {/* <FlashSale
+            
+          /> */}
           <Box className={classes.containerWhite}>
             <Voucher />
           </Box>
