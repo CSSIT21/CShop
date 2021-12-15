@@ -4,9 +4,8 @@ import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
-import { noop } from "~/common/utils";
 
-const ButtonWrapper = ({ isEdit, setIsEdit, newUserInfo = noop }) => {
+const ButtonWrapper = ({ isEdit, setIsEdit, newUserInfo }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -45,7 +44,7 @@ const ButtonWrapper = ({ isEdit, setIsEdit, newUserInfo = noop }) => {
                 window.scrollTo(0, 0);
                 setIsEdit(!isEdit);
                 setOpen(true);
-                newUserInfo;
+                newUserInfo();
               }}
             >
               Save Changes

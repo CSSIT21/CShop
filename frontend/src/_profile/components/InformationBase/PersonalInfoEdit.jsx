@@ -2,12 +2,10 @@ import { Grid, Typography, TextField, MenuItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import {
-  years,
-  months,
-  days,
-  genders,
-} from "../../../common/constants/register";
+import { genders } from "../../../common/constants/register";
+import DateAdapter from "@mui/lab/AdapterDayjs";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 
 const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
   const classes = useStyles();
@@ -35,11 +33,14 @@ const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
               variant="outlined"
               placeholder="Firstname"
               sx={{ width: "48%" }}
-              value={editInfo.first_name}
+              value={editInfo.customer_info.firstname}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  first_name: e.target.value,
+                  customer_info: {
+                    ...editInfo.customer_info,
+                    firstname: e.target.value,
+                  },
                 });
               }}
             />
@@ -48,11 +49,14 @@ const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
               variant="outlined"
               placeholder="Lastname"
               sx={{ width: "48%" }}
-              value={editInfo.last_name}
+              value={editInfo.customer_info.lastname}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  last_name: e.target.value,
+                  customer_info: {
+                    ...editInfo.customer_info,
+                    lastname: e.target.value,
+                  },
                 });
               }}
             />
@@ -66,10 +70,16 @@ const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
             id="gender"
             variant="outlined"
             select
-            sx={{ width: "13.5%" }}
-            value={editInfo.gender}
+            sx={{ width: "20%" }}
+            value={editInfo.customer_info.gender}
             onChange={(e) => {
-              seteditInfo({ ...editInfo, gender: e.target.value });
+              seteditInfo({
+                ...editInfo,
+                customer_info: {
+                  ...editInfo.customer_info,
+                  gender: e.target.value,
+                },
+              });
             }}
           >
             {genders.map((gender) => (
@@ -77,7 +87,6 @@ const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
                 {gender.label}
               </MenuItem>
             ))}
-            kuyjiw
           </TextField>
         </Grid>
         <Grid container className={classes.grid}>
@@ -85,60 +94,21 @@ const PersonalInfoEdit = ({ editInfo, seteditInfo = () => {} }) => {
             <Typography sx={infoTitle}>Birthdate</Typography>
           </Grid>
           <Box className={classes.birthdateSelect}>
-            <Box className={classes.textFieldBox} style={dateTextField}>
-              <TextField
-                id="day"
-                variant="outlined"
-                sx={textField}
-                select
-                value={editInfo.day}
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              <DatePicker
+                value={editInfo.customer_info.birthdate}
+                renderInput={(params) => <TextField {...params} />}
                 onChange={(e) => {
-                  seteditInfo({ ...editInfo, day: e.target.value });
+                  seteditInfo({
+                    ...editInfo,
+                    customer_info: {
+                      ...editInfo.customer_info,
+                      birthdate: e.toISOString(),
+                    },
+                  });
                 }}
-              >
-                {days.map((day) => (
-                  <MenuItem key={day} value={day}>
-                    {day}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
-            <Box className={classes.textFieldBox} style={dateTextField}>
-              <TextField
-                id="month"
-                variant="outlined"
-                sx={textField}
-                select
-                value={editInfo.month}
-                onChange={(e) => {
-                  seteditInfo({ ...editInfo, month: e.target.value });
-                }}
-              >
-                {months.map((month) => (
-                  <MenuItem key={month.id} value={month.id}>
-                    {month.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
-            <Box className={classes.textFieldBox} style={dateTextField}>
-              <TextField
-                id="year"
-                variant="outlined"
-                sx={textField}
-                select
-                value={editInfo.year}
-                onChange={(e) => {
-                  seteditInfo({ ...editInfo, year: e.target.value });
-                }}
-              >
-                {years.map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
+              />
+            </LocalizationProvider>
           </Box>
         </Grid>
       </Box>
