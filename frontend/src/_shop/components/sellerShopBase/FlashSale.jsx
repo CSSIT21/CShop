@@ -11,14 +11,15 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 const progressBar = () => <LinearProgress />;
 
-const FlashSale = ({ items, onFavourite, endAt }) => {
-  const [products, setProducts] = useState(items);
+const FlashSale = ({ flashSale, onFavourite }) => {
+  const [products, setProducts] = useState(flashSale.products);
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;
   const totalPage = Math.ceil(products.length / productsPerRow);
   const curDate = new Date();
-  const endDate = new Date(endAt * 1000);
+  const endDate = new Date(flashSale.ended_date);
+
   const [timeLeft, settimeLeft] = useState(endDate - curDate);
   const hours = useMemo(() => Math.floor(timeLeft / 3600000), [timeLeft]);
   const mins = useMemo(
