@@ -1495,6 +1495,7 @@ enum Shop_section {
   Banner
   BannerCarousel
   ProductCarousel
+  ProductCarouselSelect
   Video
 }
 
