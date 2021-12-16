@@ -19,9 +19,15 @@ function OptionsChip({ handleClick, list, name, selected }) {
               key={e.id}
               variant="outlined"
               sx={{
-                backgroundColor: `${selected == e.id ? "#FFF1EC" : "default"}`,
-                color: `${selected == e.id ? "#FD6637" : "#A0A3BD"}`,
-                borderColor: `${selected == e.id ? "#FD6637" : "#A0A3BD"}`,
+                backgroundColor: `${
+                  selected[e.product_options_id] == e.id ? "#FFF1EC" : "default"
+                }`,
+                color: `${
+                  selected[e.product_options_id] == e.id ? "#FD6637" : "#A0A3BD"
+                }`,
+                borderColor: `${
+                  selected[e.product_options_id] == e.id ? "#FD6637" : "#A0A3BD"
+                }`,
                 width: "110px",
               }}
             />

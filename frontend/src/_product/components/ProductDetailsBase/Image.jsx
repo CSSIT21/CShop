@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import SideImg from "./SideImg";
 import { Fade } from "@mui/material";
 
 const Image = ({ productPictures }) => {
-  const [fade, setFade] = React.useState(true);
-  const [main, setMain] = useState(productPictures[0].path);
+  const [fade, setFade] = useState(true);
+  const [main, setMain] = useState(null);
   const changeImage = (img) => {
     setFade(false);
     setTimeout(() => {
@@ -13,6 +13,7 @@ const Image = ({ productPictures }) => {
       setFade(true);
     }, 200);
   };
+
   console.log(main);
   return (
     <Box sx={{ display: "flex" }}>
@@ -53,7 +54,11 @@ const Image = ({ productPictures }) => {
           }}
         >
           <Fade in={fade}>
-            <img src={main} style={imgStyle} alt="mainImage" />
+            <img
+              src={main || productPictures[0].path}
+              style={imgStyle}
+              alt="mainImage"
+            />
           </Fade>
         </Box>
       </Box>

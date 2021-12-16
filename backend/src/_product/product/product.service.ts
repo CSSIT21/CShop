@@ -142,4 +142,13 @@ export class ProductService {
 	}
 	
 
+	throwError(err) {
+		if (err instanceof Prisma.PrismaClientKnownRequestError) {
+			console.log(err.message);
+			throw new HttpException('Error querying comments please check your information!', 500);
+		}
+		console.log(err.message);
+		throw new HttpException('Error querying comments request body incorrect', 500);
+	}
+
 }

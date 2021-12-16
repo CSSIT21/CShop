@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import DisplayImage from "../components/ProductDetailsBase/Image";
-import AddToCartButton from "../../common/components/CButton";
 import Amount from "../components/ProductDetailsBase/AmountField";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box } from "@mui/system";
@@ -14,7 +13,6 @@ import {
 } from "@mui/icons-material";
 import OptionsChip from "../components/ProductDetailsBase/OptionsChip";
 import Button from "@mui/material/Button";
-import config from "../../common/constants";
 import pic1 from "~/common/assets/images/iphone-black.png";
 import pic2 from "~/common/assets/images/iphone-blue.png";
 import pic3 from "~/common/assets/images/iphone-pink.png";
@@ -64,10 +62,10 @@ const ProductDetails = ({
   };
 
   const handleClickChoice = (e) => {
-    // help me THUN ;-;
-    // setSelected((selected) => ({ ...selected, id: e }));
-    setSelected(e.id);
+    setSelected((selected) => ({ ...selected, [e.product_options_id]: e.id }));
   };
+
+  console.log(productPictures);
   return (
     <Box
       sx={{
@@ -77,7 +75,6 @@ const ProductDetails = ({
     >
       {/*displayImage*/}
       <Box>
-        {/* <DisplayImage productPictures={productPictures} /> */}
         {productPictures ? (
           <DisplayImage productPictures={productPictures} />
         ) : (

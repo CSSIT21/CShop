@@ -22,7 +22,7 @@ const ProductPage = (props) => {
   const [shopDetail, setShopDetails] = useState();
   const [comments, setComments] = useState();
   const [options, setOptions] = useState();
-  const [shopId, setShopId] = useState(0);
+  const [shopId, setShopId] = useState();
   const { id } = useParams();
 
   const onFavourite = (index) => {
@@ -86,14 +86,13 @@ const ProductPage = (props) => {
         } else alert("Fail to fetch data :(");
       });
     // Get options
-    await axios
-      .get(`${config.SERVER_URL}/product/${id}/options`)
-      .then(({ data }) => {
-        if (data.success) {
-          setOptions(data.options);
-        } else alert("Fail to fetch data :(");
-      });
+    axios.get(`${config.SERVER_URL}/product/${id}/options`).then(({ data }) => {
+      if (data.success) {
+        setOptions(data.options);
+      } else alert("Fail to fetch data :(");
+    });
   }, [id]);
+
   return (
     <Box
       sx={{

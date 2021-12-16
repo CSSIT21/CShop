@@ -18,14 +18,14 @@ const Comments = ({
   comment,
   reviewPhoto = [],
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const open = Boolean(anchorEl);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   const [openDialog, setOpenDialog] = useState(false);
   const [page, setPage] = useState(0);
@@ -180,7 +180,7 @@ const Comments = ({
         </Box>
       </Box>
 
-      {/* flag icon */}
+      {/* flag icon
       <IconButton
         onClick={handleClick}
         sx={{ position: "absolute", top: "10px", right: "0" }}
@@ -197,7 +197,7 @@ const Comments = ({
         }}
       >
         <MenuItem onClick={handleClose}>Report Abuse</MenuItem>
-      </Menu>
+      </Menu> */}
 
       {/* footer */}
       <CommentFooter />
