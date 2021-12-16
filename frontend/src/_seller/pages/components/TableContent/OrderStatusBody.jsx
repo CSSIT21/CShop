@@ -16,6 +16,9 @@ import DeleteOnClick from "../DeleteOnClick"; //Edit Model (Stock , Order)
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
+import CorrectOnClick from "./CorrectOnClick";
+import IncorrectOnClick from "./IncorrectOnClick";
+
 const OrderStatusBody = ({ rows, columns }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -72,10 +75,12 @@ const OrderStatusBody = ({ rows, columns }) => {
                               return (
                                 <Box>
                                   <Button>
-                                    <CheckIcon />
+                                    <CorrectOnClick/>
+                                    {/* <CheckIcon /> */}
                                   </Button>
                                   <Button>
-                                    <CloseIcon />
+                                    <IncorrectOnClick/>
+                                    {/* <CloseIcon /> */}
                                   </Button>
                                 </Box>
                               );
