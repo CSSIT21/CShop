@@ -1,7 +1,6 @@
-import {  IsDate, IsInt } from "class-validator";
+import { IsDate } from 'class-validator';
 
-export class CreateProductLogDto { 
-
-    @IsDate()
-    view_date: Date;
+export class CreateProductLogDto {
+	@IsDate()
+	view_date: Date;
 }

@@ -30,6 +30,8 @@ model customer {
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend?
+  discount_daily_coin           discount_daily_coin?
+  discount_used_coin            discount_used_coin?
   discount_user_code            discount_user_code?
   home_add_to_cart_log          home_add_to_cart_log?
   home_discount_log             home_discount_log?
@@ -58,8 +60,6 @@ model customer {
   shop_comment                  shop_comment[]
   shop_info                     shop_info[]
   wallet                        wallet[]
-  discount_used_coin            discount_used_coin[]
-  discount_daily_coin           discount_daily_coin[]
 }
 
 model customer_info {
@@ -399,9 +399,9 @@ model product_choices {
   id                                      Int             @id @default(autoincrement())
   product_options_id                      Int
   name                                    String          @db.VarChar(30)
-  enable                                  Boolean         @default(false)
   price                                   Int
   quantity                                Int
+  enable                                  Boolean         @default(false)
   product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
 }
 
@@ -510,16 +510,16 @@ model discount_coin_information {
 
 model discount_used_coin {
   customer_id                         Int      @id
-  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
-  used_time                           DateTime @db.Timestamp
+  used_time                           DateTime @db.Timestamp(6)
   used_amount                         Int
-  user_for                            String   @db.Text
+  user_for                            String
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_daily_coin {
   customer_id                          Int      @id
-  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
   got_date                             DateTime @db.Date
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_customer_coin {
@@ -1133,15 +1133,15 @@ model admin_support_picture {
 
 model admin_support {
   id                                 Int                   @id @default(autoincrement())
-  title                              String
-  description                        String                @db.Text
-  target                             String
-  admin_id                           Int
   customer_id                        Int
   support_type_id                    Int
   sent_date                          DateTime              @default(now()) @db.Timestamp(6)
   ended_date                         DateTime?             @db.Timestamp(6)
   picture_id                         Int
+  admin_id                           Int
+  description                        String
+  target                             String
+  title                              String
   customer_id_from_admin_support     customer              @relation(fields: [customer_id], references: [id])
   picture_id_from_admin_support      admin_support_picture @relation(fields: [picture_id], references: [id])
   support_type_id_from_admin_support admin_support_type    @relation(fields: [support_type_id], references: [id])
@@ -1219,11 +1219,6 @@ model admin_audit {
   action     String
 }
 
-enum homeBannerPicturePosition {
-  Main
-  Sub
-}
-
 model home_banner_picture {
   id        Int                       @id @default(autoincrement())
   title     String                    @db.VarChar(50)
@@ -1274,10 +1269,10 @@ model home_partner {
   end_date    DateTime        @db.Timestamp(6)
   join_date   DateTime        @db.Timestamp(6)
   description String
-  type        homePartnerType
   title_pic   String          @db.VarChar(50)
   path        String
   thumbnail   String
+  type        homePartnerType
 }
 
 model home_product_log {
@@ -1467,6 +1462,11 @@ model business_conversation_count_summaries {
 model business_interaction_weight {
   weight Int      @id
   date   DateTime @db.Date
+}
+
+enum homeBannerPicturePosition {
+  Main
+  Sub
 }
 
 enum Gender {
