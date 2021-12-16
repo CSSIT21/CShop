@@ -15,6 +15,7 @@ function ReviewDialog({
   img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
   productName = "Product Name",
   productId,
+  customerId,
   options,
   choices,
   // options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
@@ -85,6 +86,7 @@ function ReviewDialog({
     setOpenThankYouDialog(false);
   };
   const handleClickOpenThankYouDialog = () => {
+    // Backend from Plume
     setOpenThankYouDialog(true);
     setOpen(false);
   };
