@@ -31,39 +31,26 @@ export class SellerconsoleController {
 
 	@Get(':id/stock')
 	@Public()
-	getStock(@Param('id') id: number) {
-		return this.sellerconsoleService.getStock(+id);
-	}
-
-	@Post(':id/stockLog')
-	async getStockLog(@Body() request, @Res() res): Promise<any> {
-		var id = request.id;
-		var shop_id = request.shop_id;
-		var title = request.title;
-		var sub_title = request.sub_title;
-		var price = request.price;
-		var quantity = request.quantity;
-		var category_id = request.category_id;
-		var sold = request.sold;
-		var added_date = request.added_date;
-		var suggest_products = request.suggest_products;
-		var rating = request.rating;
-		console.log(shop_id);
-		const a = await this.sellerconsoleService.addStock(
-			id,
-			shop_id,
-			title,
-			sub_title,
-			price,
-			quantity,
-			category_id,
-			sold,
-			new Date(added_date),
-			suggest_products,
-			rating,
-		);
-		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id, quantity, new Date(added_date));
-		console.log(a, b);
+	 getStock(@Param('id') id : number){
+		 return this.sellerconsoleService.getStock(+id);
+	 }
+	
+	 @Post(':id/stockLog')
+	 async getStockLog(@Body()request  , @Res() res ) : Promise <any>  {
+		 var id = request.id;
+		 var shop_id = request.shop_id;
+		 var title = request.title;
+		 var sub_title = request.sub_title;
+		 var price = request.price;
+		 var quantity = request.quantity;
+		 var category_id = request.category_id;
+		 var sold = request.sold;
+		 var suggest_products = request.suggest_products;
+		 var rating = request.rating;
+		console.log(shop_id)
+		const a = await this.sellerconsoleService.AddToStock(id ,shop_id,title,sub_title,price,quantity,category_id, sold,suggest_products,rating);
+		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id , quantity );
+		console.log(a,b);
 		// res.send(a);
 		res.send(b);
 	}
