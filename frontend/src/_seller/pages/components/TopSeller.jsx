@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { useHistory } from "react-router";
 import StoreIcon from "@mui/icons-material/Store";
 import Popup  from "./Popup";
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
 
 const userType = "seller";
 const TopSeller = () => {
@@ -33,7 +34,20 @@ const TopSeller = () => {
           </Typography>
         </Box>
       </Box>
+
+      <Button
+      variant="contained"
+      startIcon={<ConfirmationNumberOutlinedIcon/>}
+      sx={{
+        textTransform: "capitalize",
+        height: "44px",
+        marginLeft : 55,
+      }}>
+        <Typography sx={{ fontSize: "12px" }} onClick= {setOpen} > Coupon</Typography>
+      </Button>
+
       {userType === "seller" && (
+        
         <Button
           variant="contained"
           startIcon={<StoreIcon />}
