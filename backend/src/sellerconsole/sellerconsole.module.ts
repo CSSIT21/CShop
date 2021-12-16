@@ -5,5 +5,5 @@ import { SellerconsoleController } from './sellerconsole.controller';
 @Module({
   controllers: [SellerconsoleController],
   providers: [SellerconsoleService]
-})
+}) 
 export class SellerconsoleModule {}

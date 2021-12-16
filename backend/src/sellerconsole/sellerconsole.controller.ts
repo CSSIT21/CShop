@@ -3,22 +3,31 @@ import { SellerconsoleService } from './sellerconsole.service';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { PrismaClient } from '@prisma/client';
+import { addProductSellerconsoleDto } from './dto/addProduct-sellerconsole.dto';
 
 @Controller('sellerconsole')
 export class SellerconsoleController {
 	constructor(private readonly sellerconsoleService: SellerconsoleService) {}
 
-	@Get(':id/dashboard')
+	@Get(':id/discounthistory')
 	@Public()
-	seller_dashboard(@Param('id') id: string) {
-		return this.sellerconsoleService.seller_dashboard(+id);
+	getHistoryDiscount(@Param('id') id: number) {
+		const res = this.sellerconsoleService.getdiscountHistory(+id);
+		// const title = this.sellerconsoleService.getProductName(discountid);
+		return res;
 	}
 
-	@Get(':id/discountHistory')
-    @Public()
-     async getHistoryDiscount(@Param('id') id : string){
-        return this.sellerconsoleService.getHistoryDiscount();
-    }
+	@Get(':id/stockhistory')
+	@Public()
+	getHistoryStock(@Param('id') id: number) {
+		const res = this.sellerconsoleService.getstockHistory(+id);
+		return res;
+	}
+
+	@Get('id:/orderhistory')
+	@Public()
+	getOrderhistory(@Param('id') id: number) {}
 
 	@Get(':id/stock')
 	@Public()
@@ -44,8 +53,7 @@ export class SellerconsoleController {
 		console.log(a,b);
 		// res.send(a);
 		res.send(b);
-
-	 }
+	}
 }
 
 // @Post()

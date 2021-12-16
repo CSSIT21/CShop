@@ -1,58 +1,81 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
-import { Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Timestamp } from 'rxjs';
 
 @Injectable()
 export class SellerconsoleService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
-	seller_dashboard(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_stock(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_stocklog(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_orderstatus(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_orderhistory(id: number) {
-		return `#${id}`;
-	}
-
- 	seller_discounthistory(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_refundhistory(id: number) {
-		return `#${id}`;
-	}
-
-	async getHistoryDiscount(){
-        return await this.prisma.discount.findMany()
-    }
-
-	async getStock(id : number){
-		return await this.prisma.product.findMany({
-			where : {
-				shop_id : id,
+	async getstockHistory(shopid: number) {
+		const res = await this.prisma.product.findMany({
+			where: {
+				shop_id: shopid,
 			},
-			select : {
-				id : true,
-				title : true,
-				quantity : true,
-				price : true,
-			}
-		})
+			select: {
+				id: true,
+				title: true,
+				sconsole_stock_history: {
+					select: {
+						quantity: true,
+						updated_date: true,
+					},
+				},
+			},
+		});
+		return res;
+	}
+
+	async getdiscountHistory(shopid: number) {
+
+		const res = await this.prisma.sconsole_discount_log.findMany({
+			where: {
+				shop_id: shopid,
+			},
+			select: {
+				customer_id_from_sconsole_discount_log: true,
+				product_id_from_sconsole_discount_log: true,
+			},
+		});
+		return res;
+
+
+	}
+
+	seller_stocklog(id: number) {
+		return `#${id}`;
+	}
+
+	seller_orderstatus(id: number) {
+		return `#${id}`;
+	}
+
+	seller_orderhistory(id: number) {
+		return `#${id}`;
+	}
+
+	seller_discounthistory(id: number) {
+		return `#${id}`;
+	}
+
+	seller_refundhistory(id: number) {
+		return `#${id}`;
+	}
+
+	async getStock(id: number) {
+		return await this.prisma.product.findMany({
+			where: {
+				shop_id: id,
+			},
+			select: {
+				id: true,
+				title: true,
+				quantity: true,
+				price: true,
+			},
+		});
 	}
 	async AddToStock(id : number, shopId : number, title : string , sub_title : string ,price : number, quantity : number ,
 						categoryId : number, sold : number, suggest_product : number[] , rating : number){
@@ -93,32 +116,15 @@ export class SellerconsoleService {
 			}
 		})
 		return this.prisma.sconsole_stock_history.findUnique({
-			where : {
-				id : productId ,
+			where: {
+				id: productId,
 			},
-			select : {
-				shop_id : true,
-				product_id : true,
-				quantity : true,
+			select: {
+				shop_id: true,
+				product_id: true,
+				quantity: true,
 				updated_date: true,
-			}
-		})
+			},
+		});
 	}
-	
 }
-
-// create(createSellerconsoleDto: CreateSellerconsoleDto) {
-//   return 'This action adds a new sellerconsole';
-// }
-
-// findAll() {
-//   return `This action returns all sellerconsole`;
-// }
-
-// update(id: number, updateSellerconsoleDto: UpdateSellerconsoleDto) {
-//   return `This action updates a #${id} sellerconsole`;
-// }
-
-// remove(id: number) {
-//   return `This action removes a #${id} sellerconsole`;
-// }
