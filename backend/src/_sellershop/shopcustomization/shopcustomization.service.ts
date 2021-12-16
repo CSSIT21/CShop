@@ -163,9 +163,9 @@ export class ShopcustomizationService {
 
 	public async createProductCarousel(shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput) {
 		try {
-			await this.prisma.shop_product_carousel.create({
-				data: shop_product_carouselCreateInput,
-			});
+			// await this.prisma.shop_product_carousel.create({
+			// 	data: shop_product_carouselCreateInput,
+			// });
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -181,15 +181,15 @@ export class ShopcustomizationService {
 		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
 	) {
 		try {
-			await this.prisma.shop_product_carousel.update({
-				where: {
-					id: shop_product_carouselWhereUniqueInput.id,
-				},
-				data: {
-					filter_name: shop_product_carouselCreateInput.filter_name,
-					products: shop_product_carouselCreateInput.products,
-				},
-			});
+			// await this.prisma.shop_product_carousel.update({
+			// 	where: {
+			// 		id: shop_product_carouselWhereUniqueInput.id,
+			// 	},
+			// 	data: {
+			// 		filter_name: shop_product_carouselCreateInput.filter_name,
+			// 		products: shop_product_carouselCreateInput.products,
+			// 	},
+			// });
 		} catch (error) {}
 	}
 
