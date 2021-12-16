@@ -18,7 +18,7 @@ export class DatabaseService {
 					return 2;
 				case "book":
 					return 2;
-				case "fahshion":
+				case "fashion":
 					return 3;
 				case "kids":
 					return 4;
@@ -148,6 +148,7 @@ export class DatabaseService {
 					waitlist = []
 				}
 			}
+			await Promise.all(waitlist.map((el) => action(el.index, el.el)));
 		} catch (e) {
 			return e;
 		}

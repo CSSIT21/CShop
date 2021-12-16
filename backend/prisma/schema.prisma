@@ -253,10 +253,15 @@ model shop_banner_carousel {
   banners Json[]
 }
 
-model shop_product_carousel {
-  id          String @id
+model shop_product_carousel_select {
+  id          String @id @unique
   filter_name String
   products    Int[]
+}
+
+model shop_product_carousel {
+  id       String @id @unique
+  category String @db.Text
 }
 
 model shop_video {
@@ -311,7 +316,7 @@ model product {
   sold                            Int
   added_date                      DateTime                         @default(now()) @db.Timestamp(6)
   suggest_products                Int[]
-  rating                          Decimal                          @db.Decimal(1, 1)
+  rating                          Decimal                          @db.Decimal(2, 1)
   category_id_from_product        category                         @relation(fields: [category_id], references: [id])
   shop_id_from_product            shop_info                        @relation(fields: [shop_id], references: [id])
   business_product_view_records   business_product_view_records?
