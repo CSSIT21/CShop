@@ -30,6 +30,8 @@ model customer {
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend?
+  discount_daily_coin           discount_daily_coin?
+  discount_used_coin            discount_used_coin?
   discount_user_code            discount_user_code?
   home_add_to_cart_log          home_add_to_cart_log?
   home_discount_log             home_discount_log?
@@ -58,8 +60,6 @@ model customer {
   shop_comment                  shop_comment[]
   shop_info                     shop_info[]
   wallet                        wallet[]
-  discount_used_coin            discount_used_coin[]
-  discount_daily_coin           discount_daily_coin[]
 }
 
 model customer_info {
@@ -326,6 +326,7 @@ model product {
   order_refund_item               order_refund_item[]
   product_detail                  product_detail?
   product_options                 product_options[]
+  product_picture                 product_picture[]
   product_reviews                 product_reviews[]
   product_short_link              product_short_link?
   rem_may_favorite_product        rem_may_favorite_product?
@@ -343,16 +344,15 @@ model product {
   sconsole_refund_history         sconsole_refund_history[]
   sconsole_set_lanch_product      sconsole_set_lanch_product?
   sconsole_stock_history          sconsole_stock_history[]
-  product_picture                 product_picture[]
 }
 
 model product_picture {
   id                              Int     @id @default(autoincrement())
   product_id                      Int
-  product_id_from_product_picture product @relation(fields: [product_id], references: [id])
   title                           String  @db.VarChar(50)
-  path                            String  @db.Text
-  thumbnail                       String  @db.Text
+  path                            String
+  thumbnail                       String
+  product_id_from_product_picture product @relation(fields: [product_id], references: [id])
 }
 
 model product_detail {
@@ -520,16 +520,16 @@ model discount_coin_information {
 
 model discount_used_coin {
   customer_id                         Int      @id
-  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
-  used_time                           DateTime @db.Timestamp
+  used_time                           DateTime @db.Timestamp(6)
   used_amount                         Int
-  user_for                            String   @db.Text
+  user_for                            String
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_daily_coin {
   customer_id                          Int      @id
-  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
   got_date                             DateTime @db.Date
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_customer_coin {
@@ -1144,7 +1144,7 @@ model admin_support_picture {
 model admin_support {
   id                                 Int                   @id @default(autoincrement())
   title                              String
-  description                        String                @db.Text
+  description                        String
   target                             String
   admin_id                           Int
   customer_id                        Int
@@ -1227,11 +1227,6 @@ model admin_audit {
   admin_id   Int      @id
   login_date DateTime @db.Timestamp(6)
   action     String
-}
-
-enum homeBannerPicturePosition {
-  Main
-  Sub
 }
 
 model home_banner_picture {
@@ -1477,6 +1472,11 @@ model business_conversation_count_summaries {
 model business_interaction_weight {
   weight Int      @id
   date   DateTime @db.Date
+}
+
+enum homeBannerPicturePosition {
+  Main
+  Sub
 }
 
 enum Gender {

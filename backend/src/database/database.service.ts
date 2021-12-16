@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as fs from 'fs'
-import * as path from 'path';
 import * as products from './file/products1.json'
 
 @Injectable()
@@ -12,13 +10,15 @@ export class DatabaseService {
 	async loopData() {
 		const checkCategory = (v: string) => {
 			switch (v) {
-				case "electronics":
+				case "computer":
 					return 1;
 				case "mobile":
 					return 1;
-				case "education":
+				case "stationary":
 					return 2;
-				case "fashion":
+				case "book":
+					return 2;
+				case "fahshion":
 					return 3;
 				case "kids":
 					return 4;
@@ -26,13 +26,13 @@ export class DatabaseService {
 					return 5;
 				case "furniture":
 					return 6;
-				case "accessories":
+				case "electronics":
 					return 7;
 				case "food":
 					return 8;
-				case "sport":
+				case "sports":
 					return 9;
-				case "plants":
+				case "accessories":
 					return 10;
 				default:
 					return 11;
