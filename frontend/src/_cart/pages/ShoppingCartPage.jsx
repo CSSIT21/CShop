@@ -1,17 +1,20 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { Box } from '@mui/system';
 import ProductSuggestion from "../components/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
 import CartSection from '../components/CartSection';
+import axios from 'axios';
 
 function ShoppingCartPage() {
     const [products, setProducts] = useState(fakeProducts);
+    useEffect(() => {
+        axios.get('http://localhost:8080/cart/1').then(item => { console.log(item.data) });
+    },[])
 
     const onFavourite = (index) => {
         setProducts((products) => {
           const target = products[index];
           target.favourite = !target.favourite;
-    
           return [...products];
         });
     };

@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -31,4 +32,11 @@ export class CartController {
   remove(@Param('id') id: string) {
     return this.cartService.remove(+id);
   }
+
+  // @Get('/findcart')
+  // findcart() { 
+  //   const prisma = new PrismaClient()
+  //   console.log('test');
+  //   return prisma.order_cart_item.findMany({ where: { customer_id: 5 } });
+  // }
 }
