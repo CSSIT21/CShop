@@ -36,12 +36,11 @@ export class SellerconsoleController {
 		 var quantity = request.quantity;
 		 var category_id = request.category_id;
 		 var sold = request.sold;
-		 var added_date = request.added_date;
 		 var suggest_products = request.suggest_products;
 		 var rating = request.rating;
 		console.log(shop_id)
-		const a = await this.sellerconsoleService.AddToStock(id ,shop_id,title,sub_title,price,quantity,category_id, sold,new Date (added_date),suggest_products,rating);
-		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id , quantity ,new Date (added_date));
+		const a = await this.sellerconsoleService.AddToStock(id ,shop_id,title,sub_title,price,quantity,category_id, sold,suggest_products,rating);
+		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id , quantity );
 		console.log(a,b);
 		// res.send(a);
 		res.send(b);
