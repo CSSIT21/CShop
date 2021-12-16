@@ -94,7 +94,7 @@ function SubModal() {
         <Box sx={{ ...style, width: 250 }}>
           <h2 id="child-modal-title">Are your sure?</h2>
           <Stack component="form" noValidate spacing={3}>
-            <TextField
+            {/* <TextField
               id="date"
               label="Date"
               type="datetime-local"
@@ -104,7 +104,7 @@ function SubModal() {
               InputLabelProps={{
                 shrink: true,
               }}
-            />
+            /> */}
           </Stack>
           <Box sx={{ display: "flex", justifyContent: "space-between",marginTop : 2 }}>
             <Button onClick={subClose}>No</Button>
@@ -139,7 +139,7 @@ function SelectVariants() {
     setCategory(event.target.value);
   };
   return (
-    <FormControl variant="standard" sx={{ m: 0, minWidth: 200, mt: "10px" }}>
+    <FormControl variant="standard" sx={{ m: 0, minWidth: 350, mt: "10px" }}>
       <InputLabel id="demo-simple-select-standard-label">Category</InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
@@ -189,16 +189,19 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
         ADD NEW PRODUCT
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box sx={{
+            width : "350px"
+          }}>
             <TextField
               required
               id="standard-required"
               placeholder="Title"
               variant="standard"
+              fullWidth
             />
             <Box>
-              <SelectVariants />
+              <SelectVariants  />
             </Box>
             <Box
               sx={{
@@ -210,6 +213,7 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                 id="standard-required"
                 placeholder="Price"
                 variant="standard"
+                fullWidth
               />
             </Box>
             <Box
@@ -222,21 +226,8 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                 id="standard-required"
                 placeholder="Quantity"
                 variant="standard"
+                fullWidth
               />
-            </Box>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <UploadButtons />
-            <Box
-              sx={{
-                display: "flex",
-                marginLeft: "30px",
-                fontSize: "10px",
-                flexDirection: "column",
-              }}
-            >
-              <Box>Cutest Cactus Ever</Box>
-              <Box>100000000 Bath</Box>
             </Box>
           </Box>
         </Box>
