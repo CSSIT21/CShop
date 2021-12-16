@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants"
 import {
     Button,
     Dialog,
@@ -13,6 +16,7 @@ import {
     Chip,
     FormControlLabel,
     Grid,
+    CircularProgress,
 } from '@mui/material';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -21,16 +25,47 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { noop } from '~/common/utils';
 
 const BannerInfo = ({
+    setItems = noop,
     item = {},
     open = false,
-    onClose = noop,
+    getData = noop,
+    handleDialog = noop,
 }) => {
     const [tempKeyword, setTempKeyword] = useState("");
     const [description, setDescription] = useState(item.description);
-    const [startDate, setStartDate] = useState(item.start_date);
-    const [endDate, setEndDate] = useState(item.end_date);
+    const [start_date, setStart_date] = useState(item.start_date);
+    const [end_date, setEnd_date] = useState(item.end_date);
     const [visible, setVisible] = useState(item.visible);
     const [keywords, setKeywords] = useState(item.keywords);
+    const [loading, setLoading] = useState(false);
+
+    const handleUpdateInfo = () => {
+        setLoading(true);
+
+        axios
+            .patch(`${config.SERVER_URL}/home/banner/${item.id}`, {
+                description,
+                start_date,
+                end_date,
+                keywords,
+                visible,
+            })
+            .then(({ data }) => {
+                if (data.success) {
+                    console.log(data.bannerInfo);
+                    getData();
+                    setLoading(false);
+                    handleDialog();
+                    return Swal.fire('Done', "Already updated banner's information", 'success');
+                }
+            })
+            .catch((error) => {
+                console.log(err.message);
+                handleDialog();
+                setLoading(false);
+                return Swal.fire('Oop!', "Cannot update banner's information", 'error');
+            })
+    };
 
     const onChipAdd = (value) => {
         if (keywords.includes(value)) return;
@@ -48,8 +83,8 @@ const BannerInfo = ({
 
     const onClearChange = () => {
         setDescription(item.description);
-        setStartDate(item.start_date);
-        setEndDate(item.end_date);
+        setStart_date(item.start_date);
+        setEnd_date(item.end_date);
         setVisible(item.visible);
         setKeywords(item.keywords);
     };
@@ -77,9 +112,9 @@ const BannerInfo = ({
                         <Typography fontSize={18} fontWeight={500} mb={2}>Start Date</Typography>
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                value={startDate}
+                                value={start_date}
                                 renderInput={(params) => <TextField {...params} />}
-                                onChange={(e) => setStartDate(e)}
+                                onChange={(e) => setStart_date(e.toISOString())}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -88,9 +123,9 @@ const BannerInfo = ({
                         <Typography fontSize={18} fontWeight={500} mb={2}>End Date</Typography>
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                value={endDate}
+                                value={end_date}
                                 renderInput={(params) => <TextField {...params} />}
-                                onChange={(e) => setEndDate(e)}
+                                onChange={(e) => setEnd_date(e.toISOString())}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -101,10 +136,10 @@ const BannerInfo = ({
                             aria-label="status"
                             name="controlled-radio-buttons-group"
                             value={visible}
-                            onChange={(e) => setVisible(e.target.value)}
+                            onChange={(e) => setVisible(e.target.value === 'true')}
                         >
-                            <FormControlLabel label="Visible" value="true" control={<Radio />} />
-                            <FormControlLabel label="Invisible" value="false" control={<Radio />} />
+                            <FormControlLabel label="Visible" value={true} control={<Radio />} />
+                            <FormControlLabel label="Invisible" value={false} control={<Radio />} />
                         </RadioGroup>
                     </Grid>
 
@@ -154,11 +189,15 @@ const BannerInfo = ({
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={() => {
-                    onClearChange();
-                    onClose();
-                }}>Cancel</Button>
-                <Button onClick={onClose}>Save</Button>
+                {loading
+                    ? (<Button><CircularProgress /></Button>)
+                    : (<>
+                        <Button onClick={() => {
+                            onClearChange();
+                            handleDialog();
+                        }}>Cancel</Button>
+                        <Button onClick={handleUpdateInfo}>Save</Button>
+                    </>)}
             </DialogActions>
         </Dialog>
     );
