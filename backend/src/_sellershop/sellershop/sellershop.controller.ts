@@ -30,7 +30,7 @@ export class SellershopController {
 	) {
 		const products = await this.sellershopService.getShopProduct(id, page);
 		if (products) {
-			res.send({ success: true, products });
+			res.send({ success: true, ...products });
 		} else {
 			res.send({
 				success: false,

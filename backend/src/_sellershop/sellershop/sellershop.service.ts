@@ -62,7 +62,12 @@ export class SellershopService {
 				skip: (page - 1) * 16,
 				take: 16,
 			});
-			return products;
+			const count = await this.prisma.product.count({
+				where: {
+					shop_id: id,
+				},
+			});
+			return { products, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -122,7 +127,46 @@ export class SellershopService {
 									id: parsedsections[index].id,
 								},
 							});
-							section = { ...section, type: 3 };
+							const shop_category = await this.prisma.shop_category.findFirst({
+								where: {
+									title: section.category,
+								},
+								select: {
+									products: true,
+								},
+							});
+							const products = await this.prisma.product.findMany({
+								where: {
+									id: {
+										in: shop_category.products,
+									},
+								},
+								include: {
+									product_picture: true,
+								},
+							});
+
+							section = { ...section, products, type: 3 };
+							break;
+						case 'ProductCarouselSelect':
+							section = await this.prisma.shop_product_carousel_select.findUnique({
+								where: {
+									id: parsedsections[index].id,
+								},
+							});
+
+							const products_info = await this.prisma.product.findMany({
+								where: {
+									id: {
+										in: section.products,
+									},
+								},
+								include: {
+									product_picture: true,
+								},
+							});
+
+							section = { ...section, products: products_info, type: 3 };
 							break;
 						case Shop_section.Video:
 							section = await this.prisma.shop_video.findUnique({

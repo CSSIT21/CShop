@@ -31,7 +31,7 @@ const HeaderLeft = ({ shopInfo = {} }) => {
   const [date, setdate] = useState();
   useEffect(() => {
     if (shopInfo.shop_picture) {
-      setshopimage(shopInfo.shop_picture);
+      setshopimage(shopInfo.shop_picture.path);
     }
   }, [shopInfo]);
   useEffect(() => {

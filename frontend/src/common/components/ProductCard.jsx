@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import ProductMedia from "./ProductCardBase/ProductMedia";
 import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
+import { useHistory } from "react-router";
 
 const cardStyle = {
   width: "100%",
@@ -26,6 +26,7 @@ const productTemplate = {
 };
 
 const ProductCard = (props) => {
+  const router = useHistory();
   const {
     product = productTemplate,
     to = "/product/1",
@@ -33,19 +34,27 @@ const ProductCard = (props) => {
     status = undefined,
     addToCart = false,
   } = props;
+  const handleClick = () => {
+    router.push(`/product/${product.id}`);
+  };
   return (
-    <Link to={to}>
-      <Card variant="outlined" sx={cardStyle}>
-        <ProductMedia image={product.image} title={product.title} />
-        <ProductContent
-          product={product}
-          status={status}
-          statusProps={props}
-          addToCart={addToCart}
-          onFavourite={onFavourite}
-        />
-      </Card>
-    </Link>
+    <Card variant="outlined" sx={cardStyle} onClick={handleClick}>
+      <ProductMedia
+        image={
+          product.product_picture?.length > 0
+            ? product.product_picture[0].path
+            : null
+        }
+        title={product.title}
+      />
+      <ProductContent
+        product={product}
+        status={status}
+        statusProps={props}
+        addToCart={addToCart}
+        onFavourite={onFavourite}
+      />
+    </Card>
   );
 };
 

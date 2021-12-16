@@ -23,6 +23,7 @@ import config from "~/common/constants";
 import Swal from "sweetalert2";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -142,9 +143,11 @@ const SellerShopCustomization = () => {
   const auth = useRecoilValue(authState);
   const shopName = "Shop name";
   const dropArea = "area";
+  const [loading, setloading] = useState(false);
   const [state, setState] = useState({
     [dropArea]: [],
   });
+  const [categories, setcategories] = useState([]);
   const [sectionInfos, setSectionInfos] = useState({});
   const [sectionInfosHistory, setSectionInfosHistory] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
@@ -158,29 +161,47 @@ const SellerShopCustomization = () => {
   console.log("sectionInfos", sectionInfos);
   console.log("sectionInfosHistory", sectionInfosHistory);
   console.log("state", state);
-  useEffect(async () => {
-    await axios
-      .get(
-        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}/info`
-      )
-      .then(async ({ data }) => {
-        await setSectionInfos(data.sections_info);
-        await setSectionInfosHistory(data.sections_info);
-      });
-    await axios
-      .get(
-        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
-      )
-      .then(({ data }) => setState({ area: data.sections }));
+
+  useEffect(() => {
+    (async () => {
+      await axios
+        .get(
+          `${config.SERVER_URL}/shopcustomization/category/${auth.user.shop_info[0].id}`
+        )
+        .then(({ data }) => {
+          const computedcategories = data.categories.map((e) => {
+            return { title: e.title, id: e.id };
+          });
+          return computedcategories;
+        })
+        .then((computedcategories) => {
+          setcategories(computedcategories);
+        });
+      await axios
+        .get(
+          `${config.SERVER_URL}/shopcustomization/info/${auth.user.shop_info[0].id}`
+        )
+        .then(async ({ data }) => {
+          await setSectionInfos(data.sections_info);
+          await setSectionInfosHistory(data.sections_info);
+        });
+      await axios
+        .get(
+          `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
+        )
+        .then(({ data }) => setState({ area: data.sections }));
+    })();
   }, []);
+  console.log(Object.entries(sectionInfos));
   const saveChange = async () => {
+    setloading(true);
     await axios
       .patch(
         `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`,
         { sections: state.area }
       )
-      .then(() => {
-        Object.entries(sectionInfos).forEach(async (e) => {
+      .then(async () => {
+        await Object.entries(sectionInfos).forEach(async (e) => {
           const item = state.area.find((item) => e[0] == item.id);
           switch (item.type) {
             case "Banner":
@@ -229,7 +250,6 @@ const SellerShopCustomization = () => {
               }
               break;
             case "Video":
-              //axios.post() shop_video table
               if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
                 await axios.post(
                   `${config.SERVER_URL}/shopcustomization/video`,
@@ -241,13 +261,31 @@ const SellerShopCustomization = () => {
               }
               break;
             case "ProductCarousel":
-              //axios.post() shop_product_carousel table
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                await axios.post(
+                  `${config.SERVER_URL}/shopcustomization/productcarousel`,
+                  {
+                    id: e[0],
+                    category: e[1].content.category,
+                  }
+                );
+              }
               break;
             case "ProductCarouselSelect":
-              //axios.post() shop_product_carousel table
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                await axios.post(
+                  `${config.SERVER_URL}/shopcustomization/productcarouselselect`,
+                  {
+                    id: e[0],
+                    filter_name: e[1].header,
+                    products: e[1].content.products,
+                  }
+                );
+              }
               break;
           }
         });
+        setloading(false);
         Swal.fire({
           title: "Success",
           text: "Sections Successfully Save!",
@@ -351,7 +389,7 @@ const SellerShopCustomization = () => {
           position: "fixed",
           width: `calc(100vw - 280px)`,
           height: "100px",
-          padding: "1rem",
+          padding: "1rem 5rem 1rem 1rem",
           backgroundColor: "#FFE8E1",
           display: "flex",
           justifyContent: "space-between",
@@ -367,9 +405,15 @@ const SellerShopCustomization = () => {
         >
           {shopName}
         </Typography>
-        <Button variant="contained" onClick={saveChange}>
+
+        <LoadingButton
+          loading={loading}
+          onClick={saveChange}
+          variant="contained"
+          sx={{ padding: "10px 30px", width: "100px" }}
+        >
           Save
-        </Button>
+        </LoadingButton>
       </Box>
       <Box>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -465,6 +509,7 @@ const SellerShopCustomization = () => {
                                     id={item.id}
                                     information={sectionInfos}
                                     setInformation={setSectionInfos}
+                                    categories={categories}
                                     {...provided.dragHandleProps}
                                     order={index}
                                   />

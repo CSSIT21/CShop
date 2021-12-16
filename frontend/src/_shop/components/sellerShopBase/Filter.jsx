@@ -18,6 +18,7 @@ const Bestseller1 =
 
 const Filter = ({ categories = [] }) => {
   const { id, cateId } = useParams();
+  const [count, setcount] = useState(0);
   const itemPerPage = 16;
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -38,6 +39,7 @@ const Filter = ({ categories = [] }) => {
       .get(`${config.SERVER_URL}/sellershop/${id}/products?page=${page}`)
       .then(({ data }) => {
         setItems(data.products);
+        setcount(data.count);
         console.log(data);
       });
   }, [page]);
@@ -94,7 +96,7 @@ const Filter = ({ categories = [] }) => {
             }}
           >
             <Pagination
-              count={Math.ceil(items.length / itemPerPage)}
+              count={Math.ceil(count / itemPerPage)}
               shape="rounded"
               size="large"
               page={page}
