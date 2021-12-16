@@ -6,9 +6,10 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule],
+	imports: [HttpModule, AuthenticationModule, PrismaModule, CartModule],
 	controllers: [AppController],
 	providers: [
 		AppService,
