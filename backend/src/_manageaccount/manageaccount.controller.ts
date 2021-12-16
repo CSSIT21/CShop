@@ -36,23 +36,6 @@ export class ManageaccountController {
     });
   }
 
-  @Post('suspension/users')
-  suspendUser(@Query('s') i:number){
-    const a = +i;
-    return this.prisma.customer.update({
-      where: {
-        id: 1
-      },
-      data: {
-        admin_customer_suspensions:{
-          update:{
-            description: 'Testing: 1',
-          }
-        }
-      },
-    });
-  }
-
   @Post('suspension/users/create')
   async createUserSus(@Body() createUserSuspensionDto: CreateUserSuspensionDto, @Res() res){
     const userSus = await this.manageaccountService.createUserSuspension(createUserSuspensionDto);
@@ -77,28 +60,57 @@ export class ManageaccountController {
     }
   }
 
-  @Get('suspension/users/test')
-  testUserSus(@Body() createUserSuspensionDto: CreateUserSuspensionDto){
-    return createUserSuspensionDto;
-  }
-
-  @Post('test')
-  async createTest(@Res() res){
-    const test = await this.prisma.admin_suspension_type.create({
-      data:{
-        id: 1,
-        title: 'Terms of Service Violation',
-        description: 'Violating the agreed terms of service.'
-      }
-    });
-    if(test){
-      res.send({Success: true, test});
+  @Post('suspension/users/update')
+  async updateUserSus(@Body() updateUserSuspensionDto: UpdateUserSuspensionDto, @Res() res){
+    const userSus = await this.manageaccountService.updateUserSuspension(updateUserSuspensionDto);
+    if(userSus){
+      res.send({Success: true, userSus});
     } else {
       res.send({
         Success : false,
       });
     }
   }
+
+  @Post('suspension/sellers/update')
+  async updateSellerSus(@Body() updateSellerSuspensionDto: UpdateSellerSuspensionDto, @Res() res){
+    const sellerSus = await this.manageaccountService.updateSellerSuspension(updateSellerSuspensionDto);
+    if(sellerSus){
+      res.send({Success: true, sellerSus});
+    } else {
+      res.send({
+        Success : false,
+      });
+    }
+  }
+
+  @Post('suspension/users/delete')
+  deleteUserSus(@Query('id') i: number){{
+    return this.prisma.customer.update({
+      where: {
+        id: +i,
+      },
+      data:{
+        admin_customer_suspensions:{
+          delete: true,
+        }
+      },
+    });
+  }}
+
+  @Post('suspension/sellers/delete')
+  deleteSellerSus(@Query('id') i: number){{
+    return this.prisma.shop_info.update({
+      where: {
+        id: +i,
+      },
+      data:{
+        admin_shop_suspensions:{
+          delete: true,
+        }
+      },
+    });
+  }}
 
   @Get('products')
   getProducts(){
