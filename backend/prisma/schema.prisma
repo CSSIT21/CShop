@@ -60,8 +60,6 @@ model customer {
   shop_comment                  shop_comment[]
   shop_info                     shop_info[]
   wallet                        wallet[]
-  discount_used_coin            discount_used_coin[]
-  discount_daily_coin           discount_daily_coin[]
 }
 
 model customer_info {
@@ -217,29 +215,15 @@ model shop_section {
   shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
 }
 
-model shop_flashsale {
-  shop_id                     Int
-  started_date                DateTime                 @default(now())
-  ended_date                  DateTime                 @default(now())
-  products                    Json[]
-  title                       String?
-  path                        String?
-  thumbnail                   String?
-  description                 String?
-  shop_id_from_shop_flashsale shop_info                @relation(fields: [shop_id], references: [id])
-  sconsole_flashsale_log      sconsole_flashsale_log[]
-  shop_flashsale_history      shop_flashsale_history?
-}
-
 model shop_flashsale_history {
-  flashsale_id                             Int            @id
-  shop_id                                  Int
-  started_date                             DateTime       @default(now())
-  ended_date                               DateTime       @default(now())
-  products                                 Json[]
-  quantity                                 Json
-  flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
+  flashsale_id                        Int            @id
+  shop_id                             Int
+  started_date                        DateTime       @default(now())
+  ended_date                          DateTime       @default(now())
+  products                            Json[]
+  quantity                            Json
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_shop_flashsale_history shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model shop_banner {
@@ -255,9 +239,8 @@ model shop_banner_carousel {
 }
 
 model shop_product_carousel {
-  id          String @id
-  filter_name String
-  products    Int[]
+  id       String @id @unique
+  category String
 }
 
 model shop_video {
@@ -272,7 +255,6 @@ model shop_category {
   title     String    @db.VarChar(20)
   products  Int[]
   shop_info shop_info @relation(fields: [shop_id], references: [id])
-
 }
 
 model category_icon_picture {
@@ -313,7 +295,7 @@ model product {
   sold                            Int
   added_date                      DateTime                         @default(now()) @db.Timestamp(6)
   suggest_products                Int[]
-  rating                          Decimal                          @db.Decimal(1, 1)
+  rating                          Decimal                          @db.Decimal(2, 1)
   category_id_from_product        category                         @relation(fields: [category_id], references: [id])
   shop_id_from_product            shop_info                        @relation(fields: [shop_id], references: [id])
   business_product_view_records   business_product_view_records?
@@ -328,6 +310,7 @@ model product {
   order_refund_item               order_refund_item[]
   product_detail                  product_detail?
   product_options                 product_options[]
+  product_picture                 product_picture[]
   product_reviews                 product_reviews[]
   product_short_link              product_short_link?
   rem_may_favorite_product        rem_may_favorite_product?
@@ -366,12 +349,6 @@ model product_reviews {
   product_comment_rating           product_comment_rating?
 }
 
-model product_reviews_picture {
-  title     String @db.VarChar(50)
-  path      String
-  thumbnail String
-}
-
 model product_short_link {
   product_id                         Int     @id
   shorted_link                       String
@@ -403,7 +380,6 @@ model product_choices {
   enable                                  Boolean         @default(false)
   price                                   Int
   quantity                                Int
-  enable                                  Boolean         @default(false)
   product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
 }
 
@@ -510,21 +486,19 @@ model discount_coin_information {
   customer_id_from_discount_coin_information customer @relation(fields: [customer_id], references: [id])
 }
 
-
 model discount_used_coin {
   customer_id                         Int      @id
-  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
-  used_time                           DateTime @db.Timestamp
+  used_time                           DateTime @db.Timestamp(6)
   used_amount                         Int
-  user_for                            String   @db.Text
+  user_for                            String
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_daily_coin {
   customer_id                          Int      @id
-  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
   got_date                             DateTime @db.Date
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
 }
-
 
 model discount_customer_coin {
   customer_id                             Int      @id
@@ -1040,13 +1014,13 @@ model sconsole_discount_log {
 }
 
 model sconsole_flashsale_log {
-  id                                       Int            @id @default(autoincrement())
-  shop_id                                  Int
-  flashsale_id                             Int
-  added_date                               DateTime       @default(now()) @db.Timestamp(6)
-  ended_date                               DateTime?      @db.Timestamp(6)
-  flashsale_id_from_sconsole_flashsale_log shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_sconsole_flashsale_log      shop_info      @relation(fields: [shop_id], references: [id])
+  id                                  Int            @id @default(autoincrement())
+  shop_id                             Int
+  flashsale_id                        Int
+  added_date                          DateTime       @default(now()) @db.Timestamp(6)
+  ended_date                          DateTime?      @db.Timestamp(6)
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_sconsole_flashsale_log shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model sconsole_order_history {
@@ -1138,7 +1112,7 @@ model admin_support_picture {
 model admin_support {
   id                                 Int                   @id @default(autoincrement())
   title                              String
-  description                        String                @db.Text
+  description                        String
   target                             String
   admin_id                           Int
   customer_id                        Int
@@ -1146,10 +1120,6 @@ model admin_support {
   sent_date                          DateTime              @default(now()) @db.Timestamp(6)
   ended_date                         DateTime?             @db.Timestamp(6)
   picture_id                         Int
-  admin_id                           Int
-  description                        String
-  target                             String
-  title                              String
   customer_id_from_admin_support     customer              @relation(fields: [customer_id], references: [id])
   picture_id_from_admin_support      admin_support_picture @relation(fields: [picture_id], references: [id])
   support_type_id_from_admin_support admin_support_type    @relation(fields: [support_type_id], references: [id])
@@ -1227,11 +1197,6 @@ model admin_audit {
   action     String
 }
 
-enum homeBannerPicturePosition {
-  Main
-  Sub
-}
-
 model home_banner_picture {
   id        Int                       @id @default(autoincrement())
   title     String                    @db.VarChar(50)
@@ -1286,7 +1251,6 @@ model home_partner {
   title_pic   String          @db.VarChar(50)
   path        String
   thumbnail   String
-  type        homePartnerType
 }
 
 model home_product_log {
@@ -1477,27 +1441,47 @@ model business_interaction_weight {
   weight Int      @id
   date   DateTime @db.Date
 }
-model discount_daily_coin {
-  customer_id Int      @id
-  got_date    DateTime @db.Date
-  customer    customer @relation(fields: [customer_id], references: [id])
+
+model product_picture {
+  id         Int     @id @default(autoincrement())
+  product_id Int
+  title      String  @db.VarChar(50)
+  path       String
+  thumbnail  String
+  product    product @relation(fields: [product_id], references: [id])
 }
 
-model discount_reward {
-  id                      Int                       @id @default(autoincrement())
-  type                    DiscountUserTypes
-  quantity                Int
-  description             String
-  max_quantity            Int
-  discount_customer_spend discount_customer_spend[]
+model product_reviews_picture {
+  id        Int    @id @default(autoincrement())
+  title     String @db.VarChar(50)
+  path      String
+  thumbnail String
 }
 
-model discount_used_coin {
-  customer_id Int      @id
-  used_time   DateTime @db.Timestamp(6)
-  used_amount Int
-  user_for    String
-  customer    customer @relation(fields: [customer_id], references: [id])
+model shop_flashsale {
+  id                     Int                      @id @default(autoincrement())
+  shop_id                Int
+  started_date           DateTime                 @default(now())
+  ended_date             DateTime                 @default(now())
+  products               Json[]
+  title                  String?
+  path                   String?
+  thumbnail              String?
+  description            String?
+  shop_info              shop_info                @relation(fields: [shop_id], references: [id])
+  sconsole_flashsale_log sconsole_flashsale_log[]
+  shop_flashsale_history shop_flashsale_history?
+}
+
+model shop_product_carousel_select {
+  id          String @id @unique
+  filter_name String
+  products    Int[]
+}
+
+enum homeBannerPicturePosition {
+  Main
+  Sub
 }
 
 enum Gender {
@@ -1512,6 +1496,7 @@ enum Shop_section {
   BannerCarousel
   ProductCarousel
   Video
+  ProductCarouselSelect
 }
 
 enum Platform {
@@ -1614,10 +1599,3 @@ enum homePartnerType {
   PaymentMethod
   Delivery
 }
-
-
-enum homeBannerPicturePosition {
-  Main
-  Sub
-}
-
