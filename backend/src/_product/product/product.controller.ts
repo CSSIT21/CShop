@@ -52,4 +52,28 @@ export class ProductController {
 			});
 		}
 	}
+
+	@Get('/:id/options')
+	public async findOptions(@Param('id', ParseIntPipe) id: number, @Res() res) {
+		const options = await this.productService.getOptions(id);
+		if (options) {
+			res.send({ success: true, options });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
+
+	// @Get('/:id/pictures')
+	// public async findProductPictures(@Param('id', ParseIntPipe) id: number, @Res() res) {
+	// 	const pictures = await this.productService.getProductPictures(id);
+	// 	if (pictures) {
+	// 		res.send({ success: true, pictures });
+	// 	} else {
+	// 		res.send({
+	// 			success: false,
+	// 		});
+	// 	}
+	// }
 }

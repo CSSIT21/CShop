@@ -2,33 +2,10 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import SideImg from "./SideImg";
 import { Fade } from "@mui/material";
-import pic1 from "~/common/assets/images/iphone-black.png";
-import pic2 from "~/common/assets/images/iphone-blue.png";
-import pic3 from "~/common/assets/images/iphone-pink.png";
-import pic4 from "~/common/assets/images/iphone-red.png";
 
-const Image = ({ img }) => {
+const Image = ({ productPictures }) => {
   const [fade, setFade] = React.useState(true);
-  const [pictureList, setPictureList] = useState([
-    {
-      title: "pic1",
-      link: pic1,
-    },
-    {
-      title: "pic2",
-      link: pic2,
-    },
-    {
-      title: "pic3",
-      link: pic3,
-    },
-    {
-      title: "pic4",
-      link: pic4,
-    },
-  ]);
-  // const [main, setMain] = useState(pic1);
-  const [main, setMain] = useState(pictureList[0].link);
+  const [main, setMain] = useState(productPictures[0].path);
   const changeImage = (img) => {
     setFade(false);
     setTimeout(() => {
@@ -36,10 +13,10 @@ const Image = ({ img }) => {
       setFade(true);
     }, 200);
   };
-
+  console.log(main);
   return (
     <Box sx={{ display: "flex" }}>
-      {pictureList.length == 1 ? (
+      {productPictures.length == 1 ? (
         <></>
       ) : (
         <Box
@@ -47,11 +24,11 @@ const Image = ({ img }) => {
             height: "580px",
           }}
         >
-          {pictureList.slice(0, 4).map((pic, key) => (
+          {productPictures.map((pic, key) => (
             <SideImg
-              img={pic.link}
-              onClick={() => changeImage(pic.link)}
-              key={key}
+              img={pic.path}
+              onClick={() => changeImage(pic.path)}
+              key={pic.id}
             ></SideImg>
           ))}
         </Box>

@@ -118,5 +118,28 @@ export class ProductService {
         }
 	}
 	
+	public async getOptions(id: number ) { 
+		try {
+			
+            const options = await this.prisma.product_options.findMany({
+				where: {
+					product_id: id,
+				}, include: {
+					product_choices: true
+				}
+			});
+			return options
+
+
+        } catch (e) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error querying products please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error querying products request body incorrect', 500);
+        }
+	}
+	
 
 }

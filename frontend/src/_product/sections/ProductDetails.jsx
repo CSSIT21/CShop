@@ -14,34 +14,18 @@ import {
 } from "@mui/icons-material";
 import OptionsChip from "../components/ProductDetailsBase/OptionsChip";
 import Button from "@mui/material/Button";
-
+import config from "../../common/constants";
+import pic1 from "~/common/assets/images/iphone-black.png";
+import pic2 from "~/common/assets/images/iphone-blue.png";
+import pic3 from "~/common/assets/images/iphone-pink.png";
+import pic4 from "~/common/assets/images/iphone-red.png";
 const ProductDetails = ({
+  auth,
   copyLink,
   productDetails,
-  opt = {
-    name: "Color",
-    options: [
-      { id: 1, name: "Red", enable: false },
-      { id: 2, name: "Greensadsdsadsd", enable: false },
-      { id: 3, name: "Yellowdsadsdad", enable: false },
-      { id: 4, name: "Pink", enable: false },
-      { id: 5, name: "Bluedsaddsadsad", enable: false },
-      { id: 6, name: "Black", enable: false },
-    ],
-  },
-  // opt,
-  cho = {
-    name: "Size",
-    choices: [
-      { id: 1, name: "XS", enable: false },
-      { id: 2, name: "S", enable: false },
-      { id: 3, name: "M", enable: false },
-      { id: 4, name: "L", enable: false },
-      { id: 5, name: "XL", enable: false },
-      { id: 6, name: "XXL", enable: false },
-    ],
-  },
-  // cho,
+  options,
+  setOptions,
+  productPictures,
 }) => {
   const [product, setProduct] = useState({
     details: {
@@ -56,42 +40,34 @@ const ProductDetails = ({
     },
     favorite: true,
   });
-
-  const [options, setOptions] = useState(opt);
-  const [choices, setChoices] = useState(cho);
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(1);
-  const [optionCheck, setOptionCheck] = useState(false);
+  const [selected, setSelected] = useState({});
   const [choiceCheck, setChoiceCheck] = useState(false);
 
   const handleClickClose = () => {
     setOpen(false);
   };
-  const handleClickOpen = () => {
+  const handleAddToCart = () => {
     // CHECK optionCheck, choiceChek
-    setOpen(true);
+    if (auth.isLoggedIn) {
+      // axios from Plume
+      setOpen(true);
+    } else location.href = "http://localhost:3000/register";
   };
 
   const onFavourite = () => {
-    setProduct({ ...product, favourite: !product.favourite });
+    if (auth.isLoggedIn) {
+      // axios from JIW
+      setProduct({ ...product, favourite: !product.favourite });
+    } else location.href = "http://localhost:3000/register";
   };
 
-  const handleClickOption = (e) => {
-    const changedOptions = options.options.map((el) =>
-      el.id == e.id ? { ...el, enable: !el.enable } : { ...el, enable: false }
-    );
-    setOptions({ ...options, options: changedOptions });
-    setOptionCheck(!optionCheck);
-    console.log(options);
-  };
   const handleClickChoice = (e) => {
-    const changedChoices = choices.choices.map((el) =>
-      el.id == e.id ? { ...el, enable: !el.enable } : { ...el, enable: false }
-    );
-    setChoices({ ...choices, choices: changedChoices });
-    setChoiceCheck(!choiceCheck);
+    // help me THUN ;-;
+    // setSelected((selected) => ({ ...selected, id: e }));
+    setSelected(e.id);
   };
-
   return (
     <Box
       sx={{
@@ -101,7 +77,31 @@ const ProductDetails = ({
     >
       {/*displayImage*/}
       <Box>
-        <DisplayImage />
+        {/* <DisplayImage productPictures={productPictures} /> */}
+        {productPictures ? (
+          <DisplayImage productPictures={productPictures} />
+        ) : (
+          <DisplayImage
+            productPictures={[
+              {
+                id: "pic1",
+                path: pic1,
+              },
+              {
+                id: "pic2",
+                path: pic2,
+              },
+              {
+                id: "pic3",
+                path: pic3,
+              },
+              {
+                id: "pic4",
+                path: pic4,
+              },
+            ]}
+          />
+        )}
       </Box>
       <Box sx={{ margin: "0 60px" }}>
         <Typography
@@ -166,26 +166,17 @@ const ProductDetails = ({
         </Typography>
 
         {/* options */}
-        {opt && (
-          <Box sx={optionStyle}>
-            <OptionsChip
-              handleClick={handleClickOption}
-              list={options.options}
-              name={options.name}
-            />
-          </Box>
-        )}
-
-        {/* choice */}
-        {cho && (
-          <Box sx={optionStyle}>
-            <OptionsChip
-              handleClick={handleClickChoice}
-              list={choices.choices}
-              name={choices.name}
-            />
-          </Box>
-        )}
+        {options &&
+          options.map((e) => (
+            <Box sx={optionStyle}>
+              <OptionsChip
+                handleClick={handleClickChoice}
+                list={e.product_choices}
+                name={e.name}
+                selected={selected}
+              />
+            </Box>
+          ))}
 
         {/*Button*/}
         <Box
@@ -201,7 +192,7 @@ const ProductDetails = ({
           <Box sx={{ marginLeft: "15px" }}>
             <Button
               startIcon={<ShoppingCartOutlinedIcon />}
-              onClick={handleClickOpen}
+              onClick={handleAddToCart}
               style={{
                 width: "190px",
                 height: "38px",

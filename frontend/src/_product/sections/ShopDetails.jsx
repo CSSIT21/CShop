@@ -6,8 +6,9 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import config from "../../common/constants";
 
-const ShopDetails = ({ shopDetails, shopId }) => {
+const ShopDetails = ({ shopDetails, shopId, auth }) => {
   const shopName = "Shop Name";
   const activeTime = "19 minutes ago";
   const rating = "4.7";
@@ -15,6 +16,10 @@ const ShopDetails = ({ shopDetails, shopId }) => {
   const products = "6666";
   const joined = "4 years ago";
 
+  const handleGoToChat = () => {
+    if (auth.isLoggedIn) location.href = "http://localhost:3000/chat";
+    else location.href = "http://localhost:3000/register";
+  };
   return (
     <Box
       sx={{
@@ -71,17 +76,16 @@ const ShopDetails = ({ shopDetails, shopId }) => {
 
           {/* Button */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link to="/chat">
-              <Button
-                title="Chat now"
-                startIcon={
-                  <ShoppingCartOutlinedIcon sx={{ fontSize: "12px" }} />
-                }
-                style={goToChatStyle}
-              >
-                Chat now
-              </Button>
-            </Link>
+            {/* <Link to="/chat"> */}
+            <Button
+              title="Chat now"
+              startIcon={<ShoppingCartOutlinedIcon sx={{ fontSize: "12px" }} />}
+              style={goToChatStyle}
+              onClick={handleGoToChat}
+            >
+              Chat now
+            </Button>
+            {/* </Link> */}
             <Link to={`/shop/${shopId}`}>
               <Button startIcon={<StoreOutlinedIcon />} style={goToShopStyle}>
                 Go to shop

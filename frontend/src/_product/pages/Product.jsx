@@ -9,15 +9,20 @@ import { Box } from "@mui/material";
 import ReviewsFromCustomer from "../sections/ReviewsFromCustomer";
 import { useParams } from "react-router";
 import axios from "axios";
+import config from "../../common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "../../common/store/authState";
 
 const ProductPage = (props) => {
+  const auth = useRecoilValue(authState);
   const [productsSuggestion, setProductsSuggestion] = useState(fakeProducts);
   const [productDetails, setProductDetails] = useState({ title: "" });
   const [commentPictures, setCommentPictures] = useState();
-  const [shopDetail, setShopDetails] = useState({});
-  const [comments, setComments] = useState({});
+  const [productPictures, setProductPictures] = useState();
+  const [shopDetail, setShopDetails] = useState();
+  const [comments, setComments] = useState();
+  const [options, setOptions] = useState();
   const [shopId, setShopId] = useState(0);
-  const localhost = "http://localhost:8080/";
   const { id } = useParams();
 
   const onFavourite = (index) => {
@@ -30,25 +35,26 @@ const ProductPage = (props) => {
   };
 
   const copyLink = () => {
-    axios.get(`${localhost}product/shortlink/${id}`).then(({ data }) => {
-      if (data.success) {
-        navigator.clipboard.writeText(data.link);
-        console.log(data.link);
-      } else alert("Fail to fetch data :(");
-    });
+    axios
+      .get(`${config.SERVER_URL}/product/shortlink/${id}`)
+      .then(({ data }) => {
+        if (data.success) {
+          navigator.clipboard.writeText(data.link);
+        } else alert("Fail to fetch data :(");
+      });
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     window.scrollTo(0, 0);
     // Product
-    axios.get(`${localhost}product/${id}`).then(({ data }) => {
+    axios.get(`${config.SERVER_URL}/product/${id}`).then(({ data }) => {
       if (data.success) {
         setProductDetails(data.product_details.product);
         setProductsSuggestion(data.product_details.product.suggest_products);
       } else alert("Fail to fetch data :(");
     });
     // Shop
-    axios.get(`${localhost}product/${id}/shop`).then(({ data }) => {
+    axios.get(`${config.SERVER_URL}/product/${id}/shop`).then(({ data }) => {
       if (data.success) {
         setProductDetails(data.product_details.product);
         setShopId(data.shop_details.id);
@@ -56,19 +62,38 @@ const ProductPage = (props) => {
       } else alert("Fail to fetch data :(");
     });
     // Comments
-    axios.get(`${localhost}product/${id}/comments`).then(({ data }) => {
-      if (data.success) {
-        setCommentList(data.comments);
-      } else alert("Fail to fetch data :(");
-    });
+    axios
+      .get(`${config.SERVER_URL}/product/${id}/comments`)
+      .then(({ data }) => {
+        if (data.success) {
+          setComments(data.comments);
+        } else alert("Fail to fetch data :(");
+      });
+    // Get product pictures
+    await axios
+      .get(`${config.SERVER_URL}/product/${id}/pictures`)
+      .then(({ data }) => {
+        if (data.success) {
+          setProductPictures(data.pictures);
+        } else alert("Fail to fetch data :(");
+      });
     // Get comment pictures
-    axios.get(`${localhost}product/1/comments/pictures`).then(({ data }) => {
-      if (data.success) {
-        setCommentPictures(data.pictures);
-      } else alert("Fail to fetch data :(");
-    });
+    axios
+      .get(`${config.SERVER_URL}/product/${id}/comments/pictures`)
+      .then(({ data }) => {
+        if (data.success) {
+          setCommentPictures(data.pictures);
+        } else alert("Fail to fetch data :(");
+      });
+    // Get options
+    await axios
+      .get(`${config.SERVER_URL}/product/${id}/options`)
+      .then(({ data }) => {
+        if (data.success) {
+          setOptions(data.options);
+        } else alert("Fail to fetch data :(");
+      });
   }, [id]);
-  console.log(productDetails);
   return (
     <Box
       sx={{
@@ -79,8 +104,15 @@ const ProductPage = (props) => {
     >
       <Box maxWidth="1200px">
         <ReviewsFromCustomer />
-        <ProductDetails productDetails={productDetails} copyLink={copyLink} />
-        <ShopDetails shopId={shopId} />
+        <ProductDetails
+          productDetails={productDetails}
+          productPictures={productPictures}
+          copyLink={copyLink}
+          options={options}
+          setOptions={setOptions}
+          auth={auth}
+        />
+        <ShopDetails shopId={shopId} auth={auth} />
         <ProductSuggestion
           suggestionItems={productsSuggestion}
           onFavourite={onFavourite}

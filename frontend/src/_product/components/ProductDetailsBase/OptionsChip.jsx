@@ -3,7 +3,7 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 
-function OptionsChip({ handleClick, list, name }) {
+function OptionsChip({ handleClick, list, name, selected }) {
   return (
     <>
       <Typography fontSize="16px" fontWeight="400" marginBottom="6px">
@@ -19,9 +19,9 @@ function OptionsChip({ handleClick, list, name }) {
               key={e.id}
               variant="outlined"
               sx={{
-                backgroundColor: `${e.enable ? "#FFF1EC" : "default"}`,
-                color: `${e.enable ? "#FD6637" : "#A0A3BD"}`,
-                borderColor: `${e.enable ? "#FD6637" : "#A0A3BD"}`,
+                backgroundColor: `${selected == e.id ? "#FFF1EC" : "default"}`,
+                color: `${selected == e.id ? "#FD6637" : "#A0A3BD"}`,
+                borderColor: `${selected == e.id ? "#FD6637" : "#A0A3BD"}`,
                 width: "110px",
               }}
             />
