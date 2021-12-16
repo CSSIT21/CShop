@@ -729,10 +729,11 @@ model order {
 }
 
 model order_status {
-  id          Int          @id @default(autoincrement())
-  delivery_by String
-  status      Json
-  order_item  order_item[]
+  id                          Int                     @id @default(autoincrement())
+  delivery_by                 String                  @default("CShop Delivery")
+  status_id                   Int
+  status_id_from_order_detail delivery_product_status @relation(fields: [status_id], references: [id])
+  order_item                  order_item[]
 }
 
 model order_item {
@@ -1489,6 +1490,7 @@ model delivery_product_status {
   status             String
   delivery_detail    Json
   delivery_admin_log delivery_admin_log[]
+  order_status       order_status[]
 }
 
 model delivery_admin {
