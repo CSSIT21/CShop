@@ -35,7 +35,6 @@ const CarouselProductSelect = ({
   const [Topic, setTopic] = useState("Topic");
   const [unCommittedTopic, setunCommittedTopic] = useState("");
   const [selectedValue, setSelectedValue] = useState();
-
   useLayoutEffect(() => {
     if (id in information) {
       setTopic(information[id].header);

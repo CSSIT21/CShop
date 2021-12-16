@@ -48,22 +48,12 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/banner')
-	async createBanner(@Body() shop_bannerCreateInput: Prisma.shop_bannerCreateInput, @Res() res) {
-		const result = await this.shopcustomizationService.createBanner(shop_bannerCreateInput);
-		if (result) {
-			res.send({ success: true, result });
-		} else {
-			res.send({ success: false });
-		}
-	}
-
-	@Patch('banner/:id')
-	async updateBanner(
+	async saveBanner(
 		@Body() shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
 		@Body() shop_bannerCreateInput: Prisma.shop_bannerCreateInput,
 		@Res() res,
 	) {
-		const result = await this.shopcustomizationService.updateBanner(
+		const result = await this.shopcustomizationService.saveBanner(
 			shop_bannerWhereUniqueInput,
 			shop_bannerCreateInput,
 		);
@@ -75,27 +65,14 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/bannercarousel')
-	async createBannerCarousel(
+	async saveBannerCarousel(
+		@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
 		@Body() shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput,
 		@Res() res,
 	) {
-		const result = await this.shopcustomizationService.createBannerCarousel(shop_banner_carouselCreateInput);
-		if (result) {
-			res.send({ success: true, result });
-		} else {
-			res.send({ success: false });
-		}
-	}
-
-	@Patch('/bannercarousel')
-	async updateBannerCarousel(
-		@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
-		@Body() shop_banner_carouselUpdateInput: Prisma.shop_banner_carouselUpdateInput,
-		@Res() res,
-	) {
-		const result = await this.shopcustomizationService.updateBannerCarousel(
+		const result = await this.shopcustomizationService.saveBannerCarousel(
 			shop_banner_carouselWhereUniqueInput,
-			shop_banner_carouselUpdateInput,
+			shop_banner_carouselCreateInput,
 		);
 		if (result) {
 			res.send({ success: true, result });
@@ -104,18 +81,72 @@ export class ShopcustomizationController {
 		}
 	}
 
-	@Get()
-	findAll() {
-		return this.shopcustomizationService.findAll();
+	@Post('/video')
+	async saveVideo(
+		@Body() shop_videoWhereUniqueInput: Prisma.shop_videoWhereUniqueInput,
+		@Body() shop_videoCreateInput: Prisma.shop_videoCreateInput,
+		@Res() res,
+	) {
+		const result = await this.shopcustomizationService.saveVideo(shop_videoWhereUniqueInput, shop_videoCreateInput);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: false });
+		}
 	}
 
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.shopcustomizationService.findOne(+id);
+	@Post('/productcarousel')
+	async saveProductcarousel(
+		@Body() shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
+		@Body() shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+		@Res() res,
+	) {
+		const result = await this.shopcustomizationService.saveProductCarousel(
+			shop_product_carouselWhereUniqueInput,
+			shop_product_carouselCreateInput,
+		);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: false });
+		}
 	}
 
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.shopcustomizationService.remove(+id);
-	}
+	// @Post('/productcarouselselect')
+	// async saveProductcarouselSelect(
+	// 	@Body() shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
+	// 	@Body() shop_product_carouselCreateInput: Prisma.shop_product_carousel_selectCreateInput,
+	// )
+
+	// @Patch('/bannercarousel')
+	// async updateBannerCarousel(
+	// 	@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
+	// 	@Body() shop_banner_carouselUpdateInput: Prisma.shop_banner_carouselUpdateInput,
+	// 	@Res() res,
+	// ) {
+	// 	const result = await this.shopcustomizationService.updateBannerCarousel(
+	// 		shop_banner_carouselWhereUniqueInput,
+	// 		shop_banner_carouselUpdateInput,
+	// 	);
+	// 	if (result) {
+	// 		res.send({ success: true, result });
+	// 	} else {
+	// 		res.send({ success: false });
+	// 	}
+	// }
+
+	// @Get()
+	// findAll() {
+	// 	return this.shopcustomizationService.findAll();
+	// }
+
+	// @Get(':id')
+	// findOne(@Param('id') id: string) {
+	// 	return this.shopcustomizationService.findOne(+id);
+	// }
+
+	// @Delete(':id')
+	// remove(@Param('id') id: string) {
+	// 	return this.shopcustomizationService.remove(+id);
+	// }
 }

@@ -5,12 +5,12 @@ import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
 
 const cardStyle = {
-  width: '100%',
-  padding: '8px',
-  margin: '0 auto',
+  width: "100%",
+  padding: "8px",
+  margin: "0 auto",
 
   borderRadius: "15px",
-  border: 'none',
+  border: "none",
   transition: "all ease 0.125s",
 
   "&:hover": {
@@ -19,20 +19,23 @@ const cardStyle = {
 };
 
 const productTemplate = {
-  title: 'fake product',
+  title: "fake product",
   image: "https://via.placeholder.com/410x360",
   price: 0,
   favourite: false,
 };
 
 const ProductCard = (props) => {
-  const { product = productTemplate, to = "/product/1", onFavourite = noop, status = undefined, addToCart = false } = props;
+  const {
+    product = productTemplate,
+    to = "/product/1",
+    onFavourite = noop,
+    status = undefined,
+    addToCart = false,
+  } = props;
   return (
     <Link to={to}>
-      <Card
-        variant="outlined"
-        sx={cardStyle}
-      >
+      <Card variant="outlined" sx={cardStyle}>
         <ProductMedia image={product.image} title={product.title} />
         <ProductContent
           product={product}

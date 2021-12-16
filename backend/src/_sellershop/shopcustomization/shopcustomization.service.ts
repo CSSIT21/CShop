@@ -69,6 +69,14 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 3 };
 								break;
+							case Shop_section.ProductCarouselSelect:
+								section = await this.prisma.shop_product_carousel.findUnique({
+									where: {
+										id: parsedsections[index].id,
+									},
+								});
+								section = { ...section, type: 3 };
+								break;
 							case Shop_section.Video:
 								section = await this.prisma.shop_video.findUnique({
 									where: {
@@ -126,6 +134,32 @@ export class ShopcustomizationService {
 		}
 	}
 
+	async saveBanner(
+		shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
+		shop_bannerCreateInput: Prisma.shop_bannerCreateInput,
+	) {
+		try {
+			const section = await this.prisma.shop_banner.findFirst({
+				where: {
+					id: shop_bannerWhereUniqueInput.id,
+				},
+			});
+
+			if (section) {
+				return this.updateBanner(shop_bannerWhereUniqueInput, shop_bannerCreateInput);
+			} else {
+				return this.createBanner(shop_bannerCreateInput);
+			}
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error creating shop video please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error creating shop video request body incorrect', 500);
+		}
+	}
+
 	async createBanner(shop_bannerCreateInput: Prisma.shop_bannerCreateInput) {
 		try {
 			await this.prisma.shop_banner.create({
@@ -170,6 +204,32 @@ export class ShopcustomizationService {
 			}
 			console.log(e.message);
 			throw new HttpException('Error updating shop banner request body incorrect', 500);
+		}
+	}
+
+	async saveBannerCarousel(
+		shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
+		shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput,
+	) {
+		try {
+			const section = await this.prisma.shop_banner_carousel.findFirst({
+				where: {
+					id: shop_banner_carouselWhereUniqueInput.id,
+				},
+			});
+
+			if (section) {
+				return this.updateBannerCarousel(shop_banner_carouselWhereUniqueInput, shop_banner_carouselCreateInput);
+			} else {
+				return this.createBannerCarousel(shop_banner_carouselCreateInput);
+			}
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error creating shop video please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error creating shop video request body incorrect', 500);
 		}
 	}
 
@@ -218,11 +278,41 @@ export class ShopcustomizationService {
 		}
 	}
 
+	async saveVideo(
+		shop_videoWhereUniqueInput: Prisma.shop_videoWhereUniqueInput,
+		shop_videoCreateInput: Prisma.shop_videoCreateInput,
+	) {
+		try {
+			const section = await this.prisma.shop_video.findFirst({
+				where: {
+					id: shop_videoWhereUniqueInput.id,
+				},
+			});
+			if (section) {
+				return this.updateVideo(shop_videoWhereUniqueInput, shop_videoCreateInput);
+			} else {
+				return this.createVideo(shop_videoCreateInput);
+			}
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error creating shop video please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error creating shop video request body incorrect', 500);
+		}
+	}
+
 	async createVideo(shop_videoCreateInput: Prisma.shop_videoCreateInput) {
 		try {
 			await this.prisma.shop_video.create({
-				data: shop_videoCreateInput,
+				data: {
+					id: shop_videoCreateInput.id,
+					path: shop_videoCreateInput.path,
+					title: 'Youtube video',
+				},
 			});
+			return 'Video Created';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -247,6 +337,7 @@ export class ShopcustomizationService {
 					title: 'Youtube video',
 				},
 			});
+			return 'Video Updated';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -257,11 +348,40 @@ export class ShopcustomizationService {
 		}
 	}
 
+	async saveProductCarousel(
+		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
+		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+	) {
+		try {
+			const section = await this.prisma.shop_video.findFirst({
+				where: {
+					id: shop_product_carouselWhereUniqueInput.id,
+				},
+			});
+			if (section) {
+				return this.updateProductCarousel(
+					shop_product_carouselWhereUniqueInput,
+					shop_product_carouselCreateInput,
+				);
+			} else {
+				return this.createProductCarousel(shop_product_carouselCreateInput);
+			}
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error creating shop video please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error creating shop video request body incorrect', 500);
+		}
+	}
+
 	async createProductCarousel(shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput) {
 		try {
 			await this.prisma.shop_product_carousel.create({
 				data: shop_product_carouselCreateInput,
 			});
+			return 'Product Carousel Created';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -281,13 +401,34 @@ export class ShopcustomizationService {
 				where: {
 					id: shop_product_carouselWhereUniqueInput.id,
 				},
-				data: {
-					filter_name: shop_product_carouselCreateInput.filter_name,
-					products: shop_product_carouselCreateInput.products,
-				},
+				data: shop_product_carouselCreateInput,
 			});
-		} catch (error) {}
+			return 'Product Carousel Updated';
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error updating shop video please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error updating shop video request body incorrect', 500);
+		}
 	}
+
+	// async createProductCarousel(shop_product_carouselCreateInput) {
+	// 	try {
+	// 		await this.prisma.shop_product_carousel.create({
+	// 			data: shop_product_carouselCreateInput,
+	// 		});
+	// 		return 'Product Carousel Created';
+	// 	} catch (e) {
+	// 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+	// 			console.log(e.message);
+	// 			throw new HttpException('Error creating shop product carousel please check your information!', 500);
+	// 		}
+	// 		console.log(e.message);
+	// 		throw new HttpException('Error creating shop product carousel request body incorrect', 500);
+	// 	}
+	// }
 
 	findAll() {
 		return `This action returns all shopcustomization`;

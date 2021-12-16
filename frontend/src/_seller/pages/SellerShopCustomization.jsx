@@ -146,6 +146,7 @@ const SellerShopCustomization = () => {
     [dropArea]: [],
   });
   const [sectionInfos, setSectionInfos] = useState({});
+  const [sectionInfosHistory, setSectionInfosHistory] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -155,20 +156,22 @@ const SellerShopCustomization = () => {
     setAnchorEl(null);
   };
   console.log("sectionInfos", sectionInfos);
+  console.log("sectionInfosHistory", sectionInfosHistory);
   console.log("state", state);
   useEffect(async () => {
+    await axios
+      .get(
+        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}/info`
+      )
+      .then(async ({ data }) => {
+        await setSectionInfos(data.sections_info);
+        await setSectionInfosHistory(data.sections_info);
+      });
     await axios
       .get(
         `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
       )
       .then(({ data }) => setState({ area: data.sections }));
-    await axios
-      .get(
-        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}/info`
-      )
-      .then(({ data }) => {
-        setSectionInfos(data.sections_info);
-      });
   }, []);
   const saveChange = async () => {
     await axios
@@ -178,73 +181,64 @@ const SellerShopCustomization = () => {
       )
       .then(() => {
         Object.entries(sectionInfos).forEach(async (e) => {
-          const item = state.area.find((item) => e[0]);
-          console.log("file", item, e);
+          const item = state.area.find((item) => e[0] == item.id);
           switch (item.type) {
             case "Banner":
-              if (e[1].content.file) {
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
                 const url = await getUrl(e[1].content.file);
                 if (url.success) {
-                  axios
-                    .post(`${config.SERVER_URL}/shopcustomization/banner`, {
-                      id: e[0],
-                      path: url.original_link,
-                      thumbnail: url.original_link,
-                      title: e[1].content.title.slice(0, 50),
-                    })
-                    .catch((error) => {
-                      axios.patch(
-                        `${config.SERVER_URL}/shopcustomization/banner/${auth.user.shop_info[0].id}`,
-                        {
-                          id: e[0],
-                          path: url.original_link,
-                          thumbnail: url.original_link,
-                          title: e[1].content.title,
-                        }
-                      );
-                    }); //shop_banner table
+                  axios.post(`${config.SERVER_URL}/shopcustomization/banner`, {
+                    id: e[0],
+                    path: url.original_link,
+                    thumbnail: url.original_link,
+                    title: e[1].content.title.slice(0, 50),
+                  });
                 }
-              } else {
-                console.log("something went wrong");
               }
               break;
             case "BannerCarousel":
-              let banners = [];
-              if (e[1].content[0].file) {
-                e[1].content.forEach(async (element) => {
-                  // const url = await getUrl(element.file);
-                  // if (url.success) { url.original_link
-                  banners = [
-                    ...banners,
-                    {
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                const banners = [];
+                for (const element of e[1].content.banners) {
+                  if (element.file) {
+                    const url = await getUrl(element.file);
+                    if (url.success) {
+                      banners.push({
+                        id: element.id,
+                        title: element.title.slice(0, 50),
+                        path: url.original_link,
+                      });
+                    }
+                  } else {
+                    banners.push({
                       id: element.id,
-                      title: element.title,
-                      path: "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
-                    },
-                  ];
-                  // }
-                });
-                axios
-                  .post(
+                      title: element.title.slice(0, 50),
+                      path: element.path,
+                    });
+                  }
+                }
+                if (banners.length != 0) {
+                  await axios.post(
                     `${config.SERVER_URL}/shopcustomization/bannercarousel`,
                     {
                       id: e[0],
                       banners: banners,
                     }
-                  )
-                  .catch((error) => {
-                    axios.patch(
-                      `${config.SERVER_URL}/shopcustomization/bannercarousel`,
-                      {
-                        id: e[0],
-                        banners: banners,
-                      }
-                    );
-                  });
+                  );
+                }
               }
               break;
             case "Video":
               //axios.post() shop_video table
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                await axios.post(
+                  `${config.SERVER_URL}/shopcustomization/video`,
+                  {
+                    id: e[0],
+                    path: e[1].content.path,
+                  }
+                );
+              }
               break;
             case "ProductCarousel":
               //axios.post() shop_product_carousel table
@@ -283,7 +277,6 @@ const SellerShopCustomization = () => {
     cloneSource.splice(index, 1);
     return cloneSource;
   };
-  console.log(state);
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
@@ -421,7 +414,6 @@ const SellerShopCustomization = () => {
           </Droppable>
           <Content>
             {Object.keys(state).map((list, i) => {
-              console.log("==> list", list);
               return (
                 <Droppable key={list} droppableId={list}>
                   {(provided, snapshot) => (
