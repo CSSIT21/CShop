@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Box } from '@mui/system'
-import { FormControl, IconButton, InputLabel, styled } from '@mui/material'
+import { IconButton, Tooltip, styled } from '@mui/material'
 import VideoLibraryOutlinedIcon from '@mui/icons-material/VideoLibraryOutlined'
 import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined'
 import SendIcon from '@mui/icons-material/Send'
@@ -102,17 +102,23 @@ const MessageBar = (props) => {
                     ref={imgInputRef}
                     onChange={submitImage}
                 />
-                <IconButton onClick={() => vidInputRef.current.click()}>
-                    <VideoLibraryOutlinedIcon color="primary" />
-                </IconButton>
-                <IconButton onClick={() => imgInputRef.current.click()}>
-                    <PhotoLibraryOutlinedIcon color="primary" />
-                </IconButton>
+                <Tooltip title="Upload video">
+                    <IconButton onClick={() => vidInputRef.current.click()}>
+                        <VideoLibraryOutlinedIcon color="primary" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Upload image">
+                    <IconButton onClick={() => imgInputRef.current.click()}>
+                        <PhotoLibraryOutlinedIcon color="primary" />
+                    </IconButton>
+                </Tooltip>
             </Box>
             <InputBox aria-label="Message input box" forwardedRef={inputRef} />
-            <IconButton onClick={submitText}>
-                <SendIcon color="primary" />
-            </IconButton>
+            <Tooltip title="Send">
+                <IconButton onClick={submitText}>
+                    <SendIcon color="primary" />
+                </IconButton>
+            </Tooltip>
         </Box>
     )
 }
