@@ -16,6 +16,18 @@ export class ProductController {
 			});
 		}
 	}
+    
+	@Get('/:id/suggest')
+	public async findSuggestProducts(@Param('id', ParseIntPipe) id: number, @Res() res) {
+		const suggest_products = await this.productService.getSuggestProducts(id);
+		if (suggest_products) {
+			res.send({ success: true, suggest_products });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
 
 	@Get('/shortlink/:id')
 	public async copyShortLink(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -64,16 +76,4 @@ export class ProductController {
 			});
 		}
 	}
-
-	// @Get('/:id/pictures')
-	// public async findProductPictures(@Param('id', ParseIntPipe) id: number, @Res() res) {
-	// 	const pictures = await this.productService.getProductPictures(id);
-	// 	if (pictures) {
-	// 		res.send({ success: true, pictures });
-	// 	} else {
-	// 		res.send({
-	// 			success: false,
-	// 		});
-	// 	}
-	// }
 }

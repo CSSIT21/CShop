@@ -14,12 +14,6 @@ export class ReviewProductService {
 		product_id: number,
 		customer_id: number,
 	) {
-		// let defaultList = {
-		// 	id: 0,
-		// 	title: '',
-		// 	path: '',
-		// 	thumbnail: '',
-		// };
 		let ProductPictures: Promise<any>[] = [];
 		for (let i = 0; i < reviewPictureList.pictureList.length; i++) {
 			ProductPictures.push(

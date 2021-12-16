@@ -22,7 +22,7 @@ const ProductPage = (props) => {
   const [shopDetail, setShopDetails] = useState();
   const [comments, setComments] = useState();
   const [options, setOptions] = useState();
-  const [shopId, setShopId] = useState();
+  const [shopId, setShopId] = useState(-1);
   const { id } = useParams();
 
   const onFavourite = (index) => {
@@ -44,19 +44,23 @@ const ProductPage = (props) => {
       });
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     window.scrollTo(0, 0);
     // Product
     axios.get(`${config.SERVER_URL}/product/${id}`).then(({ data }) => {
       if (data.success) {
         setProductDetails(data.product_details.product);
-        setProductsSuggestion(data.product_details.product.suggest_products);
+      } else alert("Fail to fetch data :(");
+    });
+    // Suggestion product
+    axios.get(`${config.SERVER_URL}/product/${id}/suggest`).then(({ data }) => {
+      if (data.success) {
+        setProductsSuggestion(data.suggest_products);
       } else alert("Fail to fetch data :(");
     });
     // Shop
     axios.get(`${config.SERVER_URL}/product/${id}/shop`).then(({ data }) => {
       if (data.success) {
-        setProductDetails(data.product_details.product);
         setShopId(data.shop_details.id);
         setShopDetails(data.shop_details);
       } else alert("Fail to fetch data :(");
@@ -70,7 +74,7 @@ const ProductPage = (props) => {
         } else alert("Fail to fetch data :(");
       });
     // Get product pictures
-    await axios
+    axios
       .get(`${config.SERVER_URL}/product/${id}/pictures`)
       .then(({ data }) => {
         if (data.success) {
@@ -93,6 +97,7 @@ const ProductPage = (props) => {
     });
   }, [id]);
 
+  console.log(shopId);
   return (
     <Box
       sx={{
