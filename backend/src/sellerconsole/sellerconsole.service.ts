@@ -54,7 +54,7 @@ export class SellerconsoleService {
 			}
 		})
 	}
-	async addStock(id : number, shopId : number, title : string , sub_title : string ,price : number, quantity : number ,
+	async AddToStock(id : number, shopId : number, title : string , sub_title : string ,price : number, quantity : number ,
 						categoryId : number, sold : number , added_date : Date, suggest_product : number[] , rating : number){
 							console.log({
 								id : id,
@@ -85,7 +85,7 @@ export class SellerconsoleService {
 			}
 		})
 	}
-	async StockLog(shopId : number, productId : number , quantity : number, added_date : Date){
+	async UpdatetoStockLog(shopId : number, productId : number , quantity : number, added_date : Date){
 	
 		await this.prisma.sconsole_stock_history.create({
 			data : {
