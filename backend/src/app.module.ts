@@ -7,9 +7,10 @@ import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { DatabaseModule } from './database/database.module';
+import { DeliveryModule } from './delivery/delivery.module';
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule, DatabaseModule],
+	imports: [HttpModule, AuthenticationModule, PrismaModule, DatabaseModule, DeliveryModule],
 	controllers: [AppController],
 	providers: [
 		// AppService,
