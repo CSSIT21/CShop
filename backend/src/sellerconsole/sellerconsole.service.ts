@@ -1,58 +1,58 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
-import { Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import { addProductSellerconsoleDto } from './dto/addProduct-sellerconsole.dto';
+const prisma = new PrismaClient();
 @Injectable()
 export class SellerconsoleService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
-	seller_dashboard(id: number) {
-		return `#${id}`;
+	async getstockHistory(shopid: number) {
+		const res = await this.prisma.product.findMany({
+			where: {
+				shop_id: shopid,
+			},
+			select: {
+				id: true,
+				title: true,
+				sconsole_stock_history: {
+					select: {
+						quantity: true,
+						updated_date: true,
+					},
+				},
+			},
+		});
+		return res;
 	}
 
-  	seller_stock(id: number) {
-		return `#${id}`;
+	async getdiscountHistory(shopid: number) {
+		const res = await this.prisma.customer.findMany({
+			select: {
+				customer_info: {
+					select: {
+						firstname: true,
+						lastname: true,
+					},
+				},
+				shop_info: {
+					select: {
+						product: {
+							where: {
+								shop_id: shopid,
+							},
+							select: {
+								id: true,
+								title: true,
+								sconsole_discount_log: { select: { discount_id: true } },
+							},
+						},
+					},
+				},
+			},
+		});
+		return res;
 	}
-
-  	seller_stocklog(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_orderstatus(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_orderhistory(id: number) {
-		return `#${id}`;
-	}
-
- 	seller_discounthistory(id: number) {
-		return `#${id}`;
-	}
-
-  	seller_refundhistory(id: number) {
-		return `#${id}`;
-	}
-
-	async getHistoryDiscount(){
-        return await this.prisma.discount.findMany()
-    }
 }
-
-// create(createSellerconsoleDto: CreateSellerconsoleDto) {
-//   return 'This action adds a new sellerconsole';
-// }
-
-// findAll() {
-//   return `This action returns all sellerconsole`;
-// }
-
-// update(id: number, updateSellerconsoleDto: UpdateSellerconsoleDto) {
-//   return `This action updates a #${id} sellerconsole`;
-// }
-
-// remove(id: number) {
-//   return `This action removes a #${id} sellerconsole`;
-// }
