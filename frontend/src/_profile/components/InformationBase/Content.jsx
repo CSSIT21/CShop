@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Typography, Divider } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -9,6 +9,8 @@ import ContactInfoEdit from "./ContactInfoEdit";
 import ButtonWrapper from "./ButtonWrapper";
 import authState from "~/common/store/authState";
 import { useRecoilState } from "recoil";
+import axios from "axios";
+import config from "../../../common/constants";
 
 const Content = () => {
   const classes = useStyles();
@@ -18,12 +20,9 @@ const Content = () => {
   const [confirmPassword, setConfirmPassword] = useState();
 
   const newUserInfo = () => {
-    if (userInfo.user.password === confirmPassword) {
-      setUserInfo(editInfo);
-    } else {
-      alert("Go check your fking password again");
-    }
+    console.log(editInfo);
   };
+
   return (
     <Box className={classes.body}>
       <Box className={classes.container}>

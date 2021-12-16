@@ -6,7 +6,7 @@ const Carousel = ({
   rows = 1,
   gap = 10,
   loop = false,
-  pageState = 0,
+  pageState = 1,
   hideArrow = true,
   setPageState = () => {},
   children,

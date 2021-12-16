@@ -1,27 +1,84 @@
 import { Box } from "@mui/system";
-import React, { Fragment, useEffect, useLayoutEffect } from "react";
+import React, { Fragment, useState, useLayoutEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import CButton from "../../common/components/CButton";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { useForm, useInput } from "../../common/hooks";
+import axios from "axios";
+import config from "../../common/constants/index";
+import Swal from "sweetalert2";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import authState from "../../common/store/authState";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const LoginPage = () => {
   const classes = useStyles();
   const router = useHistory();
-  const phone = useInput("");
-  const password = useInput("");
-  const form = useForm({ phone, password });
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [emailError, setemailError] = useState("");
+  const [passwordError, setpasswordError] = useState("");
+  const [auth, setAuth] = useRecoilState(authState);
+  const resetAuth = useResetRecoilState(authState);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onLogin = async () => {
+    if (email === "") {
+      setemailError("This field is required");
+    }
+    if (password === "") {
+      setpasswordError("This field is required");
+    }
+    if (email.trim() != "" && password.trim() != "") {
+      setIsLoading(true);
+      axios
+        .post(
+          config.SERVER_URL + "/auth/login",
+          {
+            username: email,
+            password,
+          },
+          {
+            withCredentials: true,
+            validateStatus: () => true,
+          }
+        )
+        .then(({ data }) => {
+          console.log(data);
+          if (data.success) {
+            setAuth(({ user, isLoggedIn }) => {
+              return { isLoggedIn: true, user: data.user };
+            });
+            Swal.fire({
+              title: "Success",
+              text: "Login Successful!",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then(() => {
+              router.push("/home");
+            });
+          } else {
+            setpasswordError("Email or password is incorrect");
+            Swal.fire({
+              title: "Login Failed!",
+              text: data.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+            resetAuth();
+          }
+          setIsLoading(false);
+        });
+    }
+  };
 
   useLayoutEffect(() => {
     document.body.classList.add("gray");
     return () => document.body.classList.remove("gray");
   }, []);
-
   return (
     <Fragment>
       <Box className={classes.container}>
@@ -29,15 +86,22 @@ const LoginPage = () => {
           <Box className={classes.header}>Sign In</Box>
           <Box className={classes.textFieldBox}>
             <TextField
-              id="phoneNumber"
+              id="email"
               placeholder="Email"
               variant="outlined"
               sx={{ borderRadius: "10px" }}
               fullWidth
               autoComplete="off"
-              {...phone}
+              error={emailError.length === 0 ? false : true}
+              onChange={(e) => {
+                setemail(e.target.value);
+                setemailError("");
+              }}
             />
           </Box>
+          {emailError.length != 0 && (
+            <Box className={classes.error}>{emailError}</Box>
+          )}
           <Box className={classes.textFieldBox}>
             <TextField
               id="password"
@@ -47,18 +111,47 @@ const LoginPage = () => {
               sx={{ borderRadius: "10px" }}
               fullWidth
               autoComplete="off"
-              {...password}
+              error={passwordError.length === 0 ? false : true}
+              onChange={(e) => {
+                setpassword(e.target.value);
+                setpasswordError("");
+              }}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  onLogin();
+                }
+              }}
             />
           </Box>
+          {passwordError.length != 0 && (
+            <Box className={classes.error}>{passwordError}</Box>
+          )}
           <Box className={classes.button}>
-            <CButton
-              title="Sign In"
-              width="500px"
-              height="50px"
-              onClick={() => {
-                router.push("/home");
-              }}
-            ></CButton>
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                style={{
+                  width: "500px",
+                  height: "50px",
+                  textTransform: "capitalize",
+                  marginTop: "40px",
+                }}
+                onClick={onLogin}
+              >
+                Sign In
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "500px",
+                  textTransform: "capitalize",
+                  height: "50px",
+                  marginTop: "40px",
+                }}
+              ></LoadingButton>
+            )}
           </Box>
           <Box className={classes.text}>Forgot your password?</Box>
           <Box className={classes.divider}>OR</Box>
@@ -116,7 +209,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     width: "500px",
-    marginBottom: "40px",
+    marginTop: "40px",
   },
   button: {
     marginBottom: "20px",
@@ -137,6 +230,13 @@ const useStyles = makeStyles({
   divider: {
     color: "#A0A3BD",
     margin: "30px 0px",
+  },
+  error: {
+    marginTop: "5px",
+    fontSize: "14px",
+    color: "#FD3737",
+    textAlign: "right",
+    width: "500px",
   },
 });
 

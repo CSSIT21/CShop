@@ -6,17 +6,34 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { ProfileModule } from './profile/profile.module';
+import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
+import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
+import { BannerModule } from './home/banner/banner.module';
+import { HomeModule } from './home/home/home.module';
+import { LogSystemModule } from './home/log-system/log-system.module';
 import { CartModule } from './cart/cart.module';
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule, CartModule],
+	imports: [
+		HttpModule,
+		AuthenticationModule,
+		PrismaModule,
+		BannerModule,
+		HomeModule,
+		LogSystemModule,
+    SellershopModule,
+    ShopcustomizationModule,
+    ProfileModule,
+	CartModule
+	],
 	controllers: [AppController],
 	providers: [
-		AppService,
-		{
-			provide: APP_GUARD,
-			useClass: JwtAuthGuard,
-		},
+		// AppService,
+		// {
+		// 	provide: APP_GUARD,
+		// 	useClass: JwtAuthGuard,
+		// },
 	],
 })
-export class AppModule {}
+export class AppModule { }
