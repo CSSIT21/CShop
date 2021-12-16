@@ -7,12 +7,39 @@ import Box from '@mui/material/Box';
 import { makeStyles } from "@mui/styles";
 import CoinPic from '~/common/assets/images/coinpic.png';
 import { Link } from 'react-router-dom';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import zIndex from '@mui/material/styles/zIndex';
+
+function createData(info, expire, coins) {
+    return { info, expire, coins };
+}
+
+const rows = [
+    createData('Login Reward', '20/3/2022', '10'),
+    createData('Used coins', '21/4/2022', '20'),
+    createData('Login Reward', '30/4/2022', '30'),
+    createData('Earned coins', '23/4/2022', '40'),
+    createData('Used coins', '4/4/2022', '50'),
+    createData('Login Reward', '20/3/2022', '10'),
+    createData('Used coins', '21/4/2022', '20'),
+    createData('Login Reward', '30/4/2022', '30'),
+    createData('Earned coins', '23/4/2022', '40'),
+    createData('Used coins', '4/4/2022', '50'),
+];
+
 
 const CoinHistoryPage = (coinhistory) => {
     const classes = useStyles();
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
+
 
         return (
             <div
@@ -59,37 +86,119 @@ const CoinHistoryPage = (coinhistory) => {
             </Box>
 
             <Box className={classes.headercoin}>
-            <img src={CoinPic} alt="pic" style={{ height: "60px", width: "60px", alignItem: "center" ,marginTop:"5px"}} />
-            <Box className={classes.cointext}>1.11</Box>
-            <Box className={classes.cointext}><Link to="/coin" > ></Link></Box>
+                <img src={CoinPic} alt="pic" style={{ height: "60px", width: "60px", alignItem: "center", marginTop: "5px" }} />
+                <Box className={classes.cointext}>1.11</Box>
+                <Box className={classes.cointext}><Link to="/coin" > ></Link></Box>
             </Box>
 
             <Box className={classes.headerexpire}>
-            <Box className={classes.cointext2}>code expire: 31/01/2022</Box>
+                <Box className={classes.cointext2}>code expire: 31/01/2022</Box>
             </Box>
 
             <Box className={classes.codeField}>
+                <Box sx={{ width: '1082.5px', alignItem: "center", height: "490px", position: "sticky", backgroundColor: "white", borderRadius: "10px" }}>
+                    <Box sx={{ borderBottom: 0, borderColor: 'divider' }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                            <Tab label="All History" sx={{ width: "360px", fontSize: "13px" }}{...a11yProps(0)} />
+                            <Tab label="Earned" sx={{ width: "360px", fontSize: "13px" }}{...a11yProps(1)} />
+                            <Tab label="Used" sx={{ width: "360px", fontSize: "13px" }}{...a11yProps(2)} />
+                        </Tabs>
+                    </Box>
+                    <Box className={classes.coinbox}>
 
-                <Box className={classes.coinbox}>
 
-                    <Box sx={{ width: '1080px', alignItem: "center", height: "480px" }}>
-                        <Box sx={{ borderBottom: 0, borderColor: 'divider' }}>
-                            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                <Tab label="All History" sx={{ width: "360px" }}{...a11yProps(0)} />
-                                <Tab label="Earned" sx={{ width: "360px" }}{...a11yProps(1)} />
-                                <Tab label="Used" sx={{ width: "360px" }}{...a11yProps(2)} />
-                            </Tabs>
-                        </Box>
                         <TabPanel value={value} index={0}>
-                            Item One
+
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableBody>
+                                        {rows.map((row) => (
+                                            <TableRow
+                                                key={row.info}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+
+                                                <TableCell component="th" scope="row"  >
+
+                                                    <Box sx={{ display: "flex", flexDirection: "colomn", fontSize: "15px", fontWeight: "500", }}>
+                                                        <img src={CoinPic} alt="pic" style={{ height: "50px", width: "50px", marginLeft: "20px", marginRight: "15px" }} />
+                                                        {row.info}<br></br>
+
+                                                        {row.expire}</Box>
+                                                </TableCell>
+
+                                                <TableCell align="right">
+                                                    <Box sx={{ marginRight: "30px", fontSize: "20px", color: "#FD6637", fontWeight: "500" }}>{row.coins}</Box></TableCell>
+
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+
                         </TabPanel>
+
                         <TabPanel value={value} index={1}>
-                            Item Two
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableBody>
+                                        {rows.map((row) => (
+                                            <TableRow
+                                                key={row.info}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+
+                                                <TableCell component="th" scope="row"  >
+
+                                                    <Box sx={{ display: "flex", flexDirection: "colomn", fontSize: "15px", fontWeight: "500", }}>
+                                                        <img src={CoinPic} alt="pic" style={{ height: "50px", width: "50px", marginLeft: "20px", marginRight: "15px" }} />
+                                                        {row.info}<br></br>
+
+                                                        {row.expire}</Box>
+                                                </TableCell>
+
+                                                <TableCell align="right">
+                                                    <Box sx={{ marginRight: "30px", fontSize: "20px", color: "#FD6637", fontWeight: "500" }}>+{row.coins}</Box></TableCell>
+
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </TabPanel>
+
+
                         <TabPanel value={value} index={2}>
-                            Item Three
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableBody>
+                                        {rows.map((row) => (
+                                            <TableRow
+                                                key={row.info}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+
+                                                <TableCell component="th" scope="row"  >
+
+                                                    <Box sx={{ display: "flex", flexDirection: "colomn", fontSize: "15px", fontWeight: "500", }}>
+                                                        <img src={CoinPic} alt="pic" style={{ height: "50px", width: "50px", marginLeft: "20px", marginRight: "15px" }} />
+                                                        {row.info}<br></br>
+
+                                                        {row.expire}</Box>
+                                                </TableCell>
+
+                                                <TableCell align="right">
+                                                    <Box sx={{ marginRight: "30px", fontSize: "20px", color: "#FD6637", fontWeight: "500" }}>-{row.coins}</Box></TableCell>
+
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </TabPanel>
                     </Box>
+
+
                 </Box>
             </Box>
         </Box>
@@ -99,8 +208,8 @@ const CoinHistoryPage = (coinhistory) => {
 const useStyles = makeStyles({
     background: {
         backgroundColor: "#F2F2F4",
-        width: "auto",
-        height: "105vh",
+        width: "100%",
+        height: "150vh",
         paddingTop: "50px",
         flexDirection: "row",
         alignItems: "center",
@@ -136,27 +245,26 @@ const useStyles = makeStyles({
     },
     coinbox: {
         backgroundColor: "white",
+        overflow: "scroll",
+        overflowX: "visible",
         display: "flex",
         flexDirection: "column",
-        width: "1080px",
+        width: "1100px",
         borderRadius: "10px",
         height: "530px",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        paddingBottom: "100px"
     },
     cointext: {
         Color: "black",
         marginLeft: "18px",
         fontSize: "50px",
-        fontWeight:"450"
+        fontWeight: "450"
     },
     cointext2: {
-        color:"#A0A3BD",
+        color: "#A0A3BD",
         marginLeft: "18px",
         fontSize: "16px",
-        alignItem:"center",
-        justifyContent:"center"
+        alignItem: "center",
+        justifyContent: "center"
     },
     codeField: {
         backgroundColor: "#F2F2F4",
