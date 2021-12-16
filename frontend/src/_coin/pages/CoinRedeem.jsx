@@ -203,13 +203,13 @@ const useStyles = makeStyles({
     header1: {
         display: "flex",
         fontWeight: "600",
-        fontSize: "50px",
+        fontSize: "45px",
         color: " #FD6637",
     },
     header2: {
         display: "flex",
         fontWeight: "600",
-        fontSize: "50px",
+        fontSize: "45px",
         color: "black",
     },
     header3: {
