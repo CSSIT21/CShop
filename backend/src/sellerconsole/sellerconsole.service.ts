@@ -29,31 +29,19 @@ export class SellerconsoleService {
 	}
 
 	async getdiscountHistory(shopid: number) {
-		const res = await this.prisma.customer.findMany({
+
+		const res = await this.prisma.sconsole_discount_log.findMany({
+			where: {
+				shop_id: shopid,
+			},
 			select: {
-				customer_info: {
-					select: {
-						firstname: true,
-						lastname: true,
-					},
-				},
-				shop_info: {
-					select: {
-						product: {
-							where: {
-								shop_id: shopid,
-							},
-							select: {
-								id: true,
-								title: true,
-								sconsole_discount_log: { select: { discount_id: true } },
-							},
-						},
-					},
-				},
+				customer_id_from_sconsole_discount_log: true,
+				product_id_from_sconsole_discount_log: true,
 			},
 		});
 		return res;
+
+
 	}
 
 	seller_stocklog(id: number) {
