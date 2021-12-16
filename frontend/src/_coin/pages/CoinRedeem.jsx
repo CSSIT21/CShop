@@ -99,10 +99,10 @@ const CoinRedeemPage = (coinredeem) => {
                         display: "flex",
                         marginTop: "75px"
                     }}>
-                        <img src={CoinPic} alt="pic" style={{ height: "50px", width: "50px", alignItem: "center" }} />
+                        <img src={CoinPic} alt="pic" style={{ height: "60px", width: "60px", alignItem: "center", marginTop: "5px" }} />
 
                         <Box className={classes.cointext}>1.11</Box>
-                        <Box className={classes.header3}><Link to="/coin/history" > ></Link></Box>
+                        <Box className={classes.cointext}><Link to="/coin/history" > ></Link></Box>
                     </Box>
                     <Box sx={{ width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItem: "center", marginTop: "75px" }}>
                         <Stepper nonLinear activeStep={'activeStep'}>
@@ -231,9 +231,10 @@ const useStyles = makeStyles({
         paddingBottom: "100px"
     },
     cointext: {
-        fontColor: "black",
+        Color: "black",
         marginLeft: "18px",
-        fontSize: "40px",
+        fontSize: "50px",
+        fontWeight: "450"
     },
     codeField: {
         backgroundColor: "#FDEEE9",
