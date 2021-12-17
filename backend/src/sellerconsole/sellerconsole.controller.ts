@@ -4,7 +4,6 @@ import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PrismaClient } from '@prisma/client';
-import { addProductSellerconsoleDto } from './dto/addProduct-sellerconsole.dto';
 
 @Controller('sellerconsole')
 export class SellerconsoleController {
@@ -24,10 +23,6 @@ export class SellerconsoleController {
 		const res = this.sellerconsoleService.getstockHistory(+id);
 		return res;
 	}
-
-	@Get('id:/orderhistory')
-	@Public()
-	getOrderhistory(@Param('id') id: number) {}
 
 	@Get(':id/stock')
 	@Public()
@@ -54,6 +49,39 @@ export class SellerconsoleController {
 		// res.send(a);
 		res.send(b);
 	}
+
+	@Get(':id/orderHistory')
+	async getOrderhistory(@Param('id') id:number){
+		const res = await this.sellerconsoleService.getOrderHistory(+id);
+		return res
+	}
+
+	@Post(':id/acceptOrderStatus')
+	async acceptOrderStatus(@Body() Order,@Res() res){
+		let order_id= Order.order_id
+		let product_id= Order.product_id
+		let shop_id= Order.shop_id
+		let started_date = Order.started_date
+		let status= 'Accept'
+		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(order_id,product_id,shop_id,started_date,status)
+		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id)
+		res.send(addToOrderHistory)
+		res.send(removeOrderFromOrderStatus)
+	}
+
+	@Post(':id/cancelOrderStatus')
+	async cancelOrderStatus(@Body() Order,@Res() res){
+		let order_id= Order.order_id
+		let product_id= Order.product_id
+		let shop_id= Order.shop_id
+		let started_date = Order.started_date
+		let status= 'Cancel'
+		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(order_id,product_id,shop_id,started_date,status)
+		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id)
+		res.send(addToOrderHistory)
+		res.send(removeOrderFromOrderStatus)
+	}
+
 }
 
 // @Post()

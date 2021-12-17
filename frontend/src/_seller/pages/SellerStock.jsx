@@ -18,10 +18,30 @@ import StockBody from "./components/TableContent/StockBody";
 import Avatar from "@mui/material/Avatar";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
+import { useEffect } from "react";
+
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const SellerStock = () => {
   const Pagename = "Stock";
   const auth = useRecoilValue(authState);
+
+  const  shopid  = useParams();
+
+  const fetchStock = async () => {
+    try {
+      const res = await axios.get(`localhost:8080/sellerconsole/${shopid.id}/stock`);
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    // fetchStock();
+    // console.log(shopid.id)
+  }, []);
 
   const indicatorData = [
     {
@@ -60,269 +80,32 @@ const SellerStock = () => {
 
   const [product, setProduct] = useState(false);
 
-  function createData(
-    productId,
-    avatar,
-    productImage,
-    productname,
-    customername,
-    amount,
-    totalprice,
-    status,
-    stdate,
-    endate
-  ) {
+  function createData(productId, productname, amount, price) {
     return {
       productId,
-      avatar,
-      productImage,
       productname,
-      customername,
       amount,
-      totalprice,
-      status,
-      stdate,
-      endate,
+      price,
     };
   }
 
   const rows = [
-    createData(
-      1,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Frozen yoghurt",
-      "john",
-      24,
-      4.0,
-      "cancel",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      2,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Ice cream sandwich",
-      "jojo",
-      9,
-      37,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      3,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Eclair",
-      "joluno",
-      16,
-      24,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      4,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Cupcake",
-      "joji",
-      3,
-      67,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      5,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Gingerbread",
-      "jotaro",
-      16,
-      49,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      6,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Eclair",
-      "joluno",
-      16,
-      24,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      7,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Cupcake",
-      "joji",
-      3,
-      67,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      8,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Gingerbread",
-      "jotaro",
-      16,
-      49,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      9,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Cupcake",
-      "joji",
-      3,
-      67,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      10,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Gingerbread",
-      "jotaro",
-      16,
-      49,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      11,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Eclair",
-      "joluno",
-      16,
-      24,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      12,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Cupcake",
-      "joji",
-      3,
-      67,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      13,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Gingerbread",
-      "jotaro",
-      16,
-      49,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      14,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Cupcake",
-      "joji",
-      3,
-      67,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      15,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Gingerbread",
-      "jotaro",
-      16,
-      49,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      16,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Eclair",
-      "joluno",
-      16,
-      24,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      17,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Cupcake",
-      "joji",
-      3,
-      67,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
-    createData(
-      18,
-      <Avatar src={auth.user.url} sx={{ width: 65, height: 65 }} />,
-      CategoryPic1,
-      "Gingerbread",
-      "jotaro",
-      16,
-      49,
-      "success",
-      "10/10/2021",
-      "10/10/2021"
-    ),
+    createData(1, "Frozen yoghurt", 24, 4.0),
+    createData(2, "Ice cream sandwich", 9, 37),
+    createData(3, "Eclair", 16, 24),
+    createData(4, "Cupcake", 3, 67),
+    createData(5, "Gingerbread", 16, 49),
   ];
 
   const columns = [
     { id: "productId", label: "productId" },
-    { id: "avatar", label: "avatar" },
-    {
-      id: "productImage",
-      label: "productImage",
-      align: "right",
-    },
+
     {
       id: "productname",
       label: "productname",
       align: "right",
     },
-    {
-      id: "customername",
-      label: "customername",
-      align: "right",
-    },
+
     {
       id: "amount",
       label: "amount",
@@ -330,25 +113,10 @@ const SellerStock = () => {
       format: (value) => value.toLocaleString("en-US"),
     },
     {
-      id: "totalprice",
-      label: "totalprice",
+      id: "price",
+      label: "price/pcs",
       align: "right",
       format: (value) => value.toFixed(2),
-    },
-    {
-      id: "status",
-      label: "status",
-      align: "right",
-    },
-    {
-      id: "stdate",
-      label: "stdate",
-      align: "right",
-    },
-    {
-      id: "endate",
-      label: "endate",
-      align: "right",
     },
   ];
 

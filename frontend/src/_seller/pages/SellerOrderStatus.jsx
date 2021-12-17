@@ -146,6 +146,14 @@ const SellerOrderStatus = () => {
     ),
   ];
 
+  const handleClick = (id) => {
+    const rm = rows.filter((row) => {
+      row.orderid != id;
+    });
+    rows = rm;
+    console.log(rm);
+  };
+
   return (
     <div>
       <Box>
@@ -161,7 +169,11 @@ const SellerOrderStatus = () => {
           <PageHeader Pagename={Pagename} />
         </Box>
         <Box sx={{ mt: "4rem" }} />
-        <OrderStatusBody rows={rows} columns={columns} />
+        <OrderStatusBody
+          rows={rows}
+          columns={columns}
+          handleClick={handleClick}
+        />
       </Box>
     </div>
   );

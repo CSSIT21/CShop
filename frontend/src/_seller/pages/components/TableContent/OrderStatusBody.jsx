@@ -19,7 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CorrectOnClick from "./CorrectOnClick";
 import IncorrectOnClick from "./IncorrectOnClick";
 
-const OrderStatusBody = ({ rows, columns }) => {
+const OrderStatusBody = ({ rows, columns,handleClick }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -74,7 +74,7 @@ const OrderStatusBody = ({ rows, columns }) => {
                             } else if (column.id === "action") {
                               return (
                                 <Box>
-                                  <Button>
+                                  <Button onClick={(e)=>handleClick(row.orderid)}>
                                     <CorrectOnClick/>
                                     {/* <CheckIcon /> */}
                                   </Button>
