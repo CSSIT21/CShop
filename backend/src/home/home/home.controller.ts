@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { get } from 'http';
+import { Prisma, product_picture } from '@prisma/client';
 
 
 @Controller('home')
@@ -37,7 +39,8 @@ export class HomeController {
   @Get("bestsellers")
   async findAllSeller(){
     try{
-      const bestsellers = await this.homeService.findBestSeller();
+      let bestsellers : product_picture[];
+      bestsellers = await this.homeService.findBestSeller();
       return{
         suscess : true,
         bestsellers
@@ -46,5 +49,22 @@ export class HomeController {
       this.homeService.throwError(err);
     }
   }
+
+  @Get("suggestions")
+  async findSuggestion(){
+    try{
+      const suggestions = await this.homeService.findSuggestion();
+      return{
+        suscess : true,
+        suggestions
+      }
+    }catch(err){
+      this.homeService.throwError(err);
+    }
+  }
+
+  
   
 }
+
+ 

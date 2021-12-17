@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, product_picture } from '@prisma/client';
+import { async } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateHomeDto } from './dto/create-home.dto';
 
@@ -11,9 +12,7 @@ export class HomeService {
   }
 
   async findAllReviews() {
-    return this.prisma.home_app_review.findMany({
-      take: 50, 
-    });
+    return this.prisma.home_app_review.findMany();
   }
 
   async findAllPartners() {
@@ -36,14 +35,39 @@ export class HomeService {
     });
   }
 
-  async findBestSeller() {
-    return this.prisma.product.findMany({
+  async findBestSeller() : Promise<product_picture[]> {
+    const productId = await this.prisma.product.findMany({
       orderBy:{sold: "desc"},
       take: 20,
+      select:{id:true}
     });
-   
+    let pic : product_picture[];
+    for (let index = 0; index < productId.length; index++) {
+      if (!Array.isArray(pic)) {
+        pic = [];
+    }
+      pic.push(await this.prisma.product_picture.findFirst({
+        where:{
+          product_id: productId[index].id
+        }
+      }))
+
+    }
+    return pic;
   }
 
+
+  async getPopUp(){
+
+  }
+
+  async findSuggestion(){
+    this.prisma.rem_suggestion_homepage.findMany(
+      {
+        take: 20,
+      }
+    );
+  }
 
   throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {

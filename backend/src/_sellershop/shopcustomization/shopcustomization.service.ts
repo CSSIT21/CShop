@@ -176,22 +176,22 @@ export class ShopcustomizationService {
 		}
 	}
 
-	public async updateProductCarousel(
-		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
-		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
-	) {
-		try {
-			await this.prisma.shop_product_carousel.update({
-				where: {
-					id: shop_product_carouselWhereUniqueInput.id,
-				},
-				data: {
-					filter_name: shop_product_carouselCreateInput.filter_name,
-					products: shop_product_carouselCreateInput.products,
-				},
-			});
-		} catch (error) {}
-	}
+	// public async updateProductCarousel(
+	// 	shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
+	// 	shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+	// ) {
+	// 	try {
+	// 		await this.prisma.shop_product_carousel.update({
+	// 			where: {
+	// 				id: shop_product_carouselWhereUniqueInput.id,
+	// 			},
+	// 			data: {
+	// 				filter_name: shop_product_carouselCreateInput.filter_name,
+	// 				products: shop_product_carouselCreateInput.products,
+	// 			},
+	// 		});
+	// 	} catch (error) {}
+	// }
 
 	findAll() {
 		return `This action returns all shopcustomization`;
