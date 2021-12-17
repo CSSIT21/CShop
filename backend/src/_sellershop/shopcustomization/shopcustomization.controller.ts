@@ -5,9 +5,11 @@ import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { Prisma } from '.prisma/client';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 
+
 @Controller('shopcustomization')
 export class ShopcustomizationController {
 	constructor(private readonly shopcustomizationService: ShopcustomizationService) { }
+
 
 	@Get(':id')
 	async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -76,7 +78,11 @@ export class ShopcustomizationController {
 		@Body() shop_section_logCreateInput: Prisma.shop_section_logCreateInput,
 		@Res() res,
 	) {
-		const result = await this.shopcustomizationService.updateSection(id, shop_sectionUpdateInput, shop_section_logCreateInput);
+		const result = await this.shopcustomizationService.updateSection(
+			id,
+			shop_sectionUpdateInput,
+			shop_section_logCreateInput,
+		);
 		if (result) {
 			res.send({ success: true, result });
 		} else {
@@ -158,42 +164,5 @@ export class ShopcustomizationController {
 			res.send({ success: false });
 		}
 	}
-
-	// @Post('/productcarouselselect')
-	// async saveProductcarouselSelect(
-	// 	@Body() shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
-	// 	@Body() shop_product_carouselCreateInput: Prisma.shop_product_carousel_selectCreateInput,
-	// )
-
-	// @Patch('/bannercarousel')
-	// async updateBannerCarousel(
-	// 	@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
-	// 	@Body() shop_banner_carouselUpdateInput: Prisma.shop_banner_carouselUpdateInput,
-	// 	@Res() res,
-	// ) {
-	// 	const result = await this.shopcustomizationService.updateBannerCarousel(
-	// 		shop_banner_carouselWhereUniqueInput,
-	// 		shop_banner_carouselUpdateInput,
-	// 	);
-	// 	if (result) {
-	// 		res.send({ success: true, result });
-	// 	} else {
-	// 		res.send({ success: false });
-	// 	}
-	// }
-
-	// @Get()
-	// findAll() {
-	// 	return this.shopcustomizationService.findAll();
-	// }
-
-	// @Get(':id')
-	// findOne(@Param('id') id: string) {
-	// 	return this.shopcustomizationService.findOne(+id);
-	// }
-
-	// @Delete(':id')
-	// remove(@Param('id') id: string) {
-	// 	return this.shopcustomizationService.remove(+id);
-	// }
 }
+

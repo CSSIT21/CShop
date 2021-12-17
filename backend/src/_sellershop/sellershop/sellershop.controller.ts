@@ -67,22 +67,7 @@ export class SellershopController {
 			});
 		}
 	}
-	// @Get('products/:id')
-	// public async findProducts(
-	// 	@Param('id', ParseIntPipe) id: number,
-	// 	@Query('page', ParseIntPipe) page: number,
-	// 	@Res() res,
-	// ) {
-	// 	const products = await this.sellershopService.getShopProduct(id, page);
-	// 	if (products) {
-	// 		res.send({ success: true, ...products });
-	// 	} else {
-	// 		res.send({
-	// 			success: false,
-	// 		});
-	// 	}
-	// }
-
+  
 	@Get('sections/:id')
 	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections = await this.sellershopService.getShopSection(id);

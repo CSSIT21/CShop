@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { days, genders, months, years } from "../constants/register";
+import { genders } from "../constants/register";
 
 const registerState = atom({
   key: "registerState",
@@ -17,6 +17,8 @@ const registerState = atom({
     district: "",
     subDistrict: "",
     postalCode: "",
+    url: "",
+    title: "",
   },
 });
 

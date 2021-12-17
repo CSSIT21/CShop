@@ -303,16 +303,6 @@ export class SellershopService {
 
 	public async getShopSection(id: number) {
 		try {
-			// await this.prisma.shop_section.create({
-			// 	data: {
-			// 		shop_id: 1,
-			// 		sections: [
-			// 			{ id: '1234', type: 2 },
-			// 			{ id: '5678', type: 1 },
-			// 			{ id: '9101', type: 3 },
-			// 		],
-			// 	},
-			// });
 			const shopsections = await this.prisma.shop_section.findUnique({
 				where: {
 					shop_id: id,

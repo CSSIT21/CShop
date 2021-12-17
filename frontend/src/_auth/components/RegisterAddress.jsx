@@ -28,10 +28,14 @@ const RegisterAddress = ({
   const classes = useStyles();
 
   const back = () => {
-    setUserInfo({ ...userInfo, province: "" });
-    setUserInfo({ ...userInfo, district: "" });
-    setUserInfo({ ...userInfo, subDistrict: "" });
-    setUserInfo({ ...userInfo, postalCode: "" });
+    setUserInfo({
+      ...userInfo,
+      confirmPassword: "",
+      province: "",
+      district: "",
+      subDistrict: "",
+      postalCode: "",
+    });
     handleBack();
   };
 
@@ -71,7 +75,12 @@ const RegisterAddress = ({
             handleRegister();
             resetRegisterState();
           } else {
-            Swal.fire("Register Error!", data.message, "error");
+            Swal.fire({
+              title: "Register Error!",
+              text: data.message,
+              icon: "error",
+              timer: 3000,
+            });
           }
           setIsLoading(false);
         });
