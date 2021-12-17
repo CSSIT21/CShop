@@ -34,50 +34,53 @@ const Voucher = ({ shopcoupons }) => {
   const couponsPerRow = 2;
   const totalPage = Math.ceil(coupons.length / couponsPerRow);
   const handleClaim = (idx) => {
+    // macky api claim voucher
     setcoupons(
       coupons.filter((coupon, id) => {
         id != idx;
       })
     );
   };
+  if (coupons.length > 0) {
+    return (
+      <Box className={classes.wrapper}>
+        <Box className={classes.header}>
+          <Typography
+            sx={{ fontSize: "24px", fontWeight: "600", color: "#FD6637" }}
+          >
+            Shop Voucher
+          </Typography>
+          <CarouselButton
+            pageHandle={setPage}
+            currentPage={page}
+            totalPage={totalPage}
+          />
+        </Box>
 
-  return (
-    <Box className={classes.wrapper}>
-      <Box className={classes.header}>
-        <Typography
-          sx={{ fontSize: "24px", fontWeight: "600", color: "#FD6637" }}
-        >
-          Shop Voucher
-        </Typography>
-        <CarouselButton
-          pageHandle={setPage}
-          currentPage={page}
-          totalPage={totalPage}
-        />
+        <Box className={classes.content}>
+          <Carousel
+            items={coupons}
+            pageState={page}
+            setPageState={setPage}
+            itemsPerRow={couponsPerRow}
+          >
+            {(coupon, idx) => (
+              <Coupon
+                key={coupon.id}
+                coupon={coupon}
+                claimProps={{
+                  disabled: coupon.claimed,
+                  title: "Claim",
+                }}
+                onClick={() => handleClaim(idx)}
+              />
+            )}
+          </Carousel>
+        </Box>
       </Box>
-
-      <Box className={classes.content}>
-        <Carousel
-          items={coupons}
-          pageState={page}
-          setPageState={setPage}
-          itemsPerRow={couponsPerRow}
-        >
-          {(coupon, idx) => (
-            <Coupon
-              key={coupon.id}
-              coupon={coupon}
-              claimProps={{
-                disabled: coupon.claimed,
-                title: "Claim",
-              }}
-              onClick={() => handleClaim(idx)}
-            />
-          )}
-        </Carousel>
-      </Box>
-    </Box>
-  );
+    );
+  }
+  return <></>;
 };
 
 const useStyles = makeStyles({

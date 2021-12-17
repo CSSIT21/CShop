@@ -16,7 +16,10 @@ const Content = ({ section = {} }) => {
       className={classes.img}
     />,
     <CarouselBanner bannerItems={section.banners} />,
-    <CarouselProduct filterName={section.filter} items={section.products} />,
+    <CarouselProduct
+      filterName={section.filter_name ? section.filter_name : section.category}
+      items={section.products}
+    />,
     <iframe
       width="1120"
       height="630"

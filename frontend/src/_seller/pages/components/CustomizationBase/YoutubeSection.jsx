@@ -14,7 +14,7 @@ function YoutubeSection({
 
   useLayoutEffect(() => {
     if (id in information) {
-      setLink(information[id].content);
+      setLink(information[id].content.path);
     } else {
       console.log("link not found");
       setLink(videoLink);
@@ -28,7 +28,7 @@ function YoutubeSection({
   const confirmChange = () => {
     setInformation((info) => ({
       ...info,
-      [id]: { ...info[id], content: link },
+      [id]: { ...info[id], content: { path: link } },
     }));
   };
   return (
@@ -46,6 +46,8 @@ function YoutubeSection({
         {...rest}
       >
         <img
+          width="60%"
+          height="auto"
           src={`https://img.youtube.com/vi/${link}/hqdefault.jpg`}
           alt="thumnail"
         ></img>
