@@ -57,6 +57,7 @@ const LoginPage = () => {
               text: "Login Successful!",
               icon: "success",
               confirmButtonText: "OK",
+              timer: 3000,
             }).then(() => {
               router.push("/home");
             });
@@ -67,6 +68,7 @@ const LoginPage = () => {
               text: data.message,
               icon: "error",
               confirmButtonText: "OK",
+              timer: 3000,
             });
             resetAuth();
           }

@@ -8,7 +8,7 @@ import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProfileModule } from './profile/profile.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
-import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
+// import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
 import { BannerModule } from './home&log/banner/banner.module';
 import { HomeModule } from './home&log/home/home.module';
 import { LogSystemModule } from './home&log/log-system/log-system.module';
@@ -21,17 +21,17 @@ import { LogSystemModule } from './home&log/log-system/log-system.module';
 		BannerModule,
 		HomeModule,
 		LogSystemModule,
-    SellershopModule,
-    ShopcustomizationModule,
-    ProfileModule
+		SellershopModule,
+		// ShopcustomizationModule,
+		ProfileModule,
 	],
 	controllers: [AppController],
 	providers: [
-		// AppService,
-		// {
-		// 	provide: APP_GUARD,
-		// 	useClass: JwtAuthGuard,
-		// },
+		AppService,
+		{
+			provide: APP_GUARD,
+			useClass: JwtAuthGuard,
+		},
 	],
 })
-export class AppModule { }
+export class AppModule {}

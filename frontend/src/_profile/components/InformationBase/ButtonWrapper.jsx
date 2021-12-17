@@ -1,16 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import { Box } from "@mui/system";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import ConfirmDialogs from "~/common/components/ConfirmDialogs";
+import LoadingButton from "@mui/lab/LoadingButton";
 
-const ButtonWrapper = ({ isEdit, setIsEdit, newUserInfo }) => {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+const ButtonWrapper = ({ isEdit, setIsEdit, updateInfo, isLoading }) => {
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -31,24 +26,35 @@ const ButtonWrapper = ({ isEdit, setIsEdit, newUserInfo }) => {
           <Box
             sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
           >
-            <Button
-              sx={{
-                width: "200px",
-                height: "44px",
-                margin: "80px 30px 100px 0",
-                textTransform: "capitalize",
-              }}
-              variant="contained"
-              startIcon={<SaveIcon />}
-              onClick={() => {
-                window.scrollTo(0, 0);
-                setIsEdit(!isEdit);
-                setOpen(true);
-                newUserInfo();
-              }}
-            >
-              Save Changes
-            </Button>
+            {!isLoading ? (
+              <Button
+                sx={{
+                  width: "180px",
+                  height: "44px",
+                  margin: "80px 30px 100px 0",
+                  textTransform: "capitalize",
+                }}
+                variant="contained"
+                startIcon={<SaveIcon />}
+                onClick={() => {
+                  updateInfo();
+                }}
+              >
+                Update
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "180px",
+                  textTransform: "capitalize",
+                  height: "44px",
+                  margin: "80px 30px 100px 0",
+                }}
+              ></LoadingButton>
+            )}
+
             <Button
               sx={buttonStyle}
               variant="outlined"
@@ -62,11 +68,6 @@ const ButtonWrapper = ({ isEdit, setIsEdit, newUserInfo }) => {
           </Box>
         )}
       </Box>
-      <ConfirmDialogs
-        open={open}
-        handleClose={handleClose}
-        text="Your information has been changed"
-      />
     </>
   );
 };

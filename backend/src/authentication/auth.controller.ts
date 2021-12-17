@@ -46,7 +46,7 @@ export class AuthenticationController {
 	public login(@Req() request, @Res({ passthrough: true }) response) {
 		console.log('LogIn');
 		response.header('Access-Control-Allow-Credentials', true);
-		response.cookie('token', request.user.access_token);
+		response.cookie('authorization', request.user.access_token);
 		return request.user;
 	}
 
