@@ -83,6 +83,7 @@ export class AuthenticationService {
 					},
 				},
 			});
+			console.log(user);
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				if (e.code === 'P2002')

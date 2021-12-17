@@ -20,6 +20,7 @@ import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import internal from 'stream';
 import { Public } from 'src/common/decorators/public.decorator';
+import { async } from 'rxjs';
 
 @Controller('sellershop')
 export class SellershopController {
@@ -68,6 +69,36 @@ export class SellershopController {
 			res.send({
 				success: false,
 			});
+		}
+	}
+
+	@Get('/follow/:id')
+	@Public()
+	public async checkFollowShop(
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Param('id', ParseIntPipe) shop_id: number,
+		@Res() res,
+	) {
+		const result = await this.sellershopService.checkFollow(customer_id, shop_id);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: true, result });
+		}
+	}
+
+	@Post('/follow/:id')
+	@Public()
+	public async followShop(
+		@Body() customer_followed_shopCreateManyInput: Prisma.customer_followed_shopCreateManyInput,
+		@Param('id', ParseIntPipe) id: number,
+		@Res() res,
+	) {
+		const result = await this.sellershopService.followShop(customer_followed_shopCreateManyInput, id);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: false });
 		}
 	}
 
@@ -151,6 +182,7 @@ export class SellershopController {
 	@Post()
 	@Public()
 	public async create(
+		@Body() shop_pictureCreateInput: Prisma.shop_pictureCreateInput,
 		@Body() shop_infoCreateInput: Prisma.shop_infoCreateInput,
 		@Body() addressCreateInput: Prisma.addressCreateInput,
 		@Body() payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
@@ -162,6 +194,7 @@ export class SellershopController {
 			shop_infoCreateInput,
 			addressCreateInput,
 			payment_shop_bank_accountCreateInput,
+			shop_pictureCreateInput,
 		);
 		if (shop) {
 			res.send({ success: true, shop });

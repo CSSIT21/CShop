@@ -4,10 +4,9 @@ import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '.prisma/client';
 
-
 @Injectable()
 export class ShopcustomizationService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
 	async getSection(id: number) {
 		try {
@@ -561,7 +560,9 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async createProductCarouselSelect(shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput) {
+	async createProductCarouselSelect(
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
+	) {
 		try {
 			await this.prisma.shop_product_carousel_select.create({
 				data: shop_product_carousel_selectCreateInput,

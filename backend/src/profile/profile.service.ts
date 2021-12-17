@@ -27,7 +27,11 @@ export class ProfileService {
 					},
 				},
 			});
-			return user;
+			if (user.shop_info.length > 0) {
+				console.log('this is seller');
+				return { ...user, role: 'SELLER' };
+			}
+			return { ...user, role: 'CUSTOMER' };
 		} catch (e) {
 			console.error('ERROR: ', e.message);
 			throw new HttpException('User not found!', 500);
