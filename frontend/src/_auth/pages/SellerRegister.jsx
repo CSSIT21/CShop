@@ -7,14 +7,14 @@ import Grid from "@mui/material/Grid";
 import Success from "../components/Success";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import authState from "../../common/store/authState";
 import Checkbox from "@mui/material/Checkbox";
 import config from "~/common/constants";
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
-  const auth = useRecoilValue(authState);
+  const [auth, setAuth] = useRecoilState(authState);
   const [state, setstate] = useState(true);
   const [addressData, setAddressData] = useState([]);
   const [province, setProvince] = useState([]);
@@ -172,8 +172,19 @@ const SellerRegister = ({}) => {
           lastname: sellerInfo.bankInfo.lastName,
           account_number: sellerInfo.bankInfo.accountNumber.toString(),
         })
-        .then(({ data }) => {
-          setstate(false);
+        .then(() => {
+          axios
+            .get(`${config.SERVER_URL}/profile/me`, {
+              withCredentials: true,
+              validateStatus: () => true,
+            })
+            .then(({ data }) => {
+              if (data.success) {
+                setAuth(({ isLoggedIn }) => ({ isLoggedIn, user: data.user }));
+
+                setstate(false);
+              }
+            });
         });
     } catch (e) {
       console.log(e.message);

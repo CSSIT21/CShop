@@ -19,12 +19,14 @@ import { UpdateSellershopDto } from './dto/update-sellershop.dto';
 import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import internal from 'stream';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('sellershop')
 export class SellershopController {
-	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
+	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) {}
 
 	@Get(':id')
+	@Public()
 	public async findOne(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const shopinfo = await this.sellershopService.findOne(id);
 		if (shopinfo) {
@@ -37,6 +39,7 @@ export class SellershopController {
 	}
 
 	@Get('/products/:id')
+	@Public()
 	public async findProducts(
 		@Param('id', ParseIntPipe) id: number,
 		@Query('page', ParseIntPipe) page: number,
@@ -67,8 +70,9 @@ export class SellershopController {
 			});
 		}
 	}
-  
+
 	@Get('sections/:id')
+	@Public()
 	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections = await this.sellershopService.getShopSection(id);
 		if (sections) {
@@ -81,6 +85,7 @@ export class SellershopController {
 	}
 
 	@Get(':id/shopcomments')
+	@Public()
 	public async findShopComments(
 		@Param('id', ParseIntPipe) id: number,
 		@Query('page', ParseIntPipe) page: number,
@@ -97,6 +102,7 @@ export class SellershopController {
 	}
 
 	@Get(':id/shopproductscomments')
+	@Public()
 	public async findShopProductsComments(
 		@Param('id', ParseIntPipe) id: number,
 		@Query('page', ParseIntPipe) page: number,
@@ -113,6 +119,7 @@ export class SellershopController {
 	}
 
 	@Post(':id/shopdiscounts')
+	@Public()
 	public async findShopDiscount(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() discount_user_codeWhereInput: Prisma.discount_user_codeWhereInput,
@@ -129,6 +136,7 @@ export class SellershopController {
 	}
 
 	@Get(':id/flashsale')
+	@Public()
 	public async findFlashSales(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const flashsale = await this.sellershopService.getFlashSale(id);
 		if (flashsale) {
@@ -141,6 +149,7 @@ export class SellershopController {
 	}
 
 	@Post()
+	@Public()
 	public async create(
 		@Body() shop_infoCreateInput: Prisma.shop_infoCreateInput,
 		@Body() addressCreateInput: Prisma.addressCreateInput,
@@ -161,19 +170,5 @@ export class SellershopController {
 				success: false,
 			});
 		}
-		// this.prisma.shop_flashsale.create({
-		// 	data: {
-		// 		description: 'Sugoi Dekai',
-		// 		ended_date: new Date(),
-		// 		path: '',
-		// 		products: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
-		// 		shop_id: 1,
-		// 		started_date: '',
-		// 		title: '',
-		// 	},
-		// });
-		// res.send({
-		// 	success: true,
-		// });
 	}
 }
