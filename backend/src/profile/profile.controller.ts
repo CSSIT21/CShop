@@ -21,10 +21,7 @@ export class ProfileController {
 		return {
 			success: true,
 			message: "Fetching user's info successfully",
-			user: {
-				...user,
-				role: currentUser.role,
-			},
+			user,
 		};
 	}
 

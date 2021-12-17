@@ -27,13 +27,11 @@ export class ProfileService {
 					},
 				},
 			});
-			// let role = 'CUSTOMER';
-			// if (user.shop_info.length > 0) {
-			// 	role = 'SELLER';
-			// }
-			// const userWithRole = { ...user, role };
-			// return userWithRole;
-			return user;
+			if (user.shop_info.length > 0) {
+				return { ...user, role: 'SELLER' };
+			}
+			return { ...user, role: 'CUSTOMER' };
+
 		} catch (e) {
 			console.error('ERROR: ', e.message);
 			throw new HttpException('User not found!', 500);
