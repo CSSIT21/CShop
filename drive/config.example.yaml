@@ -1,0 +1,21 @@
+# Fiber binding address
+address: :8080
+
+# Private file manipulation token
+token: abcd1234
+
+# File storage path
+path: ./storage
+
+# Base URL
+url: http://localhost:8080/
+
+# SQLite database path
+sqlite: ./database.db
+
+# Log level
+#  - 0: Silent
+#  - 1: Error
+#  - 2: Warn
+#  - 3: Info
+loglevel: 3

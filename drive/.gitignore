@@ -1,0 +1,20 @@
+# JetBrains stuffs
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/contentModel.xml
+
+# SQLite database
+*.db
+
+# Configuration file
+/config.yaml
+
+# Default storage directory
+/storage
+
+# Binary build
+/CShop*
+/*.bin
