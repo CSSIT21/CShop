@@ -134,6 +134,17 @@ export class BannerService {
     return bannerInfo;
   }
 
+  async updateInfos(params: {
+    data: Prisma.home_bannerUpdateInput;
+    where?: Prisma.home_banner_pictureWhereInput;
+  }) {
+    const {data, where} = params;
+    return this.prisma.home_banner.updateMany({
+      data,
+      where,
+    });
+  }
+
   // Delete information and pictures of banner by id
   async deleteBannerById(where: Prisma.home_bannerWhereUniqueInput) {
     const bannerInfo = await this.prisma.home_banner.delete({ where });

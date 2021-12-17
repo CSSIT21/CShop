@@ -34,6 +34,12 @@ const ManageBanner = () => {
 			})
 	};
 
+	const handleSave = () => {
+
+		axios
+			.patch(`${config.SERVER_URL}/home/banner`)
+	};
+
 	const onClickDialog = () => {
 		setOpen(!open);
 	};
@@ -55,6 +61,7 @@ const ManageBanner = () => {
 					title="Save"
 					width="90px"
 					height="42px"
+					onClick={handleSave}
 				/>
 			</Box>
 

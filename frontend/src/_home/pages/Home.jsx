@@ -26,7 +26,7 @@ const HomePage = () => {
     <>
       <Popup />
       <TopBanner />
-      <CategoriesSection />
+      <CategoriesSection  ca/>
       <BestsellerSection bestsellerItems={products} onFavourite={onFavourite} />
       <SuggestionSection suggestItems={products} onFavourite={onFavourite} />
       <BottomBanner />

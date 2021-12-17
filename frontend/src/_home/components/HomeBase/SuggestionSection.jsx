@@ -1,9 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Typography, Button } from "@mui/material";
-import CButton from "../../../common/components/CButton";
+import CButton from "~/common/components/CButton";
 import GridCard from "../commonBase/GridCard";
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+
+const SuggestionSection = ({ suggestItems, onFavourite }) => {
+	const auth = useRecoilValue(authState);
+	const [products, setProducts] = useState(suggestItems);
+	const [skip, setSkip] = useState(0);
+	const classes = useStyles();
+	
+	const getData = () => {
+		axios
+			.get(`${config.SERVER_URL}/suggestions/${auth.user.id}?take=16&skip=${skip}`)
+			.then(({data}) => {
+				if (data.success) {
+					return setProducts(data.suggestions);
+				}
+				else {
+					return console.log(data);
+				}
+			})
+			.catch((err) => {
+				return console.log(err.message);
+			})
+	};
+
+	const getMoreData = () => {
+		setSkip(skip + 12);
+		axios
+			.get(`${config.SERVER_URL}/suggestions/${auth.user.id}?take=12&skip=${skip}`)
+			.then(({data}) => {
+				if (data.success) {
+					return setProducts(products => [...products, ...data.suggestions]);
+				}
+				else {
+					return console.log(data);
+				}
+			})
+			.catch((err) => {
+				return console.log(err.message);
+			})
+	};
+	
+	useEffect(() => {
+		getData();
+	}, [])
+
+	return (
+		<Box className={classes.suggestionWrapper}>
+			<Box className={classes.suggestionHeader}>
+				<Typography component="h3" fontSize="30px" fontWeight={600}>Suggestions</Typography>
+				<Button href="/home/suggest" className={classes.suggestionButton} color="primary" >Show all </Button>
+			</Box>
+
+			<GridCard addToCart={false} products={products} onFavorite={onFavourite} />
+
+			<Box display="flex" justifyContent="center">
+				<CButton title="Show more products" height='40px' onClick={getMoreData} />
+			</Box>
+		</Box>
+	);
+};
 
 const useStyles = makeStyles({
 	suggestionWrapper: {
@@ -24,27 +88,6 @@ const useStyles = makeStyles({
 		},
 	},
 });
-
-
-const SuggestionSection = ({ suggestItems, onFavourite }) => {
-	const [products, setProducts] = useState(suggestItems);
-	const classes = useStyles();
-
-	return (
-		<Box className={classes.suggestionWrapper}>
-			<Box className={classes.suggestionHeader}>
-				<Typography component="h3" fontSize="30px" fontWeight={600}>Suggestions</Typography>
-				<Button href="/home/suggest" className={classes.suggestionButton} color="primary" >Show all </Button>
-			</Box>
-
-			<GridCard addToCart={false} products={products} onFavorite={onFavourite} />
-
-			<Box display="flex" justifyContent="center">
-				<CButton title="Show more products" height='40px' />
-			</Box>
-		</Box>
-	);
-};
 
 
 export default SuggestionSection;

@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { Fab } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { Box } from "@mui/system"
 import Carousel from "~/common/components/Carousel";
 import AppReviewCard from '../commonBase/AppReviewCard';
+import axios, { Axios } from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants";
 
 const ReviewCarousel = ({
 	items = [],
@@ -28,6 +32,26 @@ const ReviewCarousel = ({
 			pageHandle(currentPage + 1);
 		}
 	};
+
+	const getData = () => {
+		axios
+			.get(`${config.SERVER_URL}/review`)
+			.then(({data}) => {
+				if (data.success) {
+					return setReview(data.review);
+				}
+				else {
+					return console.log(data);
+				}
+			})
+			.catch((err) => {
+					return console.log(err.message);
+			})
+	};
+
+	useEffect(() => {
+		getData();
+	}, [])
 
 	return (
 		<>

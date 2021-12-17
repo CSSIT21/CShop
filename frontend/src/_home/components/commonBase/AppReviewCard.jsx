@@ -16,8 +16,8 @@ const AppReviewCard = ({ review }) => {
 
             <Box className={classes.profileBox}>
                 <Avatar
-                    alt={review.username}
-                    src={review.imageURL}
+                    alt={review.nickname}
+                    src={review.path}
                     sx={{
                         width: 40,
                         height: 40,
@@ -25,11 +25,11 @@ const AppReviewCard = ({ review }) => {
                     }}
                 />
                 <Typography color="#394160" fontSize="13px" fontWeight={500} mb={0.5}>
-                    {review.name}
+                    {review.nickname}
                 </Typography>
 
                 <Typography color="#A0A3BD" fontSize="10px" fontWeight={400}>
-                    Commented on {review.date}
+                    Commented on {review.review_date}
                 </Typography>
             </Box>
         </Box >
