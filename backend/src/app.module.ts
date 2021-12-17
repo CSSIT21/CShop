@@ -36,4 +36,4 @@ import { CartModule } from './cart/cart.module';
 		// },
 	],
 })
-export class AppModule { }
+export class AppModule {}

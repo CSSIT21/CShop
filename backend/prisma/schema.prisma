@@ -239,9 +239,8 @@ model shop_banner_carousel {
 }
 
 model shop_product_carousel {
-  id          String @id
-  filter_name String
-  products    Int[]
+  id       String @id @unique
+  category String
 }
 
 model shop_video {
@@ -296,7 +295,7 @@ model product {
   sold                            Int
   added_date                      DateTime                         @default(now()) @db.Timestamp(6)
   suggest_products                Int[]
-  rating                          Decimal                          @db.Decimal(1, 1)
+  rating                          Decimal                          @db.Decimal(2, 1)
   category_id_from_product        category                         @relation(fields: [category_id], references: [id])
   shop_id_from_product            shop_info                        @relation(fields: [shop_id], references: [id])
   business_product_view_records   business_product_view_records?
@@ -1474,6 +1473,12 @@ model shop_flashsale {
   shop_flashsale_history shop_flashsale_history?
 }
 
+model shop_product_carousel_select {
+  id          String @id @unique
+  filter_name String
+  products    Int[]
+}
+
 enum homeBannerPicturePosition {
   Main
   Sub
@@ -1491,6 +1496,7 @@ enum Shop_section {
   BannerCarousel
   ProductCarousel
   Video
+  ProductCarouselSelect
 }
 
 enum Platform {
