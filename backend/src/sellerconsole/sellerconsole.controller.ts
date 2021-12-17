@@ -10,10 +10,10 @@ import { request } from 'http';
 export class SellerconsoleController {
 	constructor(private readonly sellerconsoleService: SellerconsoleService) {}
 
-	@Get(':id/discounthistory')
+	@Get(':id/mydiscount')
 	@Public()
-	getHistoryDiscount(@Param('id') id: number) {
-		const res = this.sellerconsoleService.getdiscountHistory(+id);
+	getMyDiscount(@Param('id') id: number) {
+		const res = this.sellerconsoleService.getmyDiscount(+id);
 		// const title = this.sellerconsoleService.getProductName(discountid);
 		return res;
 	}

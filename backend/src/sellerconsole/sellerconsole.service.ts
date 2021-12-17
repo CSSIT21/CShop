@@ -28,15 +28,17 @@ export class SellerconsoleService {
 		return res;
 	}
 
-	async getdiscountHistory(shopid: number) {
-		const res = await this.prisma.sconsole_discount_log.findMany({
+	async getmyDiscount(shopid: number) {
+		const res = await this.prisma.discount_shop.findMany({
 			where: {
 				shop_id: shopid,
 			},
 			select: {
+				shop_id : true,
 				discount_id: true,
-				customer_id_from_sconsole_discount_log: true,
-				product_id_from_sconsole_discount_log: true,
+				max_quantity : true,
+				// customer_id_from_sconsole_discount_log: true,
+				// product_id_from_sconsole_discount_log: true,
 			},
 		});
 		return res;
