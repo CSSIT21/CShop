@@ -8,13 +8,16 @@ import AddPhotoAlternateRounded from "@mui/icons-material/AddPhotoAlternateRound
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 function CommentsBox({
-  value,
-  setValue,
-  handleChange,
+  commentProduct,
+  setCommentProduct,
+  handleChangeCommentProduct,
+  handleChangeCommentShop,
   imageList,
   setImageList,
   onUploadFile,
   deleteImage,
+  commentShop,
+  setCommentShop,
 }) {
   return (
     <Box sx={{ width: "100%", height: "100px", marginTop: "20px" }}>
@@ -76,21 +79,36 @@ function CommentsBox({
           rows={4}
           fullWidth
           defaultValue="No comment"
-          value={value}
+          value={commentProduct}
           placeholder="Write your product review"
-          onChange={handleChange}
+          onChange={handleChangeCommentProduct}
         />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "end",
-          margin: "12px 0",
-          color: "#A0A3BD",
-        }}
-      >
-        <Typography fontSize="14px">{value.length} / 120</Typography>
+        <Typography fontSize="18px" fontWeight="500" margin="20px 0 10px 0">
+          Optional
+        </Typography>
+        <Box>
+          <TextField
+            id="outlined-multiline-static"
+            multiline
+            rows={4}
+            fullWidth
+            defaultValue="No comment"
+            value={commentShop}
+            placeholder="Write the shop review"
+            onChange={handleChangeCommentShop}
+          />
+        </Box>
+        {/* <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "end",
+            margin: "12px 0",
+            color: "#A0A3BD",
+          }}
+        >
+          <Typography fontSize="14px">{value.length} / 120</Typography>
+        </Box> */}
       </Box>
     </Box>
   );

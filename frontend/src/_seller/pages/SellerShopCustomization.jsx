@@ -206,6 +206,7 @@ const SellerShopCustomization = () => {
         .then(({ data }) => setState({ area: data.sections }));
     })();
   }, []);
+  console.log(Object.entries(sectionInfos));
   const saveChange = async () => {
     setloading(true);
     await axios
