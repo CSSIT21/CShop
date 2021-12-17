@@ -7,9 +7,8 @@ import { PictureListDto } from './dto/pictureList.dto';
 export class ReviewProductService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	async createReview(
+	async createProductReview(
 		reviewInput: Prisma.product_reviewsCreateInput,
-		// reviewPicturesInput: Prisma.product_reviews_pictureCreateInput,
 		reviewPictureList: PictureListDto,
 		product_id: number,
 		customer_id: number,
@@ -40,6 +39,22 @@ export class ReviewProductService {
 				rating: reviewInput.rating,
 				comment: reviewInput.comment,
 				review_picture_id: reviewPicturesId,
+			},
+		});
+		return createReview;
+	}
+	
+	async createShopReview(
+		reviewInput: Prisma.shop_commentCreateInput,
+		shop_id: number,
+		customer_id: number,
+	) {
+		const createReview = this.prisma.shop_comment.create({
+			data: {
+				shop_id,
+				customer_id: customer_id,
+				rating: reviewInput.rating,
+				comment: reviewInput.comment
 			},
 		});
 		return createReview;

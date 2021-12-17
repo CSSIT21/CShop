@@ -54,7 +54,7 @@ const ProductPage = (props) => {
       .get(`${config.SERVER_URL}/product/shortlink/${id}`)
       .then(({ data }) => {
         if (data.success) {
-          navigator.clipboard.writeText(data.link);
+          navigator.clipboard.writeText(`http://localhost:8080/l/${data.link}`);
         } else alert("Fail to fetch data :(");
       });
   };

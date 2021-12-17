@@ -15,8 +15,9 @@ export class ShortLinkService {
                     product_id:true
                 }
             })
+            
 
-            return product_id
+            return product_id.product_id
         } catch (e) {
              if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);

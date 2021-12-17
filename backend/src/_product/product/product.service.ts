@@ -136,7 +136,7 @@ export class ProductService {
 				const link = await this.prisma.product_short_link.create({
 					data: {
 						product_id: id,
-						shorted_link: `CShop/${generatedString}`,
+						shorted_link: generatedString,
 					},
 				});
 				return link.shorted_link;
