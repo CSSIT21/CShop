@@ -39,6 +39,16 @@ export class UserCard extends React.Component {
     };
     this.type = 'General Restriction';
     this.desc = 'Pending Description';
+    this.address = {address_line: 'PENDING', postal_code: 'PENDING'};
+  }
+
+  componentDidMount(){
+    this.props.address.forEach((add) => {
+      if(add.id == this.props.user.id){
+        this.address = add;
+      }
+    })
+    this.forceUpdate();
   }
 
   handleExpandClick = () => {
@@ -46,7 +56,7 @@ export class UserCard extends React.Component {
   };
 
   update = () => {
-    this.forceUpdate()
+    this.forceUpdate();
   };
 
   dialogClickOpen = () => {
@@ -132,13 +142,13 @@ export class UserCard extends React.Component {
               <Typography noWrap style={{ fontSize: '15px'}}>#{this.props.user.id}</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px'}}>{this.props.user.customer_address.address_line}</Typography>
+              <Typography style={{ fontSize: '15px'}}>{this.address.address_line}</Typography>
             </Box>
             <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_info.gender}</Typography>
             </Box>
             <Box sx={{ width: '9.5%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_address.postal_code}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.address.postal_code}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.date.slice(0, 10)}</Typography>

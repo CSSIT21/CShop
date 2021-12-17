@@ -91,7 +91,6 @@ const ManageAccountPage = () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/products"
         );
-        console.log(fetchedData.data)
         setProductsList(fetchedData.data);
       };
     

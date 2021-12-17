@@ -142,6 +142,11 @@ export class ManageaccountController {
     });
   }
 
+  @Get('/address')
+  getAddress(@Query('id') i: number){
+    return this.prisma.address.findMany();
+  }
+
   @Get('tickets')
   getTickets(){
     return this.prisma.admin_support_picture.findMany({

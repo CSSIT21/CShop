@@ -70,7 +70,6 @@ const ManageSellerAccountPage = () => {
           "http://localhost:8080/manageaccount/sellers"
         );
         setSellersList(fetchedData.data);
-        console.log(fetchedData.data);
       };
 
     const [sortBy, setSortBy] = React.useState('');

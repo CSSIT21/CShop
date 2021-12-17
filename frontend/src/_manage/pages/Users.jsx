@@ -75,8 +75,15 @@ const ManageAccountPage = () => {
           "http://localhost:8080/manageaccount/users"
         );
         setUsersList(fetchedData.data);
-        console.log(fetchedData.data);
       };
+
+      const [address, setAddressList] = React.useState([]);
+      const setAddress = async () => {
+          const fetchedData = await axios.get(
+            "http://localhost:8080/manageaccount/address"
+          );
+          setAddressList(fetchedData.data);
+        };
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
@@ -111,8 +118,9 @@ const ManageAccountPage = () => {
         document.location.reload();
     }
 
-    useEffect(()=>{
-        setUsers(); 
+    useEffect(async ()=>{
+        setUsers();
+        setAddress();
     }, [])
 
     return (
@@ -216,7 +224,7 @@ const ManageAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard user={key} deleteRestriction={deleteRestriction}/>
+                                    <UserCard user={key} deleteRestriction={deleteRestriction} address={address}/>
                                 </div>
                             </li>
                         ))}
