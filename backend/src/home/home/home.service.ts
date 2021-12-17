@@ -10,7 +10,9 @@ export class HomeService {
   constructor(private readonly prisma: PrismaService) { }
 
   async findAllReviews() {
-    return this.prisma.home_app_review.findMany();
+    return this.prisma.home_app_review.findMany({
+      take: 20,
+    });
   }
 
   async findAllPartners() {
@@ -24,34 +26,26 @@ export class HomeService {
         },
       },
       select: {
+        id: true,
         name: true,
-        path: true,
-        title_pic: true,
+        title: true,
         type: true,
+        path: true,
         thumbnail: true,
       }
     });
   }
 
-  async findBestSeller() : Promise<product_picture[]> {
-    const productId = await this.prisma.product.findMany({
-      orderBy:{sold: "desc"},
+  async findBestSeller() {
+    return this.prisma.product.findMany({
+      orderBy:{
+        sold: "desc",
+      },
       take: 20,
-      select:{id:true}
+      include: {
+        product_picture: true,
+      },
     });
-    let pic : product_picture[];
-    for (let index = 0; index < productId.length; index++) {
-      if (!Array.isArray(pic)) {
-        pic = [];
-    }
-      pic.push(await this.prisma.product_picture.findFirst({
-        where:{
-          product_id: productId[index].id
-        }
-      }))
-
-    }
-    return pic;
   }
 
   async getPopUp(){
@@ -65,6 +59,8 @@ export class HomeService {
         },
       },
       select:{
+        start_date: true,
+        end_date: true,
         description: true,
         path: true,
         thumbnail: true,
@@ -72,14 +68,83 @@ export class HomeService {
     });
   }
 
-  async findFavorite(){
+  async findFavorite(params: {
+    where?: Prisma.customer_wishlistWhereInput;
+    take?: number;
+    skip?: number;
+  }){
+    const {where, take, skip} = params;
+    const productIds = await this.prisma.customer_wishlist.findMany({
+      where,
+      take,
+      skip,
+      select: {
+        product_id: true,
+      },
+    })
+
+    const products = [];
+    for (let id of productIds) {
+      let product = await this.prisma.product.findUnique({
+        where: {
+          id: id.product_id
+        },
+        include: {
+          product_picture: true,
+        },
+      });
+
+      products.push(product);
+    }
     
+    return products;
   }
 
-  async findSuggestion(){
-    this.prisma.rem_suggestion_homepage.findMany(
-      
-    );
+  async findSuggestion(params: {
+    where?: Prisma.rem_suggestion_homepageWhereUniqueInput;
+    take?: number;
+    skip?: number;
+  }){
+    const {where, take, skip} = params;
+
+    const {product_id} = await this.prisma.rem_suggestion_homepage.findUnique({
+      where,
+      select: {
+        product_id: true,
+      },
+    });
+
+    const products = [];
+    for (let id of product_id) {
+      let product = await this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          product_picture: true,
+        },
+      });
+
+      products.push(product);
+    }
+
+    return products;
+  }
+
+  async findCategory(){
+    return this.prisma.category.findMany({
+      select:{
+        id: true,
+        name: true,
+        icon_id_from_category: {
+          select: {
+            id:true,
+            title: true,
+            path: true,
+          },
+        },
+      }
+    });
   }
 
   throwError(err) {
