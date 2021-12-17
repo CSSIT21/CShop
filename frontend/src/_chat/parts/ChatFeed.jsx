@@ -66,7 +66,7 @@ const ChatFeed = (props) => {
                     displayName={
                         currentUser.displayname
                     }
-                    status="active"
+                    status={currentUser.status}
                     pic={
                         currentUser.pic
                     }
