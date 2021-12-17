@@ -94,6 +94,7 @@ const BannerItem = ({
 				})
 				.catch((err) => {
 					console.log(err);
+					e.target.value = null;
 					return Swal.fire('Oop!', 'Cannot added new sub image', 'error');
 				})
 
