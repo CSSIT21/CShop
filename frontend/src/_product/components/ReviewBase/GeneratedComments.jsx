@@ -1,7 +1,5 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import { styled } from "@mui/material/styles";
 
 function GeneratedComments({ generatedComments, setChipData }) {
   const handleClick = (e) => {
@@ -25,7 +23,6 @@ function GeneratedComments({ generatedComments, setChipData }) {
           <Chip
             label={e.label}
             clickable
-            color={e.clicked ? "primary" : "default"}
             onClick={() => handleClick(e)}
             key={e.key}
             variant="outlined"

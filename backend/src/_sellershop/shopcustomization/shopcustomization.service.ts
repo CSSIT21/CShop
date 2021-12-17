@@ -45,7 +45,6 @@ export class ShopcustomizationService {
 					},
 				});
 				const sections = shopsections.sections;
-
 				if (shopsections.sections !== null) {
 					var parsedsections = JSON.parse(JSON.stringify(sections));
 					let resultSections = {};

@@ -8,50 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import CommentFooter from "./CommentFooter";
 import ReviewPhoto from "./ReviewPhotos";
 import Stack from "@mui/material/Stack";
-import PropTypes from "prop-types";
-import CloseIcon from "@mui/icons-material/Close";
-import Carousel from "../../../common/components/Carousel";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-
-const BootstrapDialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
-
-  return (
-    <DialogTitle sx={{ m: 1, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: -16,
-            top: 8,
-            transform: "translate(-50%, 100%)",
-            color: "#FD6637",
-            zIndex: 1,
-            backgroundColor: "#ffffff",
-
-            boxShadow: " 0px 1px 3px 0px rgba(128,128,128,0.75)",
-
-            "&:hover": {
-              backgroundColor: "#dddddd",
-            },
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-};
-
-BootstrapDialogTitle.propTypes = {
-  children: PropTypes.node,
-  onClose: PropTypes.func.isRequired,
-};
+import DialogImage from "./DialogImage";
 
 const Comments = ({
   // commentDetails,
@@ -213,41 +170,13 @@ const Comments = ({
           </Stack>
 
           {/* Dialog */}
-          <Dialog
-            onClose={handleCloseDialog}
-            aria-labelledby="customized-dialog-title"
-            open={openDialog}
-            PaperComponent={Box}
-            sx={{ objectFit: "contain" }}
-          >
-            <Box sx={{ position: "relative" }}>
-              <BootstrapDialogTitle
-                id="customized-dialog-title"
-                onClose={handleCloseDialog}
-              ></BootstrapDialogTitle>
-              <Carousel
-                items={reviewPhoto}
-                pageState={page}
-                setPageState={setPage}
-                itemsPerRow={1}
-                hideArrow={false}
-              >
-                {(item, idx) => (
-                  <Box>
-                    <DialogContent>
-                      <Box>
-                        <img
-                          src={item}
-                          alt={idx}
-                          style={{ width: "100%", maxWidth: "60vw" }}
-                        />
-                      </Box>
-                    </DialogContent>
-                  </Box>
-                )}
-              </Carousel>
-            </Box>
-          </Dialog>
+          <DialogImage
+            handleCloseDialog={handleCloseDialog}
+            openDialog={openDialog}
+            photo={reviewPhoto}
+            page={page}
+            setPage={setPage}
+          />
         </Box>
       </Box>
 

@@ -58,6 +58,7 @@ export class SellershopController {
 			outOfStock,
 			rating,
 		);
+
 		if (products) {
 			res.send({ success: true, ...products });
 		} else {
