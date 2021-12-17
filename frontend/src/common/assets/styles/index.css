@@ -37,3 +37,7 @@ a {
     background-color: transparent;
   }
 }
+
+.MuiDialog-paper.MuiDialog-paperScrollPaper.MuiDialog-paperWidthSm.MuiBox-root {
+  overflow-y: unset !important;
+}

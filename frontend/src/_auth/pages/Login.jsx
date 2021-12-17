@@ -7,34 +7,71 @@ import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import authState from "~/common/store/authState";
+import axios from "axios";
+import config from "../../common/constants/index";
+import Swal from "sweetalert2";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import authState from "../../common/store/authState";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const LoginPage = () => {
   const classes = useStyles();
   const router = useHistory();
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [auth, setAuth] = useRecoilState(authState);
   const [emailError, setemailError] = useState("");
   const [passwordError, setpasswordError] = useState("");
-  const onLogin = () => {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const valid = re.test(email);
-    if (email == "") {
+  const [auth, setAuth] = useRecoilState(authState);
+  const resetAuth = useResetRecoilState(authState);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onLogin = async () => {
+    if (email === "") {
       setemailError("This field is required");
-    } else if (!valid) {
-      setemailError("Email is invalid");
     }
-    if (password == "") {
+    if (password === "") {
       setpasswordError("This field is required");
-    } else if (email != auth.user.email || password != auth.user.password) {
-      setpasswordError("Email or password is incorrect");
     }
-    if (email === auth.user.email && password === auth.user.password) {
-      router.push("/home");
-      setAuth({ ...auth, isLoggedIn: true });
+    if (email.trim() != "" && password.trim() != "") {
+      setIsLoading(true);
+      axios
+        .post(
+          config.SERVER_URL + "/auth/login",
+          {
+            username: email,
+            password,
+          },
+          {
+            withCredentials: true,
+            validateStatus: () => true,
+          }
+        )
+        .then(({ data }) => {
+          console.log(data);
+          if (data.success) {
+            setAuth(({ user, isLoggedIn }) => {
+              return { isLoggedIn: true, user: data.user };
+            });
+            Swal.fire({
+              title: "Success",
+              text: "Login Successful!",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then(() => {
+              router.push("/home");
+            });
+          } else {
+            setpasswordError("Email or password is incorrect");
+            Swal.fire({
+              title: "Login Failed!",
+              text: data.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+            resetAuth();
+          }
+          setIsLoading(false);
+        });
     }
   };
 
@@ -90,18 +127,31 @@ const LoginPage = () => {
             <Box className={classes.error}>{passwordError}</Box>
           )}
           <Box className={classes.button}>
-            <Button
-              variant="contained"
-              style={{
-                width: "500px",
-                height: "50px",
-                textTransform: "capitalize",
-                marginTop: "40px",
-              }}
-              onClick={onLogin}
-            >
-              Sign In
-            </Button>
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                style={{
+                  width: "500px",
+                  height: "50px",
+                  textTransform: "capitalize",
+                  marginTop: "40px",
+                }}
+                onClick={onLogin}
+              >
+                Sign In
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "500px",
+                  textTransform: "capitalize",
+                  height: "50px",
+                  marginTop: "40px",
+                }}
+              ></LoadingButton>
+            )}
           </Box>
           <Box className={classes.text}>Forgot your password?</Box>
           <Box className={classes.divider}>OR</Box>

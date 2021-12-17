@@ -20,8 +20,8 @@ import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { LoggedIn } from 'src/common/decorators/loggedIn.decorator';
-
 import { customer } from '@prisma/client';
+import { LoginDto } from './dto/login.dto';
 
 // @ApiTags("Authentication")
 @Controller('auth')
@@ -34,18 +34,21 @@ export class AuthenticationController {
 		return await this.authenticationService.register(data);
 	}
 
-	@Get('/')
+	@Post('/checkemail')
 	@Public()
-	public async findAll() {
-		return await this.authenticationService.findAll();
+	public async checkemail(@Body() data: LoginDto) {
+		return await this.authenticationService.checkemail(data);
 	}
 
-	// @Post('login')
-	// @Public()
-	// @UseGuards(AuthGuard('local'))
-	// public login(@Req() request, @Res({ passthrough: true }) response) {
-	// 	return request.user;
-	// }
+	@Post('login')
+	@Public()
+	@UseGuards(AuthGuard('local'))
+	public login(@Req() request, @Res({ passthrough: true }) response) {
+		console.log('LogIn');
+		response.header('Access-Control-Allow-Credentials', true);
+		response.cookie('token', request.user.access_token);
+		return request.user;
+	}
 
 	// @Get('me')
 	// @Roles('ADMIN')

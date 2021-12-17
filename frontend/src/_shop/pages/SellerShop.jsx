@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/sellerShopBase/Header";
 import TabsController from "../components/sellerShopBase/TabsController";
 import Voucher from "../components/sellerShopBase/Voucher";
@@ -11,125 +11,63 @@ import BannerImage from "~/_home/assets/images/TopBanner.png";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
-
-const sections = [
-  {
-    id: "4",
-    page: {
-      type: 3,
-      id: "4",
-      filter: "Computer",
-      content: fakeProducts,
-    },
-  },
-  {
-    id: "1",
-    page: {
-      type: 1,
-      id: "1",
-      content: { img: CategoryPic1 },
-    },
-  },
-  {
-    id: "2",
-    page: {
-      type: 1,
-      id: "2",
-      content: { img: CategoryPic2 },
-    },
-  },
-  {
-    id: "4",
-    page: {
-      type: 3,
-      id: "4",
-      filter: "Refrigerator",
-      content: fakeProducts,
-    },
-  },
-  {
-    id: "3",
-    page: {
-      type: 2,
-      id: "3",
-      content: [
-        {
-          id: 0,
-          url: BannerImage,
-        },
-        {
-          id: 1,
-          url: BannerImage,
-        },
-        {
-          id: 2,
-          url: BannerImage,
-        },
-      ],
-    },
-  },
-
-  {
-    id: "4",
-    page: {
-      type: 3,
-      id: "4",
-      filter: "TV & Entertainments",
-      content: fakeProducts,
-    },
-  },
-  {
-    id: "5",
-    page: {
-      type: 4,
-      content: "https://www.youtube.com/embed/F5tSoaJ93ac",
-    },
-  },
-];
-
-const menus = [
-  {
-    cateId: 3,
-    title: "Games",
-  },
-  {
-    cateId: 4,
-    title: "PC",
-  },
-  {
-    cateId: 5,
-    title: "Fan",
-  },
-  {
-    cateId: 6,
-    title: "Umbar",
-  },
-];
+import axios from "axios";
+import { useParams } from "react-router";
+import { useHistory } from "react-router-dom";
+import config from "~/common/constants";
 
 const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
 
 const SellerShop = () => {
+  const history = useHistory();
   const classes = useStyles();
-  const [flashItems, setflashItems] = useState(flashSaleData.products);
+  const { id, cateId } = useParams();
+  const [coupons, setcoupons] = useState();
+  const [shopInfo, setshopInfo] = useState();
+  const [sections, setsections] = useState([]);
+  const [menus, setmenus] = useState([]);
+  const [flashSale, setflashSale] = useState(flashSaleData);
   const onFavourite = (index) => {
     setflashItems((flashItems) => {
       const target = flashItems[index];
       target.favourite = !target.favourite;
-
       return [...flashItems];
     });
   };
+  useEffect(async () => {
+    await axios
+      .get(`${config.SERVER_URL}/sellershop/${id}`)
+      .then(({ data }) => {
+        setshopInfo(data.shopinfo);
+        setmenus(data.shopinfo.categories);
+      })
+      .catch((e) => {
+        console.log(e.message);
+        history.push("/*");
+      });
+    axios
+      .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
+      .then(({ data }) => {
+        setsections(data.sections);
+      });
+    axios
+      .get(`${config.SERVER_URL}/sellershop/${id}/shopdiscounts`)
+      .then(({ data }) => {
+        setcoupons(data.shopvouchers);
+      });
+  }, []);
   return (
     <>
       <Box className={classes.body}>
         <Box className={classes.container}>
           <Box
             sx={{
+              width: "80vw",
               marginBottom: "30px",
               padding: "25px 75px",
             }}
           >
-            <Header />
+            <Header shopInfo={shopInfo} />
           </Box>
           <Box
             sx={{
@@ -141,19 +79,18 @@ const SellerShop = () => {
           <Box className={classes.containerWhite}>
             <TabsController categories={menus} />
           </Box>
-          <FlashSale
-            items={flashItems}
-            endAt={flashSaleData.endAt}
-            onFavourite={onFavourite}
-          />
-          <Box className={classes.containerWhite}>
-            <Voucher />
-          </Box>
-
+          {flashSale && (
+            <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
+          )}
+          {coupons > 0 && (
+            <Box className={classes.containerWhite}>
+              <Voucher shopcoupons={coupons} />
+            </Box>
+          )}
           <Box className={classes.categoryBox}>
             <Box className={classes.category}>
               {sections.map((section, idx) => {
-                return <Content key={idx} section={section} />;
+                return <Content key={section.id} section={section} />;
               })}
             </Box>
           </Box>
