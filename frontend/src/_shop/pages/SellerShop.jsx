@@ -28,6 +28,7 @@ const SellerShop = () => {
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
+  const [follow, setfollow] = useState(false);
   const [menus, setmenus] = useState([]);
   const [flashSale, setflashSale] = useState();
   const onFavourite = (index) => {
@@ -37,7 +38,6 @@ const SellerShop = () => {
     //   return [...flashItems];
     // });
   };
-
   useEffect(() => {
     axios
       .get(`${config.SERVER_URL}/sellershop/${id}`)
@@ -50,6 +50,13 @@ const SellerShop = () => {
         history.push("/*");
       })
       .then(() => {
+        axios
+          .get(
+            `${config.SERVER_URL}/sellershop/follow/${id}?customer_id=${auth.user.id}`
+          )
+          .then(({ data }) => {
+            setfollow(data.result);
+          });
         axios
           .get(`${config.SERVER_URL}/sellershop/sections/${id}`)
           .then(({ data }) => {
@@ -87,7 +94,7 @@ const SellerShop = () => {
             {loading ? (
               <Skeleton animation="wave" width="100%" height="200px" />
             ) : (
-              <Header shopInfo={shopInfo} />
+              <Header shopInfo={shopInfo} follow={follow} />
             )}
           </Box>
           <Box
@@ -97,10 +104,11 @@ const SellerShop = () => {
               backgroundColor: "#D9DBE9",
             }}
           />
-
-          <Box className={classes.containerWhite}>
-            <TabsController categories={menus} />
-          </Box>
+          {menus && (
+            <Box className={classes.containerWhite}>
+              <TabsController categories={menus} />
+            </Box>
+          )}
           {flashSale && (
             <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
           )}

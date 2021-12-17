@@ -83,6 +83,7 @@ export class AuthenticationService {
 					},
 				},
 			});
+			console.log(user);
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);

@@ -77,11 +77,12 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   };
   const uploadFile = async (e) => {
     if (e.target.files.length) {
-      const url = await getUrl(e.target.files[0]);
+      const path = URL.createObjectURL(e.target.files[0]);
       setUserInfo({
         ...userInfo,
-        url: url.original_link,
+        url: path,
         title: e.target.files[0].name,
+        file: e.target.files[0],
       });
     }
   };
@@ -255,6 +256,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DatePicker
                   value={userInfo.birthdate}
+                  sx={{ width: "100%" }}
                   renderInput={(params) => <TextField {...params} />}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, birthdate: e.toISOString() });
@@ -345,7 +347,7 @@ const useStyles = makeStyles({
     marginTop: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
-    width: "35%",
+    width: "266px",
   },
   button: {
     display: "flex",

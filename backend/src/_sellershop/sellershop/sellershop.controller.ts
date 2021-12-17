@@ -71,6 +71,36 @@ export class SellershopController {
 		}
 	}
 
+	@Get('/follow/:id')
+	@Public()
+	public async checkFollowShop(
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Param('id', ParseIntPipe) shop_id: number,
+		@Res() res,
+	) {
+		const result = await this.sellershopService.checkFollow(customer_id, shop_id);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: true, result });
+		}
+	}
+
+	@Post('/follow/:id')
+	@Public()
+	public async followShop(
+		@Body() customer_followed_shopCreateManyInput: Prisma.customer_followed_shopCreateManyInput,
+		@Param('id', ParseIntPipe) id: number,
+		@Res() res,
+	) {
+		const result = await this.sellershopService.followShop(customer_followed_shopCreateManyInput, id);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: false });
+		}
+	}
+
 	@Get('sections/:id')
 	@Public()
 	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -151,6 +181,7 @@ export class SellershopController {
 	@Post()
 	@Public()
 	public async create(
+		@Body() shop_pictureCreateInput: Prisma.shop_pictureCreateInput,
 		@Body() shop_infoCreateInput: Prisma.shop_infoCreateInput,
 		@Body() addressCreateInput: Prisma.addressCreateInput,
 		@Body() payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
@@ -162,6 +193,7 @@ export class SellershopController {
 			shop_infoCreateInput,
 			addressCreateInput,
 			payment_shop_bank_accountCreateInput,
+			shop_pictureCreateInput,
 		);
 		if (shop) {
 			res.send({ success: true, shop });
