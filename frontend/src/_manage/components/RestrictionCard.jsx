@@ -40,11 +40,11 @@ export class SellerCard extends React.Component {
                 </Box>
                 <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Start Time</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.start_date}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.start_date.slice(0, 10)}</Typography>
                 </Box>
                 <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>End Time</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.end_date}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.end_date.slice(0, 10)}</Typography>
                 </Box>
                 <Box sx={{ width: '30%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography style={{ fontSize: '15px', color: '#FD6637'}}>Description</Typography>

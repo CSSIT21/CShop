@@ -20,7 +20,7 @@ export class ManageaccountService {
           suspension_type_id: createUserSuspensionDto.suspension_type_id,
           admin_id : createUserSuspensionDto.admin_id,
           start_date: new Date(),
-          end_date: new Date(),
+          end_date: new Date(createUserSuspensionDto.year, createUserSuspensionDto.month, createUserSuspensionDto.day),
 				},
 			});
 			return 'User Suspension Added!';
@@ -44,7 +44,7 @@ export class ManageaccountService {
           suspension_type_id: createSellerSuspensionDto.suspension_type_id,
           admin_id : createSellerSuspensionDto.admin_id,
           start_date: new Date(),
-          end_date: new Date(),
+          end_date: new Date(createSellerSuspensionDto.year, createSellerSuspensionDto.month, createSellerSuspensionDto.day),
 				},
 			});
 			return 'Seller Suspension Added!';
@@ -73,7 +73,7 @@ export class ManageaccountService {
               suspension_type_id: updateUserSuspensionDto.suspension_type_id,
               admin_id : updateUserSuspensionDto.admin_id,
               start_date: new Date(),
-              end_date: new Date(),
+              end_date: new Date(updateUserSuspensionDto.year, updateUserSuspensionDto.month, updateUserSuspensionDto.day),
             },
           },
 				},
@@ -104,7 +104,7 @@ export class ManageaccountService {
               suspension_type_id: updateSellerSuspensionDto.suspension_type_id,
               admin_id : updateSellerSuspensionDto.admin_id,
               start_date: new Date(),
-              end_date: new Date(),
+              end_date: new Date(updateSellerSuspensionDto.year, updateSellerSuspensionDto.month, updateSellerSuspensionDto.day),
             },
           },
 				},

@@ -111,7 +111,7 @@ export class SellerCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.cancelRate}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.join_date}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.join_date.slice(0, 10)}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>

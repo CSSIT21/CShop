@@ -108,10 +108,10 @@ export class UserCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_address.postal_code}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.date}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.date.slice(0, 10)}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_info.birthdate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.user.customer_info.birthdate.slice(0, 10)}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>

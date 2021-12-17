@@ -4,4 +4,7 @@ export class CreateSellerSuspensionDto {
     picture_id: number;
     suspension_type_id: number;
     admin_id : number;
+    day: number;
+    month: number;
+    year: number;
 }
