@@ -19,11 +19,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+import axios from "axios";
 import {
-  years,
   months,
   days,
 } from "../../common/constants/register";
+import { years } from "../common/future";
 
 export class SellerCard extends React.Component {
   constructor(props) {
@@ -59,9 +60,39 @@ export class SellerCard extends React.Component {
     this.forceUpdate();
   };
 
-  addRes = () => {
-    this.props.addRestriction(this.props.seller.id, this.type, this.desc, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
-    this.forceUpdate();
+  addRes = async () => {
+    if(this.props.seller.admin_shop_suspensions == null){
+      const res = await axios.post(
+        "http://localhost:8080/manageaccount/suspension/sellers/create",
+        {
+          "shop_id": this.props.seller.id,
+          "description": this.desc,
+          "picture_id": 495,
+          "suspension_type_id": parseInt(this.type),
+          "admin_id": 100,
+          "day": this.editDate.day+1,
+          "month": this.editDate.month-1,
+          "year": this.editDate.year
+        }
+      );
+    }
+    else{
+      const res = await axios.post(
+        "http://localhost:8080/manageaccount/suspension/sellers/update",
+        {
+          "id": this.props.seller.id,
+          "description": this.desc,
+          "picture_id": 495,
+          "suspension_type_id": parseInt(this.type),
+          "admin_id": 100,
+          "day": this.editDate.day+1,
+          "month": this.editDate.month-1,
+          "year": this.editDate.year
+        }
+      );
+    }
+    
+    document.location.reload();
     this.dialogClose();
   };
 

@@ -71,9 +71,9 @@ export class UserCard extends React.Component {
           "picture_id": 495,
           "suspension_type_id": parseInt(this.type),
           "admin_id": 100,
-          "day": this.editDate.day-1,
+          "day": this.editDate.day+1,
           "month": this.editDate.month-1,
-          "year": this.editDate.year-1
+          "year": this.editDate.year
         }
       );
     }
