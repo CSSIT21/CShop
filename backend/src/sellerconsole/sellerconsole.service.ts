@@ -1,13 +1,13 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
-import { OrderStatus, PrismaClient } from '@prisma/client';
+import { DiscountClass, DiscountTypes, OrderStatus, PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Timestamp } from 'rxjs';
 
 @Injectable()
 export class SellerconsoleService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getstockHistory(shopid: number) {
 		const res = await this.prisma.product.findMany({
@@ -79,10 +79,10 @@ export class SellerconsoleService {
 
 	async getOrderStatus(orderid: number) {
 		const res = await this.prisma.sconsole_order_status.findMany({
-			where:{
-				order_id:orderid
-			},select: {}
-		}) 
+			where: {
+				order_id: orderid
+			}, select: {}
+		})
 	}
 
 	async findOneOrder(orderid: number) {
@@ -199,56 +199,56 @@ export class SellerconsoleService {
 		});
 	}
 
-	async CardOfProduct(id: number){
+	async CardOfProduct(id: number) {
 		return await this.prisma.product.count({
-			where : {
-				shop_id : id,
+			where: {
+				shop_id: id,
 			},
-			select : {
-				quantity : true
+			select: {
+				quantity: true
 			}
 		})
 	}
-	async CardOfFollows(id: number){
+	async CardOfFollows(id: number) {
 		return await this.prisma.shop_info.findUnique({
-			where : {
-				id : id,
+			where: {
+				id: id,
 			},
-			select : {
-				followers : true,
+			select: {
+				followers: true,
 			}
 		})
 	}
-	async CardOfRating(id: number){
+	async CardOfRating(id: number) {
 		return await this.prisma.product.aggregate({
-			where : {
-				shop_id : id,
+			where: {
+				shop_id: id,
 			},
-			_avg : {
-				rating : true,
+			_avg: {
+				rating: true,
 			}
 		})
 	}
-	async CardOfSales1(id: number ){
+	async CardOfSales1(id: number) {
 		return await this.prisma.sconsole_order_history.findMany({
-			where : {
-				shop_id : id,
+			where: {
+				shop_id: id,
 			},
-			select : {
-				order_id : true,
+			select: {
+				order_id: true,
 			}
 		})
 	}
-	async CardOfSales2(id: number ){
+	async CardOfSales2(id: number) {
 		return await this.prisma.order.findMany({
-			where : {
-				id : id
+			where: {
+				id: id,
+				status: "Delivered",
 			},
-			select : {
-				total_price : true,
-			}
-		
-		})
+			select: {
+				total_price: true,
+			},
+		});
 	}
 
 	// async Cheat(id: number){
@@ -261,5 +261,66 @@ export class SellerconsoleService {
 	// 		}
 	// 	})
 	// }
-	
+	async Discount(shop_id: number, code: string, starte_date: Date, end_date: Date, description: string,
+		class_types: DiscountClass, min_price: number, reduce_price: number, 
+		picture_path: string, picture_thumbnail: string, picture_title: string) {
+		if (class_types === DiscountClass.ReducePrice) {
+			const reducePrice = await this.prisma.discount.create({
+				data: {
+					code: code,
+					start_date: new Date(),
+					end_date: new Date(),
+					description: description,
+					class: "ReducePrice",
+					min_price: min_price,
+					reduce_price: reduce_price,
+					discount_types: "Shop",
+					added_date: new Date(),
+					picture_path: picture_path,
+					picture_thumbnail: picture_thumbnail,
+					picture_title: picture_title,
+				}
+			})
+			return reducePrice.id;
+		} else {
+			const FreeShipping = await this.prisma.discount.create({
+				data: {
+					code: code,
+					start_date: new Date(),
+					end_date: new Date(),
+					description: description,
+					class: "FreeShipping",
+					min_price: min_price,
+					reduce_price: reduce_price,
+					discount_types: "Shop",
+					added_date: new Date(),
+					picture_path: picture_path,
+					picture_thumbnail: picture_thumbnail,
+					picture_title: picture_title,
+				},
+			});
+			return FreeShipping.id;
+		}
+	}
+	async DiscountShop(id: number, discount_id: number, quantity: number, max_quantity: number) {
+		await this.prisma.discount_shop.create({
+			data: {
+				shop_id: id,
+				discount_id: discount_id,
+				quantity: quantity,
+				max_quantity: max_quantity,
+			},
+		});
+		return this.prisma.discount_shop.findUnique({
+			where: {
+				discount_id: id,
+			},
+			select: {
+				discount_id: true,
+				quantity: true,
+				max_quantity: true,
+			},
+		});
+
+	}
 }

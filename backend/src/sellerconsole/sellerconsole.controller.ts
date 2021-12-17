@@ -4,6 +4,7 @@ import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PrismaClient } from '@prisma/client';
+import { request } from 'http';
 
 @Controller('sellerconsole')
 export class SellerconsoleController {
@@ -104,6 +105,27 @@ export class SellerconsoleController {
 		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id)
 		res.send(addToOrderHistory)
 		res.send(removeOrderFromOrderStatus)
+	}
+
+	@Post(':id/discount')
+	async discount(@Body()request ,@Res () res){
+		var id = request.id;
+		var code = request.code;
+		var start_date = request.start_date;
+		var end_date = request.end_date;
+		var description = request.description;
+		var class_types = request.class;
+		var min_price = request.min_price;
+		var reduce_price = request.reduce_price;
+		var picture_path = request.picture_path;
+		var picture_thumbnail = request.picture_thumbnail;
+		var picture_title = request.picture_title;
+		var quantity = request.quantity;
+		var max_quantity = request.max_quantity;
+		const discountReduce = await this.sellerconsoleService.Discount(id ,code ,start_date ,end_date, description ,class_types ,min_price ,reduce_price,
+																				 picture_path ,picture_thumbnail ,picture_title);
+		const discountShop = await this.sellerconsoleService.DiscountShop(id,discountReduce,quantity, max_quantity)
+		res.send(discountShop);
 	}
 
 }
