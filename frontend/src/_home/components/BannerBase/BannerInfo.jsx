@@ -61,8 +61,8 @@ const BannerInfo = ({
             })
             .catch((error) => {
                 console.log(err.message);
-                handleDialog();
                 setLoading(false);
+                handleDialog();
                 return Swal.fire('Oop!', "Cannot update banner's information", 'error');
             })
     };
