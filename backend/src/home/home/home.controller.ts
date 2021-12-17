@@ -9,25 +9,6 @@ import { Prisma, product_picture } from '@prisma/client';
 export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
-  @Post()
-  create(@Body() createHomeDto: CreateHomeDto) {
-    return this.homeService.create(createHomeDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.homeService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.homeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHomeDto: UpdateHomeDto) {
-    return this.homeService.update(+id, updateHomeDto);
-  }
 
   @Get("bestsellers")
   async findAllSeller(){
@@ -37,6 +18,32 @@ export class HomeController {
       return{
         suscess : true,
         bestsellers
+      }
+    }catch(err){
+      this.homeService.throwError(err);
+    }
+  }
+
+  @Get("partners")
+  async findAllPartners(){
+    try{
+      const partners = await this.homeService.findAllPartners();
+      return{
+        suscess : true,
+        partners
+      }
+    }catch(err){
+      this.homeService.throwError(err);
+    }
+  }
+  
+  @Get("popup")
+  async getPopUp(){
+    try{
+      const popup = await this.homeService.getPopUp();
+      return{
+        suscess : true,
+        popup
       }
     }catch(err){
       this.homeService.throwError(err);

@@ -7,16 +7,30 @@ import { UpdateHomeDto } from './dto/update-home.dto';
 
 @Injectable()
 export class HomeService {
-  create(createHomeDto: CreateHomeDto) {
-    return 'This action adds a new home';
-  }
+  constructor(private readonly prisma: PrismaService) { }
 
   async findAllReviews() {
     return this.prisma.home_app_review.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} home`;
+  async findAllPartners() {
+    return this.prisma.home_partner.findMany({
+      where: {
+        start_date: {
+          lte: new Date().toISOString(),
+        },
+        end_date: {
+          gte: new Date().toISOString(),
+        },
+      },
+      select: {
+        name: true,
+        path: true,
+        title_pic: true,
+        type: true,
+        thumbnail: true,
+      }
+    });
   }
 
   async findBestSeller() : Promise<product_picture[]> {
@@ -40,16 +54,31 @@ export class HomeService {
     return pic;
   }
 
-
   async getPopUp(){
+    return this.prisma.home_popup.findMany({
+      where : {
+        start_date: {
+          lte: new Date().toISOString(),
+        },
+        end_date: {
+          gte: new Date().toISOString(),
+        },
+      },
+      select:{
+        description: true,
+        path: true,
+        thumbnail: true,
+      }
+    });
+  }
 
+  async findFavorite(){
+    
   }
 
   async findSuggestion(){
     this.prisma.rem_suggestion_homepage.findMany(
-      {
-        take: 20,
-      }
+      
     );
   }
 
