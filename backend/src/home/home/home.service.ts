@@ -3,10 +3,10 @@ import { Prisma, product_picture } from '@prisma/client';
 import { async } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateHomeDto } from './dto/create-home.dto';
+import { UpdateHomeDto } from './dto/update-home.dto';
 
 @Injectable()
 export class HomeService {
-  constructor(private prisma: PrismaService) {}
   create(createHomeDto: CreateHomeDto) {
     return 'This action adds a new home';
   }
@@ -15,24 +15,8 @@ export class HomeService {
     return this.prisma.home_app_review.findMany();
   }
 
-  async findAllPartners() {
-    return this.prisma.home_partner.findMany({
-      where: {
-        start_date: {
-          lte: new Date().toISOString(),
-        },
-        end_date: {
-          gte: new Date().toISOString(),
-        },
-      },
-      select: {
-        name: true,
-        path: true,
-        title_pic: true,
-        type: true,
-        thumbnail: true,
-      }
-    });
+  findOne(id: number) {
+    return `This action returns a #${id} home`;
   }
 
   async findBestSeller() : Promise<product_picture[]> {
@@ -77,5 +61,4 @@ export class HomeService {
     console.log(err.message);
     throw new HttpException(err.message, 500);
   }
-
 }

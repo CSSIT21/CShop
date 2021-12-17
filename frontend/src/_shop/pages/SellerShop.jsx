@@ -25,7 +25,6 @@ const SellerShop = () => {
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
-  const [products, setproducts] = useState();
   const [menus, setmenus] = useState([]);
   const [flashSale, setflashSale] = useState(flashSaleData);
   const onFavourite = (index) => {
@@ -45,11 +44,6 @@ const SellerShop = () => {
       .catch((e) => {
         console.log(e.message);
         history.push("/*");
-      });
-    axios
-      .get(`${config.SERVER_URL}/sellershop/${id}/products`)
-      .then(({ data }) => {
-        setproducts(data.products);
       });
     axios
       .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
@@ -101,7 +95,7 @@ const SellerShop = () => {
             </Box>
           </Box>
           <Box className={classes.containerWhite}>
-            <Filter categories={menus} products={products} />
+            <Filter categories={menus} />
           </Box>
         </Box>
       </Box>

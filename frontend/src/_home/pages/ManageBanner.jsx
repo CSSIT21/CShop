@@ -15,6 +15,10 @@ const ManageBanner = () => {
 	const [items, setItems] = useState([]);
 	const [open, setOpen] = useState(false);
 
+	useEffect(() => {
+		getData();
+	}, []);
+
 	const getData = async () => {
 		axios
 			.get(`${config.SERVER_URL}/home/banner/manage`)
@@ -25,13 +29,10 @@ const ManageBanner = () => {
 				}
 			})
 			.catch((error) => {
-				return Swal.fire('Cannot Show Banners', data.message, 'error');
+				console.log(err.message);
+				return Swal.fire('Something went wrong', "Sorry, we cannot fetch banner's data to show", 'error');
 			})
 	};
-
-	useEffect(() => {
-		getData();
-	}, []);
 
 	const onClickDialog = () => {
 		setOpen(!open);
@@ -71,10 +72,12 @@ const ManageBanner = () => {
 					</Typography>
 				</Button>
 
-				<NewBannerDialog open={open} onClose={onClickDialog} itemCount={items.length} />
+				<NewBannerDialog open={open} handleDialog={onClickDialog} itemCount={items.length} setItems={setItems} />
 			</Box>
 
-			<BannerList items={items} setItems={setItems} />
+			{items.length === 0
+				? (<Typography textAlign="center" fontSize={36} fontWeight={500} color="lightgray" mt={5}>No banner to show</Typography>)
+				: (<BannerList items={items} setItems={setItems} getData={getData} />)}
 		</Box>
 	);
 };
