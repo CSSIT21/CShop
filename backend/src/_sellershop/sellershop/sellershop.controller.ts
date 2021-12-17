@@ -16,13 +16,13 @@ import {
 import { SellershopService } from './sellershop.service';
 import { CreateSellershopDto } from './dto/create-sellershop.dto';
 import { UpdateSellershopDto } from './dto/update-sellershop.dto';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import internal from 'stream';
 
 @Controller('sellershop')
 export class SellershopController {
-	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) {}
+	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
 
 	@Get(':id')
 	public async findOne(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -67,22 +67,7 @@ export class SellershopController {
 			});
 		}
 	}
-	// @Get('products/:id')
-	// public async findProducts(
-	// 	@Param('id', ParseIntPipe) id: number,
-	// 	@Query('page', ParseIntPipe) page: number,
-	// 	@Res() res,
-	// ) {
-	// 	const products = await this.sellershopService.getShopProduct(id, page);
-	// 	if (products) {
-	// 		res.send({ success: true, ...products });
-	// 	} else {
-	// 		res.send({
-	// 			success: false,
-	// 		});
-	// 	}
-	// }
-
+  
 	@Get('sections/:id')
 	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections = await this.sellershopService.getShopSection(id);
