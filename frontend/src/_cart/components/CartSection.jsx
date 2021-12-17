@@ -55,7 +55,7 @@ const addresses = [{
 
 const MyCartItems = products.map(product => ({...product, amount: 1}));
 
-function CartSection({ allProduct,setProduct,discounts}) {
+function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     const [address, setAddress] = useState(0);
     MyCartItems.length = 5;
     const [MyCart, setmyCart] = useState(allProduct);
@@ -64,12 +64,35 @@ function CartSection({ allProduct,setProduct,discounts}) {
     const totalCost = useMemo(() => MyCart.reduce((prev,product) => prev + (+product.price) * product.amount,0), [MyCart]);
     const discount = useMemo(() => calculateDiscount(totalCost, selectedCoupon));
     const classes = useStyles();
-    
+    const [phoneNumber, setPhoneNumber] = useState(accountInfo.phone_number);
+    const [addressInfo, setAddressInfo] = useState([]);
+    const [activeID, setActiveID] = useState('');
+  
+
+
+
+
     useEffect(() => {
       setmyCart(allProduct)
     }, [allProduct])
+    
+    useEffect(() => {
+      setAddressInfo(accountInfo.map(item => { 
+        const add = item.address_id_from_customer_address
+        return ({
+          id: item.address_id,
+          title: add.address_line +" "+ add.sub_district +" "+ add.district +" "+ add.province +" "+ add.postal_code,
+          phone: add.phone_number
+        });
+      }))
+      accountInfo.forEach(item => {
+        if (item.primary) { 
+          setActiveID(item.address_id)
+          setPhoneNumber(item.address_id_from_customer_address.phone_number)
+        }
+      });
+    },[accountInfo])
   
-
     function calculateDiscount(total,coupon){
       if(coupon == null) return 0;
       // if(coupon.type === 'nornal'){
@@ -87,7 +110,7 @@ function CartSection({ allProduct,setProduct,discounts}) {
       e.preventDefault();
       setProduct([]);
     }
-
+    console.log(accountInfo);
     return <Box sx={{ width: '88%', marginBottom: '4.5rem'}}>
         <Box className={classes.header}>Shopping Cart</Box>
         <Stack direction="row" gap={15}>
@@ -100,10 +123,13 @@ function CartSection({ allProduct,setProduct,discounts}) {
               fullWidth
               inputProps={{ sx: { background: 'white', fontWeight: 600}}}
               select
-              value={address}
-              onChange={e => setAddress(e.target.value)}
+              value={activeID}
+              onChange={e => {
+                setAddress(e.target.value)
+                address.forEach(item => { setPhoneNumber(item.phone)})
+              }}
             >
-              { addresses.map( address => <MenuItem value={address.id} key={address.id}>
+              { addressInfo.map( address => <MenuItem value={address.id} key={address.id}>
                   {address.title}
                 </MenuItem>)
               }
@@ -115,7 +141,7 @@ function CartSection({ allProduct,setProduct,discounts}) {
               sx={{ borderRadius: "10px",width: "30%" }}
               inputProps={{ sx: { borderRadius: "10px",background: 'white', fontWeight: 600}}}
               fullWidth
-              value={phone}
+              value={phoneNumber || ''} onChange={(e) => (setPhoneNumber(e.target.value))}
             >
                 
             </TextField>

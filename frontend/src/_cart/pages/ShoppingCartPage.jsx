@@ -9,6 +9,7 @@ function ShoppingCartPage() {
     const [products, setProducts] = useState([]);
     const [sugproduct, setSugproduct] = useState(fakeProducts);
     const [discounts, setDiscounts] = useState([]);
+    const [accountInfo, setAccountInfo] = useState([]);
     useEffect(() => {
         axios.get('http://localhost:8080/cart/1').then(item => {
             setProducts(item.data.newD.map(item => { 
@@ -29,13 +30,14 @@ function ShoppingCartPage() {
                     type: discount.discount_types,
                     limit: 1000,
                     min: discount.min_price,
-                    value: discount.reduce_price / 100
+                    value: discount.reduce_price / 100,
+                    img: discount.picture_path
                 });
             }))
+            setAccountInfo([...item.data.customerDetail])
         });
     }, [])
     
-
     const onFavourite = (index) => {
         setSugproduct(sugproduct.map((item, ind) => {
             if (index === item.id) {
@@ -57,7 +59,7 @@ function ShoppingCartPage() {
             flexWrap: 'wrap',
             backgroundColor: '#F3F4F5'
         }}>
-            <CartSection allProduct={products} setProduct={setProducts} discounts={discounts}/>
+            <CartSection allProduct={products} setProduct={setProducts} discounts={discounts} accountInfo={accountInfo}/>
         </Box>
         <Box sx={{width: "88%"}}>
         <ProductSuggestion suggestionItems={sugproduct} onFavourite={onFavourite} />

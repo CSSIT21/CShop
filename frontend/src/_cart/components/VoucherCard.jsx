@@ -26,7 +26,7 @@ const VoucherCard = ({
 
   return (
     <Box className={classes.couponbox}>
-      <img src={CouponPic} style={{width: '5vw'}} alt="coupon picture" />
+      <img src={coupon.img} style={{width: '5vw'}} alt="coupon picture" />
 
       <Box className={classes.text}>
         <Typography sx={titleStyle}> {coupon.title} </Typography>
