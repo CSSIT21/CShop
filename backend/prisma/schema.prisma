@@ -84,7 +84,6 @@ model customer_picture_file {
   title            String             @db.VarChar(50)
   path             String
   thumbnail        String
-  primary          Boolean            @default(false)
   customer_picture customer_picture[]
 }
 
@@ -1490,7 +1489,7 @@ model business_interaction_weight {
 
 model delivery_product_status {
   id                 Int                  @id @default(autoincrement())
-  tracking_number    String               @db.Text
+  province           String               @db.VarChar(2)
   added_date         DateTime             @db.Timestamp
   latest_update      DateTime             @db.Timestamp
   complete_date      DateTime?            @db.Timestamp
