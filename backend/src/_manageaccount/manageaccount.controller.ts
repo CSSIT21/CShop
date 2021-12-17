@@ -132,7 +132,7 @@ export class ManageaccountController {
   @Get('users')
   getUsers(){
     return this.prisma.customer.findMany({
-      take: 4,
+      take: 2,
       include:{
         customer_picture: true,
         customer_info: true,

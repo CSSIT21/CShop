@@ -18,11 +18,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+import axios from "axios";
 import {
-  years,
   months,
   days,
 } from "../../common/constants/register";
+import { years } from "../common/future";
 
 export class UserCard extends React.Component {
   constructor(props) {
@@ -58,8 +59,23 @@ export class UserCard extends React.Component {
     this.forceUpdate();
   };
 
-  addRes = () => {
-    this.props.addRestriction(this.props.user.id, this.type, this.desc, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
+  addRes = async () => {
+    //this.props.addRestriction(this.props.user.id, this.type, this.desc, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
+
+    const res = await axios.post(
+      "http://localhost:8080/manageaccount/suspension/users/create",
+      {
+        "customer_id": this.props.user.id,
+        "description": this.desc,
+        "picture_id": 495,
+        "suspension_type_id": parseInt(this.type),
+        "admin_id": 100,
+        "day": this.editDate.day-1,
+        "month": this.editDate.month-1,
+        "year": this.editDate.year-1
+      }
+    );
+
     this.forceUpdate();
     this.dialogClose();
   };
