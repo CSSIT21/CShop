@@ -84,7 +84,6 @@ model customer_picture_file {
   title            String             @db.VarChar(50)
   path             String
   thumbnail        String
-  primary          Boolean            @default(false)
   customer_picture customer_picture[]
 }
 
@@ -1477,6 +1476,7 @@ model delivery_admin {
   id       Int    @id @default(autoincrement())
   username String @db.VarChar(20)
   password String
+  token    String
 }
 
 model delivery_admin_log {
@@ -1488,13 +1488,13 @@ model delivery_admin_log {
 
 model delivery_product_status {
   id                 Int                  @id @default(autoincrement())
-  tracking_number    String
   added_date         DateTime             @db.Timestamp(6)
   latest_update      DateTime             @db.Timestamp(6)
   complete_date      DateTime?            @db.Timestamp(6)
   recipient_name     String?              @db.VarChar(60)
   status             String
   delivery_detail    Json
+  province           String               @db.VarChar(2)
   delivery_admin_log delivery_admin_log[]
   order_status       order_status[]
 }
@@ -1512,32 +1512,6 @@ model shop_product_carousel_select {
   id          String @id @unique
   filter_name String
   products    Int[]
-}
-
-model delivery_admin {
-  id       Int    @id @default(autoincrement())
-  username String @db.VarChar(20)
-  password String
-}
-
-model delivery_admin_log {
-  admin_id                Int                     @id
-  delivery_id             Int
-  updated_time            DateTime                @db.Timestamp(6)
-  delivery_product_status delivery_product_status @relation(fields: [delivery_id], references: [id])
-}
-
-model delivery_product_status {
-  id                 Int                  @id @default(autoincrement())
-  tracking_number    String
-  added_date         DateTime             @db.Timestamp(6)
-  latest_update      DateTime             @db.Timestamp(6)
-  complete_date      DateTime?            @db.Timestamp(6)
-  recipient_name     String?              @db.VarChar(60)
-  status             String
-  delivery_detail    Json
-  delivery_admin_log delivery_admin_log[]
-  order_status       order_status[]
 }
 
 enum homeBannerPicturePosition {

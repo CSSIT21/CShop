@@ -51,7 +51,7 @@ const SellerShop = () => {
       })
       .then(() => {
         axios
-          .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
+          .get(`${config.SERVER_URL}/sellershop/sections/${id}`)
           .then(({ data }) => {
             setsections(data.sections);
           });

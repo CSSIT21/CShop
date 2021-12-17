@@ -7,7 +7,7 @@ import { User } from 'src/authentication/dto/user.dto';
 
 @Injectable()
 export class SellershopService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
 	public async findOne(id: number) {
 		try {
@@ -518,19 +518,22 @@ export class SellershopService {
 					},
 				},
 			});
-			let productsId = JSON.parse(JSON.stringify(flashsale.products)).map((e) => e.id);
-			const products_info = await this.prisma.product.findMany({
-				where: {
-					id: {
-						in: productsId,
+			if (flashsale) {
+				let productsId = JSON.parse(JSON.stringify(flashsale.products)).map((e) => e.id);
+				const products_info = await this.prisma.product.findMany({
+					where: {
+						id: {
+							in: productsId,
+						},
 					},
-				},
-				include: {
-					product_picture: true,
-				},
-			});
+					include: {
+						product_picture: true,
+					},
+				});
 
-			return { ...flashsale, products_info };
+				return { ...flashsale, products_info };
+			}
+			return flashsale;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
