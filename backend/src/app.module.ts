@@ -23,7 +23,7 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		LogSystemModule,
 		SellershopModule,
 		ShopcustomizationModule,
-		ProfileModule
+		ProfileModule,
 	],
 	controllers: [AppController],
 	providers: [
@@ -34,4 +34,4 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		// },
 	],
 })
-export class AppModule { }
+export class AppModule {}

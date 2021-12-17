@@ -50,14 +50,24 @@ export class SellershopService {
 		}
 	}
 
-	public async getShopProduct(id: number) {
+	public async getShopProduct(id: number, page: number) {
 		try {
 			const products = await this.prisma.product.findMany({
 				where: {
 					shop_id: id,
 				},
+				include: {
+					product_picture: true,
+				},
+				skip: (page - 1) * 16,
+				take: 16,
 			});
-			return products;
+			const count = await this.prisma.product.count({
+				where: {
+					shop_id: id,
+				},
+			});
+			return { products, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -117,7 +127,46 @@ export class SellershopService {
 									id: parsedsections[index].id,
 								},
 							});
-							section = { ...section, type: 3 };
+							const shop_category = await this.prisma.shop_category.findFirst({
+								where: {
+									title: section.category,
+								},
+								select: {
+									products: true,
+								},
+							});
+							const products = await this.prisma.product.findMany({
+								where: {
+									id: {
+										in: shop_category.products,
+									},
+								},
+								include: {
+									product_picture: true,
+								},
+							});
+
+							section = { ...section, products, type: 3 };
+							break;
+						case 'ProductCarouselSelect':
+							section = await this.prisma.shop_product_carousel_select.findUnique({
+								where: {
+									id: parsedsections[index].id,
+								},
+							});
+
+							const products_info = await this.prisma.product.findMany({
+								where: {
+									id: {
+										in: section.products,
+									},
+								},
+								include: {
+									product_picture: true,
+								},
+							});
+
+							section = { ...section, products: products_info, type: 3 };
 							break;
 						case Shop_section.Video:
 							section = await this.prisma.shop_video.findUnique({
@@ -179,6 +228,14 @@ export class SellershopService {
 				where: {
 					product_id_from_product_reviews: {
 						shop_id: id,
+					},
+				},
+				include: {
+					customer_id_from_product_reviews: {
+						include: {
+							customer_info: true,
+							customer_picture: true,
+						},
 					},
 				},
 				skip: (page - 1) * 10,
@@ -258,18 +315,42 @@ export class SellershopService {
 		}
 	}
 
-	public async create(createSellershopDto: CreateSellershopDto) {
+	public async create(
+		Body: any,
+		shop_infoCreateInput: Prisma.shop_infoCreateInput,
+		addressCreateInput: Prisma.addressCreateInput,
+		payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
+	) {
 		try {
+			const address = await this.prisma.address.create({
+				data: {
+					address_line: addressCreateInput.address_line,
+					district: addressCreateInput.district,
+					sub_district: addressCreateInput.sub_district,
+					province: addressCreateInput.province,
+					postal_code: addressCreateInput.postal_code,
+					phone_number: shop_infoCreateInput.phone_number,
+					recipient_name: payment_shop_bank_accountCreateInput.firstname,
+				},
+			});
 			await this.prisma.shop_info.create({
 				data: {
-					shop_name: createSellershopDto.name,
-					customer_id: createSellershopDto.customer_id,
-					shop_address_id: createSellershopDto.shop_address_id,
-					phone_number: createSellershopDto.phoneNumber,
+					shop_name: shop_infoCreateInput.shop_name,
+					customer_id: Body.customer_id,
+					shop_address_id: address.id,
+					phone_number: shop_infoCreateInput.phone_number,
 					description: '',
 					shop_section: {
 						create: {
 							sections: [],
+						},
+					},
+					payment_shop_bank_account: {
+						create: {
+							account_number: payment_shop_bank_accountCreateInput.account_number,
+							bank: payment_shop_bank_accountCreateInput.bank,
+							firstname: payment_shop_bank_accountCreateInput.firstname,
+							lastname: payment_shop_bank_accountCreateInput.lastname,
 						},
 					},
 				},

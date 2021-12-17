@@ -1,50 +1,34 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { HomeService } from './home.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-
+import { CreateHomeDto } from './dto/create-home.dto';
+import { UpdateHomeDto } from './dto/update-home.dto';
 
 @Controller('home')
 export class HomeController {
-  constructor(private readonly homeService: HomeService, private prisma: PrismaService) {}
+  constructor(private readonly homeService: HomeService) {}
 
-
-  @Get("reviews")
-  async findAllReviews() {
-    try{
-      const reviews = await this.homeService.findAllReviews();
-      return{
-      success : true,
-      reviews
-      }
-    }catch(err){
-      this.homeService.throwError(err);
-    }
+  @Post()
+  create(@Body() createHomeDto: CreateHomeDto) {
+    return this.homeService.create(createHomeDto);
   }
 
-  @Get("partners")
-  async findAllPartners(){
-    try{
-      const partners = await this.homeService.findAllPartners();
-      return{
-        suscess : true,
-        partners
-      }
-    }catch(err){
-      this.homeService.throwError(err);
-    }
+  @Get()
+  findAll() {
+    return this.homeService.findAll();
   }
 
-  @Get("bestsellers")
-  async findAllSeller(){
-    try{
-      const bestsellers = await this.homeService.findBestSeller();
-      return{
-        suscess : true,
-        bestsellers
-      }
-    }catch(err){
-      this.homeService.throwError(err);
-    }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.homeService.findOne(+id);
   }
-  
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateHomeDto: UpdateHomeDto) {
+    return this.homeService.update(+id, updateHomeDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.homeService.remove(+id);
+  }
 }
