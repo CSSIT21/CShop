@@ -5,9 +5,11 @@ import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { Prisma } from '.prisma/client';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 
+
 @Controller('shopcustomization')
 export class ShopcustomizationController {
 	constructor(private readonly shopcustomizationService: ShopcustomizationService) {}
+
 
 	@Get(':id')
 	async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -201,3 +203,4 @@ export class ShopcustomizationController {
 	// 	return this.shopcustomizationService.remove(+id);
 	// }
 }
+

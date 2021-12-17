@@ -4,9 +4,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, customer, Gender, customer_address } from '.prisma/client';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { url } from 'inspector';
 @Injectable()
 export class AuthenticationService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
 	public async register(data: RegisterDto) {
 		console.log(data);
@@ -24,6 +25,8 @@ export class AuthenticationService {
 			postalCode,
 			province,
 			subDistrict,
+			title,
+			url,
 		} = data;
 		let user;
 		if (password !== confirmPassword) throw new HttpException('Password mismatched!', 500);
@@ -67,7 +70,17 @@ export class AuthenticationService {
 							},
 						},
 					},
-					// customer_picture: {},
+					customer_picture: {
+						create: {
+							picture_id_from_customer_picture: {
+								create: {
+									title: title,
+									path: url,
+									thumbnail: url,
+								},
+							},
+						},
+					},
 				},
 			});
 		} catch (e) {
