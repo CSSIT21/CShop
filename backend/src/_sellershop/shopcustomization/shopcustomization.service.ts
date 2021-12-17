@@ -2,11 +2,11 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateShopcustomizationDto } from './dto/create-shopcustomization.dto';
 import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 
 @Injectable()
 export class ShopcustomizationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getSection(id: number) {
 		try {
@@ -54,7 +54,7 @@ export class ShopcustomizationService {
 						let section;
 
 						switch (parsedsections[index].type) {
-							case Shop_section.Banner:
+							case 'Banners':
 								section = await this.prisma.shop_banner.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -62,7 +62,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 1 };
 								break;
-							case Shop_section.BannerCarousel:
+							case 'BannersCarousel':
 								section = await this.prisma.shop_banner_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -70,7 +70,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 2 };
 								break;
-							case Shop_section.ProductCarousel:
+							case 'ProductCarousel':
 								section = await this.prisma.shop_product_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -115,7 +115,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, products_info, type: 3 };
 								break;
-							case Shop_section.Video:
+							case 'Video':
 								section = await this.prisma.shop_video.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -222,7 +222,11 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async updateSection(id: number, shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput) {
+	async updateSection(
+		id: number,
+		shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput,
+		shop_section_logCreateInput: Prisma.shop_section_logCreateInput,
+	) {
 		try {
 			await this.prisma.shop_section.update({
 				where: {
@@ -230,6 +234,13 @@ export class ShopcustomizationService {
 				},
 				data: {
 					sections: shop_sectionUpdateInput.sections,
+				},
+			});
+
+			await this.prisma.shop_section_log.create({
+				data: {
+					device: shop_section_logCreateInput.device,
+					shop_id: id,
 				},
 			});
 
@@ -523,22 +534,22 @@ export class ShopcustomizationService {
 	}
 
 	async saveProductCarouselSelect(
-		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
-		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+		shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
 	) {
 		try {
 			const section = await this.prisma.shop_product_carousel_select.findFirst({
 				where: {
-					id: shop_product_carouselWhereUniqueInput.id,
+					id: shop_product_carousel_selectWhereUniqueInput.id,
 				},
 			});
 			if (section) {
 				return this.updateProductCarouselSelect(
-					shop_product_carouselWhereUniqueInput,
-					shop_product_carouselCreateInput,
+					shop_product_carousel_selectWhereUniqueInput,
+					shop_product_carousel_selectCreateInput,
 				);
 			} else {
-				return this.createProductCarouselSelect(shop_product_carouselCreateInput);
+				return this.createProductCarouselSelect(shop_product_carousel_selectCreateInput);
 			}
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -550,10 +561,10 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async createProductCarouselSelect(shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput) {
+	async createProductCarouselSelect(shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput) {
 		try {
 			await this.prisma.shop_product_carousel_select.create({
-				data: shop_product_carouselCreateInput,
+				data: shop_product_carousel_selectCreateInput,
 			});
 			return 'Product Carousel Select Created';
 		} catch (e) {
@@ -567,17 +578,17 @@ export class ShopcustomizationService {
 	}
 
 	async updateProductCarouselSelect(
-		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
-		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+		shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
 	) {
 		try {
 			await this.prisma.shop_product_carousel_select.update({
 				where: {
-					id: shop_product_carouselWhereUniqueInput.id,
+					id: shop_product_carousel_selectWhereUniqueInput.id,
 				},
 				data: {
-					filter_name: shop_product_carouselCreateInput.filter_name,
-					products: shop_product_carouselCreateInput.products,
+					filter_name: shop_product_carousel_selectCreateInput.filter_name,
+					products: shop_product_carousel_selectCreateInput.products,
 				},
 			});
 			return 'Product Carousel Select Updated';
@@ -590,20 +601,4 @@ export class ShopcustomizationService {
 			throw new HttpException('Error updating shop video request body incorrect', 500);
 		}
 	}
-
-	// async createProductCarousel(shop_product_carouselCreateInput) {
-	// 	try {
-	// 		await this.prisma.shop_product_carousel.create({
-	// 			data: shop_product_carouselCreateInput,
-	// 		});
-	// 		return 'Product Carousel Created';
-	// 	} catch (e) {
-	// 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-	// 			console.log(e.message);
-	// 			throw new HttpException('Error creating shop product carousel please check your information!', 500);
-	// 		}
-	// 		console.log(e.message);
-	// 		throw new HttpException('Error creating shop product carousel request body incorrect', 500);
-	// 	}
-	// }
 }
