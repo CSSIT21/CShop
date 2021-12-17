@@ -1,13 +1,13 @@
 import { Catch, HttpException, Injectable } from '@nestjs/common';
 import { CreateSellershopDto } from './dto/create-sellershop.dto';
 import { UpdateSellershopDto } from './dto/update-sellershop.dto';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from 'src/authentication/dto/user.dto';
 
 @Injectable()
 export class SellershopService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	public async findOne(id: number) {
 		try {
@@ -50,14 +50,239 @@ export class SellershopService {
 		}
 	}
 
-	public async getShopProduct(id: number) {
+	public async getShopProduct(
+		id: number,
+		page: number,
+		category_id: number,
+		priceLow: number,
+		priceHigh: number,
+		readyToShip: boolean,
+		outOfStock: boolean,
+		rating: number,
+	) {
 		try {
+			if (category_id != 0) {
+				const shop_category = await this.prisma.shop_category.findFirst({
+					where: {
+						shop_id: id,
+						id: category_id,
+					},
+					select: {
+						products: true,
+						id: true,
+					},
+				});
+				if (readyToShip && outOfStock) {
+					const products = await this.prisma.product.findMany({
+						where: {
+							id: {
+								in: shop_category.products,
+							},
+							rating: {
+								gte: rating,
+							},
+							price: {
+								gte: priceLow,
+								lte: priceHigh,
+							},
+						},
+						include: {
+							product_picture: true,
+						},
+						skip: (page - 1) * 16,
+						take: 16,
+					});
+					const count = await this.prisma.product.count({
+						where: {
+							id: {
+								in: shop_category.products,
+							},
+							rating: {
+								gte: rating,
+							},
+							price: {
+								gte: priceLow,
+								lte: priceHigh,
+							},
+						},
+					});
+					return { products, count };
+				} else if (readyToShip) {
+					const products = await this.prisma.product.findMany({
+						where: {
+							id: {
+								in: shop_category.products,
+							},
+							quantity: {
+								gt: 0,
+							},
+							rating: {
+								gte: rating,
+							},
+							price: {
+								gte: priceLow,
+								lte: priceHigh,
+							},
+						},
+						include: {
+							product_picture: true,
+						},
+						skip: (page - 1) * 16,
+						take: 16,
+					});
+					const count = await this.prisma.product.count({
+						where: {
+							id: {
+								in: shop_category.products,
+							},
+							quantity: {
+								gt: 0,
+							},
+							rating: {
+								gte: rating,
+							},
+							price: {
+								gte: priceLow,
+								lte: priceHigh,
+							},
+						},
+					});
+					return { products, count };
+				}
+				const products = await this.prisma.product.findMany({
+					where: {
+						id: {
+							in: shop_category.products,
+						},
+						rating: {
+							gte: rating,
+						},
+						price: {
+							gte: priceLow,
+							lte: priceHigh,
+						},
+					},
+					include: {
+						product_picture: true,
+					},
+					skip: (page - 1) * 16,
+					take: 16,
+				});
+				const count = await this.prisma.product.count({
+					where: {
+						id: {
+							in: shop_category.products,
+						},
+						rating: {
+							gte: rating,
+						},
+						price: {
+							gte: priceLow,
+							lte: priceHigh,
+						},
+					},
+				});
+				return { products, count };
+			} else if (readyToShip && outOfStock) {
+				const products = await this.prisma.product.findMany({
+					where: {
+						shop_id: id,
+						rating: {
+							gte: rating,
+						},
+						price: {
+							gte: priceLow,
+							lte: priceHigh,
+						},
+					},
+					include: {
+						product_picture: true,
+					},
+					skip: (page - 1) * 16,
+					take: 16,
+				});
+				const count = await this.prisma.product.count({
+					where: {
+						shop_id: id,
+						rating: {
+							gte: rating,
+						},
+						price: {
+							gte: priceLow,
+							lte: priceHigh,
+						},
+					},
+				});
+				return { products, count };
+			} else if (readyToShip) {
+				const products = await this.prisma.product.findMany({
+					where: {
+						shop_id: id,
+						quantity: {
+							gt: 0,
+						},
+						rating: {
+							gte: rating,
+						},
+						price: {
+							gte: priceLow,
+							lte: priceHigh,
+						},
+					},
+					include: {
+						product_picture: true,
+					},
+					skip: (page - 1) * 16,
+					take: 16,
+				});
+				const count = await this.prisma.product.count({
+					where: {
+						shop_id: id,
+						quantity: {
+							gt: 0,
+						},
+						rating: {
+							gte: rating,
+						},
+						price: {
+							gte: priceLow,
+							lte: priceHigh,
+						},
+					},
+				});
+				return { products, count };
+			}
 			const products = await this.prisma.product.findMany({
 				where: {
 					shop_id: id,
+					rating: {
+						gte: rating,
+					},
+					price: {
+						gte: priceLow,
+						lte: priceHigh,
+					},
+				},
+				include: {
+					product_picture: true,
+				},
+				skip: (page - 1) * 16,
+				take: 16,
+			});
+			const count = await this.prisma.product.count({
+				where: {
+					shop_id: id,
+					rating: {
+						gte: rating,
+					},
+					price: {
+						gte: priceLow,
+						lte: priceHigh,
+					},
 				},
 			});
-			return products;
+
+			return { products, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -68,18 +293,16 @@ export class SellershopService {
 		}
 	}
 
+	// async followShop(user_id: number, shop_id:number){
+	// 	try {
+	// 		const check = await this.prisma.customer_followed_shop
+	// 	} catch (error) {
+
+	// 	}
+	// };
+
 	public async getShopSection(id: number) {
 		try {
-			// await this.prisma.shop_section.create({
-			// 	data: {
-			// 		shop_id: 1,
-			// 		sections: [
-			// 			{ id: '1234', type: 2 },
-			// 			{ id: '5678', type: 1 },
-			// 			{ id: '9101', type: 3 },
-			// 		],
-			// 	},
-			// });
 			const shopsections = await this.prisma.shop_section.findUnique({
 				where: {
 					shop_id: id,
@@ -95,7 +318,7 @@ export class SellershopService {
 					let section;
 
 					switch (parsedsections[index].type) {
-						case Shop_section.Banner:
+						case 'Banners':
 							section = await this.prisma.shop_banner.findUnique({
 								where: {
 									id: parsedsections[index].id,
@@ -103,7 +326,7 @@ export class SellershopService {
 							});
 							section = { ...section, type: 1 };
 							break;
-						case Shop_section.BannerCarousel:
+						case 'BannersCarousel':
 							section = await this.prisma.shop_banner_carousel.findUnique({
 								where: {
 									id: parsedsections[index].id,
@@ -111,15 +334,54 @@ export class SellershopService {
 							});
 							section = { ...section, type: 2 };
 							break;
-						case Shop_section.ProductCarousel:
+						case 'ProductCarousel':
 							section = await this.prisma.shop_product_carousel.findUnique({
 								where: {
 									id: parsedsections[index].id,
 								},
 							});
-							section = { ...section, type: 3 };
+							const shop_category = await this.prisma.shop_category.findFirst({
+								where: {
+									title: section.category,
+								},
+								select: {
+									products: true,
+								},
+							});
+							const products = await this.prisma.product.findMany({
+								where: {
+									id: {
+										in: shop_category.products,
+									},
+								},
+								include: {
+									product_picture: true,
+								},
+							});
+
+							section = { ...section, products, type: 3 };
 							break;
-						case Shop_section.Video:
+						case 'ProductCarouselSelect':
+							section = await this.prisma.shop_product_carousel_select.findUnique({
+								where: {
+									id: parsedsections[index].id,
+								},
+							});
+
+							const products_info = await this.prisma.product.findMany({
+								where: {
+									id: {
+										in: section.products,
+									},
+								},
+								include: {
+									product_picture: true,
+								},
+							});
+
+							section = { ...section, products: products_info, type: 3 };
+							break;
+						case 'Video':
 							section = await this.prisma.shop_video.findUnique({
 								where: {
 									id: parsedsections[index].id,
@@ -181,6 +443,14 @@ export class SellershopService {
 						shop_id: id,
 					},
 				},
+				include: {
+					customer_id_from_product_reviews: {
+						include: {
+							customer_info: true,
+							customer_picture: true,
+						},
+					},
+				},
 				skip: (page - 1) * 10,
 				take: 10,
 			});
@@ -195,11 +465,24 @@ export class SellershopService {
 		}
 	}
 
-	public async getShopDiscount(id: number) {
+	public async getShopDiscount(id: number, discount_user_codeWhereInput: Prisma.discount_user_codeWhereInput) {
 		try {
+			let getCouponCustomerOwn = [];
+			if (discount_user_codeWhereInput.customer_id) {
+				getCouponCustomerOwn = await this.prisma.discount_user_code.findMany({
+					where: {
+						customer_id: discount_user_codeWhereInput.customer_id,
+					},
+				});
+			}
+
+			console.log(getCouponCustomerOwn);
 			const vouchers = await this.prisma.discount_shop.findMany({
 				where: {
 					shop_id: id,
+					discount_id: {
+						notIn: getCouponCustomerOwn.map((e) => e.discount_id),
+					},
 				},
 				include: {
 					discount_id_from_discount_shop: {
@@ -222,6 +505,8 @@ export class SellershopService {
 
 	public async getFlashSale(id: number) {
 		try {
+			console.log(new Date(Date.now()));
+
 			const flashsale = await this.prisma.shop_flashsale.findFirst({
 				where: {
 					shop_id: id,
@@ -233,21 +518,19 @@ export class SellershopService {
 					},
 				},
 			});
-			let productsinfo = [];
-			let productsId = JSON.parse(JSON.stringify(flashsale.products));
-			console.log(productsId);
-
-			for (let index = 0; index < productsId.length; index++) {
-				const e = productsId[index];
-				const product = await this.prisma.product.findUnique({
-					where: {
-						id: e.id,
+			let productsId = JSON.parse(JSON.stringify(flashsale.products)).map((e) => e.id);
+			const products_info = await this.prisma.product.findMany({
+				where: {
+					id: {
+						in: productsId,
 					},
-				});
-				productsinfo = [...productsinfo, product];
-			}
+				},
+				include: {
+					product_picture: true,
+				},
+			});
 
-			return { ...flashsale, productsinfo };
+			return { ...flashsale, products_info };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -258,18 +541,42 @@ export class SellershopService {
 		}
 	}
 
-	public async create(createSellershopDto: CreateSellershopDto) {
+	public async create(
+		Body: any,
+		shop_infoCreateInput: Prisma.shop_infoCreateInput,
+		addressCreateInput: Prisma.addressCreateInput,
+		payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
+	) {
 		try {
+			const address = await this.prisma.address.create({
+				data: {
+					address_line: addressCreateInput.address_line,
+					district: addressCreateInput.district,
+					sub_district: addressCreateInput.sub_district,
+					province: addressCreateInput.province,
+					postal_code: addressCreateInput.postal_code,
+					phone_number: shop_infoCreateInput.phone_number,
+					recipient_name: payment_shop_bank_accountCreateInput.firstname,
+				},
+			});
 			await this.prisma.shop_info.create({
 				data: {
-					shop_name: createSellershopDto.name,
-					customer_id: createSellershopDto.customer_id,
-					shop_address_id: createSellershopDto.shop_address_id,
-					phone_number: createSellershopDto.phoneNumber,
+					shop_name: shop_infoCreateInput.shop_name,
+					customer_id: Body.customer_id,
+					shop_address_id: address.id,
+					phone_number: shop_infoCreateInput.phone_number,
 					description: '',
 					shop_section: {
 						create: {
 							sections: [],
+						},
+					},
+					payment_shop_bank_account: {
+						create: {
+							account_number: payment_shop_bank_accountCreateInput.account_number,
+							bank: payment_shop_bank_accountCreateInput.bank,
+							firstname: payment_shop_bank_accountCreateInput.firstname,
+							lastname: payment_shop_bank_accountCreateInput.lastname,
 						},
 					},
 				},
@@ -283,17 +590,5 @@ export class SellershopService {
 			console.log(e.message);
 			throw new HttpException('Error creating shop request body incorrect', 500);
 		}
-	}
-
-	findAll() {
-		return `This action returns all sellershop`;
-	}
-
-	update(id: number, updateSellershopDto: UpdateSellershopDto) {
-		return `This action updates a #${id} sellershop`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} sellershop`;
 	}
 }

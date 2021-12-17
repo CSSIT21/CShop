@@ -1,46 +1,81 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Res, Query } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	ParseIntPipe,
+	Res,
+	Query,
+	DefaultValuePipe,
+	ParseBoolPipe,
+	ParseFloatPipe,
+} from '@nestjs/common';
 import { SellershopService } from './sellershop.service';
 import { CreateSellershopDto } from './dto/create-sellershop.dto';
 import { UpdateSellershopDto } from './dto/update-sellershop.dto';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import internal from 'stream';
 
 @Controller('sellershop')
 export class SellershopController {
-	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) {}
+	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
 
 	@Get(':id')
 	public async findOne(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const shopinfo = await this.sellershopService.findOne(id);
 		if (shopinfo) {
-			res.send({ Success: true, shopinfo });
+			res.send({ success: true, shopinfo });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
 
-	@Get(':id/products')
-	public async findProducts(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const products = await this.sellershopService.getShopProduct(id);
+	@Get('/products/:id')
+	public async findProducts(
+		@Param('id', ParseIntPipe) id: number,
+		@Query('page', ParseIntPipe) page: number,
+		@Query('category', new DefaultValuePipe(0), ParseIntPipe) category_id: number,
+		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
+		@Query('priceHigh', new DefaultValuePipe(0), ParseFloatPipe) priceHigh: number,
+		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
+		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
+		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,
+		@Res() res,
+	) {
+		const products = await this.sellershopService.getShopProduct(
+			id,
+			page,
+			category_id,
+			priceLow,
+			priceHigh,
+			readyToShip,
+			outOfStock,
+			rating,
+		);
+
 		if (products) {
-			res.send({ Success: true, products });
+			res.send({ success: true, ...products });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
-
-	@Get(':id/sections')
+  
+	@Get('sections/:id')
 	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections = await this.sellershopService.getShopSection(id);
 		if (sections) {
-			res.send({ Success: true, sections });
+			res.send({ success: true, sections });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
@@ -53,10 +88,10 @@ export class SellershopController {
 	) {
 		const shopcomments = await this.sellershopService.getShopComments(id, page);
 		if (shopcomments) {
-			res.send({ Success: true, shopcomments });
+			res.send({ success: true, shopcomments });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
@@ -69,22 +104,26 @@ export class SellershopController {
 	) {
 		const shopproductscomments = await this.sellershopService.getShopProductComments(id, page);
 		if (shopproductscomments) {
-			res.send({ Success: true, shopproductscomments });
+			res.send({ success: true, shopproductscomments });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
 
-	@Get(':id/shopdiscounts')
-	public async findShopDiscount(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const shopvouchers = await this.sellershopService.getShopDiscount(id);
+	@Post(':id/shopdiscounts')
+	public async findShopDiscount(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() discount_user_codeWhereInput: Prisma.discount_user_codeWhereInput,
+		@Res() res,
+	) {
+		const shopvouchers = await this.sellershopService.getShopDiscount(id, discount_user_codeWhereInput);
 		if (shopvouchers) {
-			res.send({ Success: true, shopvouchers });
+			res.send({ success: true, shopvouchers });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
@@ -93,22 +132,33 @@ export class SellershopController {
 	public async findFlashSales(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const flashsale = await this.sellershopService.getFlashSale(id);
 		if (flashsale) {
-			res.send({ Success: true, flashsale });
+			res.send({ success: true, flashsale });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 	}
 
 	@Post()
-	public async create(@Body() createSellershopDto: CreateSellershopDto, @Res() res) {
-		const shop = await this.sellershopService.create(createSellershopDto);
+	public async create(
+		@Body() shop_infoCreateInput: Prisma.shop_infoCreateInput,
+		@Body() addressCreateInput: Prisma.addressCreateInput,
+		@Body() payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
+		@Body() Body: any,
+		@Res() res,
+	) {
+		const shop = await this.sellershopService.create(
+			Body,
+			shop_infoCreateInput,
+			addressCreateInput,
+			payment_shop_bank_accountCreateInput,
+		);
 		if (shop) {
-			res.send({ Success: true, shop });
+			res.send({ success: true, shop });
 		} else {
 			res.send({
-				Success: false,
+				success: false,
 			});
 		}
 		// this.prisma.shop_flashsale.create({
@@ -123,22 +173,7 @@ export class SellershopController {
 		// 	},
 		// });
 		// res.send({
-		// 	Success: true,
+		// 	success: true,
 		// });
-	}
-
-	@Get()
-	findAll() {
-		return this.sellershopService.findAll();
-	}
-
-	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateSellershopDto: UpdateSellershopDto) {
-		return this.sellershopService.update(+id, updateSellershopDto);
-	}
-
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.sellershopService.remove(+id);
 	}
 }

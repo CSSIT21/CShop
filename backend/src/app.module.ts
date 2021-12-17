@@ -17,6 +17,7 @@ import { ReviewProductModule } from './_product/review-product/review-product.mo
 import { ShortLinkModule } from './_product/short-link/short-link.module';
 import { CommentModule } from './_product/comment/comment.module';
 
+
 @Module({
 	imports: [
 		HttpModule,
@@ -35,11 +36,11 @@ import { CommentModule } from './_product/comment/comment.module';
 	],
 	controllers: [AppController],
 	providers: [
-		// AppService,
-		// {
-		// 	provide: APP_GUARD,
-		// 	useClass: JwtAuthGuard,
-		// },
+		AppService,
+		{
+			provide: APP_GUARD,
+			useClass: JwtAuthGuard,
+		},
 	],
 })
 export class AppModule {}
