@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
+import config from '~/common/constants'
+
 import React, { useState } from "react";
 
 import Indicator from "./components/Indicator";
@@ -32,7 +34,7 @@ const SellerStock = () => {
   const fetchStock = async () => {
     try {
       const res = await axios.get(
-        `localhost:8080/sellerconsole/${shopid.id}/stock`
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/stock`
       );
       console.log(res);
     } catch (e) {

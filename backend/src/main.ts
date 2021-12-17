@@ -9,6 +9,7 @@ async function bootstrap() {
 			credentials: true,
 		},
 	});
+	app.enableCors();
 	await app.listen(constants.serverPort);
 }
 
