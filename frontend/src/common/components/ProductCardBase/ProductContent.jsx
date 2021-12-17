@@ -1,5 +1,5 @@
-import { 
-  FavoriteRounded as FavoriteRoundedIcon, 
+import {
+  FavoriteRounded as FavoriteRoundedIcon,
   FavoriteBorderRounded as FavoriteBorderRoundedIcon,
   ShoppingCart as ShoppingCartIcon
 } from "@mui/icons-material";
@@ -36,7 +36,7 @@ const ProductContent = ({
   product,
   status,
   onFavourite,
-  statusProps={},
+  statusProps = {},
   addToCart
 }) => {
   return (
@@ -49,8 +49,8 @@ const ProductContent = ({
 
       <CardActions sx={actionStyle}>
         {
-          (!isUndef(status)) ? <Typography variant="caption" fontSize=".68rem" color="#A0A3BD">
-          {product.status}
+          (!isUndef(status)) ? <Typography variant="caption" fontSize=".7rem" color="#A0A3BD">
+            {product.status}
           </Typography> : (isFunc(status) ? status(statusProps) : <>{status}</>)
         }
 
@@ -68,11 +68,10 @@ const ProductContent = ({
         </IconButton>
 
       </CardActions>
-      
-      {addToCart && 
-        <CButton 
-          icon={<ShoppingCartIcon sx={{fontSize: '18px'}} />} 
-          title="Add to cart" 
+      {addToCart &&
+        <CButton
+          icon={<ShoppingCartIcon sx={{ fontSize: '18px' }} />}
+          title="Add to cart"
           fontSize='14px'
           width="100%"
           height='38px'

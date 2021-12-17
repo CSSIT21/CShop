@@ -1,17 +1,18 @@
 import { atom } from "recoil";
+import { nanoid } from "nanoid";
 
 const authState = atom({
   key: "authState",
   default: {
-    isLoggedIn: true,
+    isLoggedIn: false,
     user: {
       first_name: "Sirawit",
       last_name: "Pratoomsuwan",
       phoneNumber: "088-000-0000",
       gender: "female",
-      email: "test@gmail.com",
-      password: "123456789",
-      url: "https://cdn.discordapp.com/attachments/681542997946794044/888113518182805614/unknown.png",
+      email: "apisit.mixko@mail.kmutt.ac.th",
+      password: "Sangonomiya-Kokomi",
+      url: `https://avatars.dicebear.com/api/micah/${nanoid()}.svg`,
       day: "31",
       month: "2",
       year: "2021",

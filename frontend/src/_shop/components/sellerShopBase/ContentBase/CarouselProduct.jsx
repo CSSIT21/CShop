@@ -10,12 +10,11 @@ import CarouselButton from "~/common/components/CarouselButton";
 const useStyles = makeStyles({
   bestsellerWrapper: {
     width: "100%",
-    margin: "20px 0",
   },
 
   bestsellerContent: {
     margin: "0 auto",
-    padding: "40px 80px",
+    padding: "40px 0",
 
     borderRadius: "20px",
     marginBottom: "40px",
@@ -26,17 +25,15 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     marginBottom: "25px",
   },
-  bestsellerCarousel:{
-  }
 });
 
 const CarouselProduct = ({ items, onFavourite, filterName }) => {
   const [products, setProducts] = useState(items);
   const [page, setPage] = useState(0);
   const classes = useStyles();
-  const productsPerRow = 6;
+  const productsPerRow = 5;
   const totalPage = Math.ceil(products.length / productsPerRow);
-
+  console.log(page);
   return (
     <Box className={classes.bestsellerWrapper}>
       <Box className={classes.bestsellerContent}>
@@ -56,24 +53,22 @@ const CarouselProduct = ({ items, onFavourite, filterName }) => {
           />
         </Box>
 
-        <Box className={classes.bestsellerCarousel}>
-          <Carousel
-            items={products}
-            pageState={page}
-            setPageState={setPage}
-            itemsPerRow={productsPerRow}
-            gap={1}
-          >
-            {(product, idx) => (
-              <ProductCard
-                product={product}
-                onFavourite={onFavourite}
-                to="/product/1"
-                key={product.id}
-              />
-            )}
-          </Carousel>
-        </Box>
+        <Carousel
+          items={products}
+          pageState={page}
+          setPageState={setPage}
+          itemsPerRow={productsPerRow}
+          gap={20}
+        >
+          {(product, idx) => (
+            <ProductCard
+              product={product}
+              onFavourite={onFavourite}
+              to="/product/1"
+              key={product.id}
+            />
+          )}
+        </Carousel>
       </Box>
     </Box>
   );
