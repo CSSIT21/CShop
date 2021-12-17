@@ -30,7 +30,7 @@ const search = async (browser, url, params) => {
 			...params,
 		};
 		details.push(det);
-		console.log(JSON.stringify(det));
+		console.log(JSON.stringify(det) + ",");
 	}
 	
 	// Return
