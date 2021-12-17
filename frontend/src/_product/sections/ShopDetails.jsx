@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -7,19 +7,34 @@ import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import config from "../../common/constants";
+import dayjs from "dayjs";
 
-const ShopDetails = ({ shopDetails, shopId, auth }) => {
-  const shopName = "Shop Name";
-  const activeTime = "19 minutes ago";
+const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
+  const [activeTime, setActiveTime] = useState();
+  const [joinTime, setJoinTime] = useState();
   const rating = "4.7";
-  const followers = "7.4k";
-  const products = "6666";
-  const joined = "4 years ago";
 
   const handleGoToChat = () => {
     if (auth.isLoggedIn) location.href = "http://localhost:3000/chat";
     else location.href = "http://localhost:3000/register";
   };
+
+  const activeTimeFormat = () => {
+    let fromNow = dayjs(shopDetail?.last_active).fromNow();
+    console.log(shopDetail?.last_active);
+    setActiveTime(fromNow);
+  };
+
+  useEffect(() => {
+    activeTimeFormat();
+    activeJoinFormat();
+  }, [shopDetail]);
+
+  const activeJoinFormat = () => {
+    let joinFromNow = dayjs(shopDetail?.join_date).fromNow();
+    setJoinTime(joinFromNow);
+  };
+
   return (
     <Box
       sx={{
@@ -62,7 +77,7 @@ const ShopDetails = ({ shopDetails, shopId, auth }) => {
               sx={{ fontSize: "18px", fontWeight: 500 }}
               className="shopName"
             >
-              {shopName}
+              {shopDetail?.shop_name}
             </Typography>
             <Typography
               sx={{
@@ -116,8 +131,15 @@ const ShopDetails = ({ shopDetails, shopId, auth }) => {
           >
             Rating
           </Typography>
-          <Typography sx={{ fontSize: "18px", marginLeft: "2.7rem" }}>
-            {rating}
+          <Typography
+            sx={{
+              fontSize: "18px",
+              marginLeft: "2.7rem",
+              minWidth: "35px",
+              maxWidth: "35px",
+            }}
+          >
+            {avgRating}
           </Typography>
           <Typography
             sx={{
@@ -129,7 +151,7 @@ const ShopDetails = ({ shopDetails, shopId, auth }) => {
             Followers
           </Typography>
           <Typography sx={{ fontSize: "18px", marginLeft: "1.3rem" }}>
-            {followers}
+            {shopDetail?.followers}
           </Typography>
         </Box>
 
@@ -149,8 +171,15 @@ const ShopDetails = ({ shopDetails, shopId, auth }) => {
           >
             Products
           </Typography>
-          <Typography sx={{ fontSize: "18px", marginLeft: "1.4rem" }}>
-            {products}
+          <Typography
+            sx={{
+              fontSize: "18px",
+              marginLeft: "1.4rem",
+              minWidth: "55px",
+              maxWidth: "55px",
+            }}
+          >
+            {shopDetail?._count.product}
           </Typography>
           <Typography
             sx={{
@@ -162,7 +191,7 @@ const ShopDetails = ({ shopDetails, shopId, auth }) => {
             Joined
           </Typography>
           <Typography sx={{ fontSize: "18px", marginLeft: "2.7rem" }}>
-            {joined}
+            {joinTime}
           </Typography>
         </Box>
       </Box>

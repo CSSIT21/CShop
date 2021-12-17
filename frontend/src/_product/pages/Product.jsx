@@ -21,6 +21,7 @@ const ProductPage = (props) => {
   const [productPictures, setProductPictures] = useState();
   const [shopDetail, setShopDetails] = useState();
   const [comments, setComments] = useState();
+  const [avgRating, setAvgRating] = useState();
   const [options, setOptions] = useState();
   const [shopId, setShopId] = useState(-1);
   const { id } = useParams();
@@ -32,6 +33,20 @@ const ProductPage = (props) => {
 
       return [...products];
     });
+  };
+
+  const avgRatingFormat = () => {
+    let a = avgRating;
+    let floor = Math.floor(a);
+    let r = Math.abs(floor - a);
+    if (r > 0.5) {
+      a = floor + 1;
+    } else if (r <= 0.5 && r != 0) {
+      a = floor + 0.5;
+    } else if (r == 0) {
+      a = floor;
+    }
+    setAvgRating(a);
   };
 
   const copyLink = () => {
@@ -46,10 +61,12 @@ const ProductPage = (props) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
     // Product
     axios.get(`${config.SERVER_URL}/product/${id}`).then(({ data }) => {
       if (data.success) {
-        setProductDetails(data.product_details.product);
+        console.log("------");
+        setProductDetails(data.product_details);
       } else alert("Fail to fetch data :(");
     });
     // Suggestion product
@@ -70,7 +87,8 @@ const ProductPage = (props) => {
       .get(`${config.SERVER_URL}/product/${id}/comments`)
       .then(({ data }) => {
         if (data.success) {
-          setComments(data.comments);
+          setComments(data.comments.comment_list);
+          setAvgRating(data.comments.avg_product_rating);
         } else alert("Fail to fetch data :(");
       });
     // Get product pictures
@@ -97,7 +115,13 @@ const ProductPage = (props) => {
     });
   }, [id]);
 
-  console.log(shopId);
+  useEffect(() => {
+    avgRatingFormat();
+  }, [avgRating]);
+
+  console.log(shopDetail);
+  console.log(comments);
+  console.log(avgRating);
   return (
     <Box
       sx={{
@@ -116,13 +140,24 @@ const ProductPage = (props) => {
           setOptions={setOptions}
           auth={auth}
         />
-        <ShopDetails shopId={shopId} auth={auth} />
+        <ShopDetails
+          shopId={shopId}
+          auth={auth}
+          shopDetail={shopDetail || null}
+          avgRating={avgRating}
+        />
         <ProductSuggestion
           suggestionItems={productsSuggestion}
           onFavourite={onFavourite}
         />
-        <ProductDescription />
-        <ProductRating />
+        <ProductDescription
+          productDetails={productDetails?.product_detail?.info}
+        />
+        <ProductRating
+          avgRating={avgRating}
+          commentPictures={commentPictures || []}
+          comments={comments || []}
+        />
       </Box>
     </Box>
   );

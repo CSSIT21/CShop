@@ -5,22 +5,25 @@ import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 
 const RatingStars = ({ value, iconStyle, isComment, padding }) => {
+  console.log(value);
   return (
     <>
       <Box sx={container}>
         <Rating
           sx={padding}
-          defaultValue={value}
+          value={value}
+          // defaultValue={value}
           precision={0.5}
-          readOnly
           icon={<StarRateRounded style={iconStyle} />}
           emptyIcon={<StarOutlineRounded style={iconStyle} />}
+          onChange={() => {}}
+          readOnly
         />
         {isComment ? (
           <></>
         ) : (
           <Box>
-            {value !== null && (
+            {value && (
               <Typography
                 sx={{
                   marginTop: 0.7,

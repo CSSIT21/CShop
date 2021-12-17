@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import RatingStars from "../components/ProductDetailsBase/RatingStars";
 import ShowMoreButton from "../../common/components/CButton";
 import Comments from "../components/ProductDetailsBase/Comments";
@@ -15,15 +15,13 @@ import Box from "@mui/material/Box";
 import { ExpandMoreRounded } from "@mui/icons-material";
 import fakeProducts from "~/common/faker/fakeComments";
 
-const ProductRating = () => {
+const ProductRating = ({ avgRating, commentPictures, comments }) => {
   const classes = useStyles();
+  console.log(comments);
+  const [open, setOpen] = useState(false);
+  const [commentOffset, setCommentOffset] = useState(5);
 
-  const avgRating = 4.5;
-
-  const [open, setOpen] = React.useState(false);
-  const [commentOffset, setCommentOffset] = React.useState(5);
-  const [commentsList, setCommentsList] = React.useState(fakeProducts);
-
+  console.log(avgRating);
   const handleClick = () => {
     setOpen(!open);
   };
@@ -79,19 +77,25 @@ const ProductRating = () => {
                 flexDirection: "column",
               }}
             >
-              {commentsList.slice(0, commentOffset).map((val, key) => (
+              {comments?.slice(0, commentOffset).map((val, key) => (
                 <Comments
-                  imageURL={val.imageURL}
-                  username={val.username}
+                  imageURL={
+                    val?.customer_id_from_product_reviews.customer_picture
+                  }
+                  username={
+                    val.firstname && val.lastname
+                      ? val.firstname + " " + val.lastname
+                      : "undefined username"
+                  }
                   rating={val.rating}
                   comment={val.comment}
-                  numberOfLike={val.numberOfLike}
                   key={key}
-                  reviewPhoto={val.reviewPhoto}
+                  reviewTime={val.review_time}
+                  reviewPhoto={commentPictures[key]?.comment_pictures}
                 ></Comments>
               ))}
               <Box sx={{ marginTop: "50px" }}>
-                {commentOffset > commentsList.length ? (
+                {commentOffset > comments?.length ? (
                   <Typography>No more comment</Typography>
                 ) : (
                   <ShowMoreButton

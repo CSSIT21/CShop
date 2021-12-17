@@ -25,23 +25,9 @@ const ProductDetails = ({
   setOptions,
   productPictures,
 }) => {
-  const [product, setProduct] = useState({
-    details: {
-      id: 0,
-      title: "CheesePizzaverydiliciousCheese Pizza very dilic1234567890",
-      price: "500",
-      status: "Hot sale",
-      favourite: true,
-      sub_title:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitatione",
-      quantity: 0,
-    },
-    favorite: true,
-  });
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(1);
   const [selected, setSelected] = useState({});
-  const [choiceCheck, setChoiceCheck] = useState(false);
 
   const handleClickClose = () => {
     setOpen(false);
@@ -63,6 +49,7 @@ const ProductDetails = ({
 
   const handleClickChoice = (e) => {
     setSelected((selected) => ({ ...selected, [e.product_options_id]: e.id }));
+    console.log(selected);
   };
 
   console.log(productPictures);
@@ -101,26 +88,28 @@ const ProductDetails = ({
         )}
       </Box>
       <Box sx={{ margin: "0 60px" }}>
-        <Typography
-          sx={{
-            fontWeight: "500",
-            fontSize: "26px",
-            lineHeight: "36px",
-            marginBottom: "5px",
-          }}
-        >
-          {product.details.title.slice(0, 50)}
-          {product.details.title.length > 50 ? "..." : ""}
-        </Typography>
+        {productDetails?.title && (
+          <Typography
+            sx={{
+              fontWeight: "500",
+              fontSize: "26px",
+              lineHeight: "36px",
+              marginBottom: "5px",
+            }}
+          >
+            {productDetails?.title.slice(0, 50)}
+            {productDetails?.title.length > 50 ? "..." : ""}
+          </Typography>
+        )}
         <Box sx={boxShareLike}>
           <Box>
             <IconButton onClick={copyLink}>
               <ShareIcon sx={{ color: "#A0A3BD", fontSize: "22px" }} />
             </IconButton>
-            <IconButton
+            {/* <IconButton
               onClick={(e) => {
                 e.preventDefault();
-                onFavourite(product);
+                onFavourite(productDetails?);
               }}
               sx={{
                 fontWeight: "bold",
@@ -138,7 +127,7 @@ const ProductDetails = ({
                   fontSize="inherit"
                 />
               )}
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Box>
         <Typography
@@ -149,7 +138,7 @@ const ProductDetails = ({
             marginTop: "10px",
           }}
         >
-          {product.details.sub_title}
+          {productDetails?.sub_title}
         </Typography>
         <Typography
           sx={{
@@ -159,18 +148,19 @@ const ProductDetails = ({
             margin: "28px 0 0 0",
           }}
         >
-          {product.details.price} B.
+          {productDetails?.price} B.
         </Typography>
 
         {/* options */}
         {options &&
-          options.map((e) => (
+          options.map((e, key) => (
             <Box sx={optionStyle}>
               <OptionsChip
                 handleClick={handleClickChoice}
                 list={e.product_choices}
                 name={e.name}
                 selected={selected}
+                key={key}
               />
             </Box>
           ))}
@@ -185,7 +175,11 @@ const ProductDetails = ({
             width: "300px",
           }}
         >
-          <Amount count={count} setCount={setCount} stock={product.quantity} />
+          <Amount
+            count={count}
+            setCount={setCount}
+            stock={productDetails?.quantity}
+          />
           <Box sx={{ marginLeft: "15px" }}>
             <Button
               startIcon={<ShoppingCartOutlinedIcon />}
@@ -197,7 +191,12 @@ const ProductDetails = ({
               }}
               fontSize="12px"
               variant="contained"
-              disabled={(product.details.quantity = 0) ? false : true}
+              disabled={
+                productDetails?.quantity == 0 ||
+                options?.length != Object.keys(selected).length
+                  ? true
+                  : false
+              }
             >
               Add to cart
             </Button>
@@ -211,9 +210,9 @@ const ProductDetails = ({
         <Box sx={{ display: "flex", marginTop: "12px", fontSize: "16px" }}>
           <Typography sx={stockStyle}>Stock:</Typography>
           <Typography sx={stockStyle}>
-            {product.details.quantity == 0
+            {productDetails?.quantity == 0
               ? "Out of stock"
-              : product.details.quantity}
+              : productDetails?.quantity}
           </Typography>
         </Box>
       </Box>

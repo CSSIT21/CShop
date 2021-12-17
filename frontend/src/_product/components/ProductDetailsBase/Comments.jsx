@@ -17,6 +17,7 @@ const Comments = ({
   rating,
   comment,
   reviewPhoto = [],
+  reviewTime,
 }) => {
   // const [anchorEl, setAnchorEl] = React.useState(null);
   // const open = Boolean(anchorEl);
@@ -74,7 +75,12 @@ const Comments = ({
       >
         <Avatar
           alt={username.toUpperCase()}
-          src={imageURL}
+          src={
+            imageURL
+              ? imageURL
+              : "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg"
+          }
+          // imageURL.path
           sx={{
             width: 64,
             height: 64,
@@ -132,7 +138,7 @@ const Comments = ({
             marginTop="8px"
           >
             {reviewPhoto &&
-              reviewPhoto.slice(0, 5).map((val, key) => (
+              reviewPhoto?.slice(0, 5).map((val, key) => (
                 <ReviewPhoto
                   setPage={setPage}
                   page={page}
@@ -150,7 +156,7 @@ const Comments = ({
               ))}
 
             {/* More photo */}
-            {reviewPhoto.length >= 6 && (
+            {reviewPhoto?.length >= 6 && (
               <ReviewPhoto
                 id={5}
                 img={reviewPhoto[5]}
@@ -161,7 +167,7 @@ const Comments = ({
                 {
                   <Box sx={numberConatiner}>
                     <Typography variant="h6" color="#bdbdbd">
-                      +{reviewPhoto.length - 5}
+                      +{reviewPhoto?.length - 5}
                     </Typography>
                   </Box>
                 }
@@ -200,7 +206,7 @@ const Comments = ({
       </Menu> */}
 
       {/* footer */}
-      <CommentFooter />
+      <CommentFooter commentDateTime={reviewTime} />
       <Divider sx={{ alignSelf: "stretch", marginTop: 3 }} />
     </Box>
   );
