@@ -62,21 +62,38 @@ export class UserCard extends React.Component {
   addRes = async () => {
     //this.props.addRestriction(this.props.user.id, this.type, this.desc, this.editDate.day+'/'+this.editDate.month+'/'+this.editDate.year);
 
-    const res = await axios.post(
-      "http://localhost:8080/manageaccount/suspension/users/create",
-      {
-        "customer_id": this.props.user.id,
-        "description": this.desc,
-        "picture_id": 495,
-        "suspension_type_id": parseInt(this.type),
-        "admin_id": 100,
-        "day": this.editDate.day-1,
-        "month": this.editDate.month-1,
-        "year": this.editDate.year-1
-      }
-    );
+    if(this.props.user.admin_customer_suspensions == null){
+      const res = await axios.post(
+        "http://localhost:8080/manageaccount/suspension/users/create",
+        {
+          "customer_id": this.props.user.id,
+          "description": this.desc,
+          "picture_id": 495,
+          "suspension_type_id": parseInt(this.type),
+          "admin_id": 100,
+          "day": this.editDate.day-1,
+          "month": this.editDate.month-1,
+          "year": this.editDate.year-1
+        }
+      );
+    }
+    else{
+      const res = await axios.post(
+        "http://localhost:8080/manageaccount/suspension/users/update",
+        {
+          "id": this.props.user.id,
+          "description": this.desc,
+          "picture_id": 495,
+          "suspension_type_id": parseInt(this.type),
+          "admin_id": 100,
+          "day": this.editDate.day+1,
+          "month": this.editDate.month-1,
+          "year": this.editDate.year
+        }
+      );
+    }
 
-    this.forceUpdate();
+    document.location.reload();
     this.dialogClose();
   };
 

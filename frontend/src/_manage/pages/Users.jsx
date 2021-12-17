@@ -104,12 +104,11 @@ const ManageAccountPage = () => {
         setSearch(event.target.value);
     }
 
-    const deleteRestriction = (userid, restrictionid) => {
-        users.filter(user => user.id === userid)[0].admin_customer_suspensions = null;
-    }
-
-    const addRestriction = (userid, type, desc, date) => {
-        users.filter(user => user.id === userid)[0].admin_customer_suspensions = {suspension_type_id:type, admin_id:'CurrentUser', start_date:'11/18/2021', end_date:date, description:desc};
+    const deleteRestriction = async (userid) => {
+        const res = await axios.post(
+            "http://localhost:8080/manageaccount/suspension/users/delete?id=" + userid
+          );
+        document.location.reload();
     }
 
     useEffect(()=>{
@@ -217,7 +216,7 @@ const ManageAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard user={key} deleteRestriction={deleteRestriction} addRestriction={addRestriction}/>
+                                    <UserCard user={key} deleteRestriction={deleteRestriction}/>
                                 </div>
                             </li>
                         ))}
