@@ -29,7 +29,31 @@ export class SellerconsoleController {
 	 getStock(@Param('id') id : number){
 		 return this.sellerconsoleService.getStock(+id);
 	 }
+
+	 @Get(':id/cardToProduct')
+	 @Public()
+	 getCardToProduct(@Param('id') id : number){
+		 return this.sellerconsoleService.CardOfProduct(+id);
+	 }
+
+	 @Get(':id/cardToFollows')
+	 @Public()
+	 getCardToFollows(@Param('id') id : number){
+		 return this.sellerconsoleService.CardOfFollows(+id);
+	 }
+
+	 @Get(':id/cardToRating')
+	 @Public()
+	 getCardToRating(@Param('id') id : number){
+		 return this.sellerconsoleService.CardOfRating(+id);
+	 }
 	
+	 @Get(':id/cardToSales')
+	 @Public()
+	 getCardToSales(@Param('id') id : number){
+		 return this.sellerconsoleService.CardOfSales1(+id);
+	 }
+
 	 @Post(':id/stockLog')
 	 async getStockLog(@Body()request  , @Res() res ) : Promise <any>  {
 		 var id = request.id;

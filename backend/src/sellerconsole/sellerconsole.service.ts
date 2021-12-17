@@ -198,4 +198,68 @@ export class SellerconsoleService {
 			},
 		});
 	}
+
+	async CardOfProduct(id: number){
+		return await this.prisma.product.count({
+			where : {
+				shop_id : id,
+			},
+			select : {
+				quantity : true
+			}
+		})
+	}
+	async CardOfFollows(id: number){
+		return await this.prisma.shop_info.findUnique({
+			where : {
+				id : id,
+			},
+			select : {
+				followers : true,
+			}
+		})
+	}
+	async CardOfRating(id: number){
+		return await this.prisma.product.aggregate({
+			where : {
+				shop_id : id,
+			},
+			_avg : {
+				rating : true,
+			}
+		})
+	}
+	async CardOfSales1(id: number ){
+		return await this.prisma.sconsole_order_history.findMany({
+			where : {
+				shop_id : id,
+			},
+			select : {
+				order_id : true,
+			}
+		})
+	}
+	async CardOfSales2(id: number ){
+		return await this.prisma.order.findMany({
+			where : {
+				id : id
+			},
+			select : {
+				total_price : true,
+			}
+		
+		})
+	}
+
+	// async Cheat(id: number){
+	// 	return await this.prisma.order.aggregate({
+	// 		where : {
+	// 			customer_id : id,
+	// 		},
+	// 		_sum : {
+	// 			total_price : true,
+	// 		}
+	// 	})
+	// }
+	
 }
