@@ -1,9 +1,7 @@
-import React, { useState } from "react";
 import { Box } from "@mui/system";
 import ReviewDialog from "../components/ReviewBase/ReviewDialog";
-import ReviewDialogContents from "../components/ReviewBase/ReviewDialogContents";
 
-function ReviewsFromCustomer() {
+function ReviewsFromCustomer({}) {
   return (
     <Box
       sx={{
@@ -16,9 +14,7 @@ function ReviewsFromCustomer() {
     >
       {/* Review Dialog */}
       <Box>
-        <ReviewDialog sx={{ margin: "20px" }}>
-          <ReviewDialogContents />
-        </ReviewDialog>
+        <ReviewDialog sx={{ margin: "20px" }} />
       </Box>
     </Box>
   );

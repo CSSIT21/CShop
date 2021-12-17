@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, TextField, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
@@ -32,10 +32,11 @@ const CarouselBanner = ({
   const [sectionImages, setSectionImages] = useState([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
-  useLayoutEffect(() => {
+  console.log("sectionImages", sectionImages);
+  useEffect(() => {
     if (id in information) {
-      setSectionImages(information[id].content);
+      console.log("layout effect");
+      setSectionImages(information[id].content.banners);
     } else {
       console.log("image not found");
     }
@@ -78,7 +79,7 @@ const CarouselBanner = ({
   const saveUpload = () => {
     setInformation((info) => ({
       ...info,
-      [id]: { ...info[id], content: sectionImages },
+      [id]: { ...info[id], content: { id: id, banners: sectionImages } },
     }));
   };
   return (

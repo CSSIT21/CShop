@@ -51,7 +51,10 @@ const CardWrapper = ({ type }) => {
               <Comment
                 imageURL={item.customer_picture}
                 username={
-                  item.customer_id_from_shop_comment.customer_info.firstname
+                  type == "shop"
+                    ? item.customer_id_from_shop_comment.customer_info.firstname
+                    : item.customer_id_from_product_reviews.customer_info
+                        .firstname
                 }
                 rating={item.rating}
                 comment={item.comment}
