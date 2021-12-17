@@ -65,7 +65,6 @@ const ProductPage = (props) => {
     // Product
     axios.get(`${config.SERVER_URL}/product/${id}`).then(({ data }) => {
       if (data.success) {
-        console.log("------");
         setProductDetails(data.product_details);
       } else alert("Fail to fetch data :(");
     });
@@ -119,9 +118,6 @@ const ProductPage = (props) => {
     avgRatingFormat();
   }, [avgRating]);
 
-  console.log(shopDetail);
-  console.log(comments);
-  console.log(avgRating);
   return (
     <Box
       sx={{

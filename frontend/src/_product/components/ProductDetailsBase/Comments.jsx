@@ -11,7 +11,6 @@ import Stack from "@mui/material/Stack";
 import DialogImage from "./DialogImage";
 
 const Comments = ({
-  // commentDetails,
   imageURL,
   username,
   rating,

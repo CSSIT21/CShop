@@ -5,7 +5,6 @@ import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 
 const RatingStars = ({ value, iconStyle, isComment, padding }) => {
-  console.log(value);
   return (
     <>
       <Box sx={container}>

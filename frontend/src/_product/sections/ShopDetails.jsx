@@ -21,7 +21,6 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
 
   const activeTimeFormat = () => {
     let fromNow = dayjs(shopDetail?.last_active).fromNow();
-    console.log(shopDetail?.last_active);
     setActiveTime(fromNow);
   };
 

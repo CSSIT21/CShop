@@ -14,7 +14,6 @@ const Image = ({ productPictures }) => {
     }, 200);
   };
 
-  console.log(main);
   return (
     <Box sx={{ display: "flex" }}>
       {productPictures.length == 1 ? (

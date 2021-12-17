@@ -6,7 +6,6 @@ const CommentFooter = ({ commentDateTime }) => {
   const [dateTime, setDateTime] = useState();
 
   const commentDateTimeFormat = () => {
-    console.log(commentDateTime);
     let date = dayjs(commentDateTime).format("DD/MM/YYYY");
     let time = dayjs(commentDateTime).format("HH:mm");
     setDateTime(date + " at " + time);

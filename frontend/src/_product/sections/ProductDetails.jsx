@@ -49,10 +49,8 @@ const ProductDetails = ({
 
   const handleClickChoice = (e) => {
     setSelected((selected) => ({ ...selected, [e.product_options_id]: e.id }));
-    console.log(selected);
   };
 
-  console.log(productPictures);
   return (
     <Box
       sx={{

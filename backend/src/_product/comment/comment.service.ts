@@ -18,7 +18,8 @@ export class CommentService {
 							customer_info: true,
 							customer_picture: {
 								include: {
-									picture_id_from_customer_picture: true,
+									picture_id_from_customer_picture: true
+									// Get file
 								},
 							},
 						},

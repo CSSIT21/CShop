@@ -55,7 +55,6 @@ function ReviewDialog({
 
   const deleteImage = (e) => {
     setImageList(imageList.filter((item) => item.id !== e));
-    console.log(e + " : This image is deleted");
   };
   const submitable = useMemo(() => {
     let chipCheck = false;

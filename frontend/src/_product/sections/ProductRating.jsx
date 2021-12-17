@@ -17,11 +17,9 @@ import fakeProducts from "~/common/faker/fakeComments";
 
 const ProductRating = ({ avgRating, commentPictures, comments }) => {
   const classes = useStyles();
-  console.log(comments);
   const [open, setOpen] = useState(false);
   const [commentOffset, setCommentOffset] = useState(5);
 
-  console.log(avgRating);
   const handleClick = () => {
     setOpen(!open);
   };
