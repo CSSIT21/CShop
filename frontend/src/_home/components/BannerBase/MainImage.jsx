@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, CircularProgress } from "@mui/material";
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
 import { noop, noot } from '~/common/utils';
 import { nanoid } from 'nanoid';
@@ -13,6 +13,7 @@ const MainImage = ({
 	upload = false,
 	onUploadImg = noop,
 	onClickHandler = noop,
+	loading = false,
 	...rest
 }) => {
 	const classes = useStyles();
@@ -27,7 +28,7 @@ const MainImage = ({
 				style={{ display: "block", transition: "0.25s all ease-in-out" }}
 			/>
 			{upload
-				? <label className={classes.iconStyle} htmlFor={`outlined-button-file-${id}`}>
+				? (<label className={classes.iconStyle} htmlFor={`outlined-button-file-${id}`}>
 					<Button
 						component="span"
 						variant="outlined"
@@ -41,16 +42,29 @@ const MainImage = ({
 							style={{ display: 'none' }}
 							onChange={onUploadImg}
 						/>
-						<Typography sx={{ textTransform: "capitalize" }}>
-							Change Picture
-						</Typography>
+						<Typography sx={{ textTransform: "capitalize" }}>Change Picture</Typography>
 					</Button>
-				</label>
-				: <Box className={classes.iconStyle} onClick={onClickHandler}>
-					<>{Icon}</>
-				</Box>
-			}
-		</Box>
+				</label>)
+				: (loading
+					? <CircularProgress
+						sx={{
+							position: 'absolute',
+							top: '50%',
+							left: '50%',
+							marginTop: '-20px',
+							marginLeft: '-20px',
+						}}
+					/>
+					: <Button
+						component="span"
+						variant="outlined"
+						startIcon={Icon}
+						sx={buttonStyle}
+						onClick={onClickHandler}>
+						<Typography sx={{ textTransform: "capitalize" }}>Delete Banner</Typography>
+					</Button>
+				)}
+		</Box >
 	);
 };
 
@@ -79,5 +93,16 @@ const useStyles = makeStyles({
 		cursor: "pointer"
 	},
 });
+
+const buttonStyle = {
+	borderWidth: "2px",
+	color: "#FD6637",
+	top: "50%",
+	left: "50%",
+	position: "absolute",
+	transform: "translate(-50%, -50%)",
+	transition: "0.25s all ease-in-out",
+	cursor: "pointer"
+};
 
 export default MainImage;

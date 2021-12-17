@@ -14,6 +14,7 @@ import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
 import { CartModule } from './cart/cart.module';
 
+
 @Module({
 	imports: [
 		HttpModule,
@@ -29,11 +30,11 @@ import { CartModule } from './cart/cart.module';
 	],
 	controllers: [AppController],
 	providers: [
-		// AppService,
-		// {
-		// 	provide: APP_GUARD,
-		// 	useClass: JwtAuthGuard,
-		// },
+		AppService,
+		{
+			provide: APP_GUARD,
+			useClass: JwtAuthGuard,
+		},
 	],
 })
 export class AppModule {}

@@ -5,9 +5,11 @@ import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { Prisma } from '.prisma/client';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 
+
 @Controller('shopcustomization')
 export class ShopcustomizationController {
-	constructor(private readonly shopcustomizationService: ShopcustomizationService) {}
+	constructor(private readonly shopcustomizationService: ShopcustomizationService) { }
+
 
 	@Get(':id')
 	async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -73,9 +75,14 @@ export class ShopcustomizationController {
 	async updateSection(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput,
+		@Body() shop_section_logCreateInput: Prisma.shop_section_logCreateInput,
 		@Res() res,
 	) {
-		const result = await this.shopcustomizationService.updateSection(id, shop_sectionUpdateInput);
+		const result = await this.shopcustomizationService.updateSection(
+			id,
+			shop_sectionUpdateInput,
+			shop_section_logCreateInput,
+		);
 		if (result) {
 			res.send({ success: true, result });
 		} else {
@@ -143,13 +150,13 @@ export class ShopcustomizationController {
 
 	@Post('/productcarouselselect')
 	async saveProductcarouselselect(
-		@Body() shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
-		@Body() shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+		@Body() shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
+		@Body() shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
 		@Res() res,
 	) {
 		const result = await this.shopcustomizationService.saveProductCarouselSelect(
-			shop_product_carouselWhereUniqueInput,
-			shop_product_carouselCreateInput,
+			shop_product_carousel_selectWhereUniqueInput,
+			shop_product_carousel_selectCreateInput,
 		);
 		if (result) {
 			res.send({ success: true, result });
@@ -157,42 +164,5 @@ export class ShopcustomizationController {
 			res.send({ success: false });
 		}
 	}
-
-	// @Post('/productcarouselselect')
-	// async saveProductcarouselSelect(
-	// 	@Body() shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
-	// 	@Body() shop_product_carouselCreateInput: Prisma.shop_product_carousel_selectCreateInput,
-	// )
-
-	// @Patch('/bannercarousel')
-	// async updateBannerCarousel(
-	// 	@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
-	// 	@Body() shop_banner_carouselUpdateInput: Prisma.shop_banner_carouselUpdateInput,
-	// 	@Res() res,
-	// ) {
-	// 	const result = await this.shopcustomizationService.updateBannerCarousel(
-	// 		shop_banner_carouselWhereUniqueInput,
-	// 		shop_banner_carouselUpdateInput,
-	// 	);
-	// 	if (result) {
-	// 		res.send({ success: true, result });
-	// 	} else {
-	// 		res.send({ success: false });
-	// 	}
-	// }
-
-	// @Get()
-	// findAll() {
-	// 	return this.shopcustomizationService.findAll();
-	// }
-
-	// @Get(':id')
-	// findOne(@Param('id') id: string) {
-	// 	return this.shopcustomizationService.findOne(+id);
-	// }
-
-	// @Delete(':id')
-	// remove(@Param('id') id: string) {
-	// 	return this.shopcustomizationService.remove(+id);
-	// }
 }
+

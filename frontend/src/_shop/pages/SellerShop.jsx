@@ -15,27 +15,31 @@ import axios from "axios";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 import config from "~/common/constants";
-
-const flashSaleData = { products: fakeProducts, endAt: 1636916867 };
+import Skeleton from "@mui/material/Skeleton";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
 
 const SellerShop = () => {
+  const auth = useRecoilValue(authState);
   const history = useHistory();
   const classes = useStyles();
   const { id, cateId } = useParams();
+  const [loading, setloading] = useState(true);
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
   const [menus, setmenus] = useState([]);
-  const [flashSale, setflashSale] = useState(flashSaleData);
+  const [flashSale, setflashSale] = useState();
   const onFavourite = (index) => {
-    setflashItems((flashItems) => {
-      const target = flashItems[index];
-      target.favourite = !target.favourite;
-      return [...flashItems];
-    });
+    // setflashItems((flashItems) => {
+    //   const target = flashItems[index];
+    //   target.favourite = !target.favourite;
+    //   return [...flashItems];
+    // });
   };
-  useEffect(async () => {
-    await axios
+
+  useEffect(() => {
+    axios
       .get(`${config.SERVER_URL}/sellershop/${id}`)
       .then(({ data }) => {
         setshopInfo(data.shopinfo);
@@ -44,18 +48,31 @@ const SellerShop = () => {
       .catch((e) => {
         console.log(e.message);
         history.push("/*");
-      });
-    axios
-      .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
-      .then(({ data }) => {
-        setsections(data.sections);
-      });
-    axios
-      .get(`${config.SERVER_URL}/sellershop/${id}/shopdiscounts`)
-      .then(({ data }) => {
-        setcoupons(data.shopvouchers);
+      })
+      .then(() => {
+        axios
+          .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
+          .then(({ data }) => {
+            setsections(data.sections);
+          });
+        axios
+          .post(`${config.SERVER_URL}/sellershop/${id}/shopdiscounts`, {
+            customer_id: auth.user.id,
+          })
+          .then(({ data }) => {
+            setcoupons(data.shopvouchers);
+          });
+        axios
+          .get(`${config.SERVER_URL}/sellershop/${id}/flashsale`)
+          .then(({ data }) => {
+            setflashSale(data.flashsale);
+          })
+          .then(() => {
+            setloading(false);
+          });
       });
   }, []);
+
   return (
     <>
       <Box className={classes.body}>
@@ -67,7 +84,11 @@ const SellerShop = () => {
               padding: "25px 75px",
             }}
           >
-            <Header shopInfo={shopInfo} />
+            {loading ? (
+              <Skeleton animation="wave" width="100%" height="200px" />
+            ) : (
+              <Header shopInfo={shopInfo} />
+            )}
           </Box>
           <Box
             sx={{
@@ -76,22 +97,27 @@ const SellerShop = () => {
               backgroundColor: "#D9DBE9",
             }}
           />
+
           <Box className={classes.containerWhite}>
             <TabsController categories={menus} />
           </Box>
           {flashSale && (
             <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
           )}
-          {coupons > 0 && (
+          {coupons && (
             <Box className={classes.containerWhite}>
               <Voucher shopcoupons={coupons} />
             </Box>
           )}
           <Box className={classes.categoryBox}>
             <Box className={classes.category}>
-              {sections.map((section, idx) => {
-                return <Content key={section.id} section={section} />;
-              })}
+              {loading ? (
+                <Skeleton animation="wave" width="100%" height="400px" />
+              ) : (
+                sections.map((section, idx) => {
+                  return <Content key={section.id} section={section} />;
+                })
+              )}
             </Box>
           </Box>
           <Box className={classes.containerWhite}>
