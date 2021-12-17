@@ -99,7 +99,7 @@ export class ManageaccountService {
 				data: {
           admin_shop_suspensions:{
             update:{
-              description: updateSellerSuspensionDto.description,
+              description: updateSellerSuspensionDto.description+"",
               picture_id: updateSellerSuspensionDto.picture_id,
               suspension_type_id: updateSellerSuspensionDto.suspension_type_id,
               admin_id : updateSellerSuspensionDto.admin_id,

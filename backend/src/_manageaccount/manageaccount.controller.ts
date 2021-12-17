@@ -128,6 +128,15 @@ export class ManageaccountController {
       }
     });
   }
+  
+  @Get('sellers/unique')
+  getSellersU(@Query('id') i: number){
+    return this.prisma.shop_info.findFirst({
+      where:{
+        id: +i
+      }
+    });
+  }
 
   @Get('users')
   getUsers(){
@@ -144,7 +153,11 @@ export class ManageaccountController {
 
   @Get('/address')
   getAddress(@Query('id') i: number){
-    return this.prisma.address.findMany();
+    return this.prisma.address.findFirst({
+      where:{
+        id: +i
+      }
+    });
   }
 
   @Get('tickets')

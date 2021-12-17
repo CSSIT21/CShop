@@ -115,7 +115,7 @@ const ManageAccountPage = () => {
     }
     
     useEffect(()=>{
-        setProducts(); 
+        setProducts();
     }, [])
 
     return (

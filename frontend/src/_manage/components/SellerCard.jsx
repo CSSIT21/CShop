@@ -34,11 +34,11 @@ export class SellerCard extends React.Component {
     };
     this.open = false;
     this.editDate = {
-      day: 'Select Day',
-      month: '0',
-      year: 'Select Year'
+      day: '1',
+      month: '1',
+      year: '2021'
     };
-    this.type = 'General Restriction';
+    this.type = 495;
     this.desc = 'Pending Description';
   }
 
@@ -61,6 +61,7 @@ export class SellerCard extends React.Component {
   };
 
   addRes = async () => {
+    
     if(this.props.seller.admin_shop_suspensions == null){
       const res = await axios.post(
         "http://localhost:8080/manageaccount/suspension/sellers/create",

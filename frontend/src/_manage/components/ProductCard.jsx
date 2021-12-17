@@ -6,6 +6,7 @@ import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
+import axios from "axios";
 
 export class ProductCard extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export class ProductCard extends React.Component {
     this.state = {
       expand: false
     };
+    this.seller = {shop_name: "PENDING"};
   }
 
   dialogClickOpen = () => {
@@ -24,6 +26,14 @@ export class ProductCard extends React.Component {
     this.open = false;
     this.forceUpdate();
   };
+
+  async componentDidMount(){
+    const fetchedData = await axios.get(
+      "http://localhost:8080/manageaccount/sellers/unique?id=" + this.props.product.shop_id
+    );
+    this.seller.shop_name = fetchedData.data.shop_name;
+    this.forceUpdate();
+  }
 
   render() {
     const { classes } = this.props;
@@ -48,7 +58,7 @@ export class ProductCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.product.sold}</Typography>
             </Box>
             <Box sx={{ width: '18%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.product.shop_id}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.seller.shop_name}</Typography>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>

@@ -33,21 +33,20 @@ export class UserCard extends React.Component {
     };
     this.open = false;
     this.editDate = {
-      day: 'Select Day',
-      month: '0',
-      year: 'Select Year'
+      day: '1',
+      month: '1',
+      year: '2021'
     };
-    this.type = 'General Restriction';
+    this.type = 495;
     this.desc = 'Pending Description';
     this.address = {address_line: 'PENDING', postal_code: 'PENDING'};
   }
 
-  componentDidMount(){
-    this.props.address.forEach((add) => {
-      if(add.id == this.props.user.id){
-        this.address = add;
-      }
-    })
+  async componentDidMount(){
+    const fetchedData = await axios.get(
+      "http://localhost:8080/manageaccount/address?id=" + this.props.user.id
+    );
+    this.address = fetchedData.data;
     this.forceUpdate();
   }
 
