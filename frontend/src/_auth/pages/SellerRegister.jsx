@@ -217,6 +217,7 @@ const SellerRegister = ({}) => {
               });
           });
       }
+
     } catch (e) {
       console.log(e.message);
     }

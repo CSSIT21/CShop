@@ -64,7 +64,6 @@ const RegisterAddress = ({
       userInfo.postalCode != ""
     ) {
       const url = await getUrl(userInfo.file);
-      console.log(userInfo);
       setIsLoading(true);
       axios
         .post(

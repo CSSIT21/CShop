@@ -20,7 +20,6 @@ import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import internal from 'stream';
 import { Public } from 'src/common/decorators/public.decorator';
-import { async } from 'rxjs';
 
 @Controller('sellershop')
 export class SellershopController {
