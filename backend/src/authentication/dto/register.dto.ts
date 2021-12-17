@@ -18,10 +18,7 @@ export class RegisterDto {
 	gender: string;
 	phoneNumber: string;
 
-	/** BIRTHDATE */
-	day: number;
-	month: number;
-	year: number;
+	birthdate: string;
 
 	/** ADDRESS */
 	province: string;

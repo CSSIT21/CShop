@@ -7,9 +7,26 @@ import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
 import { ChatModule } from './chat/chat.module';
+import { ProfileModule } from './profile/profile.module';
+import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
+import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
+import { BannerModule } from './home/banner/banner.module';
+import { HomeModule } from './home/home/home.module';
+import { LogSystemModule } from './home/log-system/log-system.module';
 
 @Module({
-	imports: [HttpModule, AuthenticationModule, PrismaModule, ChatModule],
+	imports: [
+		HttpModule,
+		AuthenticationModule,
+		PrismaModule,
+		BannerModule,
+		HomeModule,
+		LogSystemModule,
+		SellershopModule,
+		ShopcustomizationModule,
+		ProfileModule,
+		ChatModule
+	],
 	controllers: [AppController],
 	providers: [
 		// AppService,

@@ -30,6 +30,8 @@ model customer {
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend?
+  discount_daily_coin           discount_daily_coin?
+  discount_used_coin            discount_used_coin?
   discount_user_code            discount_user_code?
   home_add_to_cart_log          home_add_to_cart_log?
   home_discount_log             home_discount_log?
@@ -213,30 +215,15 @@ model shop_section {
   shop_id_from_shop_section shop_info @relation(fields: [shop_id], references: [id])
 }
 
-model shop_flashsale {
-  id                          Int                      @id @default(autoincrement())
-  shop_id                     Int
-  started_date                DateTime                 @default(now())
-  ended_date                  DateTime                 @default(now())
-  products                    Json[]
-  title                       String?
-  path                        String?
-  thumbnail                   String?
-  description                 String?
-  shop_id_from_shop_flashsale shop_info                @relation(fields: [shop_id], references: [id])
-  sconsole_flashsale_log      sconsole_flashsale_log[]
-  shop_flashsale_history      shop_flashsale_history?
-}
-
 model shop_flashsale_history {
-  flashsale_id                             Int            @id
-  shop_id                                  Int
-  started_date                             DateTime       @default(now())
-  ended_date                               DateTime       @default(now())
-  products                                 Json[]
-  quantity                                 Json
-  flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
+  flashsale_id                        Int            @id
+  shop_id                             Int
+  started_date                        DateTime       @default(now())
+  ended_date                          DateTime       @default(now())
+  products                            Json[]
+  quantity                            Json
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_shop_flashsale_history shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model shop_banner {
@@ -252,9 +239,8 @@ model shop_banner_carousel {
 }
 
 model shop_product_carousel {
-  id          String @id
-  filter_name String
-  products    Int[]
+  id       String @id @unique
+  category String
 }
 
 model shop_video {
@@ -264,11 +250,11 @@ model shop_video {
 }
 
 model shop_category {
-  id                         Int       @id @default(autoincrement())
-  shop_id                    Int
-  title                      String    @db.VarChar(20)
-  products                   Int[]
-  shop_id_from_shop_category shop_info @relation(fields: [shop_id], references: [id])
+  id        Int       @id @default(autoincrement())
+  shop_id   Int
+  title     String    @db.VarChar(20)
+  products  Int[]
+  shop_info shop_info @relation(fields: [shop_id], references: [id])
 }
 
 model category_icon_picture {
@@ -309,7 +295,7 @@ model product {
   sold                            Int
   added_date                      DateTime                         @default(now()) @db.Timestamp(6)
   suggest_products                Int[]
-  rating                          Decimal                          @db.Decimal(1, 1)
+  rating                          Decimal                          @db.Decimal(2, 1)
   category_id_from_product        category                         @relation(fields: [category_id], references: [id])
   shop_id_from_product            shop_info                        @relation(fields: [shop_id], references: [id])
   business_product_view_records   business_product_view_records?
@@ -324,6 +310,7 @@ model product {
   order_refund_item               order_refund_item[]
   product_detail                  product_detail?
   product_options                 product_options[]
+  product_picture                 product_picture[]
   product_reviews                 product_reviews[]
   product_short_link              product_short_link?
   rem_may_favorite_product        rem_may_favorite_product?
@@ -362,13 +349,6 @@ model product_reviews {
   product_comment_rating           product_comment_rating?
 }
 
-model product_reviews_picture {
-  id        Int    @id @default(autoincrement())
-  title     String @db.VarChar(50)
-  path      String
-  thumbnail String
-}
-
 model product_short_link {
   product_id                         Int     @id
   shorted_link                       String
@@ -388,6 +368,7 @@ model product_options {
   id                              Int               @id @default(autoincrement())
   product_id                      Int
   name                            String            @db.VarChar(20)
+  enable                          Boolean           @default(false)
   product_id_from_product_options product           @relation(fields: [product_id], references: [id])
   product_choices                 product_choices[]
 }
@@ -396,6 +377,7 @@ model product_choices {
   id                                      Int             @id @default(autoincrement())
   product_options_id                      Int
   name                                    String          @db.VarChar(30)
+  enable                                  Boolean         @default(false)
   price                                   Int
   quantity                                Int
   product_options_id_from_product_choices product_options @relation(fields: [product_options_id], references: [id])
@@ -426,6 +408,8 @@ model discount {
 model discount_shop {
   discount_id                    Int       @id
   shop_id                        Int
+  quantity                       Int
+  max_quantity                   Int
   discount_id_from_discount_shop discount  @relation(fields: [discount_id], references: [id])
   shop_id_from_discount_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -446,6 +430,7 @@ model discount_event {
   shop_id                         Int
   event_id                        Int
   quantity                        Int
+  max_quantity                    Int
   discount_id_from_discount_event discount  @relation(fields: [discount_id], references: [id])
   event_id_from_discount_event    event     @relation(fields: [event_id], references: [id])
   shop_id_from_discount_event     shop_info @relation(fields: [shop_id], references: [id])
@@ -454,6 +439,7 @@ model discount_event {
 model discount_app {
   discount_id                   Int      @id
   quantity                      Int
+  max_quantity                  Int
   discount_id_from_discount_app discount @relation(fields: [discount_id], references: [id])
 }
 
@@ -461,6 +447,7 @@ model discount_category {
   discount_id                        Int      @id
   category_id                        Int
   quantity                           Int
+  max_quantity                       Int
   category_id_from_discount_category category @relation(fields: [category_id], references: [id])
   discount_id_from_discount_category discount @relation(fields: [discount_id], references: [id])
 }
@@ -472,20 +459,21 @@ model discount_user_code {
   discount_id_from_iscount_user_code  discount @relation(fields: [discount_id], references: [id])
 }
 
-model discount_spend_types {
+model discount_reward {
   id                      Int                       @id @default(autoincrement())
   type                    DiscountUserTypes
-  amonut                  Int
+  quantity                Int
   description             String
+  max_quantity            Int
   discount_customer_spend discount_customer_spend[]
 }
 
 model discount_customer_spend {
-  customer_id                                Int                  @id
+  customer_id                                Int             @id
   total_spend                                Int
   spend_type_id                              Int
-  customer_id_from_discount_customer_spend   customer             @relation(fields: [customer_id], references: [id])
-  spend_type_id_from_discount_customer_spend discount_spend_types @relation(fields: [spend_type_id], references: [id])
+  customer_id_from_discount_customer_spend   customer        @relation(fields: [customer_id], references: [id])
+  spend_type_id_from_discount_customer_spend discount_reward @relation(fields: [spend_type_id], references: [id])
 }
 
 model discount_coin_information {
@@ -496,6 +484,20 @@ model discount_coin_information {
   expire_date                                DateTime @db.Timestamp(6)
   get_from                                   String
   customer_id_from_discount_coin_information customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_used_coin {
+  customer_id                         Int      @id
+  used_time                           DateTime @db.Timestamp(6)
+  used_amount                         Int
+  user_for                            String
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_daily_coin {
+  customer_id                          Int      @id
+  got_date                             DateTime @db.Date
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_customer_coin {
@@ -1012,13 +1014,13 @@ model sconsole_discount_log {
 }
 
 model sconsole_flashsale_log {
-  id                                       Int            @id @default(autoincrement())
-  shop_id                                  Int
-  flashsale_id                             Int
-  added_date                               DateTime       @default(now()) @db.Timestamp(6)
-  ended_date                               DateTime?      @db.Timestamp(6)
-  flashsale_id_from_sconsole_flashsale_log shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_sconsole_flashsale_log      shop_info      @relation(fields: [shop_id], references: [id])
+  id                                  Int            @id @default(autoincrement())
+  shop_id                             Int
+  flashsale_id                        Int
+  added_date                          DateTime       @default(now()) @db.Timestamp(6)
+  ended_date                          DateTime?      @db.Timestamp(6)
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_sconsole_flashsale_log shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model sconsole_order_history {
@@ -1109,6 +1111,10 @@ model admin_support_picture {
 
 model admin_support {
   id                                 Int                   @id @default(autoincrement())
+  title                              String
+  description                        String
+  target                             String
+  admin_id                           Int
   customer_id                        Int
   support_type_id                    Int
   sent_date                          DateTime              @default(now()) @db.Timestamp(6)
@@ -1192,8 +1198,9 @@ model admin_audit {
 }
 
 model home_banner_picture {
-  id        Int    @id @default(autoincrement())
-  title     String @db.VarChar(50)
+  id        Int                       @id @default(autoincrement())
+  title     String                    @db.VarChar(50)
+  position  homeBannerPicturePosition
   path      String
   thumbnail String
 }
@@ -1233,14 +1240,15 @@ model home_app_review {
 }
 
 model home_partner {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
-  title       String   @db.VarChar(100)
-  start_date  DateTime @db.Timestamp(6)
-  end_date    DateTime @db.Timestamp(6)
-  join_date   DateTime @db.Timestamp(6)
+  title       String          @db.VarChar(100)
+  start_date  DateTime        @db.Timestamp(6)
+  end_date    DateTime        @db.Timestamp(6)
+  join_date   DateTime        @db.Timestamp(6)
   description String
-  title_pic   String   @db.VarChar(50)
+  type        homePartnerType
+  title_pic   String          @db.VarChar(50)
   path        String
   thumbnail   String
 }
@@ -1434,6 +1442,48 @@ model business_interaction_weight {
   date   DateTime @db.Date
 }
 
+model product_picture {
+  id         Int     @id @default(autoincrement())
+  product_id Int
+  title      String  @db.VarChar(50)
+  path       String
+  thumbnail  String
+  product    product @relation(fields: [product_id], references: [id])
+}
+
+model product_reviews_picture {
+  id        Int    @id @default(autoincrement())
+  title     String @db.VarChar(50)
+  path      String
+  thumbnail String
+}
+
+model shop_flashsale {
+  id                     Int                      @id @default(autoincrement())
+  shop_id                Int
+  started_date           DateTime                 @default(now())
+  ended_date             DateTime                 @default(now())
+  products               Json[]
+  title                  String?
+  path                   String?
+  thumbnail              String?
+  description            String?
+  shop_info              shop_info                @relation(fields: [shop_id], references: [id])
+  sconsole_flashsale_log sconsole_flashsale_log[]
+  shop_flashsale_history shop_flashsale_history?
+}
+
+model shop_product_carousel_select {
+  id          String @id @unique
+  filter_name String
+  products    Int[]
+}
+
+enum homeBannerPicturePosition {
+  Main
+  Sub
+}
+
 enum Gender {
   Male
   Female
@@ -1446,6 +1496,7 @@ enum Shop_section {
   BannerCarousel
   ProductCarousel
   Video
+  ProductCarouselSelect
 }
 
 enum Platform {

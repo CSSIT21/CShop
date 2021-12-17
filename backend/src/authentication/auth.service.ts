@@ -1,8 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as CryptoJs from 'crypto-js';
-import { v4 as uuid_gen } from 'uuid';
-import { nanoid } from 'nanoid';
-
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, customer, Gender, customer_address } from '.prisma/client';
 import { RegisterDto } from './dto/register.dto';
@@ -21,9 +18,7 @@ export class AuthenticationService {
 			confirmPassword,
 			phoneNumber,
 			gender,
-			day,
-			month,
-			year,
+			birthdate,
 			addressLine,
 			district,
 			postalCode,
@@ -46,7 +41,7 @@ export class AuthenticationService {
 							firstname,
 							lastname,
 							gender: Gender[gender.replace('preferNotToSay', 'PreferNotToSay')],
-							birthdate: new Date(year, month, day),
+							birthdate: birthdate,
 							phone_number: phoneNumber,
 						},
 					},
@@ -102,28 +97,20 @@ export class AuthenticationService {
 		});
 	}
 
-	public async update(id: number, updateAuthenticationDto) {
-		return `This action updates a #${id} authentication`;
-	}
-
-	public async remove(id: number) {
-		return `This action removes a #${id} authentication`;
-	}
-
-	public async login(data: LoginDto) {
+	public async checkemail(data: LoginDto) {
 		const user = await this.prisma.customer.findFirst({
 			where: {
 				email: data.email,
-				password: data.password,
 			},
 		});
-		//test@gmail.com
-		//12345678
 		if (user) {
-			//JWT
-			return true;
+			return {
+				success: true,
+			};
 		}
-		return false;
+		return {
+			success: false,
+		};
 	}
 
 	public static async getUserFromToken(token: string) {

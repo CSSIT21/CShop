@@ -34,21 +34,21 @@ export class AuthenticationController {
 		return await this.authenticationService.register(data);
 	}
 
-	@Post('/login')
+	@Post('/checkemail')
 	@Public()
-	public async login(@Body() data: LoginDto, @Req() Req: any, @Res() res: any) {
-		const check = await this.authenticationService.login(data);
-		res.send({
-			success: check,
-		});
+	public async checkemail(@Body() data: LoginDto) {
+		return await this.authenticationService.checkemail(data);
 	}
 
-	// @Post('login')
-	// @Public()
-	// @UseGuards(AuthGuard('local'))
-	// public login(@Req() request, @Res({ passthrough: true }) response) {
-	// 	return request.user;
-	// }
+	@Post('login')
+	@Public()
+	@UseGuards(AuthGuard('local'))
+	public login(@Req() request, @Res({ passthrough: true }) response) {
+		console.log('LogIn');
+		response.header('Access-Control-Allow-Credentials', true);
+		response.cookie('token', request.user.access_token);
+		return request.user;
+	}
 
 	// @Get('me')
 	// @Roles('ADMIN')

@@ -7,10 +7,14 @@ import Grid from "@mui/material/Grid";
 import Success from "../components/Success";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useRecoilValue } from "recoil";
+import authState from "../../common/store/authState";
 import Checkbox from "@mui/material/Checkbox";
+import config from "~/common/constants";
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
+  const auth = useRecoilValue(authState);
   const [state, setstate] = useState(true);
   const [addressData, setAddressData] = useState([]);
   const [province, setProvince] = useState([]);
@@ -33,7 +37,8 @@ const SellerRegister = ({}) => {
       accountNumber: "",
     },
   });
-  const banks = ["SCB", "KBANK", "KTB", "BBL", "BAY", "CIMBT", "UOBT"];
+  const banks = ["SCB", "KBANK", "KTB", "TMB"];
+
   useEffect(() => {
     getData();
   }, []);
@@ -147,7 +152,31 @@ const SellerRegister = ({}) => {
       sellerInfo.bankInfo.lastName != "" &&
       sellerInfo.bankInfo.accountNumber != ""
     ) {
-      setstate(false);
+      createShop();
+    }
+  };
+  const createShop = () => {
+    try {
+      axios
+        .post(`${config.SERVER_URL}/sellershop`, {
+          customer_id: auth.user.id,
+          shop_name: sellerInfo.shopName,
+          phone_number: sellerInfo.phone,
+          province: sellerInfo.province,
+          sub_district: sellerInfo.subDistrict,
+          district: sellerInfo.district,
+          postal_code: sellerInfo.postalCode.toString(),
+          address_line: sellerInfo.address,
+          bank: sellerInfo.bankInfo.name,
+          firstname: sellerInfo.bankInfo.firstName,
+          lastname: sellerInfo.bankInfo.lastName,
+          account_number: sellerInfo.bankInfo.accountNumber.toString(),
+        })
+        .then(({ data }) => {
+          setstate(false);
+        });
+    } catch (e) {
+      console.log(e.message);
     }
   };
   return (
@@ -183,11 +212,12 @@ const SellerRegister = ({}) => {
                 variant="outlined"
                 placeholder="Phone"
                 fullWidth
+                value={sellerInfo.phone}
                 error={phoneError.length === 0 ? false : true}
                 onChange={(e) => {
                   setSellerInfo({
                     ...sellerInfo,
-                    phone: e.target.value,
+                    phone: e.target.value.slice(0, 10),
                   });
                   setPhoneError("");
                 }}
@@ -430,7 +460,7 @@ const SellerRegister = ({}) => {
                   id="lastname"
                   variant="outlined"
                   placeholder="Lastname"
-                  value={sellerInfo.lastname}
+                  value={sellerInfo.bankInfo.lastname}
                   fullWidth
                   error={lastnameError.length === 0 ? false : true}
                   onChange={(e) => {
@@ -455,7 +485,7 @@ const SellerRegister = ({}) => {
                 id="accountNumber"
                 variant="outlined"
                 placeholder="Account Number"
-                value={sellerInfo.accountNumber}
+                value={sellerInfo.bankInfo.accountNumber}
                 fullWidth
                 error={accountNumberError.length === 0 ? false : true}
                 onChange={(e) => {
@@ -463,7 +493,7 @@ const SellerRegister = ({}) => {
                     ...sellerInfo,
                     bankInfo: {
                       ...sellerInfo.bankInfo,
-                      accountNumber: e.target.value,
+                      accountNumber: e.target.value.slice(0, 10),
                     },
                   });
                   setAccountNumberError("");
