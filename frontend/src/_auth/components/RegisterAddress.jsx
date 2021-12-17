@@ -62,7 +62,6 @@ const RegisterAddress = ({
       userInfo.subDistrict != "" &&
       userInfo.postalCode != ""
     ) {
-      console.log(userInfo);
       setIsLoading(true);
       axios
         .post(config.SERVER_URL + "/auth/register", userInfo, {

@@ -84,7 +84,6 @@ const Content = () => {
       axios
         .patch(config.SERVER_URL + "/profile/update", newUserInfo)
         .then(({ data }) => {
-          console.log(data.success);
           if (data.success) {
             Swal.fire({
               title: "Success!",
