@@ -63,7 +63,12 @@ const RegisterPage = () => {
           if (!data.success) {
             router.push("/register/info");
           } else {
-            Swal.fire("Register Failed!", "Email already exist!", "error");
+            Swal.fire({
+              title: "Register Failed!",
+              text: "Email already exist!",
+              icon: "error",
+              timer: 2000,
+            });
           }
           setIsLoading(false);
         });

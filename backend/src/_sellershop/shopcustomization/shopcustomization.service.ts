@@ -4,9 +4,10 @@ import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '.prisma/client';
 
+
 @Injectable()
 export class ShopcustomizationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getSection(id: number) {
 		try {
@@ -357,7 +358,6 @@ export class ShopcustomizationService {
 	async createBannerCarousel(shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput) {
 		try {
 			console.log(shop_banner_carouselCreateInput);
-
 			await this.prisma.shop_banner_carousel.create({
 				data: {
 					id: shop_banner_carouselCreateInput.id,
@@ -534,22 +534,22 @@ export class ShopcustomizationService {
 	}
 
 	async saveProductCarouselSelect(
-		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
-		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+		shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
 	) {
 		try {
 			const section = await this.prisma.shop_product_carousel_select.findFirst({
 				where: {
-					id: shop_product_carouselWhereUniqueInput.id,
+					id: shop_product_carousel_selectWhereUniqueInput.id,
 				},
 			});
 			if (section) {
 				return this.updateProductCarouselSelect(
-					shop_product_carouselWhereUniqueInput,
-					shop_product_carouselCreateInput,
+					shop_product_carousel_selectWhereUniqueInput,
+					shop_product_carousel_selectCreateInput,
 				);
 			} else {
-				return this.createProductCarouselSelect(shop_product_carouselCreateInput);
+				return this.createProductCarouselSelect(shop_product_carousel_selectCreateInput);
 			}
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -561,10 +561,10 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async createProductCarouselSelect(shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput) {
+	async createProductCarouselSelect(shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput) {
 		try {
 			await this.prisma.shop_product_carousel_select.create({
-				data: shop_product_carouselCreateInput,
+				data: shop_product_carousel_selectCreateInput,
 			});
 			return 'Product Carousel Select Created';
 		} catch (e) {
@@ -578,17 +578,17 @@ export class ShopcustomizationService {
 	}
 
 	async updateProductCarouselSelect(
-		shop_product_carouselWhereUniqueInput: Prisma.shop_product_carouselWhereUniqueInput,
-		shop_product_carouselCreateInput: Prisma.shop_product_carouselCreateInput,
+		shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
 	) {
 		try {
 			await this.prisma.shop_product_carousel_select.update({
 				where: {
-					id: shop_product_carouselWhereUniqueInput.id,
+					id: shop_product_carousel_selectWhereUniqueInput.id,
 				},
 				data: {
-					filter_name: shop_product_carouselCreateInput.filter_name,
-					products: shop_product_carouselCreateInput.products,
+					filter_name: shop_product_carousel_selectCreateInput.filter_name,
+					products: shop_product_carousel_selectCreateInput.products,
 				},
 			});
 			return 'Product Carousel Select Updated';

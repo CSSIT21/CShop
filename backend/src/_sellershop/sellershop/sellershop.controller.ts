@@ -14,12 +14,15 @@ import {
 	ParseFloatPipe,
 } from '@nestjs/common';
 import { SellershopService } from './sellershop.service';
+import { CreateSellershopDto } from './dto/create-sellershop.dto';
+import { UpdateSellershopDto } from './dto/update-sellershop.dto';
 import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import internal from 'stream';
 
 @Controller('sellershop')
 export class SellershopController {
-	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) {}
+	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
 
 	@Get(':id')
 	public async findOne(@Param('id', ParseIntPipe) id: number, @Res() res) {
@@ -64,7 +67,7 @@ export class SellershopController {
 			});
 		}
 	}
-
+  
 	@Get('sections/:id')
 	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections = await this.sellershopService.getShopSection(id);
@@ -158,5 +161,19 @@ export class SellershopController {
 				success: false,
 			});
 		}
+		// this.prisma.shop_flashsale.create({
+		// 	data: {
+		// 		description: 'Sugoi Dekai',
+		// 		ended_date: new Date(),
+		// 		path: '',
+		// 		products: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
+		// 		shop_id: 1,
+		// 		started_date: '',
+		// 		title: '',
+		// 	},
+		// });
+		// res.send({
+		// 	success: true,
+		// });
 	}
 }
