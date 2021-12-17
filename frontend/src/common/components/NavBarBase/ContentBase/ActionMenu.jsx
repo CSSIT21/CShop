@@ -4,6 +4,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Badge, Fab } from '@mui/material';
 import { Box } from '@mui/system';
 import { For } from '~/common/utils';
+import { useHistory } from 'react-router-dom';
 
 const actionLists = [
 	{
@@ -30,12 +31,12 @@ const buttonStyle = {
 };
 
 const ActionMenu = () => {
-
+	const router = useHistory()
 	return (
 		<>
 			<Box display="flex">
 				<For each={actionLists}>{({ label, icon: ActionIcon, value }, index) =>
-					<Fab size="small" sx={buttonStyle} aria-label={label} key={index}>
+					<Fab size="small" sx={buttonStyle} aria-label={label} key={index} onClick={()=> router.push('/'+ label)}>
 						<Badge badgeContent={value} color="primary">
 							<ActionIcon />
 						</Badge>

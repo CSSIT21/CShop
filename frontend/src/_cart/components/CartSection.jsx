@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Box, Typography, Stack, TextField, MenuItem } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import products from '../../common/faker/fakeProducts';
 import VoucherCard from './VoucherCard';
 import ProductCartCard from './ProductCartCard';
 import CButton from "~/common/components/CButton";
+
 
 const coupons = [
   {
@@ -54,15 +55,20 @@ const addresses = [{
 
 const MyCartItems = products.map(product => ({...product, amount: 1}));
 
-function CartSection() {
+function CartSection({ allProduct,setProduct,discounts}) {
     const [address, setAddress] = useState(0);
     MyCartItems.length = 5;
-    const [MyCart, setProduct] = useState(MyCartItems);
+    const [MyCart, setmyCart] = useState(allProduct);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
     const phone = useMemo(() => addresses.find(v => v.id === address).phone ,[address]);
     const totalCost = useMemo(() => MyCart.reduce((prev,product) => prev + (+product.price) * product.amount,0), [MyCart]);
     const discount = useMemo(() => calculateDiscount(totalCost, selectedCoupon));
     const classes = useStyles();
+    
+    useEffect(() => {
+      setmyCart(allProduct)
+    }, [allProduct])
+  
 
     function calculateDiscount(total,coupon){
       if(coupon == null) return 0;
@@ -76,7 +82,7 @@ function CartSection() {
       console.log(total)
       return total * coupon.value;
     }
-
+    
     function removeAll(e){
       e.preventDefault();
       setProduct([]);
@@ -119,7 +125,8 @@ function CartSection() {
               <Box sx={{display: 'flex'}}><a href="/cart" onClick={removeAll} style={{color: '#A0A3BD'}}>Remove All</a></Box>
           </Box>
           <Stack direction="column" gap={2}>
-              {MyCart.map(product => <ProductCartCard setProduct={setProduct} product={product} key={product.id}/>)}
+            {/* {MyCart.map(product => <ProductCartCard setProduct={setProduct} product={product} key={product.id} />)} */}
+            {allProduct.map(product => <ProductCartCard setProduct={setProduct} product={product} key={product.id} />)}
           </Stack>
           </Stack>
           <Box sx={{width: '30%'}}> 
@@ -139,17 +146,21 @@ function CartSection() {
               </Box>
             </Stack>
             <Stack sx={{width: "100%"}} gap={1}>
-              {coupons.map((coupon,idx) => <VoucherCard key={idx} 
+              {discounts.map((coupon,idx) => {
+                return(<VoucherCard key={idx} 
                 totalCoupon={5}
                 coupon={coupon}
                 selectedCoupon={selectedCoupon}
                 setSelectedCoupon={setSelectedCoupon}
-                claimProps={{
-                    title: 'Apply',
-                    onClick: () => setSelectedCoupon({...coupon}),
-                    style: {width: '5vw'}
-                }} 
-              />)}
+                totalCost={totalCost}
+                claimProps={
+                  {title: (totalCost > coupon.min ? "Apply" : "cannot Apply"), 
+                  backgroundColor: (totalCost > coupon.min ? "#FD6637" : "gray"), 
+                  onClick: (totalCost > coupon.min ? () => setSelectedCoupon({...coupon}) : ()=>{}) ,
+                  style: {width: '5vw'}}
+                  // {title: 'Apply', onClick: () => setSelectedCoupon(null),style: {width: '5vw'}}  
+              } 
+              />)})}
             </Stack>
           </Box>
         </Stack>

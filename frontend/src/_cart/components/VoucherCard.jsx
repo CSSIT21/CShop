@@ -14,6 +14,7 @@ const VoucherCard = ({
   setCoupon = noop,
   selectedCoupon=null,
   setSelectedCoupon,
+  totalCost,
   claimProps = { title: "Claim" },
 }) => {
   const classes = useStyles();
@@ -34,7 +35,7 @@ const VoucherCard = ({
 
       <Divider orientation="vertical" flexItem />
       <Box sx={{marginLeft: "30px"}}>
-      {(selectedCoupon !== null && selectedCoupon.id === coupon.id )  ? <CButton backgroundColor="gray" {...{...claimProps, title: 'Cancel', onClick: () => setSelectedCoupon(null) }}/> : <CButton {...claimProps}/>}
+      {(selectedCoupon !== null && selectedCoupon.id === coupon.id )  ? <CButton backgroundColor="gray" {...{...claimProps, title: 'Cancel', onClick: () => setSelectedCoupon(null) }}/> : <CButton {...claimProps }/>}
       </Box>
     </Box>
   );

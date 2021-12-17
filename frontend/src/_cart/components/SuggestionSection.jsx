@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
@@ -38,11 +38,14 @@ const useStyles = makeStyles({
 });
 
 const SuggestionSection = ({ suggestionItems, onFavourite }) => {
-    const [items] = useState(suggestionItems);
+    const [items,setItem] = useState(suggestionItems);
     const [page, setPage] = useState(0);
     const classes = useStyles();
     const itemsPerRow = 6;
     const totalPage = Math.ceil(items.length / itemsPerRow);
+    useEffect(() => {
+        setItem(suggestionItems)
+    }, [suggestionItems])
 
     return (
         <Box className={classes.suggestionWrapper}>

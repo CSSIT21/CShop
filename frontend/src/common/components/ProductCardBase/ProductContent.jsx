@@ -6,6 +6,7 @@ import {
 import { CardContent, Typography, IconButton, CardActions } from "@mui/material";
 import { isFunc, isUndef } from './../../utils/index';
 import CButton from "~/common/components/CButton";
+import { useEffect } from "react";
 
 const contentStyle = {
   display: "flex",
@@ -39,6 +40,7 @@ const ProductContent = ({
   statusProps = {},
   addToCart
 }) => {
+  
   return (
     <>
       <CardContent
