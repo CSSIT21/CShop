@@ -45,6 +45,7 @@ export class ShopcustomizationService {
 					},
 				});
 				const sections = shopsections.sections;
+
 				if (shopsections.sections !== null) {
 					var parsedsections = JSON.parse(JSON.stringify(sections));
 					let resultSections = {};
@@ -54,7 +55,7 @@ export class ShopcustomizationService {
 						let section;
 
 						switch (parsedsections[index].type) {
-							case Shop_section.Banner:
+							case 'Banners':
 								section = await this.prisma.shop_banner.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -62,7 +63,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 1 };
 								break;
-							case Shop_section.BannerCarousel:
+							case 'BannersCarousel':
 								section = await this.prisma.shop_banner_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -70,7 +71,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 2 };
 								break;
-							case Shop_section.ProductCarousel:
+							case 'ProductCarousel':
 								section = await this.prisma.shop_product_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -115,7 +116,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, products_info, type: 3 };
 								break;
-							case Shop_section.Video:
+							case 'Video':
 								section = await this.prisma.shop_video.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -222,7 +223,11 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async updateSection(id: number, shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput) {
+	async updateSection(
+		id: number,
+		shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput,
+		shop_section_logCreateInput: Prisma.shop_section_logCreateInput,
+	) {
 		try {
 			await this.prisma.shop_section.update({
 				where: {
@@ -230,6 +235,13 @@ export class ShopcustomizationService {
 				},
 				data: {
 					sections: shop_sectionUpdateInput.sections,
+				},
+			});
+
+			await this.prisma.shop_section_log.create({
+				data: {
+					device: shop_section_logCreateInput.device,
+					shop_id: id,
 				},
 			});
 
