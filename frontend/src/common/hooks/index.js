@@ -28,7 +28,6 @@ export const useMiddleware = () => {
   useEffect(() => {
     console.log(history, auth);
     const unlisten = history.listen((r) => {
-      console.warn("route changed!", auth, r.pathname);
       if (route === r.pathname) {
         setRoute(r.pathname);
         return;
@@ -43,7 +42,11 @@ export const useMiddleware = () => {
           })
           .then(({ data }) => {
             if (data.success) {
-              setAuth(({ isLoggedIn }) => ({ isLoggedIn, user: data.user }));
+              console.warn("route changed!", auth, r.pathname);
+              setAuth(({ isLoggedIn }) => ({
+                isLoggedIn: true,
+                user: data.user,
+              }));
             }
           });
       }

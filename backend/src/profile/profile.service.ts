@@ -27,6 +27,12 @@ export class ProfileService {
 					},
 				},
 			});
+			// let role = 'CUSTOMER';
+			// if (user.shop_info.length > 0) {
+			// 	role = 'SELLER';
+			// }
+			// const userWithRole = { ...user, role };
+			// return userWithRole;
 			return user;
 		} catch (e) {
 			console.error('ERROR: ', e.message);
