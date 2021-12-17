@@ -431,6 +431,9 @@ model discount {
   reduce_price          Int?
   discount_types        DiscountTypes
   added_date            DateTime                @db.Timestamp(6)
+  picture_title         String
+  picture_path          String
+  picture_thumbnail     String
   discount_app          discount_app?
   discount_category     discount_category?
   discount_event        discount_event?
