@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateShopcustomizationDto } from './dto/create-shopcustomization.dto';
 import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 
 @Injectable()
 export class ShopcustomizationService {
@@ -601,20 +601,4 @@ export class ShopcustomizationService {
 			throw new HttpException('Error updating shop video request body incorrect', 500);
 		}
 	}
-
-	// async createProductCarousel(shop_product_carouselCreateInput) {
-	// 	try {
-	// 		await this.prisma.shop_product_carousel.create({
-	// 			data: shop_product_carouselCreateInput,
-	// 		});
-	// 		return 'Product Carousel Created';
-	// 	} catch (e) {
-	// 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-	// 			console.log(e.message);
-	// 			throw new HttpException('Error creating shop product carousel please check your information!', 500);
-	// 		}
-	// 		console.log(e.message);
-	// 		throw new HttpException('Error creating shop product carousel request body incorrect', 500);
-	// 	}
-	// }
 }

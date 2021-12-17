@@ -1,9 +1,6 @@
 import { Catch, HttpException, Injectable } from '@nestjs/common';
-import { CreateSellershopDto } from './dto/create-sellershop.dto';
-import { UpdateSellershopDto } from './dto/update-sellershop.dto';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/authentication/dto/user.dto';
 
 @Injectable()
 export class SellershopService {
