@@ -27,11 +27,13 @@ const SellerStock = () => {
   const Pagename = "Stock";
   const auth = useRecoilValue(authState);
 
-  const  shopid  = useParams();
+  const shopid = useParams();
 
   const fetchStock = async () => {
     try {
-      const res = await axios.get(`localhost:8080/sellerconsole/${shopid.id}/stock`);
+      const res = await axios.get(
+        `localhost:8080/sellerconsole/${shopid.id}/stock`
+      );
       console.log(res);
     } catch (e) {
       console.log(e);
@@ -39,7 +41,7 @@ const SellerStock = () => {
   };
 
   useEffect(() => {
-    // fetchStock();
+    fetchStock();
     // console.log(shopid.id)
   }, []);
 

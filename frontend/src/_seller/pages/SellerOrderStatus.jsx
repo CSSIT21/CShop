@@ -150,7 +150,7 @@ const SellerOrderStatus = () => {
     const rm = rows.filter((row) => {
       row.orderid != id;
     });
-    rows = rm;
+    // rows = rm;
     console.log(rm);
   };
 
