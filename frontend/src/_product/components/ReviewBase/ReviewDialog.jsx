@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
@@ -9,19 +9,23 @@ import Slide from "@mui/material/Slide";
 import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
+import { getUrl } from "~/common/utils";
+// import { useRecoilValue } from "recoil";
+// import authState from "../../common/store/authState";
 
 function ReviewDialog({
-  // img = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg",
-  img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
+  productImg = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
   productName = "Product Name",
-  productId,
-  customerId,
+  productId = 20,
+  shopId = 1,
+  customerId = 1,
   options,
   choices,
-  // options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
+  // options = [{optionName: "Size", choices:["XL", "L", "M", "XL", "L", "M"]}],
   // choices = ["XL", "L", "M", "XL", "L", "M"],
-  statusOrder = true,
+  isReview = true, // ต้องถามธรรม์อีกที
 }) {
+  // const auth = useRecoilValue(authState);
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
   const [commentProductText, setCommentProductText] = useState("");
@@ -34,16 +38,19 @@ function ReviewDialog({
     { key: 4, label: "Good Ship Services", clicked: false },
   ]);
   const [imageList, setImageList] = useState([]);
-  const [starScore, setStarScore] = React.useState(0);
+  const [starScore, setStarScore] = useState(0);
 
   const onUploadFile = (e) => {
     if (e.target.files.length) {
-      const path = URL.createObjectURL(e.target.files[0]);
+      const path = URL.createObjectURL(e.target?.files[0]);
 
+      console.log(e.target?.files[0]);
       setImageList((imageList) => {
         imageList.push({
-          id: imageList.length + 1,
+          id: imageList?.length + 1,
           path: path,
+          file: e.target?.files[0],
+          title: e.target?.files[0].name,
         });
 
         return [...imageList];
@@ -85,7 +92,6 @@ function ReviewDialog({
     setOpenThankYouDialog(false);
   };
   const handleClickOpenThankYouDialog = () => {
-    // Backend from Plume
     setOpenThankYouDialog(true);
     setOpen(false);
   };
@@ -97,13 +103,65 @@ function ReviewDialog({
     setCommentShopText(e.target.value.slice(0, 500));
   };
 
+  const createReview = async () => {
+    // if(auth)
+    console.log(imageList);
+    const pictureList = [];
+    for (let i = 0; i < imageList.length; i++) {
+      let path = await getUrl(imageList[i].file);
+      pictureList.push({
+        path: path.original_link,
+        thumbnail: "review product picture",
+        title: imageList[i].title,
+      });
+    }
+
+    console.log(pictureList);
+    let rating;
+    starScore <= 0 ? (rating = 0) : (rating = starScore);
+    console.log(rating);
+    let concatComment = commentProductText;
+    chipData.forEach((e) => {
+      if (e.clicked) concatComment = concatComment + ", " + e.label;
+    });
+    console.log(concatComment);
+    axios
+      .post(
+        `${config.SERVER_URL}/review-product/${productId}/${customerId}/create-product-review`,
+        {
+          pictureList,
+          rating,
+          comment: concatComment,
+        }
+      )
+      .then(({ data }) => {
+        if (data.success) {
+          console.log(data.review);
+        } else alert("Fail to fetch data :(");
+      });
+
+    if (commentShopText) {
+      console.log(commentShopText);
+      axios
+        .post(
+          `${config.SERVER_URL}/review-product/${productId}/${customerId}/create-shop-review`,
+          {
+            shopId,
+            rating: starScore,
+            comment: commentShopText,
+          }
+        )
+        .then(({ data }) => {
+          if (data.success) {
+            console.log(data.review);
+          } else alert("Fail to fetch data :(");
+        });
+    }
+  };
+
   return (
     <div>
-      <Button
-        variant="outlined"
-        onClick={handleClickOpen}
-        disabled={!statusOrder}
-      >
+      <Button variant="outlined" onClick={handleClickOpen} disabled={!isReview}>
         Review
       </Button>
 
@@ -122,7 +180,7 @@ function ReviewDialog({
         </DialogTitle>
         <DialogContent sx={{ width: "1000px", height: "500px" }}>
           <ReviewDialogContents
-            img={img}
+            img={productImg}
             productName={[productName]}
             options={options}
             choices={choices}
@@ -155,7 +213,7 @@ function ReviewDialog({
             title="Confirm"
             width="100px"
             height="39px"
-            onClick={handleClickOpenThankYouDialog}
+            onClick={createReview}
             sx={{ marginLeft: "16px" }}
             disabled={!submitable}
           />

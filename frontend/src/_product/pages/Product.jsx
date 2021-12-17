@@ -150,7 +150,7 @@ const ProductPage = (props) => {
           productDetails={productDetails?.product_detail?.info}
         />
         <ProductRating
-          avgRating={avgRating}
+          avgRating={avgRating || null}
           commentPictures={commentPictures || []}
           comments={comments || []}
         />

@@ -46,7 +46,7 @@ const ProductBox = ({ img, productName, options, choices }) => {
           {options ? "Option :" : "Option : none"}
           {options && (
             <>
-              {options.slice(0, 5).map((e, key) => (
+              {options.map((e, key) => (
                 <Typography
                   sx={{ marginLeft: "5px", marginRight: "6px" }}
                   key={key}

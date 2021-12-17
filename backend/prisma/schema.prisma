@@ -21,7 +21,7 @@ model customer {
   chat_conversation             chat_conversation[]
   chat_preference               chat_preference?
   chat_reported_message         chat_reported_message[]
-  customer_address              customer_address?
+  customer_address              customer_address[]
   followed_shop                 customer_followed_shop[]
   customer_info                 customer_info?
   old_password                  customer_old_password?
@@ -102,9 +102,10 @@ model address {
 }
 
 model customer_address {
-  customer_id                      Int      @id
+  customer_id                      Int
   address_id                       Int
   primary                          Boolean  @default(false)
+  id                               Int      @id @default(autoincrement())
   address_id_from_customer_address address  @relation(fields: [address_id], references: [id])
   customer_address                 customer @relation(fields: [customer_id], references: [id])
 }
@@ -354,7 +355,7 @@ model product_reviews {
   id                               Int                     @id @default(autoincrement())
   product_id                       Int
   customer_id                      Int
-  rating                           Int
+  rating                           Decimal                 @db.Decimal(2, 1)
   comment                          String
   review_time                      DateTime                @default(now()) @db.Timestamp(6)
   review_picture_id                Int[]

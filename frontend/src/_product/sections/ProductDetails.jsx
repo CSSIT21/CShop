@@ -7,10 +7,6 @@ import { Box } from "@mui/system";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 import ShareIcon from "@mui/icons-material/ShareRounded";
 import IconButton from "@mui/material/IconButton";
-import {
-  FavoriteRounded as FavoriteRoundedIcon,
-  FavoriteBorderRounded as FavoriteBorderRoundedIcon,
-} from "@mui/icons-material";
 import OptionsChip from "../components/ProductDetailsBase/OptionsChip";
 import Button from "@mui/material/Button";
 import pic1 from "~/common/assets/images/iphone-black.png";
