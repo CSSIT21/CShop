@@ -99,12 +99,11 @@ const ManageSellerAccountPage = () => {
         setSearch(event.target.value);
     }
 
-    const deleteRestriction = (sellerid, restrictionid) => {
-        sellers.filter(seller => seller.id === sellerid)[0].admin_shop_suspensions = null;
-    }
-
-    const addRestriction = (sellerid, type, desc, date) => {
-        sellers.filter(seller => seller.id === sellerid)[0].admin_shop_suspensions = {suspension_type_id:type, admin_id:'CurrentUser', start_date:'11/18/2021', end_date:date, description:desc};
+    const deleteRestriction = async (sellerid) => {
+        const res = await axios.post(
+            "http://localhost:8080/manageaccount/suspension/sellers/delete?id=" + sellerid
+          );
+        document.location.reload();
     }
 
     useEffect(()=>{
@@ -211,7 +210,7 @@ const ManageSellerAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <SellerCard seller={key} deleteRestriction={deleteRestriction} addRestriction={addRestriction}/>
+                                    <SellerCard seller={key} deleteRestriction={deleteRestriction}/>
                                 </div>
                             </li>
                         ))}
