@@ -4,14 +4,14 @@ import { CreateShopcustomizationDto } from './dto/create-shopcustomization.dto';
 import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { Prisma } from '.prisma/client';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
-
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('shopcustomization')
 export class ShopcustomizationController {
-	constructor(private readonly shopcustomizationService: ShopcustomizationService) { }
-
+	constructor(private readonly shopcustomizationService: ShopcustomizationService) {}
 
 	@Get(':id')
+	@Public()
 	async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections = await this.shopcustomizationService.getSection(id);
 		if (sections) {
@@ -24,6 +24,7 @@ export class ShopcustomizationController {
 	}
 
 	@Get('info/:id')
+	@Public()
 	async findSectionsInfo(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const sections_info = await this.shopcustomizationService.getSectionInfo(id);
 		if (sections_info) {
@@ -36,6 +37,7 @@ export class ShopcustomizationController {
 	}
 
 	@Get('products/:id')
+	@Public()
 	async findProducts(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const products = await this.shopcustomizationService.getShopProduct(id);
 		if (products) {
@@ -48,6 +50,7 @@ export class ShopcustomizationController {
 	}
 
 	@Get('category/:id')
+	@Public()
 	async findCategory(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const categories = await this.shopcustomizationService.getCategory(id);
 		if (categories) {
@@ -60,6 +63,7 @@ export class ShopcustomizationController {
 	}
 
 	@Get('categoryproducts/:id')
+	@Public()
 	async findProductFromCategory(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const products = await this.shopcustomizationService.getProductFromCategory(id);
 		if (products) {
@@ -72,6 +76,7 @@ export class ShopcustomizationController {
 	}
 
 	@Patch(':id')
+	@Public()
 	async updateSection(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput,
@@ -91,6 +96,7 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/banner')
+	@Public()
 	async saveBanner(
 		@Body() shop_bannerWhereUniqueInput: Prisma.shop_bannerWhereUniqueInput,
 		@Body() shop_bannerCreateInput: Prisma.shop_bannerCreateInput,
@@ -108,6 +114,7 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/bannercarousel')
+	@Public()
 	async saveBannerCarousel(
 		@Body() shop_banner_carouselWhereUniqueInput: Prisma.shop_banner_carouselWhereUniqueInput,
 		@Body() shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput,
@@ -125,6 +132,7 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/video')
+	@Public()
 	async saveVideo(
 		@Body() shop_videoWhereUniqueInput: Prisma.shop_videoWhereUniqueInput,
 		@Body() shop_videoCreateInput: Prisma.shop_videoCreateInput,
@@ -139,6 +147,7 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/productcarousel')
+	@Public()
 	async saveProductcarousel(@Body() body, @Res() res) {
 		const result = await this.shopcustomizationService.saveProductCarousel(body);
 		if (result) {
@@ -149,6 +158,7 @@ export class ShopcustomizationController {
 	}
 
 	@Post('/productcarouselselect')
+	@Public()
 	async saveProductcarouselselect(
 		@Body() shop_product_carousel_selectWhereUniqueInput: Prisma.shop_product_carousel_selectWhereUniqueInput,
 		@Body() shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
@@ -165,4 +175,3 @@ export class ShopcustomizationController {
 		}
 	}
 }
-
