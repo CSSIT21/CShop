@@ -10,10 +10,21 @@ import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 
-function ReviewDialog() {
+function ReviewDialog({
+  // img = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg",
+  img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
+  productName = "Product Name",
+  productId,
+  // options,
+  // choices,
+  options = ["Black", " Pink", " Red", "Black", " Pink", " Red"],
+  choices = ["XL", "L", "M", "XL", "L", "M"],
+  statusOrder = true,
+}) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
-  const [commentText, setCommentText] = useState("");
+  const [commentProductText, setCommentProductText] = useState("");
+  const [commentShopText, setCommentShopText] = useState("");
   const [chipData, setChipData] = useState([
     { key: 0, label: "Good Quality", clicked: false },
     { key: 1, label: "Worth Buying", clicked: false },
@@ -57,11 +68,11 @@ function ReviewDialog() {
     imageList.forEach((el) => {
       if (imageList) imageCheck = true;
     });
-    if (commentText) commentCheck = true;
+    if (commentProductText) commentCheck = true;
     if (starScore != 0) scoreCheck = true;
     if (chipCheck || imageCheck || commentCheck || scoreCheck) allCheck = true;
     return allCheck;
-  }, [chipData, imageList, commentText, starScore]);
+  }, [chipData, imageList, commentProductText, starScore]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -78,13 +89,20 @@ function ReviewDialog() {
     setOpen(false);
   };
 
-  const handleChange = (e) => {
-    setCommentText(e.target.value.slice(0, 120));
+  const handleChangeCommentProduct = (e) => {
+    setCommentProductText(e.target.value.slice(0, 500));
+  };
+  const handleChangeCommentShop = (e) => {
+    setCommentShopText(e.target.value.slice(0, 500));
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        disabled={!statusOrder}
+      >
         Review
       </Button>
 
@@ -103,11 +121,18 @@ function ReviewDialog() {
         </DialogTitle>
         <DialogContent sx={{ width: "1000px", height: "500px" }}>
           <ReviewDialogContents
+            img={img}
+            productName={[productName]}
+            options={options}
+            choices={choices}
             generatedCommentsData={chipData}
             setChipData={setChipData}
-            value={commentText}
-            setValue={setCommentText}
-            handleChange={handleChange}
+            commentProduct={commentProductText}
+            setCommentProduct={setCommentProductText}
+            commentShop={commentShopText}
+            setCommentShop={setCommentShopText}
+            handleChangeCommentProduct={handleChangeCommentProduct}
+            handleChangeCommentShop={handleChangeCommentShop}
             imageList={imageList}
             setImageList={setImageList}
             onUploadFile={onUploadFile}

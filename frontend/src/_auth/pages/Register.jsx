@@ -11,6 +11,11 @@ import { Link } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
+import axios from "axios";
+import config from "../../common/constants";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 //data
 const RegisterPage = () => {
   //function
@@ -22,13 +27,46 @@ const RegisterPage = () => {
   }, []);
 
   const [userInfo, setUserInfo] = useRecoilState(registerState);
-  const checkIfPhoneNumIsNull = () => {
-    if (userInfo.phoneNumber != "") {
-      router.push("/register/info");
+  const [errorText, seterrorText] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCheck = (e) => {
+    setChecked(e.target.checked);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const checkIfEmailIsValid = () => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const valid = re.test(userInfo.email);
+    if (userInfo.email === "") {
+      seterrorText("This field is required");
+    } else if (!valid) {
+      seterrorText("Email is invalid");
+    } else if (!checked) {
+      setOpen(true);
     } else {
-      alert("Mueng forget phone number i sus");
+      setIsLoading(true);
+      axios
+        .post(config.SERVER_URL + "/auth/checkemail", userInfo, {
+          validateStatus: (status) => {
+            return true;
+          },
+        })
+        .then(({ data }) => {
+          if (!data.success) {
+            router.push("/register/info");
+          } else {
+            Swal.fire("Register Failed!", "Email already exist!", "error");
+          }
+          setIsLoading(false);
+        });
     }
   };
+
   return (
     <Fragment>
       <Box className={classes.container}>
@@ -58,12 +96,29 @@ const RegisterPage = () => {
             </Box>
           </Box>
           <Box className={classes.button}>
-            <CButton
-              title="Sign Up"
-              width="500px"
-              height="55px"
-              onClick={checkIfPhoneNumIsNull}
-            ></CButton>
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                style={{
+                  width: "500px",
+                  height: "55px",
+                  textTransform: "capitalize",
+                }}
+                onClick={checkIfEmailIsValid}
+              >
+                Sign Up
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "500px",
+                  textTransform: "capitalize",
+                  height: "55px",
+                }}
+              ></LoadingButton>
+            )}
           </Box>
           <Box className={classes.divider}>OR</Box>
           <Button

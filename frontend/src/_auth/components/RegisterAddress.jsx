@@ -5,10 +5,9 @@ import { Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import { assign } from "~/common/utils/";
-import authState from "~/common/store/authState";
 import config from "../../common/constants";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -25,7 +24,16 @@ const RegisterAddress = ({
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const resetRegisterState = useResetRecoilState(registerState);
   const classes = useStyles();
+
+  const back = () => {
+    setUserInfo({ ...userInfo, province: "" });
+    setUserInfo({ ...userInfo, district: "" });
+    setUserInfo({ ...userInfo, subDistrict: "" });
+    setUserInfo({ ...userInfo, postalCode: "" });
+    handleBack();
+  };
 
   const register = () => {
     if (userInfo.addressLine == "") {
@@ -61,13 +69,10 @@ const RegisterAddress = ({
         .then(({ data }) => {
           if (data.success) {
             handleRegister();
+            resetRegisterState();
           } else {
             Swal.fire("Register Error!", data.message, "error");
           }
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          Swal.fire("Register Error!", err.message, "error");
           setIsLoading(false);
         });
     }
@@ -242,7 +247,7 @@ const RegisterAddress = ({
       <Box className={classes.button}>
         <Button
           disabled={activeStep === 0}
-          onClick={handleBack}
+          onClick={back}
           sx={{
             backgroundColor: "#ffffff",
             boxShadow: "none",

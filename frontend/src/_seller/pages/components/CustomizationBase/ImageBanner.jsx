@@ -3,24 +3,25 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
+import { noop } from "~/common/utils";
 
 const ImageBanner = ({
   id = "",
   type = 1,
   content = { img: CategoryPic1 },
   information,
-  setInformation = () => {},
+  setInformation = noop,
   order = 0,
   ...rest
 }) => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState({ path: "", title: "", fileBase64: "" });
   const classes = useStyles();
   useLayoutEffect(() => {
     if (id in information) {
-      setImage(information[id].img);
+      setImage(information[id].content);
     } else {
       console.log("image not found");
-      setImage(content.img);
+      setImage({ path: content.img });
     }
   }, []);
   // useLayoutEffect(() => {
@@ -29,16 +30,26 @@ const ImageBanner = ({
   //   }));
   // },[order]);
 
-  const uploadFile = (e, id) => {
-    console.log(id);
+  const uploadFile = async (e, id) => {
+    const path = URL.createObjectURL(e.target.files[0]);
+    const title = e.target.files[0].name;
+    const imagesetter = {
+      path: path,
+      title: title,
+      file: e.target.files[0],
+    };
     if (e.target.files.length) {
-      const path = URL.createObjectURL(e.target.files[0]);
-      setImage(path);
+      setImage(imagesetter);
+
       setInformation((info) => ({
         ...info,
-        [id]: { ...(info[id] || content), img: path },
+        [id]: {
+          ...(info[id]),
+          content: imagesetter,
+        },
       }));
     }
+    e.target.value = null;
   };
   return (
     <Box
@@ -57,7 +68,7 @@ const ImageBanner = ({
       >
         Banner#{order}
       </Typography>
-      <img src={image} alt={type} width="100%" className={classes.img} />
+      <img src={image.path} alt={type} width="100%" className={classes.img} />
       <label htmlFor={`outlined-button-file-${id}`}>
         <Button
           component="span"
