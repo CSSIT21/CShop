@@ -194,9 +194,6 @@ export class SellerCard extends React.Component {
               <RestrictionCard res={this.props.seller.admin_shop_suspensions} deleteRestriction={this.props.deleteRestriction} objid={this.props.seller.id} update={() => this.update()}/>
             }
             </CardContent>
-          <CardContent className={classes.header} sx={{ padding:'0px' }}>
-            <Button variant="outlined" sx={{ marginLeft:'30px' }}>Go to Transaction History</Button>
-          </CardContent>
         </Collapse>
         <Dialog open={this.open} onClose={this.dialogClose} maxWidth='md' fullWidth={true} align="center">
         <DialogTitle color="primary" style={{ fontWeight: 600, fontSize: '36px', margin:'25px' }}>ADD RESTRICTION</DialogTitle>
