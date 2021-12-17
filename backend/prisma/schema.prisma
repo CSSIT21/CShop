@@ -1504,6 +1504,7 @@ model delivery_admin {
   id       Int    @id @default(autoincrement())
   username String @db.VarChar(20)
   password String @db.Text
+  token    String @db.Text
 }
 
 model delivery_admin_log {

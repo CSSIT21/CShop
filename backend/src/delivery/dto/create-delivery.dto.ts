@@ -1,1 +1,4 @@
-export class CreateDeliveryDto {}
+export class DeliveryLoginDTO {
+	username: string
+	password: string
+}
