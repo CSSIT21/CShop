@@ -73,9 +73,14 @@ export class ShopcustomizationController {
 	async updateSection(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() shop_sectionUpdateInput: Prisma.shop_sectionUpdateInput,
+		@Body() shop_section_logCreateInput: Prisma.shop_section_logCreateInput,
 		@Res() res,
 	) {
-		const result = await this.shopcustomizationService.updateSection(id, shop_sectionUpdateInput);
+		const result = await this.shopcustomizationService.updateSection(
+			id,
+			shop_sectionUpdateInput,
+			shop_section_logCreateInput,
+		);
 		if (result) {
 			res.send({ success: true, result });
 		} else {

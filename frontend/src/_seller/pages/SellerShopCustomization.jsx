@@ -158,6 +158,20 @@ const SellerShopCustomization = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return "tablet";
+    }
+    if (
+      /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua
+      )
+    ) {
+      return "mobile";
+    }
+    return "desktop";
+  };
   console.log("sectionInfos", sectionInfos);
   console.log("sectionInfosHistory", sectionInfosHistory);
   console.log("state", state);
@@ -198,7 +212,7 @@ const SellerShopCustomization = () => {
     await axios
       .patch(
         `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`,
-        { sections: state.area }
+        { sections: state.area, device: getDeviceType() }
       )
       .then(async () => {
         await Object.entries(sectionInfos).forEach(async (e) => {
