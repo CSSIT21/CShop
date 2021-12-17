@@ -139,6 +139,7 @@ export class SellerconsoleService {
 				title: true,
 				quantity: true,
 				price: true,
+				added_date:true,
 			},
 		});
 	}
