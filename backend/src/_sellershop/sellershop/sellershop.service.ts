@@ -1,13 +1,13 @@
 import { Catch, HttpException, Injectable } from '@nestjs/common';
 import { CreateSellershopDto } from './dto/create-sellershop.dto';
 import { UpdateSellershopDto } from './dto/update-sellershop.dto';
-import { Prisma, Shop_section } from '.prisma/client';
+import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from 'src/authentication/dto/user.dto';
 
 @Injectable()
 export class SellershopService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	public async findOne(id: number) {
 		try {
@@ -303,16 +303,6 @@ export class SellershopService {
 
 	public async getShopSection(id: number) {
 		try {
-			// await this.prisma.shop_section.create({
-			// 	data: {
-			// 		shop_id: 1,
-			// 		sections: [
-			// 			{ id: '1234', type: 2 },
-			// 			{ id: '5678', type: 1 },
-			// 			{ id: '9101', type: 3 },
-			// 		],
-			// 	},
-			// });
 			const shopsections = await this.prisma.shop_section.findUnique({
 				where: {
 					shop_id: id,
