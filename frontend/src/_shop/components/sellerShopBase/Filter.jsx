@@ -36,7 +36,9 @@ const Filter = ({ categories = [] }) => {
 
   useEffect(async () => {
     await axios
-      .get(`${config.SERVER_URL}/sellershop/products/${id}?page=${page}`)
+      .get(
+        `${config.SERVER_URL}/sellershop/products/${id}?page=${page}&priceLow=40&priceHigh=50&readyToShip=true&outOfStock=false&rating=1`
+      )
       .then(({ data }) => {
         setItems(data.products);
         setcount(data.count);
