@@ -23,6 +23,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 				customer_info: true,
 				shop_info: true,
 				customer_address: {
+					where: {
+						primary: true,
+					},
 					include: {
 						address_id_from_customer_address: true,
 					},
@@ -48,6 +51,14 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
 		if (user.shop_info.length > 0) {
 			role = 'SELLER';
+			await this.prisma.shop_info.update({
+				where: {
+					id: user.shop_info[0].id,
+				},
+				data: {
+					last_active: new Date(Date.now()),
+				},
+			});
 		}
 
 		const userWithRole = { ...user, role };

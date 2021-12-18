@@ -44,7 +44,7 @@ export const useMiddleware = () => {
             if (data.success) {
               console.warn("route changed!", auth, r.pathname);
               setAuth(({ isLoggedIn }) => ({
-                isLoggedIn: true,
+                isLoggedIn,
                 user: data.user,
               }));
             }
