@@ -4,7 +4,6 @@ import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import ChoiceForPay from '../components/ChoiceForPay';
 import { makeStyles } from '@mui/styles';
-import PaidByQr from './PaidByQr';
 import OrderSummarize from '../components/OrderSummerize';
 
 const useStyles = makeStyles({
