@@ -20,6 +20,7 @@ import LoyaltyRoundedIcon from "@mui/icons-material/LoyaltyRounded";
 import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 import { Link, useParams, useLocation } from "react-router-dom";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import { useMiddleware } from "../hooks";
 
 const drawerWidth = 280;
 
@@ -83,6 +84,7 @@ export default function SellerConsoleSidebarLayout(props) {
 
   //destructuring pathname from location
   const { pathname } = location;
+  useMiddleware();
 
   let links = [
     generateLink(

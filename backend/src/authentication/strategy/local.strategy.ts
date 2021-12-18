@@ -27,6 +27,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 						address_id_from_customer_address: true,
 					},
 				},
+				customer_picture: {
+					include: {
+						picture_id_from_customer_picture: true,
+					},
+				},
 			},
 		});
 
@@ -51,7 +56,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 			success: true,
 			message: 'Sign in successfully.',
 			user: userWithRole,
-			access_token: this.jwt.sign(userWithRole),
+			access_token: this.jwt.sign({ id: user.id, role }),
 		};
 	}
 }

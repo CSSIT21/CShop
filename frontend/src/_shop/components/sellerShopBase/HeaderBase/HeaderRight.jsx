@@ -81,7 +81,7 @@ export default function HeaderRight({ shopInfo = {} }) {
           </Grid>
           <Grid item xs={3}>
             <Link to={`/shop/${id}/comment`}>
-              {shopInfo.rating !== null ? shopInfo.rating : 0}
+              {shopInfo.rating !== null ? parseFloat(shopInfo.rating).toFixed(1) : 0}
             </Link>
           </Grid>
         </Grid>

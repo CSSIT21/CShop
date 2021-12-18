@@ -36,14 +36,15 @@ const Filter = ({ categories = [] }) => {
 
   useEffect(async () => {
     await axios
-      .get(`${config.SERVER_URL}/sellershop/${id}/products?page=${page}`)
+      .get(
+        `${config.SERVER_URL}/sellershop/products/${id}?page=${page}&priceLow=40&priceHigh=50&readyToShip=true&outOfStock=false&rating=1`
+      )
       .then(({ data }) => {
         setItems(data.products);
         setcount(data.count);
         console.log(data);
       });
   }, [page]);
-  console.log(items);
   return (
     <Box sx={{ padding: "25px 50px" }}>
       <Box sx={{ display: "flex" }}>

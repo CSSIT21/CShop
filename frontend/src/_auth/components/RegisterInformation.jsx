@@ -2,98 +2,26 @@ import React, { useEffect, useState } from "react";
 import { TextField, MenuItem, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import axios from "axios";
-import Grid from "@mui/material/Grid";
-import Success from "../components/Success";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { useRecoilValue } from "recoil";
-import authState from "../../common/store/authState";
-import Checkbox from "@mui/material/Checkbox";
-import config from "~/common/constants";
+import { years, months, days, genders } from "../../common/constants/register";
+import { useRecoilState } from "recoil";
+import registerState from "../../common/store/registerState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useHistory } from "react-router";
+import DateAdapter from "@mui/lab/AdapterDayjs";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
+import { getUrl } from "~/common/utils";
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
-  const auth = useRecoilValue(authState);
-  const [state, setstate] = useState(true);
-  const [addressData, setAddressData] = useState([]);
-  const [province, setProvince] = useState([]);
-  const [district, setDistrict] = useState([]);
-  const [subDistrict, setSubDistrict] = useState([]);
-  const [postalCode, setPostalCode] = useState([]);
-  const [sellerInfo, setSellerInfo] = useState({
-    shopName: "",
-    // shopImage: "",
-    phone: "",
-    address: "",
-    subDistrict: "",
-    district: "",
-    province: "",
-    postalCode: "",
-    bankInfo: {
-      name: "",
-      firstName: "",
-      lastName: "",
-      accountNumber: "",
-    },
-  });
-  const banks = ["SCB", "KBANK", "KTB", "TMB"];
-
-  useEffect(() => {
-    getData();
-  }, []);
-  const getData = async () => {
-    const fetchedData = await axios.get(
-      "https://cshop-mock.mixkoap.com/thailand.json"
-    );
-    setAddressData(fetchedData.data);
-    setProvince([...new Set(fetchedData.data.map((el) => el.province))].sort());
-  };
-
-  useEffect(() => {
-    setDistrict(
-      [
-        ...new Set(
-          addressData
-            .filter((el) => el.province === sellerInfo.province)
-            .map((el) => el.district)
-        ),
-      ].sort()
-    );
-    setSellerInfo({
-      ...sellerInfo,
-      district: "",
-      subDistrict: "",
-      postalCode: "",
-    });
-  }, [sellerInfo.province]);
-
-  useEffect(() => {
-    setSubDistrict(
-      [
-        ...new Set(
-          addressData
-            .filter((el) => el.district === sellerInfo.district)
-            .map((el) => el.subDistrict)
-        ),
-      ].sort()
-    );
-    setSellerInfo({ ...sellerInfo, subDistrict: "", postalCode: "" });
-  }, [sellerInfo.district]);
-
-  useEffect(() => {
-    setPostalCode(
-      [
-        ...new Set(
-          addressData
-            .filter((el) => el.subDistrict === sellerInfo.subDistrict)
-            .map((el) => el.Zipcode)
-        ),
-      ].sort()
-    );
-  }, [sellerInfo.subDistrict]);
-  const [shopNameError, setShopNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
+  const router = useHistory();
+  const [userInfo, setUserInfo] = useRecoilState(registerState);
+  const [passwordError, setpasswordError] = useState("");
+  const [confirmPasswordError, setconfirmPasswordError] = useState("");
+  const [fnError, setfnError] = useState("");
+  const [lnError, setlnError] = useState("");
+  const [phoneNumError, setphoneNumError] = useState("");
+  const [genderError, setgenderError] = useState("");
 
   const [addressLineError, setaddressLineError] = useState("");
   const [provinceError, setprovinceError] = useState("");
@@ -106,14 +34,14 @@ const SellerRegister = ({}) => {
   const [lastnameError, setLastnameError] = useState("");
   const [accountNumberError, setAccountNumberError] = useState("");
   const checkInfo = () => {
-    if (sellerInfo.shopName == "") {
-      setShopNameError("This field is required");
-    }
-    if (sellerInfo.phone == "") {
-      setPhoneError("This field is required");
-    }
-    if (sellerInfo.address == "") {
-      setaddressLineError("This field is required");
+    if (userInfo.email == "") {
+      Swal.fire({
+        title: "Register Error!",
+        text: "Please proceed back to enter email",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      router.push("/register");
     }
     if (sellerInfo.subDistrict == "") {
       setsubDistrictError("This field is required");
@@ -140,43 +68,35 @@ const SellerRegister = ({}) => {
       setAccountNumberError("This field is required");
     }
     if (
-      sellerInfo.shopName != "" &&
-      sellerInfo.phone != "" &&
-      sellerInfo.address != "" &&
-      sellerInfo.subDistrict != "" &&
-      sellerInfo.district != "" &&
-      sellerInfo.province != "" &&
-      sellerInfo.postalCode != "" &&
-      sellerInfo.bankInfo.name != "" &&
-      sellerInfo.bankInfo.firstName != "" &&
-      sellerInfo.bankInfo.lastName != "" &&
-      sellerInfo.bankInfo.accountNumber != ""
+      userInfo.email != "" &&
+      userInfo.password != "" &&
+      userInfo.confirmPassword != "" &&
+      userInfo.password === userInfo.confirmPassword &&
+      userInfo.firstname != "" &&
+      userInfo.lastname != "" &&
+      userInfo.phoneNumber != "" &&
+      userInfo.gender != "Select Gender" &&
+      userInfo.url != ""
     ) {
-      createShop();
+      handleNext();
+    } else {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please check if all of your information have been filled",
+        icon: "error",
+        timer: 2000,
+      });
     }
   };
-  const createShop = () => {
-    try {
-      axios
-        .post(`${config.SERVER_URL}/sellershop`, {
-          customer_id: auth.user.id,
-          shop_name: sellerInfo.shopName,
-          phone_number: sellerInfo.phone,
-          province: sellerInfo.province,
-          sub_district: sellerInfo.subDistrict,
-          district: sellerInfo.district,
-          postal_code: sellerInfo.postalCode.toString(),
-          address_line: sellerInfo.address,
-          bank: sellerInfo.bankInfo.name,
-          firstname: sellerInfo.bankInfo.firstName,
-          lastname: sellerInfo.bankInfo.lastName,
-          account_number: sellerInfo.bankInfo.accountNumber.toString(),
-        })
-        .then(({ data }) => {
-          setstate(false);
-        });
-    } catch (e) {
-      console.log(e.message);
+  const uploadFile = async (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      setUserInfo({
+        ...userInfo,
+        url: path,
+        title: e.target.files[0].name,
+        file: e.target.files[0],
+      });
     }
   };
   return (
@@ -504,24 +424,50 @@ const SellerRegister = ({}) => {
               <Box className={classes.error}>{accountNumberError}</Box>
             )}
           </Box>
-          <FormGroup sx={{ margin: "50px 0" }}>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="accept terms and conditions"
-            />
-          </FormGroup>
-          <Box className={classes.button}>
-            <Button
-              variant="contained"
-              style={{
-                width: "470px",
-                height: "55px",
-                textTransform: "capitalize",
-              }}
-              onClick={checkInfo}
+          <Box className={classes.birthdate}>
+            <Box className={classes.contextHeader}>Birthdate</Box>
+            <Box className={classes.birthdateSelect}>
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <DatePicker
+                  value={userInfo.birthdate}
+                  sx={{ width: "100%" }}
+                  renderInput={(params) => <TextField {...params} />}
+                  onChange={(e) => {
+                    setUserInfo({ ...userInfo, birthdate: e.toISOString() });
+                  }}
+                />
+              </LocalizationProvider>
+            </Box>
+          </Box>
+          <Box>
+            <Box className={classes.contextHeader}>Profile Image</Box>
+            <Box
+              sx={{ display: "flex", alignItems: "end", margin: "50px 0px" }}
             >
-              Confirm
-            </Button>
+              <Avatar
+                src={userInfo.url}
+                alt=""
+                sx={{ width: "150px", height: "150px", marginRight: "30px" }}
+              ></Avatar>
+              <label htmlFor={`outlined-button-file-`}>
+                <Button
+                  component="span"
+                  variant="outlined"
+                  sx={{ height: "42px", borderWidth: "2px" }}
+                >
+                  <input
+                    accept="image/*"
+                    type="file"
+                    style={{ display: "none" }}
+                    id={`outlined-button-file-`}
+                    onChange={(e) => {
+                      uploadFile(e);
+                    }}
+                  />
+                  Upload file
+                </Button>
+              </label>
+            </Box>
           </Box>
         </Box>
       ) : (
@@ -561,6 +507,10 @@ const useStyles = makeStyles({
   birthdateSelect: {
     display: "flex",
     justifyContent: "space-between",
+    marginTop: "35px",
+    backgroundColor: "white",
+    borderRadius: "10px",
+    width: "266px",
   },
   button: {
     display: "flex",
