@@ -54,6 +54,17 @@ export default function Popup({open = false , setOpen = () => {},title = "",desc
           rows={5}
           variant="standard"
         />
+        <Box sx = {{marginTop : 2 }}>
+       <TextField
+          id="outlined-textarea"
+          label="Phone number"
+          placeholder="Phone : XXX-XXX-XXXX"
+          type= "number"
+          variant="standard"
+          multiline
+          fullWidth
+        />
+        </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
