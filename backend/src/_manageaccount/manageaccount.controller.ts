@@ -125,7 +125,12 @@ export class ManageaccountController {
   @Get('products')
   @Public()
   public getProducts(){
-    return this.prisma.product.findMany();
+    return this.prisma.product.findMany({
+      include:{
+        product_picture: true,
+        product_reviews: true,
+      }
+    });
   }
 
   @Get('sellers')

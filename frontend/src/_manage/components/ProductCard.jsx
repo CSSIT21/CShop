@@ -15,6 +15,7 @@ export class ProductCard extends React.Component {
       expand: false
     };
     this.seller = {shop_name: "PENDING"};
+    this.path = '';
   }
 
   dialogClickOpen = () => {
@@ -32,6 +33,11 @@ export class ProductCard extends React.Component {
       "http://localhost:8080/manageaccount/sellers/unique?id=" + this.props.product.shop_id
     );
     this.seller.shop_name = fetchedData.data.shop_name;
+
+    if(this.props.product.product_picture != null){
+      this.path = this.props.product.product_picture[0].path;
+    }
+
     this.forceUpdate();
   }
 
@@ -43,7 +49,7 @@ export class ProductCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '12%' }} className={classes.header}>
-              <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
+              <Avatar alt={this.props.avatarInitials} src={this.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '18%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.product.title}</Typography>

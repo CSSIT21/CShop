@@ -134,7 +134,7 @@ export class SellerCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '7%' }} className={classes.header}>
-              <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
+              <Avatar alt={this.props.avatarInitials} src={this.props.seller.shop_picture.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography noWrap style={{ fontSize: '15px'}}>#{this.props.seller.id}</Typography>
