@@ -231,26 +231,16 @@ export class SellerconsoleService {
 			},
 		});
 	}
-	async CardOfSales1(id: number) {
-		return await this.prisma.sconsole_order_history.findMany({
+	async CardOfSales(id:number){
+		return await this.prisma.product.findMany({
 			where: {
-				shop_id: id,
-			},
-			select: {
-				order_id: true,
-			},
-		});
-	}
-	async CardOfSales2(id: number) {
-		return await this.prisma.order.findMany({
-			where: {
-				id: id,
-				status: 'Delivered',
-			},
-			select: {
-				total_price: true,
-			},
-		});
+				shop_id : id,
+			}, 
+			select : {
+				sold : true,
+				price : true,
+			}
+		})
 	}
 
 	// async Cheat(id: number){
@@ -263,6 +253,7 @@ export class SellerconsoleService {
 	// 		}
 	// 	})
 	// }
+	
 	async Discount(
 		shop_id: number,
 		code: string,

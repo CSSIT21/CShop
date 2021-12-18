@@ -53,7 +53,7 @@ export class SellerconsoleController {
 	@Get(':id/cardToSales')
 	@Public()
 	getCardToSales(@Param('id') id: number) {
-		return this.sellerconsoleService.CardOfSales1(+id);
+		return this.sellerconsoleService.CardOfSales(+id);
 	}
 
 	@Post(':id/stockLog')
