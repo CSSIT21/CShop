@@ -1,24 +1,24 @@
 import React from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import { Collapse } from "@mui/material";
-import { IconButton } from "@mui/material";
 import { Typography } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CardLayout } from "./UserCardStyled";
-import { Avatar } from "@mui/material";
-import { grey, lightBlue, amber } from '@mui/material/colors';
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DeleteIcon from '@mui/icons-material/Delete';
+import axios from "axios";
 
 export class SellerCard extends React.Component {
   constructor(props) {
     super(props);
+    this.type = {data:{title: 'PENDING'}};
+  }
+
+  async componentDidMount(){
+    this.type = await axios.get(
+      "http://localhost:8080/manageaccount/suspension/type?id=" + this.props.res.suspension_type_id
+    );
+    this.forceUpdate();
   }
 
   render() {
@@ -32,7 +32,7 @@ export class SellerCard extends React.Component {
               <CardContent className={classes.header} sx={{ padding:'28px' }}>
                 <Box sx={{ width: '22%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Restriction Type</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.suspension_type_id}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.type.data.title}</Typography>
                 </Box>
                 <Box sx={{ width: '15%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Assigner</Typography>

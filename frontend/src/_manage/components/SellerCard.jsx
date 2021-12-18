@@ -68,7 +68,7 @@ export class SellerCard extends React.Component {
         {
           "shop_id": this.props.seller.id,
           "description": this.desc,
-          "picture_id": 495,
+          "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
           "admin_id": 100,
           "day": this.editDate.day+1,
@@ -83,7 +83,7 @@ export class SellerCard extends React.Component {
         {
           "id": this.props.seller.id,
           "description": this.desc,
-          "picture_id": 495,
+          "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
           "admin_id": 100,
           "day": this.editDate.day+1,

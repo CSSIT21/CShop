@@ -40,13 +40,18 @@ export class UserCard extends React.Component {
     this.type = 495;
     this.desc = 'Pending Description';
     this.address = {address_line: 'PENDING', postal_code: 'PENDING'};
+    this.types = [];
   }
 
   async componentDidMount(){
     const fetchedData = await axios.get(
       "http://localhost:8080/manageaccount/address?id=" + this.props.user.id
     );
+    const fetchedData2 = await axios.get(
+      "http://localhost:8080/manageaccount/suspension/types"
+    );
     this.address = fetchedData.data;
+    this.types = fetchedData2.data;
     this.forceUpdate();
   }
 
@@ -77,7 +82,7 @@ export class UserCard extends React.Component {
         {
           "customer_id": this.props.user.id,
           "description": this.desc,
-          "picture_id": 495,
+          "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
           "admin_id": 100,
           "day": this.editDate.day+1,
@@ -92,7 +97,7 @@ export class UserCard extends React.Component {
         {
           "id": this.props.user.id,
           "description": this.desc,
-          "picture_id": 495,
+          "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
           "admin_id": 100,
           "day": this.editDate.day+1,
@@ -117,6 +122,11 @@ export class UserCard extends React.Component {
   changeYear = (event) => {
     this.editDate.year = event.target.value;
   }
+
+  changeType = (event) => {
+    this.type = event.target.value;
+  }
+
 
   changeDesc = (event) => {
     this.desc = event.target.value;
@@ -203,15 +213,22 @@ export class UserCard extends React.Component {
           <DialogContentText sx={{width:'20%', marginLeft:'-64%'}} style={{ fontWeight: 600, fontSize: '17px'}}>
             Restriction Type
           </DialogContentText>
+          <Box sx={{width:'90%'}}>
           <TextField
-            align="center"
-            margin="dense"
-            id="type"
-            fullWidth
-            variant="outlined"
-            sx={{width:'80%!important'}}
-            onChange={this.changeType}
-          />
+                id="month"
+                variant="outlined"
+                sx={textField}
+                select
+                defaultValue={495}
+                onChange={this.changeType}
+              >
+                {this.types.map((type) => (
+                  <MenuItem key={type.id} value={type.id}>
+                    {type.title}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
         </DialogContent>
         <DialogContent>
           <DialogContentText sx={{width:'10%', marginLeft:'-70%'}} style={{ fontWeight: 600, fontSize: '17px'}}>

@@ -160,6 +160,20 @@ export class ManageaccountController {
     });
   }
 
+  @Get('/suspension/types')
+  getSusTypes(){
+    return this.prisma.admin_suspension_type.findMany();
+  }
+
+  @Get('/suspension/type')
+  getSusType(@Query('id') i: number){
+    return this.prisma.admin_suspension_type.findFirst({
+      where:{
+        id: +i
+      }
+    });
+  }
+
   @Get('tickets')
   getTickets(){
     return this.prisma.admin_support_picture.findMany({
