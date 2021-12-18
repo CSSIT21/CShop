@@ -1,77 +1,98 @@
-import {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Typography, Modal } from "@mui/material";
 import { Box } from "@mui/system";
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-export default function Popup({open = false , setOpen = () => {},title = "",description = "" }) {
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    
-    const style = {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: 500,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      boxShadow: 24,
-      p: 4,
-    };
-  
-    return (
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{
-              alignSelf: "center"
-            }}>
-                Change your information 
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{
-              alignSelf: "center"
-            }}> 
-            Enter your new information and click save
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Shop name"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-         <TextField
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+export default function Popup({
+  open = false,
+  setOpen = () => {},
+  title = "",
+  description = "",
+}) {
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const updateInfo = async () => {
+    try {
+      const res = await axios.post(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/shopinfo`
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle
+        sx={{
+          alignSelf: "center",
+        }}
+      >
+        Change your information
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText
+          sx={{
+            alignSelf: "center",
+          }}
+        >
+          Enter your new information and click save
+        </DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Shop name"
+          type="email"
+          fullWidth
+          variant="standard"
+        />
+        <TextField
           id="standard-multiline-static"
           label="Description"
-          multiline 
+          multiline
           fullWidth
           rows={5}
           variant="standard"
         />
-        <Box sx = {{marginTop : 2 }}>
-       <TextField
-          id="outlined-textarea"
-          label="Phone number"
-          placeholder="Phone : XXX-XXX-XXXX"
-          type= "number"
-          variant="standard"
-          multiline
-          fullWidth
-        />
+        <Box sx={{ marginTop: 2 }}>
+          <TextField
+            id="outlined-textarea"
+            label="Phone number"
+            placeholder="Phone : XXX-XXX-XXXX"
+            type="number"
+            variant="standard"
+            multiline
+            fullWidth
+          />
         </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-  
-  
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}

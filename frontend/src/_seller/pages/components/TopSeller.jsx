@@ -24,14 +24,45 @@ const TopSeller = () => {
 
   const [open, setOpen] = useState(false);
 
-  const [shopinf, setShopinfo] = useState();
+  let shid = "";
+  let shopName = "";
+  let shopDescription = "";
+  let shopFollowers = "";
+  let phoneNumber = "";
+
+  let shoppic = "";
+  let shoppath = "";
+  let shoppictitle = "";
+  let shopthumnail = "";
 
   const fetchShopInfo = async () => {
     try {
       const res = await axios.get(
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/shopinfo`
       );
-      console.log(res.data)
+      shid = res.data.id;
+      shopName = res.data.shop_name;
+      shopDescription = res.data.description;
+      shopFollowers = res.data.followers;
+      phoneNumber = res.data.phone_number;
+
+      shoppic = res.data.shop_picture;
+      shoppath = shoppic.path;
+      shoppictitle = shoppic.title;
+      shopthumnail = shoppic.thumnail;
+
+      console.log(
+        `${shopName},
+        ${shopDescription},
+        ${shopFollowers},
+        ${phoneNumber},
+        ${shoppath},
+        ${shoppictitle},
+        ${shopthumnail},
+        ${shid}`
+      );
+      // console.log(`${shoppic.path}`);
+      // console.log(res.data.shop_name)
     } catch (e) {
       console.log(e);
     }
@@ -45,16 +76,27 @@ const TopSeller = () => {
     <Box className={classes.container}>
       <Popup open={open} setOpen={setOpen} title="" description="" />
       <Box className={classes.profile}>
-        <Avatar
-          src={auth.user.url}
+        {/* <Avatar
+          src={shoppath}
           sx={{ width: 80, height: 80, marginRight: "25px" }}
-        />
+        /> */}
+        <Avatar
+          sx={{
+            width: 80,
+            height: 80,
+            marginRight: "25px",
+          }}
+          // src="https://drive.cshop.cscms.ml/files/2021/12-17/ywyxwpmhnvrb.jpeg"
+          src={shoppath}
+          alt={shoppictitle}
+        ></Avatar>
+
         <Box className={classes.nametag}>
           <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-            {auth.user.first_name} {auth.user.last_name}
+            {shopName}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            #ID
+            #ID{shid}
           </Typography>
         </Box>
       </Box>
