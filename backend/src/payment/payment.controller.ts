@@ -1,18 +1,25 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
 import Axios from 'axios';
 import { Public } from 'src/common/decorators/public.decorator';
-import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+
 
 let request: object;
 let strQr: string;
-const omise = require('omise')({
-	publicKey: process.env.OMISE_PUBLIC_KEY,
-	secretKey: process.env.OMISE_SECRET_KEY,
-});
+let walletId = 0
+let paymentId = 0
+let transacWallet = 546;
+
+async function Hash(){
+	const saltOrRounds = 10;
+	const password = 'random_password';
+	const hash = await bcrypt.hash(password, saltOrRounds);
+	const salt = await bcrypt.genSalt();
+	return hash;
+}
+
 
 @Controller('payment')
 export class PaymentController {
@@ -131,4 +138,45 @@ export class PaymentController {
 	// });
 
 	//-----------------Wallet Willy---------------//
+	@Get('/wallet')
+	getWallet(@Req() req, @Res() res) {
+		const request = req.body;
+		const userId = request.customerId;
+		const wallet = this.prisma.wallet.findFirst({
+			where: {
+				customer_id: userId,
+			},
+		});
+		return wallet
+
+		console.log("Done");
+		
+	}
+
+	@Post('/wallet')
+	async payByWallet(@Req() req, @Res() res) {
+		// const request = req.body;
+		// const userId = request.customerId;
+		// const amount = request.amount;
+		// var date = new Date();
+		// const dateString = date.toISOString();
+		walletId++;
+		paymentId++;
+		transacWallet++;
+
+		const payByWallet = await this.prisma.payment_wallet.create({
+			data: {
+				payment_id: paymentId,
+				wallet_id: walletId,
+				wallet_transaction_id: transacWallet,
+			},
+		})
+	}
+	@Get('/test')
+	async showPaymentWallet() {
+		
+		return await this.prisma.payment_wallet.findMany();
+	}
+
+
 }
