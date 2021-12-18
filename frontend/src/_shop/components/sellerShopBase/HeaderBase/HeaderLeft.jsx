@@ -69,32 +69,35 @@ const HeaderLeft = ({ shopInfo = {}, follow = false }) => {
           <Typography fontSize="14px" color="#A0A3BD">
             {shopInfo.description}
           </Typography>
-          <Box>
-            <FollowButton
-              sx={{ margin: "24px 24px 0 0", padding: "10px 20px" }}
-              width="120px"
-              height="45px"
-              fontSize="14px"
-              fontWeight="500"
-              follow={follow}
-              shop_id={id}
-              customer_id={auth.user.id}
-            />
-            <Button
-              sx={{ margin: "24px 0 0 0", padding: "10px 20px" }}
-              width="120px"
-              height="45px"
-              fontSize="14px"
-              fontWeight="500"
-              backgroundColor="#FD6637"
-              variant="contained"
-            >
-              <ShoppingCartOutlinedIcon
-                style={{ width: "16px", heigth: "16px", margin: "0 5px 0 0" }}
+          {!(auth.user.role == "SELLER" && auth.user.shop_info[0].id == id) && (
+            <Box>
+              <FollowButton
+                sx={{ margin: "24px 24px 0 0", padding: "10px 20px" }}
+                width="120px"
+                height="45px"
+                fontSize="14px"
+                fontWeight="500"
+                follow={follow}
+                shop_id={id}
+                customer_id={auth.user.id}
               />
-              Chat now
-            </Button>
-          </Box>
+
+              <Button
+                sx={{ margin: "24px 0 0 0", padding: "10px 20px" }}
+                width="120px"
+                height="45px"
+                fontSize="14px"
+                fontWeight="500"
+                backgroundColor="#FD6637"
+                variant="contained"
+              >
+                <ShoppingCartOutlinedIcon
+                  style={{ width: "16px", heigth: "16px", margin: "0 5px 0 0" }}
+                />
+                Chat now
+              </Button>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
