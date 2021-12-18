@@ -14,11 +14,11 @@ const AddressDetail = ({ data, index, handleDeleteAddress = () => {} }) => {
         style={{ backgroundColor: bgColor }}
       >
         {data.primary && <Typography>Primary</Typography>}
-        {!data.primary && (
+        {/* {!data.primary && (
           <Button sx={{ textTransform: "capitalize", color: "#A0A3BD" }}>
             Set Primary
           </Button>
-        )}
+        )} */}
       </Grid>
       <Grid item xs={2} sx={gridPadding} style={{ backgroundColor: bgColor }}>
         {data.name}

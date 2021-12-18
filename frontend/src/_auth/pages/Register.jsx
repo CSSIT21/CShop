@@ -14,6 +14,11 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
+import axios from "axios";
+import config from "../../common/constants";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 //data
 const RegisterPage = () => {
   //function
@@ -28,6 +33,8 @@ const RegisterPage = () => {
   const [errorText, seterrorText] = useState("");
   const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleCheck = (e) => {
     setChecked(e.target.checked);
   };
@@ -45,9 +52,29 @@ const RegisterPage = () => {
     } else if (!checked) {
       setOpen(true);
     } else {
-      router.push("/register/info");
+      setIsLoading(true);
+      axios
+        .post(config.SERVER_URL + "/auth/checkemail", userInfo, {
+          validateStatus: (status) => {
+            return true;
+          },
+        })
+        .then(({ data }) => {
+          if (!data.success) {
+            router.push("/register/info");
+          } else {
+            Swal.fire({
+              title: "Register Failed!",
+              text: "Email already exist!",
+              icon: "error",
+              timer: 2000,
+            });
+          }
+          setIsLoading(false);
+        });
     }
   };
+
   return (
     <Fragment>
       <Box className={classes.container}>
@@ -105,17 +132,29 @@ const RegisterPage = () => {
             </Box>
           </Box>
           <Box className={classes.button}>
-            <Button
-              variant="contained"
-              style={{
-                width: "500px",
-                height: "55px",
-                textTransform: "capitalize",
-              }}
-              onClick={checkIfEmailIsValid}
-            >
-              Sign Up
-            </Button>
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                style={{
+                  width: "500px",
+                  height: "55px",
+                  textTransform: "capitalize",
+                }}
+                onClick={checkIfEmailIsValid}
+              >
+                Sign Up
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "500px",
+                  textTransform: "capitalize",
+                  height: "55px",
+                }}
+              ></LoadingButton>
+            )}
           </Box>
           <Box className={classes.divider}>OR</Box>
           <Button

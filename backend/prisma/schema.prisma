@@ -22,7 +22,7 @@ model customer {
   chat_preference               chat_preference?
   chat_reported_message         chat_reported_message[]
   customer_address              customer_address?
-  followed_shop                 customer_followed_shop?
+  followed_shop                 customer_followed_shop[]
   customer_info                 customer_info?
   old_password                  customer_old_password?
   customer_picture              customer_picture?
@@ -33,11 +33,11 @@ model customer {
   discount_daily_coin           discount_daily_coin?
   discount_used_coin            discount_used_coin?
   discount_user_code            discount_user_code?
-  home_add_to_cart_log          home_add_to_cart_log?
-  home_discount_log             home_discount_log?
-  home_payment_log              home_payment_log?
-  home_product_log              home_product_log?
-  home_shop_log                 home_shop_log?
+  home_add_to_cart_log          home_add_to_cart_log[]
+  home_discount_log             home_discount_log[]
+  home_payment_log              home_payment_log[]
+  home_product_log              home_product_log[]
+  home_shop_log                 home_shop_log[]
   order                         order[]
   order_cart_item               order_cart_item?
   order_deleted_item            order_deleted_item?
@@ -84,7 +84,6 @@ model customer_picture_file {
   title            String             @db.VarChar(50)
   path             String
   thumbnail        String
-  primary          Boolean            @default(false)
   customer_picture customer_picture[]
 }
 
@@ -125,9 +124,10 @@ model customer_wishlist {
 }
 
 model customer_followed_shop {
-  customer_id                             Int       @id
+  customer_id                             Int
   shop_id                                 Int
   added_date                              DateTime  @default(now())
+  id                                      Int       @id @default(autoincrement())
   customer_id_from_customer_followed_shop customer  @relation(fields: [customer_id], references: [id])
   shop_id_from_customer_followed_shop     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -201,12 +201,11 @@ model shop_comment {
 }
 
 model shop_section_log {
-  id                            Int          @id @default(autoincrement())
+  id                            Int       @id @default(autoincrement())
   shop_id                       Int
-  section_type                  Shop_section
-  added_date                    DateTime     @default(now())
-  device                        Platform
-  shop_id_from_shop_section_log shop_info    @relation(fields: [shop_id], references: [id])
+  added_date                    DateTime  @default(now())
+  device                        String
+  shop_id_from_shop_section_log shop_info @relation(fields: [shop_id], references: [id])
 }
 
 model shop_section {
@@ -265,11 +264,11 @@ model shop_video {
 }
 
 model shop_category {
-  id        Int       @id @default(autoincrement())
-  shop_id   Int
-  title     String    @db.VarChar(20)
-  products  Int[]
-  shop_info shop_info @relation(fields: [shop_id], references: [id])
+  id                         Int       @id @default(autoincrement())
+  shop_id                    Int
+  title                      String    @db.VarChar(20)
+  products                   Int[]
+  shop_id_from_shop_category shop_info @relation(fields: [shop_id], references: [id])
 }
 
 model category_icon_picture {
@@ -416,6 +415,9 @@ model discount {
   reduce_price          Int?
   discount_types        DiscountTypes
   added_date            DateTime                @db.Timestamp(6)
+  picture_path          String
+  picture_thumbnail     String
+  picture_title         String
   discount_app          discount_app?
   discount_category     discount_category?
   discount_event        discount_event?
@@ -481,12 +483,21 @@ model discount_user_code {
   discount_id_from_iscount_user_code  discount @relation(fields: [discount_id], references: [id])
 }
 
+model discount_reward {
+  id                      Int                       @id @default(autoincrement())
+  type                    DiscountUserTypes
+  quantity                Int
+  description             String
+  max_quantity            Int
+  discount_customer_spend discount_customer_spend[]
+}
+
 model discount_customer_spend {
-  customer_id                              Int             @id
-  total_spend                              Int
-  spend_type_id                            Int
-  customer_id_from_discount_customer_spend customer        @relation(fields: [customer_id], references: [id])
-  discount_reward                          discount_reward @relation(fields: [spend_type_id], references: [id])
+  customer_id                                Int             @id
+  total_spend                                Int
+  spend_type_id                              Int
+  customer_id_from_discount_customer_spend   customer        @relation(fields: [customer_id], references: [id])
+  spend_type_id_from_discount_customer_spend discount_reward @relation(fields: [spend_type_id], references: [id])
 }
 
 model discount_coin_information {
@@ -497,6 +508,20 @@ model discount_coin_information {
   expire_date                                DateTime @db.Timestamp(6)
   get_from                                   String
   customer_id_from_discount_coin_information customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_used_coin {
+  customer_id                         Int      @id
+  used_time                           DateTime @db.Timestamp(6)
+  used_amount                         Int
+  user_for                            String
+  customer_id_from_discount_used_coin customer @relation(fields: [customer_id], references: [id])
+}
+
+model discount_daily_coin {
+  customer_id                          Int      @id
+  got_date                             DateTime @db.Date
+  customer_id_from_discount_daily_coin customer @relation(fields: [customer_id], references: [id])
 }
 
 model discount_customer_coin {
@@ -1254,40 +1279,45 @@ model home_partner {
 }
 
 model home_product_log {
-  customer_id                       Int      @id
+  customer_id                       Int
   product_id                        Int
   view_date                         DateTime @db.Timestamp(6)
+  id                                Int      @id @default(autoincrement())
   customer_id_from_home_product_log customer @relation(fields: [customer_id], references: [id])
   product_id_from_home_product_log  product  @relation(fields: [product_id], references: [id])
 }
 
 model home_add_to_cart_log {
-  customer_id                           Int      @id
+  customer_id                           Int
   product_id                            Int
   added_date                            DateTime @db.Timestamp(6)
+  id                                    Int      @id @default(autoincrement())
   customer_id_from_home_add_to_cart_log customer @relation(fields: [customer_id], references: [id])
   product_id_from_home_add_to_cart_log  product  @relation(fields: [product_id], references: [id])
 }
 
 model home_shop_log {
-  customer_id                    Int       @id
+  customer_id                    Int
   shop_id                        Int
+  id                             Int       @id @default(autoincrement())
   customer_id_from_home_shop_log customer  @relation(fields: [customer_id], references: [id])
   shop_id_from_home_shop_log     shop_info @relation(fields: [shop_id], references: [id])
 }
 
 model home_payment_log {
-  customer_id                       Int      @id
+  customer_id                       Int
   payment_id                        Int
   issue_at                          DateTime @db.Timestamp(6)
+  id                                Int      @id @default(autoincrement())
   customer_id_from_home_payment_log customer @relation(fields: [customer_id], references: [id])
   payment_id_from_home_payment_log  payment  @relation(fields: [payment_id], references: [id])
 }
 
 model home_discount_log {
-  customer_id                        Int      @id
+  customer_id                        Int
   discount_id                        Int
   view_date                          DateTime @db.Timestamp(6)
+  id                                 Int      @id @default(autoincrement())
   customer_id_from_home_discount_log customer @relation(fields: [customer_id], references: [id])
   discount_id_from_home_discount_log discount @relation(fields: [discount_id], references: [id])
 }
@@ -1446,6 +1476,7 @@ model delivery_admin {
   id       Int    @id @default(autoincrement())
   username String @db.VarChar(20)
   password String
+  token    String
 }
 
 model delivery_admin_log {
@@ -1457,38 +1488,15 @@ model delivery_admin_log {
 
 model delivery_product_status {
   id                 Int                  @id @default(autoincrement())
-  tracking_number    String
   added_date         DateTime             @db.Timestamp(6)
   latest_update      DateTime             @db.Timestamp(6)
   complete_date      DateTime?            @db.Timestamp(6)
   recipient_name     String?              @db.VarChar(60)
   status             String
   delivery_detail    Json
+  province           String               @db.VarChar(2)
   delivery_admin_log delivery_admin_log[]
   order_status       order_status[]
-}
-
-model discount_daily_coin {
-  customer_id Int      @id
-  got_date    DateTime @db.Date
-  customer    customer @relation(fields: [customer_id], references: [id])
-}
-
-model discount_reward {
-  id                      Int                       @id @default(autoincrement())
-  type                    DiscountUserTypes
-  quantity                Int
-  description             String
-  max_quantity            Int
-  discount_customer_spend discount_customer_spend[]
-}
-
-model discount_used_coin {
-  customer_id Int      @id
-  used_time   DateTime @db.Timestamp(6)
-  used_amount Int
-  user_for    String
-  customer    customer @relation(fields: [customer_id], references: [id])
 }
 
 model product_picture {
@@ -1506,6 +1514,11 @@ model shop_product_carousel_select {
   products    Int[]
 }
 
+enum homeBannerPicturePosition {
+  Main
+  Sub
+}
+
 enum Gender {
   Male
   Female
@@ -1519,14 +1532,6 @@ enum Shop_section {
   ProductCarousel
   Video
   ProductCarouselSelect
-}
-
-enum Platform {
-  Ios
-  Android
-  PC
-  MacOS
-  Linux
 }
 
 enum Comment_Raitng {
@@ -1620,9 +1625,4 @@ enum SConsoleRefundTypes {
 enum homePartnerType {
   PaymentMethod
   Delivery
-}
-
-enum homeBannerPicturePosition {
-  Main
-  Sub
 }

@@ -5,13 +5,13 @@ import { Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import { assign } from "~/common/utils/";
-import authState from "~/common/store/authState";
 import config from "../../common/constants";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { getUrl } from "~/common/utils";
 
 const RegisterAddress = ({
   activeStep,
@@ -25,9 +25,22 @@ const RegisterAddress = ({
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const resetRegisterState = useResetRecoilState(registerState);
   const classes = useStyles();
 
-  const register = () => {
+  const back = () => {
+    setUserInfo({
+      ...userInfo,
+      confirmPassword: "",
+      province: "",
+      district: "",
+      subDistrict: "",
+      postalCode: "",
+    });
+    handleBack();
+  };
+
+  const register = async () => {
     if (userInfo.addressLine == "") {
       setaddressLineError("This field is required");
     }
@@ -50,24 +63,30 @@ const RegisterAddress = ({
       userInfo.subDistrict != "" &&
       userInfo.postalCode != ""
     ) {
-      console.log(userInfo);
+      const url = await getUrl(userInfo.file);
       setIsLoading(true);
       axios
-        .post(config.SERVER_URL + "/auth/register", userInfo, {
-          validateStatus: (status) => {
-            return true; // I'm always returning true, you may want to do it depending on the status received
-          },
-        })
+        .post(
+          config.SERVER_URL + "/auth/register",
+          { ...userInfo, url: url.original_link },
+          {
+            validateStatus: (status) => {
+              return true; // I'm always returning true, you may want to do it depending on the status received
+            },
+          }
+        )
         .then(({ data }) => {
           if (data.success) {
             handleRegister();
+            resetRegisterState();
           } else {
-            Swal.fire("Register Error!", data.message, "error");
+            Swal.fire({
+              title: "Register Error!",
+              text: data.message,
+              icon: "error",
+              timer: 3000,
+            });
           }
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          Swal.fire("Register Error!", err.message, "error");
           setIsLoading(false);
         });
     }
@@ -298,7 +317,7 @@ const RegisterAddress = ({
       <Box className={classes.button}>
         <Button
           disabled={activeStep === 0}
-          onClick={handleBack}
+          onClick={back}
           sx={{
             backgroundColor: "#ffffff",
             boxShadow: "none",
