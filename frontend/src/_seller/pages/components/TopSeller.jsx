@@ -9,6 +9,7 @@ import { useHistory } from "react-router";
 import StoreIcon from "@mui/icons-material/Store";
 import Popup from "./Popup";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -24,15 +25,15 @@ const TopSeller = () => {
 
   const [open, setOpen] = useState(false);
 
-  const [shid , setShid] = useState();
-  const [shopName , setShopname] = useState();
+  const [shid, setShid] = useState();
+  const [shopName, setShopname] = useState();
   const [shopDescription, setShopDes] = useState();
   let shopFollowers = "";
-  const [phoneNumber , setPhone] = useState();
+  const [phoneNumber, setPhone] = useState();
 
   let shoppic = "";
-  const [shoppath , setShoppath] = useState();
-  const [shoppictitle,setshoppictitle] = useState();
+  const [shoppath, setShoppath] = useState();
+  const [shoppictitle, setshoppictitle] = useState();
   let shopthumnail = "";
 
   const fetchShopInfo = async () => {
@@ -90,16 +91,18 @@ const TopSeller = () => {
           src={shoppath}
           alt={shoppictitle}
         ></Avatar>
-        
+
         <Box className={classes.nametag}>
           <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
             {shopName}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            contact:{phoneNumber}
+            <Box>
+              <LocalPhoneIcon />:{phoneNumber}
+            </Box>
           </Typography>
-          <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            discription:{shopDescription}
+          <Typography sx={{ fontWeight: "400" }} variant="caption">
+            description:{shopDescription}
           </Typography>
         </Box>
       </Box>
