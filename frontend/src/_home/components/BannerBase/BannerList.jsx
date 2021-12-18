@@ -1,9 +1,15 @@
+import { useState } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants"
 import { useTransition, animated } from 'react-spring';
 import { Container } from '@mui/material';
 import BannerItem from './BannerItem';
 import { noop } from '~/common/utils';
 
-const BannerList = ({ items = [], setItems = noop }) => {
+const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
+	const [loading, setLoading] = useState(false);
+
 	let height = 0;
 	const transitions = useTransition(items.map(item => (
 		{ ...item, y: (height += item.height || 0) - item.height || 0 })
@@ -45,11 +51,28 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		})
 	};
 
-	const onDelete = (index) => {
-		setItems(() => {
-			items.splice(index, 1)
-			return [...items];
-		});
+	const handleDeleteBanner = (id, index) => {
+		setLoading(true);
+		axios
+			.delete(`${config.SERVER_URL}/home/banner/${id}`)
+			.then(({ data }) => {
+				if (data.success) {
+					console.log(data.bannerInfo);
+
+					// setItems(items => {
+					// 	items.splice(index, 1)
+					// 	return [...items];
+					// });
+					getData();
+					setLoading(false);
+					return Swal.fire('Done', "Already deleted the banner", 'success');
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				setLoading(false);
+				return Swal.fire('Oop!', 'Cannot delete banner, please try again', 'error');
+			})
 	};
 
 	return (
@@ -73,7 +96,9 @@ const BannerList = ({ items = [], setItems = noop }) => {
 							setItems={setItems}
 							onNext={onNext}
 							onPrev={onPrev}
-							onDelete={onDelete}
+							getData={getData}
+							handleDeleteBanner={() => handleDeleteBanner(item.id, index)}
+							mainLoading={loading}
 						/>
 					</animated.div>
 				)
