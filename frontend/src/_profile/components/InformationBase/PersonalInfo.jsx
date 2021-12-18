@@ -5,6 +5,7 @@ import React from "react";
 
 const PersonalInfo = ({ userInfo }) => {
   const classes = useStyles();
+  const birthdate = userInfo.day + "/" + userInfo.month + "/" + userInfo.year;
   return (
     <>
       <Box className={classes.container}>
@@ -18,26 +19,20 @@ const PersonalInfo = ({ userInfo }) => {
             <Typography sx={infoTitle}>Name</Typography>
           </Grid>
           <Typography sx={infoDetail}>
-            {userInfo.customer_info.firstname} {userInfo.customer_info.lastname}
+            {userInfo.first_name} {userInfo.last_name}
           </Typography>
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Gender</Typography>
           </Grid>
-          <Typography sx={infoDetail}>
-            {userInfo.customer_info.gender === "PreferNotToSay"
-              ? "Prefer not to say"
-              : userInfo.customer_info.gender}
-          </Typography>
+          <Typography sx={infoDetail}>{userInfo.gender} </Typography>
         </Grid>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
             <Typography sx={infoTitle}>Birthdate</Typography>
           </Grid>
-          <Typography sx={infoDetail}>
-            {userInfo.customer_info.birthdate.split("T")[0]}
-          </Typography>
+          <Typography sx={infoDetail}>{birthdate}</Typography>
         </Grid>
       </Box>
     </>

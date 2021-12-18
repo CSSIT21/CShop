@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     alignItems: "center",
 
     backgroundColor: "#EFEFF1",
-    marginBottom: "50px",
+    marginBottom: "50px"
   },
 
   carouselStyle: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CarouselBanner = ({ bannerItems = [] }) => {
+const CarouselBanner = ({bannerItems=[]}) => {
   const classes = useStyles();
 
   const [items, setItems] = useState(bannerItems);
@@ -41,7 +41,7 @@ const CarouselBanner = ({ bannerItems = [] }) => {
         >
           {(item) => (
             <LazyImage
-              src={item.path}
+              src={item.url}
               lazy="https://via.placeholder.com/1140x516.png"
               key={item.id}
             />

@@ -8,7 +8,6 @@ import {
   LocationOn as AddressIcon,
   ConfirmationNumber as CouponIcon,
   History as HistoryIcon,
-  Store as StoreIcon,
 } from "@mui/icons-material/";
 import { Box } from "@mui/system";
 
@@ -54,17 +53,11 @@ const ProfilePage = () => {
             title="Shopping Information"
             open={openShopping}
             setOpen={setOpenShopping}
-            col
           >
             <ProfileBox
               title="Order History"
               icon={<HistoryIcon style={iconStyles} />}
               to="/profile/history"
-            />
-            <ProfileBox
-              title="Following Shop"
-              icon={<StoreIcon style={iconStyles} />}
-              to="/profile/followedshop"
             />
           </AccordionCommon>
         </Box>

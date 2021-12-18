@@ -1,92 +1,89 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import CarouselButton from "~/common/components/CarouselButton";
 import Carousel from "~/common/components/Carousel";
 import Coupon from "./Coupon";
-import { useParams } from "react-router";
-const couponsMock = [
+
+const coupons = [
   {
-    discount_id: 1,
-    shop_id: 1,
-    quantity: 100,
-    discount_id_from_discount_shop: {
-      id: 1,
-      code: "CSHOP",
-      start_date: "2021-12-13T20:52:35.000Z",
-      end_date: "2022-12-13T20:52:38.000Z",
-      description: "First voucher",
-      class: "ReducePrice",
-      min_price: 100,
-      reduce_price: 20,
-      discount_types: "Shop",
-      added_date: "2021-12-13T20:51:56.000Z",
-    },
+    id: 1,
+    title: "50% save for new user!!",
+    remaining: 2,
+    valid: "Until 31/12/2021",
+    claimed: false,
+  },
+  {
+    id: 2,
+    title: "50% save for new user!!",
+    remaining: 10,
+    valid: "Until 31/12/2021",
+    claimed: true,
+  },
+  {
+    id: 3,
+    title: "50% save for new user!!",
+    remaining: 5,
+    valid: "Until 31/12/2021",
+    claimed: false,
   },
 ];
 
-const Voucher = ({ shopcoupons }) => {
+const Voucher = () => {
   const classes = useStyles();
-  const [coupons, setcoupons] = useState(shopcoupons);
-  const { id, cateId } = useParams();
   const [page, setPage] = useState(0);
   const couponsPerRow = 2;
   const totalPage = Math.ceil(coupons.length / couponsPerRow);
-  const handleClaim = (coupon_id) => {
-    // macky api claim voucher
-    setcoupons(
-      coupons.filter((coupon) => {
-        return coupon.discount_id != coupon_id;
-      })
-    );
+  const [currentCoupon, setCurrentCoupon] = useState(4);
+  const handleClaim = () => {
+    setCurrentCoupon(currentCoupon - 1);
   };
-  console.log(coupons);
-  if (coupons.length > 0) {
-    return (
-      <Box className={classes.wrapper}>
-        <Box className={classes.header}>
-          <Typography
-            sx={{ fontSize: "24px", fontWeight: "600", color: "#FD6637" }}
-          >
-            Shop Voucher
-          </Typography>
-          <CarouselButton
-            pageHandle={setPage}
-            currentPage={page}
-            totalPage={totalPage}
-          />
-        </Box>
 
-        <Box className={classes.content}>
-          <Carousel
-            items={coupons}
-            pageState={page}
-            setPageState={setPage}
-            itemsPerRow={couponsPerRow}
-          >
-            {(coupon, idx) => (
-              <Coupon
-                key={coupon.discount_id}
-                coupon={coupon}
-                claimProps={{
-                  disabled: coupon.claimed,
-                  title: "Claim",
-                }}
-                onClick={() => handleClaim(coupon.discount_id)}
-              />
-            )}
-          </Carousel>
-        </Box>
+  return (
+    <Box className={classes.wrapper}>
+      <Box className={classes.header}>
+        <Typography
+          sx={{ fontSize: "24px", fontWeight: "600", color: "#FD6637" }}
+        >
+          Shop Voucher
+        </Typography>
+        <CarouselButton
+          pageHandle={setPage}
+          currentPage={page}
+          totalPage={totalPage}
+        />
       </Box>
-    );
-  }
-  return <></>;
+
+      <Box className={classes.content}>
+        <Carousel
+          items={coupons}
+          pageState={page}
+          setPageState={setPage}
+          itemsPerRow={couponsPerRow}
+        >
+          {(coupon, idx) => (
+            <Coupon
+              key={idx}
+              coupon={coupon}
+              currentCoupon={currentCoupon}
+              totalCoupon={5}
+              claimProps={{
+                  disabled: coupon.claimed,
+                  title: 'Claim',
+                  onClick: handleClaim
+              }}
+            />
+          )}
+        </Carousel>
+      </Box>
+    </Box>
+  );
 };
 
 const useStyles = makeStyles({
   wrapper: {
-    margin: "100px",
+    marginBottom: "40px",
   },
 
   header: {

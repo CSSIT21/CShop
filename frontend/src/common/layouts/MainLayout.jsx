@@ -1,17 +1,16 @@
-import NavBar from "../components/NavBar";
-import { useRecoilState } from "recoil";
-import authState from "../store/authState";
-import { useMiddleware } from "../hooks";
+import NavBar from '../components/NavBar';
+import { useRecoilState } from 'recoil';
+import authState from '../store/authState';
 
 const MainLayout = (props) => {
-  const [auth] = useRecoilState(authState);
-  useMiddleware();
-  return (
-    <div>
-      <NavBar isLogin={auth.isLoggedIn} />
-      {props.children}
-    </div>
-  );
+	const [auth] = useRecoilState(authState);
+	
+	return (
+		<div>
+			<NavBar isLogin={auth.isLoggedIn} />
+			{props.children}
+		</div>
+	);
 };
 
 export default MainLayout;

@@ -27,7 +27,7 @@ const RailWrapper = styled.div`
   margin: ${({ showDots }) => (showDots ? "0 20px 15px 20px" : "0 0px")};
 
   @media screen and (max-width: ${({ mobileBreakpoint }) =>
-      mobileBreakpoint}px) {
+    mobileBreakpoint}px) {
     overflow-x: auto;
     margin: 0;
     scroll-snap-type: ${({ scrollSnap }) => (scrollSnap ? "x mandatory" : "")};
@@ -49,11 +49,11 @@ const Rail = styled.div`
     `translateX(calc(${-100 * currentPage}% - ${gap * currentPage}px))`};
 
   @media screen and (max-width: ${({ mobileBreakpoint }) =>
-      mobileBreakpoint}px) {
+    mobileBreakpoint}px) {
     padding-left: ${({ gap }) => `${gap}px`};
     grid-template-columns: ${({ page }) => `repeat(${page}, 90%)`};
     grid-column-gap: ${({ cols, rows, gap }) =>
-      `calc(${(cols * rows - 1) * 90}% + ${cols * rows * gap}px)`};
+    `calc(${(cols * rows - 1) * 90}% + ${cols * rows * gap}px)`};
     transform: translateX(0);
   }
 `;
@@ -65,9 +65,9 @@ const ItemSet = styled.div`
   grid-gap: ${({ gap }) => `${gap}px`};
 
   @media screen and (max-width: ${({ mobileBreakpoint }) =>
-      mobileBreakpoint}px) {
+    mobileBreakpoint}px) {
     grid-template-columns: ${({ cols, rows }) =>
-      `repeat(${cols * rows}, 100%)`};
+    `repeat(${cols * rows}, 100%)`};
     grid-template-rows: 1fr;
 
     &:last-of-type > ${/* sc-sel */ Item}:last-of-type {
@@ -89,7 +89,7 @@ const Dots = styled.div`
   text-align: center;
 
   @media screen and (max-width: ${({ mobileBreakpoint }) =>
-      mobileBreakpoint}px) {
+    mobileBreakpoint}px) {
     display: none;
   }
 `;
@@ -117,7 +117,7 @@ const Carousel = ({
   setPageState,
   children,
 }) => {
-  const [currentPage, setCurrentPage] = useState(pageState);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const [cols, setCols] = useState(colsProp);
@@ -250,10 +250,10 @@ const Carousel = ({
             loop && scrollLeft + offsetWidth >= scrollWidth
               ? -scrollLeft
               : scrollLeft === 0
-              ? gap +
+                ? gap +
                 (offsetWidth - gap) * 0.9 -
                 (offsetWidth * 0.1 - gap * 1.1) / 2
-              : (offsetWidth - gap) * 0.9 + gap,
+                : (offsetWidth - gap) * 0.9 + gap,
           behavior: "smooth",
         });
       } else {
@@ -266,6 +266,7 @@ const Carousel = ({
           setPageState(nextPage);
           return nextPage;
         });
+
       }
     },
     [loop, page, gap, railWrapperRef, scrollSnap, setPageState]
@@ -299,24 +300,19 @@ const Carousel = ({
     }
   }, [isHover, isTouch, autoplayIntervalRef, startAutoplayInterval]);
 
-  const turnToPage = useCallback(
-    (page) => {
-      setCurrentPage(page);
-      setPageState(page);
-    },
-    [setPageState]
-  );
+  const turnToPage = useCallback((page) => {
+    setCurrentPage(page);
+    setPageState(page);
+  }, [setPageState]);
 
   useLayoutEffect(() => {
     const nextPage = pageState;
     if (nextPage >= page) {
-      if (typeof setPageState !== "undefined")
-        setPageState(loop ? 0 : pageState);
+      if (typeof setPageState !== 'undefined') setPageState(loop ? 0 : pageState);
       return loop ? 0 : pageState;
     }
     if (nextPage < 0) {
-      if (typeof setPageState !== "undefined")
-        setPageState(loop ? page - 1 : 0);
+      if (typeof setPageState !== 'undefined') setPageState(loop ? page - 1 : 0);
       return loop ? page - 1 : 0;
     }
     setCurrentPage(nextPage);
@@ -342,8 +338,8 @@ const Carousel = ({
     setGap(parseGap(gap || gapProp));
     setLoop(loop || loopProp);
     setAutoplay(autoplay || autoplayProp);
-    setCurrentPage(pageState);
-    setPageState(pageState);
+    setCurrentPage(0);
+    setPageState(0);
   }, [
     breakpointSetting,
     colsProp,
@@ -352,7 +348,7 @@ const Carousel = ({
     loopProp,
     autoplayProp,
     parseGap,
-    setPageState,
+    setPageState
   ]);
 
   return (

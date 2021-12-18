@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Grid, Typography, TextField, MenuItem, Button } from "@mui/material";
+import { Grid, Typography, TextField, MenuItem } from "@mui/material";
 import axios from "axios";
 
 const ContactInfoEdit = ({
@@ -9,9 +9,9 @@ const ContactInfoEdit = ({
   confirmPassword,
   seteditInfo = () => {},
   setConfirmPassword = () => {},
-  saveInfo,
 }) => {
   const classes = useStyles();
+
   const [addressData, setAddressData] = useState([]);
   const [province, setProvince] = useState([]);
   const [district, setDistrict] = useState([]);
@@ -27,12 +27,7 @@ const ContactInfoEdit = ({
       [
         ...new Set(
           fetchedData.data
-            .filter(
-              (el) =>
-                el.province ===
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .province
-            )
+            .filter((el) => el.province === editInfo.province)
             .map((el) => el.district)
         ),
       ].sort()
@@ -41,12 +36,7 @@ const ContactInfoEdit = ({
       [
         ...new Set(
           fetchedData.data
-            .filter(
-              (el) =>
-                el.district ===
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .district
-            )
+            .filter((el) => el.district === editInfo.district)
             .map((el) => el.subDistrict)
         ),
       ].sort()
@@ -55,12 +45,7 @@ const ContactInfoEdit = ({
       [
         ...new Set(
           fetchedData.data
-            .filter(
-              (el) =>
-                el.subDistrict ==
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .sub_district
-            )
+            .filter((el) => el.subDistrict == editInfo.subDistrict)
             .map((el) => "" + el.Zipcode)
         ),
       ].sort()
@@ -75,90 +60,37 @@ const ContactInfoEdit = ({
       [
         ...new Set(
           addressData
-            .filter(
-              (el) =>
-                el.province ===
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .province
-            )
+            .filter((el) => el.province === editInfo.province)
             .map((el) => el.district)
         ),
       ].sort()
     );
-    seteditInfo({
-      ...editInfo,
-      customer_address: [
-        {
-          ...editInfo.customer_address[0],
-          address_id_from_customer_address: {
-            ...editInfo.customer_address[0].address_id_from_customer_address,
-            sub_district: "",
-            postal_code: "",
-          },
-        },
-      ],
-    });
-  }, [editInfo.customer_address[0].address_id_from_customer_address.province]);
+    seteditInfo({ ...editInfo, district: "" });
+  }, [editInfo.province]);
   useEffect(() => {
     setSubDistrict(
       [
         ...new Set(
           addressData
-            .filter(
-              (el) =>
-                el.district ===
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .district
-            )
+            .filter((el) => el.district === editInfo.district)
             .map((el) => el.subDistrict)
         ),
       ].sort()
     );
-    seteditInfo({
-      ...editInfo,
-      customer_address: [
-        {
-          ...editInfo.customer_address[0],
-          address_id_from_customer_address: {
-            ...editInfo.customer_address[0].address_id_from_customer_address,
-            postal_code: "",
-          },
-        },
-      ],
-    });
-  }, [editInfo.customer_address[0].address_id_from_customer_address.district]);
+    seteditInfo({ ...editInfo, subDistrict: "" });
+  }, [editInfo.district]);
   useEffect(() => {
     setPostalCode(
       [
         ...new Set(
           addressData
-            .filter(
-              (el) =>
-                el.subDistrict ===
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .sub_district
-            )
+            .filter((el) => el.subDistrict === editInfo.subDistrict)
             .map((el) => el.Zipcode)
         ),
       ].sort()
     );
-    seteditInfo({
-      ...editInfo,
-      customer_address: [
-        {
-          ...editInfo.customer_address[0],
-          address_id_from_customer_address: {
-            ...editInfo.customer_address[0].address_id_from_customer_address,
-            postal_code:
-              editInfo.customer_address[0].address_id_from_customer_address
-                .postal_code,
-          },
-        },
-      ],
-    });
-  }, [
-    editInfo.customer_address[0].address_id_from_customer_address.sub_district,
-  ]);
+    seteditInfo({ ...editInfo });
+  }, [editInfo.subDistrict]);
 
   return (
     <>
@@ -166,7 +98,7 @@ const ContactInfoEdit = ({
         <Typography
           sx={{ fontSize: "24px", fontWeight: "600", margin: "50px 0" }}
         >
-          Contact Information
+          Contact Personal
         </Typography>
         <Grid container className={classes.grid}>
           <Grid item xs={4}>
@@ -176,14 +108,11 @@ const ContactInfoEdit = ({
             id="phoneNumber"
             variant="outlined"
             sx={textField}
-            value={editInfo.customer_info.phone_number}
+            value={editInfo.phoneNumber}
             onChange={(e) => {
               seteditInfo({
                 ...editInfo,
-                customer_info: {
-                  ...editInfo.customer_info,
-                  phone_number: e.target.value,
-                },
+                phoneNumber: e.target.value,
               });
             }}
           />
@@ -196,8 +125,13 @@ const ContactInfoEdit = ({
             id="email"
             variant="outlined"
             sx={textField}
-            disabled
             value={editInfo.email}
+            onChange={(e) => {
+              seteditInfo({
+                ...editInfo,
+                email: e.target.value,
+              });
+            }}
           />
         </Grid>
         <Grid container className={classes.grid}>
@@ -209,7 +143,6 @@ const ContactInfoEdit = ({
             variant="outlined"
             sx={textField}
             value={confirmPassword}
-            type="password"
             onChange={(e) => {
               setConfirmPassword(e.target.value);
             }}
@@ -224,26 +157,14 @@ const ContactInfoEdit = ({
               id="addressLine"
               variant="outlined"
               placeholder="Address"
-              value={
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .address_line
-              }
+              value={editInfo.addressLine}
               multiline
               rows={5}
               sx={addressTextField}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  customer_address: [
-                    {
-                      ...editInfo.customer_address[0],
-                      address_id_from_customer_address: {
-                        ...editInfo.customer_address[0]
-                          .address_id_from_customer_address,
-                        address_line: e.target.value,
-                      },
-                    },
-                  ],
+                  addressLine: e.target.value,
                 });
               }}
             />
@@ -252,23 +173,11 @@ const ContactInfoEdit = ({
               variant="outlined"
               select
               sx={addressTextField}
-              value={
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .province
-              }
+              value={editInfo.province}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  customer_address: [
-                    {
-                      ...editInfo.customer_address[0],
-                      address_id_from_customer_address: {
-                        ...editInfo.customer_address[0]
-                          .address_id_from_customer_address,
-                        province: e.target.value,
-                      },
-                    },
-                  ],
+                  province: e.target.value,
                 });
               }}
             >
@@ -283,23 +192,11 @@ const ContactInfoEdit = ({
               variant="outlined"
               select
               sx={addressTextField}
-              value={
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .district
-              }
+              value={editInfo.district}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  customer_address: [
-                    {
-                      ...editInfo.customer_address[0],
-                      address_id_from_customer_address: {
-                        ...editInfo.customer_address[0]
-                          .address_id_from_customer_address,
-                        district: e.target.value,
-                      },
-                    },
-                  ],
+                  district: e.target.value,
                 });
               }}
             >
@@ -314,23 +211,11 @@ const ContactInfoEdit = ({
               variant="outlined"
               select
               sx={addressTextField}
-              value={
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .sub_district
-              }
+              value={editInfo.subDistrict}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  customer_address: [
-                    {
-                      ...editInfo.customer_address[0],
-                      address_id_from_customer_address: {
-                        ...editInfo.customer_address[0]
-                          .address_id_from_customer_address,
-                        sub_district: e.target.value,
-                      },
-                    },
-                  ],
+                  subDistrict: e.target.value,
                 });
               }}
             >
@@ -345,23 +230,11 @@ const ContactInfoEdit = ({
               variant="outlined"
               sx={addressTextField}
               select
-              value={
-                editInfo.customer_address[0].address_id_from_customer_address
-                  .postal_code
-              }
+              value={editInfo.postalCode}
               onChange={(e) => {
                 seteditInfo({
                   ...editInfo,
-                  customer_address: [
-                    {
-                      ...editInfo.customer_address[0],
-                      address_id_from_customer_address: {
-                        ...editInfo.customer_address[0]
-                          .address_id_from_customer_address,
-                        postal_code: e.target.value,
-                      },
-                    },
-                  ],
+                  postalCode: e.target.value,
                 });
               }}
             >
@@ -373,22 +246,6 @@ const ContactInfoEdit = ({
             </TextField>
           </Box>
         </Grid>
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
-          <Button
-            sx={{
-              width: "200px",
-              height: "44px",
-              textTransform: "capitalize",
-              marginBottom: "30px",
-            }}
-            variant="outlined"
-            onClick={() => {
-              saveInfo();
-            }}
-          >
-            Save Changes
-          </Button>
-        </Box>
       </Box>
     </>
   );

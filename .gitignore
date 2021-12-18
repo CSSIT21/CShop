@@ -25,7 +25,3 @@ frontend/.env
 frontend/yarn.lock
 frontend/package-lock.json
 frontend/package-lock.json
-backend/src/.env
-backend/prisma/schema.prisma
-backend/package-lock.json
-*.prisma

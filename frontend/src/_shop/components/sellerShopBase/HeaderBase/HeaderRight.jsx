@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
 // import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 // import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
-import dayjs from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
 
 // const Item = styled(Paper)(({ theme }) => ({
 //   ...theme.typography.body2,
@@ -16,16 +11,9 @@ import * as relativeTime from "dayjs/plugin/relativeTime";
 //   textAlign: "center",
 //   color: theme.palette.text.secondary,
 // }));
-dayjs.extend(relativeTime);
 
-export default function HeaderRight({ shopInfo = {} }) {
+export default function RowAndColumnSpacing() {
   const classes = useStyles();
-  const { id } = useParams();
-  const [date, setdate] = useState();
-  useEffect(() => {
-    const joinDate = shopInfo.join_date;
-    setdate(dayjs(joinDate).fromNow());
-  }, [shopInfo]);
   return (
     <>
       <Box
@@ -44,7 +32,7 @@ export default function HeaderRight({ shopInfo = {} }) {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            {shopInfo.products}
+            6666
           </Grid>
           <Grid item xs={3}>
             <Typography fontSize="16px" color="#78909c">
@@ -62,7 +50,7 @@ export default function HeaderRight({ shopInfo = {} }) {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            {shopInfo.followers}
+            7.4k
           </Grid>
           <Grid item xs={3}>
             <Typography fontSize="16px" color="#78909c">
@@ -70,7 +58,7 @@ export default function HeaderRight({ shopInfo = {} }) {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            {date}
+            4 years ago
           </Grid>
         </Grid>
         <Grid className={classes.gridMargin} container>
@@ -80,9 +68,7 @@ export default function HeaderRight({ shopInfo = {} }) {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <Link to={`/shop/${id}/comment`}>
-              {shopInfo.rating !== null ? parseFloat(shopInfo.rating).toFixed(1) : 0}
-            </Link>
+            4.7
           </Grid>
         </Grid>
       </Box>

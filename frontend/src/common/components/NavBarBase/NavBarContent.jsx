@@ -15,21 +15,22 @@ const NavbarContent = () => {
 
   return (
     <Box className={classes.navbarWrapper}>
-      <Box className={classes.navbarLeft} sx={{ width: isLoggedIn ? "12%" : "12%" }}>
+      <Box className={classes.navbarLeft} style={{ width: isLoggedIn ? "12%" : "12%" }}>
         <Link to="/home">
           <img width="150px" src={CShopLogo} alt="Logo" />
         </Link>
       </Box>
 
       <Box
-        sx={{ width: isLoggedIn ? "65%" : "60%" }}
+        className={classes.navbarMiddle}
+        style={{ width: isLoggedIn ? "65%" : "60%" }}
       >
         <Search />
       </Box>
 
       <Box
         className={classes.navbarRight}
-        sx={{ width: isLoggedIn ? "23%" : "28%" }}
+        style={{ width: isLoggedIn ? "23%" : "28%" }}
       >
         <ActionMenu />
         {isLoggedIn ? <AccountDropdown /> : <AuthenButton />}
@@ -50,6 +51,10 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  navbarMiddle: {
+    // margin: '0 20px',
   },
 
   navbarRight: {

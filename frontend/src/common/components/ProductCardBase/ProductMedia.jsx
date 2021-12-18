@@ -6,9 +6,11 @@ const ProductMedia = ({ image, title }) => {
 			component="img"
 			image={image}
 			alt={title}
+
 			sx={{
 				margin: "0 auto",
-				aspectRatio: '1',
+				maxWidth: "205px",
+				height: "180px",
 				borderRadius: "15px",
 			}}
 		/>

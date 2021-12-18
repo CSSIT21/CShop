@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-import { nanoid } from 'nanoid';
 const NotFoundPage = () => {
   const classes = useStyles();
   const router = useHistory();
@@ -11,7 +10,7 @@ const NotFoundPage = () => {
     <>
       <Box className={classes.container}>
         <img
-          src={`https://avatars.dicebear.com/api/micah/${nanoid()}.svg`}
+          src="https://cdn.discordapp.com/attachments/681542997946794044/888113518182805614/unknown.png"
           alt="Image"
           className={classes.pic}
         />
@@ -25,7 +24,7 @@ const NotFoundPage = () => {
           404 PAGE NOT FOUND
         </Typography>
         <Box>
-          <Button
+        <Button
             variant="contained"
             sx={{
               textTransform: "capitalize",
@@ -34,11 +33,10 @@ const NotFoundPage = () => {
               fontSize: "20px",
               borderRadius: "12px",
               marginRight:"30px",
-           
             }}
             onClick={() => {
-              router.goBack();
-            }}
+                router.goBack();
+              }}
           >
             Back
           </Button>
@@ -52,12 +50,12 @@ const NotFoundPage = () => {
               borderRadius: "12px",
             }}
             onClick={() => {
-              router.push("/home");
-            }}
+                router.push("/home");
+              }}
           >
             Back to Home Page
           </Button>
-        </Box>
+          </Box>
       </Box>
     </>
   );

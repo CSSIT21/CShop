@@ -7,8 +7,8 @@ const Success = () => {
   const classes = useStyles();
   const router = useHistory();
   useLayoutEffect(() => {
-    document.body.classList.add("gray");
-    return () => document.body.classList.remove("gray");
+    document.body.classList.add('gray');
+    return () => document.body.classList.remove('gray');
   }, []);
   return (
     <Fragment>

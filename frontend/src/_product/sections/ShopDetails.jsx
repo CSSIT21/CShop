@@ -1,13 +1,12 @@
-import { useState } from "react";
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import CButton from "../../common/components/CButton";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
-import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
 
-const ShopDetails = ({ shopDetails, shopId }) => {
+const ShopDetails = (props) => {
   const shopName = "Shop Name";
   const activeTime = "19 minutes ago";
   const rating = "4.7";
@@ -69,24 +68,24 @@ const ShopDetails = ({ shopDetails, shopId }) => {
             </Typography>
           </Box>
 
-          {/* Button */}
+          {/* Buttom */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link to="/chat">
-              <Button
-                title="Chat now"
-                startIcon={
-                  <ShoppingCartOutlinedIcon sx={{ fontSize: "12px" }} />
-                }
-                style={goToChatStyle}
-              >
-                Chat now
-              </Button>
-            </Link>
-            <Link to={`/shop/${shopId}`}>
-              <Button startIcon={<StoreOutlinedIcon />} style={goToShopStyle}>
-                Go to shop
-              </Button>
-            </Link>
+            <CButton
+              title="Chat now"
+              icon={<ShoppingCartOutlinedIcon sx={{ fontSize: "12px"}} />}
+              width="120px"
+              height="45px"
+              fontSize = "13px"
+            />
+            <CButton
+              title="Go to shop"
+              icon={<StoreOutlinedIcon sx={{ fontSize: "12px"}}/>}
+              width="120px"
+              height="45px"
+              fontSize = "13px"
+              backgroundColor="#FFFFFF"
+              style={goToShopStyle}
+            />
           </Box>
         </Box>
       </Box>
@@ -169,22 +168,8 @@ const ShopDetails = ({ shopDetails, shopId }) => {
 const goToShopStyle = {
   color: "#FD6637",
   border: "1px solid #FD6637",
-  // padding: "11px",
+  padding: "11px",
   marginLeft: "17px",
-  width: "130px",
-  height: "45px",
-  fontSize: "12px",
-  backgroundColor: "#FFFFFF",
-  textTransform: "capitalize",
-};
-const goToChatStyle = {
-  width: "130px",
-  height: "45px",
-  color: "#FFFFFF",
-  fontSize: "12px",
-  border: "1px solid #FD6637",
-  backgroundColor: "#FD6637",
-  textTransform: "capitalize",
 };
 
 export default ShopDetails;

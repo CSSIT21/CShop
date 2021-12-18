@@ -23,7 +23,6 @@ const AccordionCommon = ({
   typographyProps = {},
   detailProps = {},
   col = false,
-  fadeDivider = false,
   ...rest
 }) => {
   const classes = useStyles();
@@ -67,12 +66,7 @@ const AccordionCommon = ({
           </Fade>
         </AccordionDetails>
       </Accordion>
-    
-      {fadeDivider && !open && (
-        <Fade in={!open} timeout={500}>
-          <Divider />
-        </Fade>
-      )}
+      <Divider />
     </Box>
   );
 };
