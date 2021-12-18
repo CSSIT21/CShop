@@ -1,13 +1,20 @@
 import React, { Fragment, useState } from "react";
-import { TextField, MenuItem, Button } from "@mui/material";
+import { TextField, MenuItem, Button, Avatar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { years, months, days, genders } from "../../common/constants/register";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import { useHistory } from "react-router";
+import DateAdapter from "@mui/lab/AdapterDayjs";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
+import { getUrl } from "~/common/utils";
 
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
+  const router = useHistory();
   const [userInfo, setUserInfo] = useRecoilState(registerState);
   const [passwordError, setpasswordError] = useState("");
   const [confirmPasswordError, setconfirmPasswordError] = useState("");
@@ -15,10 +22,17 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   const [lnError, setlnError] = useState("");
   const [phoneNumError, setphoneNumError] = useState("");
   const [genderError, setgenderError] = useState("");
-  const [dayError, setdayError] = useState("");
-  const [monthError, setmonthError] = useState("");
-  const [yearError, setyearError] = useState("");
+
   const checkInfo = () => {
+    if (userInfo.email == "") {
+      Swal.fire({
+        title: "Register Error!",
+        text: "Please proceed back to enter email",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      router.push("/register");
+    }
     if (userInfo.password != userInfo.confirmPassword) {
       setconfirmPasswordError("Password does not match");
     }
@@ -40,15 +54,6 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
     if (userInfo.gender == "Select Gender") {
       setgenderError("This field is required");
     }
-    if (userInfo.day == "Select Day") {
-      setdayError("This field is required");
-    }
-    if (userInfo.month == 0) {
-      setmonthError("This field is required");
-    }
-    if (userInfo.year == "Select Year") {
-      setyearError("This field is required");
-    }
     if (
       userInfo.email != "" &&
       userInfo.password != "" &&
@@ -58,14 +63,29 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
       userInfo.lastname != "" &&
       userInfo.phoneNumber != "" &&
       userInfo.gender != "Select Gender" &&
-      userInfo.day != "Select Day" &&
-      userInfo.month != 0 &&
-      userInfo.year != "Select Year"
+      userInfo.url != ""
     ) {
       handleNext();
+    } else {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please check if all of your information have been filled",
+        icon: "error",
+        timer: 2000,
+      });
     }
   };
-
+  const uploadFile = async (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      setUserInfo({
+        ...userInfo,
+        url: path,
+        title: e.target.files[0].name,
+        file: e.target.files[0],
+      });
+    }
+  };
   return (
     <Fragment>
       <Box>
@@ -169,13 +189,17 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 justifyContent: "space-between",
               }}
             >
-              {fnError.length != 0 && (
+              {fnError.length != 0 ? (
                 <Box className={classes.error} style={{ marginRight: "3%" }}>
                   {fnError}
                 </Box>
+              ) : (
+                <Box className={classes.error}></Box>
               )}
-              {lnError.length != 0 && (
+              {lnError.length != 0 ? (
                 <Box className={classes.error}>{lnError}</Box>
+              ) : (
+                <Box className={classes.error}></Box>
               )}
             </Box>
 
@@ -199,7 +223,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
           </Box>
           <Box className={classes.gender}>
             <Box className={classes.contextHeader}>Gender</Box>
-            <Box className={classes.textFieldBox} style={{ width: "30%" }}>
+            <Box className={classes.textFieldBox} style={{ width: "35%" }}>
               <TextField
                 id="gender"
                 variant="outlined"
@@ -229,98 +253,46 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
           <Box className={classes.birthdate}>
             <Box className={classes.contextHeader}>Birthdate</Box>
             <Box className={classes.birthdateSelect}>
-              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
-                <TextField
-                  id="day"
-                  variant="outlined"
-                  sx={{ borderRadius: "10px" }}
-                  fullWidth
-                  select
-                  error={dayError.length === 0 ? false : true}
-                  value={userInfo.day}
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <DatePicker
+                  value={userInfo.birthdate}
+                  sx={{ width: "100%" }}
+                  renderInput={(params) => <TextField {...params} />}
                   onChange={(e) => {
-                    setUserInfo({ ...userInfo, day: e.target.value });
-                    setdayError("");
+                    setUserInfo({ ...userInfo, birthdate: e.toISOString() });
                   }}
-                >
-                  {days.map((day) => (
-                    <MenuItem key={day} value={day}>
-                      {day}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
-              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
-                <TextField
-                  id="month"
-                  variant="outlined"
-                  sx={{ borderRadius: "10px" }}
-                  fullWidth
-                  select
-                  error={monthError.length === 0 ? false : true}
-                  value={userInfo.month}
-                  onChange={(e) => {
-                    setUserInfo({ ...userInfo, month: e.target.value });
-                    setmonthError("");
-                  }}
-                >
-                  {months.map((month) => (
-                    <MenuItem key={month.id} value={month.id}>
-                      {month.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
-              <Box className={classes.textFieldBox} style={{ width: "30%" }}>
-                <TextField
-                  id="year"
-                  variant="outlined"
-                  sx={{ borderRadius: "10px" }}
-                  fullWidth
-                  select
-                  error={yearError.length === 0 ? false : true}
-                  value={userInfo.year}
-                  onChange={(e) => {
-                    setUserInfo({ ...userInfo, year: e.target.value });
-                    setyearError("");
-                  }}
-                >
-                  {years.map((year) => (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
+                />
+              </LocalizationProvider>
             </Box>
+          </Box>
+          <Box>
+            <Box className={classes.contextHeader}>Profile Image</Box>
             <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
+              sx={{ display: "flex", alignItems: "end", margin: "50px 0px" }}
             >
-              {dayError.length != 0 ? (
-                <Box className={classes.error} sx={{ width: "30%" }}>
-                  {dayError}
-                </Box>
-              ) : (
-                <Box sx={{ width: "30%" }}></Box>
-              )}
-              {monthError.length != 0 ? (
-                <Box className={classes.error} sx={{ width: "30%" }}>
-                  {monthError}
-                </Box>
-              ) : (
-                <Box sx={{ width: "30%" }}></Box>
-              )}
-              {yearError.length != 0 ? (
-                <Box className={classes.error} sx={{ width: "30%" }}>
-                  {yearError}
-                </Box>
-              ) : (
-                <Box sx={{ width: "30%" }}></Box>
-              )}
+              <Avatar
+                src={userInfo.url}
+                alt=""
+                sx={{ width: "150px", height: "150px", marginRight: "30px" }}
+              ></Avatar>
+              <label htmlFor={`outlined-button-file-`}>
+                <Button
+                  component="span"
+                  variant="outlined"
+                  sx={{ height: "42px", borderWidth: "2px" }}
+                >
+                  <input
+                    accept="image/*"
+                    type="file"
+                    style={{ display: "none" }}
+                    id={`outlined-button-file-`}
+                    onChange={(e) => {
+                      uploadFile(e);
+                    }}
+                  />
+                  Upload file
+                </Button>
+              </label>
             </Box>
           </Box>
         </Box>
@@ -372,6 +344,10 @@ const useStyles = makeStyles({
   birthdateSelect: {
     display: "flex",
     justifyContent: "space-between",
+    marginTop: "35px",
+    backgroundColor: "white",
+    borderRadius: "10px",
+    width: "266px",
   },
   button: {
     display: "flex",

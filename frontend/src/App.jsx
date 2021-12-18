@@ -1,5 +1,5 @@
 /** internal */
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -225,16 +225,7 @@ function App() {
                       <Route path='/profile/history'>
                         <HistoryPage />
                       </Route>
-                      <Route path='/profile/history'>
-                        <HistoryPage />
-                      </Route>
-                      <Route path='/profile/followedshop'>
-                        <FollowedShop />
-                      </Route>
-                      <Route path='/profile/history'>
-                        <HistoryPage />
-                      </Route>
-                      <Route path='/profile/followedshop'>
+                      <Route path="/profile/followedshop">
                         <FollowedShop />
                       </Route>
                     </Suspense>

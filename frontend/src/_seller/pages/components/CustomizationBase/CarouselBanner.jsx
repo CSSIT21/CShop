@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, TextField, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
@@ -12,35 +12,35 @@ import IconButton from "@mui/material/IconButton";
 import { nanoid } from "nanoid";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { noop, convertFileBase64 } from "~/common/utils";
 
 const CarouselBanner = ({
   id = "0",
   contents = [
     {
-      name: "placeholder",
+      title: "placeholder",
       id: 1,
-      img: CategoryPic1,
+      img: "https://cloudfour.com/wp-content/uploads/2020/01/default.svg",
     },
   ],
 
   information,
-  setInformation = () => {},
+  setInformation = noop,
   order = 0,
   ...rest
 }) => {
-  const originSectionImages = [
-    {
-      id: nanoid(),
-    },
-  ];
-  const [sectionImages, setSectionImages] = useState(originSectionImages);
+  const [sectionImages, setSectionImages] = useState([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
-  const addImage = () => {
-    if (sectionImages.length < 5)
-      setSectionImages([...sectionImages, { id: nanoid() }]);
-  };
+  console.log("sectionImages", sectionImages);
+  useEffect(() => {
+    if (id in information) {
+      console.log("layout effect");
+      setSectionImages(information[id].content.banners);
+    } else {
+      console.log("image not found");
+    }
+  }, []);
 
   const deleteImage = (id) => {
     console.log(id);
@@ -56,10 +56,30 @@ const CarouselBanner = ({
     setOpen(false);
   };
 
-  const upload = (e, id) => {
+  const uploadFile = async (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      const title = e.target.files[0].name;
+      const imagesetter = {
+        id: nanoid(),
+        path: path,
+        title: title,
+        file: e.target.files[0],
+      };
+      setSectionImages((sectionImages) => {
+        sectionImages.push(imagesetter);
+        return [...sectionImages];
+      });
+
+      e.target.value = null;
+      console.log(sectionImages);
+    }
+  };
+
+  const saveUpload = () => {
     setInformation((info) => ({
       ...info,
-      [id]: { ...(info[id] || contents), img: path },
+      [id]: { ...info[id], content: { id: id, banners: sectionImages } },
     }));
   };
   return (
@@ -101,22 +121,49 @@ const CarouselBanner = ({
               top: "50%",
               left: "50%",
               position: "absolute",
-              transform: "translate(50%, -50%)",
+              transform: "translate(-50%, -50%)",
             }}
           />
-          <img
-            onClick={handleClickOpen}
-            src={contents[0].img}
-            alt={contents[0].name}
-            width="100%"
-            style={{
-              transition: "0.25s all ease-in-out",
+          {sectionImages.length === 0 ? (
+            <img
+              onClick={handleClickOpen}
+              src={contents[0].img}
+              alt={contents[0].title}
+              width="100%"
+              style={{
+                transition: "0.25s all ease-in-out",
+              }}
+            />
+          ) : (
+            <img
+              onClick={handleClickOpen}
+              src={sectionImages[0].path}
+              alt={sectionImages[0].title}
+              width="100%"
+              style={{
+                transition: "0.25s all ease-in-out",
+              }}
+            />
+          )}
+
+          <Box
+            className={classes.nextIcon}
+            sx={{
+              right: "10px",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
             }}
-          />
-          <Box className={classes.nextIcon} sx={{ right: "10px", top: "50%" }}>
+          >
             <ChevronRightIcon style={{ color: "#323232", opacity: "1" }} />
           </Box>
-          <Box className={classes.nextIcon} sx={{ left: "10", top: "50%" }}>
+          <Box
+            className={classes.nextIcon}
+            sx={{
+              left: "10px",
+              top: "50%",
+              transform: "translate(50%, -50%)",
+            }}
+          >
             <ChevronLeftIcon style={{ color: "#323232", opacity: "1" }} />
           </Box>
         </Box>
@@ -126,8 +173,10 @@ const CarouselBanner = ({
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
+        maxWidth="sm"
+        fullWidth
       >
-        <DialogTitle sx={{ textAlign: "center" }}>
+        <DialogTitle sx={{ textAlign: "center", color: "#FD6637" }}>
           {"Add Banner Carousel"}
         </DialogTitle>
 
@@ -141,51 +190,106 @@ const CarouselBanner = ({
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 margin: "10px 0",
               }}
               key={image.id}
             >
-              <Typography
-                component="span"
-                color="#000000"
-                fontWeight={400}
-                sx={{ marginRight: "5px" }}
+              <Box
+                sx={{
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "400px",
+                  height: "auto",
+                }}
               >
-                #{idx + 1}
-              </Typography>
-              <TextField type="file" sx={{ color: "#FD6637" }} />
-              <IconButton
-                aria-expanded={open ? "true" : undefined}
-                onClick={() => deleteImage(image.id)}
-                disabled={sectionImages.length == 1}
-              >
-                <DeleteRoundedIcon />
-              </IconButton>
+                <Typography
+                  component="span"
+                  color="#000000"
+                  fontWeight={400}
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "10px",
+                  }}
+                >
+                  #{idx + 1}
+                </Typography>
+                <img
+                  src={image.path}
+                  alt="image"
+                  style={{
+                    width: "100%",
+                  }}
+                />
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    padding: "0",
+                  }}
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={() => deleteImage(image.id)}
+                >
+                  <DeleteRoundedIcon />
+                </IconButton>
+              </Box>
             </Box>
           ))}
-          <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+          ></Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "10px",
+          }}
+        >
+          <label
+            htmlFor={
+              sectionImages.length >= 5 ? "text" : `outlined-button-file-${id}`
+            }
+          >
             <Button
-              onClick={() => addImage()}
+              component="span"
               variant="outlined"
-              size="large"
-              sx={{ width: "100%" }}
-              disabled={sectionImages.length == 5}
+              disabled={sectionImages.length >= 5}
+              sx={{ height: "42px", borderWidth: "2px" }}
             >
-              +
+              <input
+                accept="image/*"
+                type="file"
+                style={{ display: "none" }}
+                id={`outlined-button-file-${id}`}
+                onChange={(e) => {
+                  uploadFile(e, id);
+                }}
+              />
+              Upload
+            </Button>
+          </label>
+          <Box>
+            <Button
+              onClick={handleClose}
+              sx={{ width: "100px" }}
+              variant="text"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={saveUpload}
+              sx={{ width: "100px" }}
+              variant="contained"
+            >
+              Confirm
             </Button>
           </Box>
         </Box>
-
-        <DialogActions>
-          <Button onClick={handleClose} sx={{ width: "100px" }} variant="text">
-            Cancel
-          </Button>
-          <Button onClick={upload} sx={{ width: "100px" }} variant="contained">
-            Add
-          </Button>
-        </DialogActions>
       </Dialog>
     </>
   );

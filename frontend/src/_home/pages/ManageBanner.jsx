@@ -1,83 +1,41 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Typography, Button, Stack } from '@mui/material';
+import { Typography, Stack, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CButton from '~/common/components/CButton';
 import BannerList from '../components/BannerBase/BannerList';
-import BannerPic from "../assets/images/TopBanner.png";
-import UploadButton from '../components/BannerBase/UploadButton';
-
-const bannerList = [
-	{
-		id: 0,
-		description: "banner about washing",
-		pictures: {
-			head: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-				{
-					id: 1,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-	{
-		id: 1,
-		description: "banner about washing",
-		pictures: {
-			head: BannerPic,
-			children: [
-				{
-					id: 0,
-					path: BannerPic,
-				},
-				{
-					id: 1,
-					path: BannerPic,
-				},
-				{
-					id: 2,
-					path: BannerPic,
-				},
-				{
-					id: 3,
-					path: BannerPic,
-				},
-			]
-		},
-	},
-];
+import NewBannerDialog from '../components/BannerBase/NewBannerDialog';
 
 const ManageBanner = () => {
 	const classes = useStyles();
 	const [items, setItems] = useState([]);
+	const [open, setOpen] = useState(false);
 
-	useLayoutEffect(() => {
-		setItems(bannerList.map(item => ({ ...item, height: 100 })));
+	useEffect(() => {
+		getData();
 	}, []);
 
-	const onUploadMainImg = (e) => {
-		if (e.target.files.length) {
-			const head = URL.createObjectURL(e.target.files[0]);
-			setItems([
-				...items,
-				{
-					id: items.length,
-					description: "",
-					pictures: {
-						head,
-						children: []
-					},
-					height: 100
+	const getData = async () => {
+		axios
+			.get(`${config.SERVER_URL}/home/banner/manage`)
+			.then(({ data }) => {
+				if (data.success) {
+					console.log(data.banners);
+					setItems(data.banners.map(item => ({ ...item, height: 100 })));
 				}
-			]);
-			e.target.value = null;
-		}
+			})
+			.catch((error) => {
+				console.log(err.message);
+				return Swal.fire('Something went wrong', "Sorry, we cannot fetch banner's data to show", 'error');
+			})
+	};
+
+	const onClickDialog = () => {
+		setOpen(!open);
 	};
 
 	return (
@@ -100,24 +58,26 @@ const ManageBanner = () => {
 				/>
 			</Box>
 
-			<Box
-				className={classes.header}
-				mt={8}
-				pb={4}
-				sx={{ borderBottom: '1px solid #C4C4C4' }}
-			>
+			<Box className={classes.header} sx={{ borderBottom: '1px solid #C4C4C4' }}>
 				<Typography fontSize={20} fontWeight={500}>Create Banner</Typography>
-				<UploadButton
-					Icon={<AddIcon />}
-					title="Add Banner Carousel"
-					onUploadImg={onUploadMainImg}
-				/>
+				<Button
+					component="span"
+					variant="outlined"
+					startIcon={<AddIcon />}
+					sx={{ height: "44px", borderWidth: "2px" }}
+					onClick={onClickDialog}
+				>
+					<Typography sx={{ textTransform: "capitalize" }}>
+						Add Banner Carousel
+					</Typography>
+				</Button>
+
+				<NewBannerDialog open={open} handleDialog={onClickDialog} itemCount={items.length} setItems={setItems} />
 			</Box>
 
-			<BannerList
-				items={items}
-				setItems={setItems}
-			/>
+			{items.length === 0
+				? (<Typography textAlign="center" fontSize={36} fontWeight={500} color="lightgray" mt={5}>No banner to show</Typography>)
+				: (<BannerList items={items} setItems={setItems} getData={getData} />)}
 		</Box>
 	);
 };
@@ -126,9 +86,11 @@ const useStyles = makeStyles({
 	header: {
 		width: "90%",
 		margin: "0 auto",
+		paddingBottom: "32px",
 		display: "flex",
 		justifyContent: "space-between",
 		alignItems: "center",
 	},
 });
+
 export default ManageBanner;

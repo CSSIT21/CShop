@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Typography, Button } from "@mui/material";
+import React, { useState, useLayoutEffect } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { makeStyles } from "@mui/styles";
@@ -8,27 +8,46 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ProductCard from "~/common/components/ProductCard";
 import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
 
 const CarouselProduct = ({
-  section = {
-    id: "0",
-    page: {
-      type: 2,
-      id: 1,
-      content: [],
-    },
-  },
+  id = "0",
+  information,
+  setInformation = () => {},
   order = 0,
+  categories,
   ...rest
 }) => {
   const classes = useStyles();
-  const categories = ["Baba1", "Baba2", "Baba3"];
-  const [selectCategory, setSelectCategory] = useState();
+  const auth = useRecoilValue(authState);
+
+  const handleChange = async (e) => {
+    const category_object = categories.find((el) => {
+      return el.title === e.target.value;
+    });
+    const { data } = await axios.get(
+      `${config.SERVER_URL}/shopcustomization/categoryproducts/${category_object.id}`
+    );
+    console.log(data.products.products);
+    setInformation((info) => ({
+      ...info,
+      [id]: {
+        ...info[id],
+        content: {
+          category: e.target.value,
+          products: data.products.products,
+        },
+      },
+    }));
+  };
 
   return (
     <>
-      <Box
-        sx={{
+      <div
+        style={{
           padding: "70px",
           backgroundColor: "#EFEFF1",
           borderRadius: "20px",
@@ -72,13 +91,21 @@ const CarouselProduct = ({
           spacing={2}
           sx={{ width: "100%", height: "100%", pointerEvents: "none" }}
         >
-          {[...Array(5)].map((id, idx) => (
-            <Grid item xs={2.4} key={idx}>
-              <ProductCard />
-            </Grid>
-          ))}
+          {information[id]
+            ? information[id].content.products
+                .slice(0, 5)
+                .map((product, idx) => (
+                  <Grid item xs={2.4} key={idx}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ))
+            : [...Array(5)].slice(0, 5).map((product, idx) => (
+                <Grid item xs={2.4} key={idx}>
+                  <ProductCard product={product} />
+                </Grid>
+              ))}
         </Grid>
-      </Box>
+      </div>
       <Box
         sx={{ display: "flex", justifyContent: "flex-end", margin: "20px 0" }}
       >
@@ -86,15 +113,13 @@ const CarouselProduct = ({
           id="outlined-select-currency"
           select
           label="Select Category"
-          value={selectCategory}
-          onChange={(e) => {
-            setSelectCategory(e.target.value);
-          }}
+          value={information[id] ? information[id].content.category : null}
+          onChange={handleChange}
           sx={{ width: "30%" }}
         >
           {categories.map((category, idx) => (
-            <MenuItem key={idx} value={category}>
-              {category}
+            <MenuItem key={category.id} value={category.title}>
+              {category.title}
             </MenuItem>
           ))}
         </TextField>

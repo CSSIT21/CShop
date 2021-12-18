@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, MenuItem, Button } from "@mui/material";
+import { TextField, MenuItem, Avatar, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -7,19 +7,39 @@ import Grid from "@mui/material/Grid";
 import Success from "../components/Success";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useRecoilState } from "recoil";
+import authState from "../../common/store/authState";
 import Checkbox from "@mui/material/Checkbox";
+import config from "~/common/constants";
+import { getUrl } from "~/common/utils";
+import Snackbar from "@mui/material/Snackbar";
+import LoadingButton from "@mui/lab/LoadingButton";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
+  const [auth, setAuth] = useRecoilState(authState);
+  const [accept, setaccept] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [open, setOpen] = useState(false);
   const [state, setstate] = useState(true);
   const [addressData, setAddressData] = useState([]);
   const [province, setProvince] = useState([]);
   const [district, setDistrict] = useState([]);
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
+  const [reserveimage, setreserveimage] = useState();
   const [sellerInfo, setSellerInfo] = useState({
     shopName: "",
-    // shopImage: "",
+    shopImage: {
+      title: "",
+      path: "",
+      thumbnail: "",
+    },
     phone: "",
     address: "",
     subDistrict: "",
@@ -33,7 +53,8 @@ const SellerRegister = ({}) => {
       accountNumber: "",
     },
   });
-  const banks = ["SCB", "KBANK", "KTB", "BBL", "BAY", "CIMBT", "UOBT"];
+  const banks = ["SCB", "KBANK", "KTB", "TMB"];
+
   useEffect(() => {
     getData();
   }, []);
@@ -100,6 +121,19 @@ const SellerRegister = ({}) => {
   const [firstNameError, setFirstNameError] = useState("");
   const [lastnameError, setLastnameError] = useState("");
   const [accountNumberError, setAccountNumberError] = useState("");
+  const uploadFile = async (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      setSellerInfo({
+        ...sellerInfo,
+        shopImage: {
+          path: path,
+          title: e.target.files[0].name,
+          file: e.target.files[0],
+        },
+      });
+    }
+  };
   const checkInfo = () => {
     if (sellerInfo.shopName == "") {
       setShopNameError("This field is required");
@@ -134,370 +168,460 @@ const SellerRegister = ({}) => {
     if (sellerInfo.bankInfo.accountNumber == "") {
       setAccountNumberError("This field is required");
     }
-    if (
-      sellerInfo.shopName != "" &&
-      sellerInfo.phone != "" &&
-      sellerInfo.address != "" &&
-      sellerInfo.subDistrict != "" &&
-      sellerInfo.district != "" &&
-      sellerInfo.province != "" &&
-      sellerInfo.postalCode != "" &&
-      sellerInfo.bankInfo.name != "" &&
-      sellerInfo.bankInfo.firstName != "" &&
-      sellerInfo.bankInfo.lastName != "" &&
-      sellerInfo.bankInfo.accountNumber != ""
-    ) {
-      setstate(false);
+    if (accept) {
+      if (
+        sellerInfo.shopName != "" &&
+        sellerInfo.phone != "" &&
+        sellerInfo.address != "" &&
+        sellerInfo.subDistrict != "" &&
+        sellerInfo.district != "" &&
+        sellerInfo.province != "" &&
+        sellerInfo.postalCode != "" &&
+        sellerInfo.bankInfo.name != "" &&
+        sellerInfo.bankInfo.firstName != "" &&
+        sellerInfo.bankInfo.lastName != "" &&
+        sellerInfo.bankInfo.accountNumber != ""
+      ) {
+        createShop();
+      }
+    } else {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+      }, 3000);
     }
   };
-  return (
-    <Box sx={{ width: "70%", margin: "0 auto" }}>
-      <Box className={classes.header}>Become Partner with us</Box>
-      {state ? (
-        <Box className={classes.context}>
-          <Box className={classes.genInfo} component="form">
-            <Box className={classes.contextHeader}>Shop Information</Box>
-
-            <Box className={classes.textFieldBox}>
-              <TextField
-                id="shopname"
-                variant="outlined"
-                type="text"
-                placeholder="Shop's Name"
-                fullWidth
-                error={shopNameError.length === 0 ? false : true}
-                value={sellerInfo.shopName}
-                onChange={(e) => {
-                  setSellerInfo({ ...sellerInfo, shopName: e.target.value });
-                  setShopNameError("");
-                }}
-              />
-            </Box>
-            {shopNameError.length != 0 && (
-              <Box className={classes.error}>{shopNameError}</Box>
-            )}
-            <Box className={classes.textFieldBox}>
-              <TextField
-                id="phone"
-                type="tel"
-                variant="outlined"
-                placeholder="Phone"
-                fullWidth
-                error={phoneError.length === 0 ? false : true}
-                onChange={(e) => {
-                  setSellerInfo({
-                    ...sellerInfo,
-                    phone: e.target.value,
-                  });
-                  setPhoneError("");
-                }}
-              />
-            </Box>
-            {phoneError.length != 0 && (
-              <Box className={classes.error}>{phoneError}</Box>
-            )}
-            <Box
-              sx={{
-                display: "flex",
-                width: "60%",
-                justifyContent: "space-between",
-              }}
-              className={classes.textFieldBox}
-            >
-              <TextField type="file" sx={{ width: "80%" }} />
-              <Button
-                variant="contained"
-                style={{
-                  textTransform: "capitalize",
-                }}
-              >
-                Upload
-              </Button>
-            </Box>
-
-            <Box>
-              <Box className={classes.contextHeader}>Address</Box>
-              <Box
-                className={classes.textFieldBox}
-                sx={{ marginBottom: "35px" }}
-              >
+  const createShop = async () => {
+    try {
+      setloading(true);
+      let url = {
+        success: true,
+        original_link:
+          "https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-store.png",
+      };
+      if (sellerInfo.shopImage.file) {
+        url = await getUrl(sellerInfo.shopImage.file);
+      }
+      if (url.success) {
+        axios
+          .post(`${config.SERVER_URL}/sellershop`, {
+            customer_id: auth.user.id,
+            shop_name: sellerInfo.shopName,
+            phone_number: sellerInfo.phone,
+            province: sellerInfo.province,
+            sub_district: sellerInfo.subDistrict,
+            district: sellerInfo.district,
+            postal_code: sellerInfo.postalCode.toString(),
+            address_line: sellerInfo.address,
+            bank: sellerInfo.bankInfo.name,
+            firstname: sellerInfo.bankInfo.firstName,
+            lastname: sellerInfo.bankInfo.lastName,
+            account_number: sellerInfo.bankInfo.accountNumber.toString(),
+            title: sellerInfo.shopImage.title,
+            path: url.original_link,
+            thumbnail: url.original_link,
+          })
+          .then(() => {
+            axios
+              .get(`${config.SERVER_URL}/profile/me`, {
+                withCredentials: true,
+                validateStatus: () => true,
+              })
+              .then(({ data }) => {
+                if (data.success) {
+                  setAuth(({ isLoggedIn }) => ({
+                    isLoggedIn,
+                    user: data.user,
+                  }));
+                  setloading(false);
+                  setstate(false);
+                }
+              });
+          });
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+  return 
+    <>
+      <Box sx={{ width: "70%", margin: "0 auto" }}>
+        <Box className={classes.header}>Become Partner with us</Box>
+        {state ? (
+          <Box className={classes.context}>
+            <Box className={classes.genInfo} component="form">
+              <Box className={classes.contextHeader}>Shop Information</Box>
+              <Box className={classes.textFieldBox}>
                 <TextField
-                  id="addressLine"
+                  id="shopname"
                   variant="outlined"
-                  placeholder="Address"
+                  type="text"
+                  placeholder="Shop's Name"
                   fullWidth
-                  multiline
-                  rows={5}
-                  error={addressLineError.length === 0 ? false : true}
-                  value={sellerInfo.addressLine}
+                  error={shopNameError.length === 0 ? false : true}
+                  value={sellerInfo.shopName}
+                  onChange={(e) => {
+                    setSellerInfo({ ...sellerInfo, shopName: e.target.value });
+                    setShopNameError("");
+                  }}
+                />
+              </Box>
+              {shopNameError.length != 0 && (
+                <Box className={classes.error}>{shopNameError}</Box>
+              )}
+              <Box className={classes.textFieldBox}>
+                <TextField
+                  id="phone"
+                  type="tel"
+                  variant="outlined"
+                  placeholder="Phone"
+                  fullWidth
+                  value={sellerInfo.phone}
+                  error={phoneError.length === 0 ? false : true}
                   onChange={(e) => {
                     setSellerInfo({
                       ...sellerInfo,
-                      address: e.target.value,
+                      phone: e.target.value.slice(0, 10),
                     });
-                    setaddressLineError("");
+                    setPhoneError("");
                   }}
                 />
-                {addressLineError.length != 0 && (
-                  <Box className={classes.error}>{addressLineError}</Box>
-                )}
+              </Box>
+              {phoneError.length != 0 && (
+                <Box className={classes.error}>{phoneError}</Box>
+              )}
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "60%",
+                  alignItems: "center",
+                }}
+                className={classes.textFieldBox}
+              >
+                <Avatar
+                  src={sellerInfo.shopImage.path}
+                  alt="avatar"
+                  sx={{ width: "150px", height: "150px", marginRight: "30px" }}
+                ></Avatar>
+                <label htmlFor={`outlined-button-file-`}>
+                  <Button
+                    component="span"
+                    variant="outlined"
+                    sx={{ height: "42px", borderWidth: "2px" }}
+                  >
+                    <input
+                      accept="image/*"
+                      type="file"
+                      style={{ display: "none" }}
+                      id={`outlined-button-file-`}
+                      onChange={(e) => {
+                        uploadFile(e);
+                      }}
+                    />
+                    Upload file
+                  </Button>
+                </label>
               </Box>
 
-              <Grid container spacing={2}>
-                <Grid className={classes.textFieldBox} item xs={6}>
+              <Box>
+                <Box className={classes.contextHeader}>Address</Box>
+                <Box
+                  className={classes.textFieldBox}
+                  sx={{ marginBottom: "35px" }}
+                >
                   <TextField
-                    id="province"
+                    id="addressLine"
                     variant="outlined"
-                    sx={{ borderRadius: "10px" }}
+                    placeholder="Address"
                     fullWidth
-                    select
-                    label="Select Province"
-                    error={provinceError.length === 0 ? false : true}
-                    value={sellerInfo.province}
+                    multiline
+                    rows={5}
+                    error={addressLineError.length === 0 ? false : true}
+                    value={sellerInfo.addressLine}
                     onChange={(e) => {
                       setSellerInfo({
                         ...sellerInfo,
-                        province: e.target.value,
+                        address: e.target.value,
                       });
-                      setprovinceError("");
+                      setaddressLineError("");
                     }}
-                  >
-                    {province.map((data, idx) => {
-                      return (
+                  />
+                  {addressLineError.length != 0 && (
+                    <Box className={classes.error}>{addressLineError}</Box>
+                  )}
+                </Box>
+
+                <Grid container spacing={2}>
+                  <Grid className={classes.textFieldBox} item xs={6}>
+                    <TextField
+                      id="province"
+                      variant="outlined"
+                      sx={{ borderRadius: "10px" }}
+                      fullWidth
+                      select
+                      label="Select Province"
+                      error={provinceError.length === 0 ? false : true}
+                      value={sellerInfo.province}
+                      onChange={(e) => {
+                        setSellerInfo({
+                          ...sellerInfo,
+                          province: e.target.value,
+                        });
+                        setprovinceError("");
+                      }}
+                    >
+                      {province.map((data, idx) => {
+                        return (
+                          <MenuItem key={idx} value={data}>
+                            {data}
+                          </MenuItem>
+                        );
+                      })}
+                    </TextField>
+                    {provinceError.length != 0 && (
+                      <Box className={classes.error}>{provinceError}</Box>
+                    )}
+                  </Grid>
+                  <Grid className={classes.textFieldBox} item xs={6}>
+                    <TextField
+                      id="district"
+                      variant="outlined"
+                      sx={{ borderRadius: "10px" }}
+                      fullWidth
+                      select
+                      label="Select District"
+                      error={districtError.length === 0 ? false : true}
+                      value={sellerInfo.district}
+                      onChange={(e) => {
+                        setSellerInfo({
+                          ...sellerInfo,
+                          district: e.target.value,
+                        });
+                        setdistrictError("");
+                      }}
+                    >
+                      {district.map((data, idx) => (
                         <MenuItem key={idx} value={data}>
                           {data}
                         </MenuItem>
-                      );
-                    })}
-                  </TextField>
-                  {provinceError.length != 0 && (
-                    <Box className={classes.error}>{provinceError}</Box>
-                  )}
+                      ))}
+                    </TextField>
+                    {districtError.length != 0 && (
+                      <Box className={classes.error}>{districtError}</Box>
+                    )}
+                  </Grid>
+                  <Grid className={classes.textFieldBox} item xs={6}>
+                    <TextField
+                      id="subDistrict"
+                      variant="outlined"
+                      sx={{ borderRadius: "10px" }}
+                      fullWidth
+                      select
+                      label="Select Sub District"
+                      error={subDistrictError.length === 0 ? false : true}
+                      value={sellerInfo.subDistrict}
+                      onChange={(e) => {
+                        setSellerInfo({
+                          ...sellerInfo,
+                          subDistrict: e.target.value,
+                        });
+                        setsubDistrictError("");
+                      }}
+                    >
+                      {subDistrict.map((data, idx) => (
+                        <MenuItem key={idx} value={data}>
+                          {data}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {subDistrictError.length != 0 && (
+                      <Box className={classes.error}>{subDistrictError}</Box>
+                    )}
+                  </Grid>
+                  <Grid className={classes.textFieldBox} item xs={6}>
+                    <TextField
+                      id="postalCode"
+                      variant="outlined"
+                      sx={{ borderRadius: "10px" }}
+                      fullWidth
+                      select
+                      label="Select Postal Code"
+                      error={postalCodeError.length === 0 ? false : true}
+                      value={sellerInfo.postalCode}
+                      onChange={(e) => {
+                        setSellerInfo({
+                          ...sellerInfo,
+                          postalCode: e.target.value,
+                        });
+                        setpostalCodeError("");
+                      }}
+                    >
+                      {postalCode.map((data, idx) => (
+                        <MenuItem key={idx} value={data}>
+                          {data}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {postalCodeError.length != 0 && (
+                      <Box className={classes.error}>{postalCodeError}</Box>
+                    )}
+                  </Grid>
                 </Grid>
-                <Grid className={classes.textFieldBox} item xs={6}>
+              </Box>
+              <Box
+                className={classes.contextHeader}
+                sx={{ marginBottom: "35px" }}
+              >
+                Bank Account
+              </Box>
+              <Grid container spacing={2}>
+                <Grid item xs={6} className={classes.textFieldBox}>
                   <TextField
-                    id="district"
+                    id="Bank"
                     variant="outlined"
                     sx={{ borderRadius: "10px" }}
                     fullWidth
                     select
-                    label="Select District"
-                    error={districtError.length === 0 ? false : true}
-                    value={sellerInfo.district}
+                    label="Select Bank"
+                    error={nameError.length === 0 ? false : true}
+                    value={sellerInfo.bankInfo.name}
                     onChange={(e) => {
                       setSellerInfo({
                         ...sellerInfo,
-                        district: e.target.value,
+                        bankInfo: {
+                          ...sellerInfo.bankInfo,
+                          name: e.target.value,
+                        },
                       });
-                      setdistrictError("");
+                      setNameError("");
                     }}
                   >
-                    {district.map((data, idx) => (
-                      <MenuItem key={idx} value={data}>
-                        {data}
+                    {banks.map((bank, idx) => (
+                      <MenuItem key={idx} value={bank}>
+                        {bank}
                       </MenuItem>
                     ))}
                   </TextField>
-                  {districtError.length != 0 && (
-                    <Box className={classes.error}>{districtError}</Box>
+                  {nameError.length != 0 && (
+                    <Box className={classes.error}>{nameError}</Box>
                   )}
                 </Grid>
-                <Grid className={classes.textFieldBox} item xs={6}>
+                <Grid item xs={6} className={classes.textFieldBox}></Grid>
+                <Grid item xs={6} className={classes.textFieldBox}>
                   <TextField
-                    id="subDistrict"
+                    id="firstName"
                     variant="outlined"
-                    sx={{ borderRadius: "10px" }}
+                    placeholder="FirstName"
                     fullWidth
-                    select
-                    label="Select Sub District"
-                    error={subDistrictError.length === 0 ? false : true}
-                    value={sellerInfo.subDistrict}
+                    required
+                    error={nameError.length === 0 ? false : true}
+                    value={sellerInfo.bankInfo.firstName}
                     onChange={(e) => {
                       setSellerInfo({
                         ...sellerInfo,
-                        subDistrict: e.target.value,
+                        bankInfo: {
+                          ...sellerInfo.bankInfo,
+                          firstName: e.target.value,
+                        },
                       });
-                      setsubDistrictError("");
+                      setFirstNameError("");
                     }}
-                  >
-                    {subDistrict.map((data, idx) => (
-                      <MenuItem key={idx} value={data}>
-                        {data}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  {subDistrictError.length != 0 && (
-                    <Box className={classes.error}>{subDistrictError}</Box>
+                  />
+                  {firstNameError.length != 0 && (
+                    <Box className={classes.error}>{firstNameError}</Box>
                   )}
                 </Grid>
-                <Grid className={classes.textFieldBox} item xs={6}>
+
+                <Grid item xs={6} className={classes.textFieldBox}>
                   <TextField
-                    id="postalCode"
+                    sx={{ margin: "0 0 0 10px" }}
+                    id="lastname"
                     variant="outlined"
-                    sx={{ borderRadius: "10px" }}
+                    placeholder="Lastname"
+                    value={sellerInfo.bankInfo.lastname}
                     fullWidth
-                    select
-                    label="Select Postal Code"
-                    error={postalCodeError.length === 0 ? false : true}
-                    value={sellerInfo.postalCode}
+                    error={lastnameError.length === 0 ? false : true}
                     onChange={(e) => {
                       setSellerInfo({
                         ...sellerInfo,
-                        postalCode: e.target.value,
+                        bankInfo: {
+                          ...sellerInfo.bankInfo,
+                          lastName: e.target.value,
+                        },
                       });
-                      setpostalCodeError("");
+                      setLastnameError("");
                     }}
-                  >
-                    {postalCode.map((data, idx) => (
-                      <MenuItem key={idx} value={data}>
-                        {data}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  {postalCodeError.length != 0 && (
-                    <Box className={classes.error}>{postalCodeError}</Box>
+                  />
+                  {lastnameError.length != 0 && (
+                    <Box className={classes.error}>{lastnameError}</Box>
                   )}
                 </Grid>
-              </Grid>
-            </Box>
-            <Box
-              className={classes.contextHeader}
-              sx={{ marginBottom: "35px" }}
-            >
-              Bank Account
-            </Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6} className={classes.textFieldBox}>
-                <TextField
-                  id="Bank"
-                  variant="outlined"
-                  sx={{ borderRadius: "10px" }}
-                  fullWidth
-                  select
-                  label="Select Bank"
-                  error={nameError.length === 0 ? false : true}
-                  value={sellerInfo.bankInfo.name}
-                  onChange={(e) => {
-                    setSellerInfo({
-                      ...sellerInfo,
-                      bankInfo: {
-                        ...sellerInfo.bankInfo,
-                        name: e.target.value,
-                      },
-                    });
-                    setNameError("");
-                  }}
-                >
-                  {banks.map((bank, idx) => (
-                    <MenuItem key={idx} value={bank}>
-                      {bank}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {nameError.length != 0 && (
-                  <Box className={classes.error}>{nameError}</Box>
-                )}
-              </Grid>
-              <Grid item xs={6} className={classes.textFieldBox}></Grid>
-              <Grid item xs={6} className={classes.textFieldBox}>
-                <TextField
-                  id="firstName"
-                  variant="outlined"
-                  placeholder="FirstName"
-                  fullWidth
-                  required
-                  error={nameError.length === 0 ? false : true}
-                  value={sellerInfo.bankInfo.firstName}
-                  onChange={(e) => {
-                    setSellerInfo({
-                      ...sellerInfo,
-                      bankInfo: {
-                        ...sellerInfo.bankInfo,
-                        firstName: e.target.value,
-                      },
-                    });
-                    setFirstNameError("");
-                  }}
-                />
-                {firstNameError.length != 0 && (
-                  <Box className={classes.error}>{firstNameError}</Box>
-                )}
               </Grid>
 
-              <Grid item xs={6} className={classes.textFieldBox}>
+              <Box className={classes.textFieldBox}>
                 <TextField
-                  sx={{ margin: "0 0 0 10px" }}
-                  id="lastname"
+                  id="accountNumber"
                   variant="outlined"
-                  placeholder="Lastname"
-                  value={sellerInfo.lastname}
+                  placeholder="Account Number"
+                  value={sellerInfo.bankInfo.accountNumber}
                   fullWidth
-                  error={lastnameError.length === 0 ? false : true}
+                  error={accountNumberError.length === 0 ? false : true}
                   onChange={(e) => {
                     setSellerInfo({
                       ...sellerInfo,
                       bankInfo: {
                         ...sellerInfo.bankInfo,
-                        lastName: e.target.value,
+                        accountNumber: e.target.value.slice(0, 10),
                       },
                     });
-                    setLastnameError("");
+                    setAccountNumberError("");
                   }}
                 />
-                {lastnameError.length != 0 && (
-                  <Box className={classes.error}>{lastnameError}</Box>
-                )}
-              </Grid>
-            </Grid>
-
-            <Box className={classes.textFieldBox}>
-              <TextField
-                id="accountNumber"
-                variant="outlined"
-                placeholder="Account Number"
-                value={sellerInfo.accountNumber}
-                fullWidth
-                error={accountNumberError.length === 0 ? false : true}
-                onChange={(e) => {
-                  setSellerInfo({
-                    ...sellerInfo,
-                    bankInfo: {
-                      ...sellerInfo.bankInfo,
-                      accountNumber: e.target.value,
-                    },
-                  });
-                  setAccountNumberError("");
-                }}
+              </Box>
+              {accountNumberError.length != 0 && (
+                <Box className={classes.error}>{accountNumberError}</Box>
+              )}
+            </Box>
+            <FormGroup sx={{ margin: "50px 0" }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={accept}
+                    onClick={() => setaccept(!accept)}
+                  />
+                }
+                label="accept terms and conditions"
               />
+            </FormGroup>
+            <Box className={classes.button}>
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                style={{
+                  width: "470px",
+                  height: "55px",
+                  textTransform: "capitalize",
+                }}
+                onClick={checkInfo}
+              >
+                Confirm
+              </LoadingButton>
             </Box>
-            {accountNumberError.length != 0 && (
-              <Box className={classes.error}>{accountNumberError}</Box>
-            )}
           </Box>
-          <FormGroup sx={{ margin: "50px 0" }}>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="accept terms and conditions"
-            />
-          </FormGroup>
-          <Box className={classes.button}>
-            <Button
-              variant="contained"
-              style={{
-                width: "470px",
-                height: "55px",
-                textTransform: "capitalize",
-              }}
-              onClick={checkInfo}
-            >
-              Confirm
-            </Button>
-          </Box>
-        </Box>
-      ) : (
-        <Success />
-      )}
-    </Box>
+        ) : (
+          <Success />
+        )}
+      </Box>
+      <Snackbar
+        open={open}
+        color="#FD6637"
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+      >
+        <Alert severity="warning" sx={{ width: "100%" }}>
+          Please accept our term and condition!
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
-import { Typography, Button, formControlLabelClasses } from "@mui/material";
-import React, { useState } from "react";
+import { Typography, Button } from "@mui/material";
+import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { makeStyles } from "@mui/styles";
@@ -8,11 +8,9 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ProductCard from "~/common/components/ProductCard";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import { nanoid } from "nanoid";
 import AddIcon from "@mui/icons-material/Add";
-import fakeProducts from "~/common/faker/fakeProducts";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
@@ -21,28 +19,51 @@ import SearchIcon from "@mui/icons-material/Search";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Avatar from "@mui/material/Avatar";
+import axios from "axios";
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
 
 const CarouselProductSelect = ({
-  section = {
-    id: "0",
-    page: {
-      type: 2,
-      id: 1,
-      content: [],
-    },
-  },
-  order = 0,
+  id = "0",
+  information,
+  setInformation = () => {},
   ...rest
 }) => {
-  const originSectionImages = [];
-  const [products, setproducts] = useState(fakeProducts);
-  const [sectionImages, setSectionImages] = useState(originSectionImages);
+  const auth = useRecoilValue(authState);
+  const [originalProduct, setoriginalProduct] = useState([]);
+  const [sectionImages, setSectionImages] = useState([]);
+  const [products_id, setproducts_id] = useMemo(() => {
+    return [
+      sectionImages.map((e) => {
+        return e.id;
+      }),
+    ];
+  }, [sectionImages]);
+
+  console.log(products_id);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openAddProduct, setopenAddProduct] = useState(false);
   const [Topic, setTopic] = useState("Topic");
-  const [unCommittedTopic, setunCommittedTopic] = useState("");
   const [selectedValue, setSelectedValue] = useState();
+  useLayoutEffect(() => {
+    if (id in information) {
+      setTopic(information[id].content.filter_name);
+      setSectionImages(information[id].content.products_info);
+    } else {
+      console.log("products not found");
+    }
+  }, []);
+  useEffect(() => {
+    axios
+      .get(
+        `${config.SERVER_URL}/shopcustomization/products/${auth.user.shop_info[0].id}`
+      )
+      .then(({ data }) => {
+        setoriginalProduct(data.products);
+      });
+  }, []);
 
   const handleChange = (event) => {
     console.log(event.target.value);
@@ -50,14 +71,33 @@ const CarouselProductSelect = ({
   };
   const addImage = () => {
     if (selectedValue) {
-      setSectionImages(sectionImages.concat(products[selectedValue]));
+      setSectionImages([
+        ...sectionImages,
+        products.find((e) => e.id == selectedValue),
+      ]);
       handleCloseProduct();
+      setSelectedValue(null);
     }
   };
+  const [products, setproducts] = useMemo(() => {
+    let products = originalProduct.filter((e) => !products_id.includes(e.id));
+    return [products];
+  }, [originalProduct, products_id, sectionImages]);
+  console.log(products, typeof products !== "undefined");
 
   const updateTopic = () => {
-    if (unCommittedTopic !== "" && Topic !== unCommittedTopic) {
-      setTopic(unCommittedTopic);
+    if (Topic !== "") {
+      setTimeout(() => {
+        setInformation((info) => ({
+          ...info,
+          [id]: {
+            ...info[id],
+            header: Topic,
+            content: { products_info: sectionImages, products: products_id },
+          },
+        }));
+      }, 500);
+
       handleClose();
     }
   };
@@ -191,15 +231,16 @@ const CarouselProductSelect = ({
               sx={{ color: "#FD6637", margin: "0 0 50px 0" }}
               fullWidth
               placeholder="Topic"
-              value={unCommittedTopic}
+              value={Topic}
               onChange={(e) => {
-                setunCommittedTopic(e.target.value);
+                setTopic(e.target.value);
               }}
             />
             <Button
               onClick={updateTopic}
               sx={{ width: "100px", height: "56px", marginLeft: "10px" }}
               variant="contained"
+              disabled={!(Topic !== "")}
             >
               Save
             </Button>
@@ -231,7 +272,7 @@ const CarouselProductSelect = ({
                     onClick={() => {
                       deleteImage(product.id);
                     }}
-                    src={product.image}
+                    src={product.product_picture[0].path}
                     style={{
                       objectFit: "cover",
                       transition: "0.25s all ease-in-out",
@@ -323,41 +364,55 @@ const CarouselProductSelect = ({
           }}
         />
         <Box sx={{ padding: "20px 40px", height: "500px" }}>
-          {products.map((product, idx) => (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                height: "50px",
-                marginBottom: "20px",
-              }}
-              key={idx}
-            >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="square"
-                  alt={product.title}
-                  src={product.image}
-                  sx={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "10px",
-                    marginRight: "5px",
-                  }}
+          {typeof products !== "undefined" ? (
+            products.map((product, idx) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  height: "50px",
+                  marginBottom: "20px",
+                }}
+                key={idx}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Avatar
+                    variant="square"
+                    alt={product.title}
+                    src={product.product_picture[0].path}
+                    sx={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "10px",
+                      marginRight: "5px",
+                    }}
+                  />
+                  <Typography
+                    color="#000000"
+                    fontWeight={400}
+                    fontSize="16px"
+                    sx={{
+                      width: "100%",
+                      height: "25px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {product.title}
+                  </Typography>
+                </Box>
+                <Radio
+                  checked={selectedValue == product.id}
+                  onChange={handleChange}
+                  value={product.id}
+                  inputProps={{ "aria-label": product.id }}
                 />
-                <Typography color="#000000" fontWeight={400} fontSize="16px">
-                  {product.title}
-                </Typography>
               </Box>
-              <Radio
-                checked={selectedValue == product.id}
-                onChange={handleChange}
-                value={product.id}
-                inputProps={{ "aria-label": product.id }}
-              />
-            </Box>
-          ))}
+            ))
+          ) : (
+            <></>
+          )}
         </Box>
       </Dialog>
     </>

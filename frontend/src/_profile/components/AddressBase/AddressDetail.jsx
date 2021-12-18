@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { Typography, IconButton } from "@mui/material";
+import { Typography, IconButton, Button } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 const AddressDetail = ({ data, index, handleDeleteAddress = () => {} }) => {
   const bgColor = index % 2 === 1 ? "#EFEFF1" : "white";
@@ -14,8 +14,12 @@ const AddressDetail = ({ data, index, handleDeleteAddress = () => {} }) => {
         style={{ backgroundColor: bgColor }}
       >
         {data.primary && <Typography>Primary</Typography>}
+        {/* {!data.primary && (
+          <Button sx={{ textTransform: "capitalize", color: "#A0A3BD" }}>
+            Set Primary
+          </Button>
+        )} */}
       </Grid>
-
       <Grid item xs={2} sx={gridPadding} style={{ backgroundColor: bgColor }}>
         {data.name}
       </Grid>
@@ -60,5 +64,6 @@ const AddressDetail = ({ data, index, handleDeleteAddress = () => {} }) => {
 
 const gridPadding = {
   padding: "20px 0px",
+  wordBreak: "break-word",
 };
 export default AddressDetail;
