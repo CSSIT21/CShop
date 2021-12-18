@@ -25,6 +25,7 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		PromotionModule
 	],
 
 	controllers: [AppController],

@@ -80,28 +80,23 @@ const couponshops = [
 
 const Couponshop = () => {
   const classes = useStyles();
-  let apiUrl = "http://localhost:8080/promotion/"; 
+  let apiUrl = "http://localhost:8080/promotion"; 
+  
+  const [post,setPost] = useState();
 
-  const [post,setPost] = useState(null);
-  useEffect(()=>{
-    axios.post(apiUrl+"showcode").then((req)=> setPost(req.data));
-  });
-  // const [shop, setshop] = useState("");
-
-  // const setShop = () => {
-  //   axios.post(apiUrl+"upshop").then((req) => setShop(req.data));
-  // };
-
-
-  function shop(){
-    axios.post(apiUrl+"upshop",{
-      id: id , 
-      userId: userId
-    })
-    .then((response)=>{
-      setPost(response.data);
-    })
-  }
+  const getshowCode = () => {
+    axios.get(`${apiUrl}/showcode`).then(({data}) => {      
+       return setPost(data);
+     })
+     .catch((err) => {
+      return console.log(err.message);
+     })
+   };
+  
+   useEffect(() => {
+    getshowCode();
+   }, [])
+   console.log(post);
 
   return (
     <Box className={classes.wrapper}>

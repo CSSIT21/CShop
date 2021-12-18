@@ -18,7 +18,7 @@ export class PromotionService{
     public async decodeevent(id : number){
         await prisma.discount_event.update({ 
             where:{
-                discount_id: 1
+                discount_id: id
             },
             data:{
                 quantity:{
@@ -131,7 +131,7 @@ export class PromotionService{
     public async checkcodeUser(userId: number){
         const userDiscount = await prisma.discount_user_code.findMany({
 			where: {
-				customer_id: 1,
+				customer_id: userId,
 			},
 			select: {
 				discount_id: true,

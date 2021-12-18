@@ -5,13 +5,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { count } from 'console';
 import { response } from 'express';
 import { is } from '@babel/types';
+import { Public } from 'src/common/decorators/public.decorator';
 
 const prisma = new PrismaClient();
 
 @Controller('promotion')
 export class PromotionController {
 	constructor(private readonly promotionService: PromotionService, public prisma: PrismaService) {}
-	
+		
 
 	@Post('/upevent')
 	async AppCouponEvent(@Body()request , @Res() res): Promise<void> {
@@ -73,8 +74,10 @@ export class PromotionController {
 	}
 
 
-	@Post('/showcode')
-	async showCodeEvent(@Req() req, @Res() res): Promise<void>{
+	 
+	@Get('/showcode')
+	@Public()
+	async showCode(@Req() req, @Res() res){
 		var request = req.body;
 		var userId = request.userId;
 		res.send(await this.promotionService.showCode(userId));
