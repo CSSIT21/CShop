@@ -20,7 +20,6 @@ const userType = "seller";
 const TopSeller = () => {
   const shopid = useParams();
   const classes = useStyles();
-  const auth = useRecoilValue(authState);
   const router = useHistory();
 
   const [open, setOpen] = useState(false);
@@ -52,16 +51,16 @@ const TopSeller = () => {
       setshoppictitle(shoppic.title);
       shopthumnail = shoppic.thumnail;
 
-      console.log(
-        `${shopName},
-        ${shopDescription},
-        ${shopFollowers},
-        ${phoneNumber},
-        ${shoppath},
-        ${shoppictitle},
-        ${shopthumnail},
-        ${shid}`
-      );
+      // console.log(
+      //   `${shopName},
+      //   ${shopDescription},
+      //   ${shopFollowers},
+      //   ${phoneNumber},
+      //   ${shoppath},
+      //   ${shoppictitle},
+      //   ${shopthumnail},
+      //   ${shid}`
+      // );
       // console.log(`${shoppic.path}`);
       // console.log(res.data.shop_name)
     } catch (e) {
@@ -77,10 +76,6 @@ const TopSeller = () => {
     <Box className={classes.container}>
       <Popup open={open} setOpen={setOpen} title="" description="" />
       <Box className={classes.profile}>
-        {/* <Avatar
-          src={shoppath}
-          sx={{ width: 80, height: 80, marginRight: "25px" }}
-        /> */}
         <Avatar
           sx={{
             width: 80,
@@ -97,12 +92,10 @@ const TopSeller = () => {
             {shopName}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            <Box>
-              <LocalPhoneIcon />:{phoneNumber}
-            </Box>
+            <LocalPhoneIcon />:{phoneNumber}
           </Typography>
           <Typography sx={{ fontWeight: "400" }} variant="caption">
-            description:{shopDescription}
+            {shopDescription}
           </Typography>
         </Box>
       </Box>
@@ -124,7 +117,6 @@ const TopSeller = () => {
           }}
         >
           <Typography sx={{ fontSize: "12px" }} onClick={setOpen}>
-            {" "}
             Edit
           </Typography>
         </Button>
@@ -142,7 +134,6 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
     padding: "40px 120px",
-
     boxShadow: " 0px 4px 4px rgba(196, 196, 196, 0.25)",
   },
   profile: {

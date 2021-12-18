@@ -16,31 +16,53 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const SellerDashboard = () => {
+  const shopid = useParams();
 
-const shopid = useParams();
+  const [cpd, setCpd] = useState();
+  const [cfl, setCfl] = useState();
+  const [crt, setCrt] = useState();
+  const [csl, setCsl] = useState();
 
-const [productcard, setProduct] = useState();
-const [followerscard, setFollowers] = useState();
-const [ratingcard, setRating] = useState();
-const [salescard, setSales] = useState();
+  const fetchCard = async () => {
+    try {
+      const pd = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToProduct`
+      );
+      const fl = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToFollows`
+      );
+      const rt = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToRating`
+      );
+      const sl = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToSales`
+      );
 
-  const getCard = async () =>{
-    const pd = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToProduct`)
-    const fl = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToFollows`)
-    const rt = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToRating`)
-    const sl = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToSales`)
-    console.log(`${pd},${fl},${rt},${sl}`)
-    setProduct(pd)
-    setFollowers(fl)
-    setRating(rt)
-    setSales(sl)
-  }
+      // console.log(pd.data.quantity);
+      // console.log(fl.data.followers);
+      // console.log(rt.data._avg.rating );
+      // console.log(sl.data);
 
+      setCpd(pd.data.quantity);
+      setCfl(fl.data.followers);
+      setCrt(rt.data._avg.rating);
+      setCsl(sl.data);
+
+ 
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchCard();
+  }, []);
 
   const indicatorData = [
     {
       id: 0,
-      value: "34.7",
+      // value: {cpd},
       name: "Product",
       color: "#FEF3F1",
       fontColor: "#FD8A75",
@@ -48,7 +70,7 @@ const [salescard, setSales] = useState();
     },
     {
       id: 1,
-      value: "34.7",
+      // value: {cfl},
       name: "Followers",
       color: "#FCF6DE",
       fontColor: "#EAC52E",
@@ -56,7 +78,7 @@ const [salescard, setSales] = useState();
     },
     {
       id: 2,
-      value: "34.7",
+      // value: {crt},
       name: "Rating",
       color: "#E1F4F8",
       fontColor: "#42B8D4",
@@ -64,7 +86,7 @@ const [salescard, setSales] = useState();
     },
     {
       id: 3,
-      value: "34.7",
+      // value: {csl},
       name: "Sales",
       color: "#E0F8F2",
       fontColor: "#43D5AE",
@@ -93,7 +115,7 @@ const [salescard, setSales] = useState();
           />
         ))}
       </Box>
-      <Chart/>
+      {/* <Chart/> */}
     </Box>
   );
 };

@@ -27,7 +27,6 @@ const StockBody = ({ columns }) => {
       const created = res.data
         .slice(0, 50)
         .map((el) => createData(el.id, el.title, el.quantity, el.price));
-
       setRows(created);
     } catch (e) {
       console.log(e);
