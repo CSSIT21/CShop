@@ -12,6 +12,12 @@ export const ThemeContextProvider = ({ children }) => {
             ].join(","),
         },
         borderRadius: 15,
+        palette: {
+            primary: {
+                main: "#FD6637",
+                contrastText: "white",
+            },
+        },
     });
 
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>;

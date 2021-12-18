@@ -34,22 +34,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
+// function createData(name, calories, fat, carbs, protein) {
+//     return { name, calories, fat, carbs, protein };
+// }
 
-const rows = [
-    createData("CSC02000000001", 159, 6.0, 24, 4.0),
-    createData("CSC23000000034", 237, 9.0, 37, 4.3),
-    createData("CSC67000002345", 262, 16.0, 24, 6.0),
-    createData("CSC39000000546", 305, 3.7, 67, 4.3),
-    createData("CSC72000000045", 356, 16.0, 49, 3.9),
-];
+// const rows = [
+//     createData("CSC02000000001", 159, 6.0, 24, 4.0),
+//     createData("CSC23000000034", 237, 9.0, 37, 4.3),
+//     createData("CSC67000002345", 262, 16.0, 24, 6.0),
+//     createData("CSC39000000546", 305, 3.7, 67, 4.3),
+//     createData("CSC72000000045", 356, 16.0, 49, 3.9),
+// ];
 
-export default function TableStatus() {
+export default function TableStatus({ data }) {
     const location = useLocation();
     const { pathname } = location;
     const editDialogRef = React.useRef(null);
+
+    const convertTime = (time) => {
+        const converted = time.split("T");
+        return `${converted[0]}  ${converted[1].substring(0, 5)}`;
+    };
 
     return (
         <>
@@ -79,16 +84,16 @@ export default function TableStatus() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {data?.map((row) => (
                             <StyledTableRow key={row.name}>
                                 <StyledTableCell component="th" scope="row">
-                                    {row.name}
+                                    {row.tracking_number}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {row.calories}
+                                    {convertTime(row.latest_update)}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {row.fat}
+                                    {convertTime(row.added_date)}
                                 </StyledTableCell>
                                 {pathname === "/admin/success" ? (
                                     <StyledTableCell align="center">
@@ -104,7 +109,7 @@ export default function TableStatus() {
                                             width="100%"
                                             justifyContent="center"
                                         >
-                                            <SelectButton />
+                                            <SelectButton status={row.status} />
                                             <IconButton
                                                 sx={{ margin: "0 10px" }}
                                                 onClick={() => {

@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../components/Admin/Table";
 import Sidebar from "../../components/Layouts/SideBar";
+import axios from "axios";
 
 const Requests = () => {
+    const [allRequests, setAllRequests] = useState();
+    const fetchedRequests = async () => {
+        const data = await axios.get("http://localhost:8080/delivery/requests");
+        setAllRequests(data.data);
+    };
+
+    useEffect(() => {
+        fetchedRequests();
+    }, []);
+
     return (
         <Sidebar>
-            <Table />
+            <Table data={allRequests} />
         </Sidebar>
     );
 };

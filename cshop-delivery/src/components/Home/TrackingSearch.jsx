@@ -8,39 +8,46 @@ import { useState } from "react";
 const TrackingSearch = ({ setDelivery }) => {
     const classes = useStyles();
     const [trackingNumber, setTrackingNumber] = useState("");
+    const [checkLength, setCheckLength] = useState(false);
 
     const search = () => {
-        setDelivery({
-            trackingNumber: trackingNumber,
-            status: "Delivering",
-            details: [
-                {
-                    date: "2021-11-07",
-                    description: "sending to Bangkok",
-                },
-                {
-                    date: "2021-11-08",
-                    description: "sending to Bangkok",
-                },
-                {
-                    date: "2021-11-08",
-                    description: "sending to Bangkok",
-                },
-                {
-                    date: "2021-11-08",
-                    description: "sending to Bangkok",
-                },
-                {
-                    date: "2021-11-08",
-                    description: "sending to Bangkok",
-                },
-            ],
-        });
+        if (trackingNumber.length < 10) {
+            setCheckLength(true);
+            setDelivery(null);
+        } else {
+            setDelivery({
+                trackingNumber: trackingNumber,
+                status: "Delivering",
+                details: [
+                    {
+                        date: "2021-11-07",
+                        description: "sending to Bangkok",
+                    },
+                    {
+                        date: "2021-11-08",
+                        description: "sending to Bangkok",
+                    },
+                    {
+                        date: "2021-11-08",
+                        description: "sending to Bangkok",
+                    },
+                    {
+                        date: "2021-11-08",
+                        description: "sending to Bangkok",
+                    },
+                    {
+                        date: "2021-11-08",
+                        description: "sending to Bangkok",
+                    },
+                ],
+            });
+            setCheckLength(false);
+        }
     };
 
     const keyCheck = (e) => {
         if (e.key === "Enter") {
-            search();
+            search(e.target.value);
         }
     };
 
@@ -62,6 +69,11 @@ const TrackingSearch = ({ setDelivery }) => {
                         trackingNumber.length === 11
                             ? trackingNumber.substring(0, 10)
                             : trackingNumber
+                    }
+                    helperText={
+                        checkLength
+                            ? "this field must contain 10 characters"
+                            : null
                     }
                 />
                 <ColorButton

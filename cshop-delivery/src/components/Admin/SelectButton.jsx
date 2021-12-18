@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import { useLocation } from "react-router-dom";
 import ConfirmProgressUpdateDialog from "./ConfirmProgressUpdateDialog";
 
-export default function SelectButton() {
+export default function SelectButton({ status }) {
     const [age, setAge] = React.useState("");
     const confirmDialog = React.useRef(null);
 
@@ -31,14 +31,14 @@ export default function SelectButton() {
     };
 
     return (
-        <Box sx={{ minWidth: 120 }}>
+        <Box sx={{ minWidth: 220 }}>
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                <InputLabel id="demo-simple-select-label">{status}</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
-                    label="Age"
+                    placeholder={status}
+                    label={status}
                     onChange={handleChange}
                     fullWidth
                 >

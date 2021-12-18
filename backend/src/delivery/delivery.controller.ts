@@ -33,9 +33,24 @@ export class DeliveryController {
 		return this.deliveryService.generateTrackingNumber(address)
 	}
 
-	@Get()
-	findAll() {
-		return this.deliveryService.findAll();
+	@Get('requests')
+	getAllRequests() {
+		return this.deliveryService.getAllRequests();
+	}
+
+	@Get('packages')
+	getAllpackages() {
+		return this.deliveryService.getAllpackages();
+	}
+
+	@Get('delivering')
+	getAllDelivering() {
+		return this.deliveryService.getAllDelivering();
+	}
+
+	@Get('success')
+	getAllSuccess() {
+		return this.deliveryService.getAllSuccess();
 	}
 
 	@Get(':id')

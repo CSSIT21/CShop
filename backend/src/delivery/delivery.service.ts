@@ -58,7 +58,6 @@ export class DeliveryService {
 			data: {
 				recipient_name: address.recipient_name,
 				delivery_detail: {
-					status: 'Received a request',
 					Time: Date.now(),
 					detail: "Received a request"
 				},
@@ -76,9 +75,6 @@ export class DeliveryService {
 			for (let index = 1; index < 6 - length; index++) {
 				zero += "0"
 			}
-			console.log("CSC".concat(provinceNumber, zero, id));
-
-
 			return "CSC".concat(provinceNumber, zero, id)
 		}
 
@@ -95,6 +91,70 @@ export class DeliveryService {
 
 		return {
 			tracking_number: updateTrackingnumber.tracking_number
+		}
+	}
+
+	public async getAllRequests() {
+		try {
+			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
+				where: {
+					status: "Received a request"
+				}
+			})
+			return fetchedRequest
+
+		} catch (e) {
+			return {
+				e
+			}
+		}
+	}
+
+	public async getAllpackages() {
+		try {
+			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
+				where: {
+					status: "Received a package"
+				}
+			})
+			return fetchedRequest
+
+		} catch (e) {
+			return {
+				e
+			}
+		}
+	}
+
+	public async getAllDelivering() {
+		try {
+			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
+				where: {
+					status: "Delivering"
+				}
+			})
+			return fetchedRequest
+
+		} catch (e) {
+			return {
+				e
+			}
+		}
+	}
+
+	public async getAllSuccess() {
+		try {
+			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
+				where: {
+					status: "Success"
+				}
+			})
+			return fetchedRequest
+
+		} catch (e) {
+			return {
+				e
+			}
 		}
 	}
 
