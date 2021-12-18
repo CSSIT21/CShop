@@ -8,17 +8,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
 import Logo from "../assets/images/Logo.svg";
-import EventRoundedIcon from '@mui/icons-material/EventRounded';
-import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
-import ShoppingBasketRoundedIcon from '@mui/icons-material/ShoppingBasketRounded';
-import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
-import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
-import AllInboxRoundedIcon from '@mui/icons-material/AllInboxRounded';
-import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
-import ReceiptRoundedIcon from '@mui/icons-material/ReceiptRounded';
-import LoyaltyRoundedIcon from '@mui/icons-material/LoyaltyRounded';
-import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import EventRoundedIcon from "@mui/icons-material/EventRounded";
+import BoltRoundedIcon from "@mui/icons-material/BoltRounded";
+import ShoppingBasketRoundedIcon from "@mui/icons-material/ShoppingBasketRounded";
+import ShowChartRoundedIcon from "@mui/icons-material/ShowChartRounded";
+import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
+import AllInboxRoundedIcon from "@mui/icons-material/AllInboxRounded";
+import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
+import ReceiptRoundedIcon from "@mui/icons-material/ReceiptRounded";
+import LoyaltyRoundedIcon from "@mui/icons-material/LoyaltyRounded";
+import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 import { Link, useParams, useLocation } from "react-router-dom";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 const drawerWidth = 280;
 
@@ -54,14 +55,14 @@ const Drawer = styled(MuiDrawer, {
   boxSizing: "border-box",
 
   "& ::-webkit-scrollbar": {
-    width: "12px"
+    width: "12px",
   },
   "& ::-webkit-scrollbar-thumb": {
     background: "#cecece",
     borderRadius: "5px",
   },
   "& ::-webkit-scrollbar-thumb:hover": {
-    background: "#c5c5c5"
+    background: "#c5c5c5",
   },
 
   ...(open && {
@@ -89,19 +90,56 @@ export default function SellerConsoleSidebarLayout(props) {
       "Dashboard",
       "/seller/" + params.id + "/dashboard"
     ),
-    generateLink(AllInboxRoundedIcon, "Stock", "/seller/" + params.id + "/stock"),
-    generateLink(BoltRoundedIcon, "FlashSale", "/seller/" + params.id + "/flashsell"),
-    generateLink(BuildRoundedIcon, "Page customization", "/seller/" + params.id + "/customize"),
-    generateLink(ShoppingBasketRoundedIcon, "FlashSale Log", "/seller/" + params.id + "/flashsalelog"),
-    generateLink(ShowChartRoundedIcon, "Stock Log", "/seller/" + params.id + "/stocklog"),
-    generateLink(FormatListBulletedRoundedIcon, "Order Status", "/seller/" + params.id + "/orderstatus"),
-    generateLink(ReceiptRoundedIcon, "Order History", "/seller/" + params.id + "/orderlog"),
+    generateLink(
+      AllInboxRoundedIcon,
+      "Stock",
+      "/seller/" + params.id + "/stock"
+    ),
+    generateLink(
+      BoltRoundedIcon,
+      "FlashSale",
+      "/seller/" + params.id + "/flashsell"
+    ),
+    generateLink(
+      BuildRoundedIcon,
+      "Page customization",
+      "/seller/" + params.id + "/customize"
+    ),
+    generateLink(
+      ShoppingBasketRoundedIcon,
+      "FlashSale Log",
+      "/seller/" + params.id + "/flashsalelog"
+    ),
+    generateLink(
+      ShowChartRoundedIcon,
+      "Stock Log",
+      "/seller/" + params.id + "/stocklog"
+    ),
+    generateLink(
+      FormatListBulletedRoundedIcon,
+      "Order Status",
+      "/seller/" + params.id + "/orderstatus"
+    ),
+    generateLink(
+      ReceiptRoundedIcon,
+      "Order History",
+      "/seller/" + params.id + "/orderlog"
+    ),
+    generateLink(
+      LocalOfferIcon,
+      "Add Coupon",
+      "/seller/" + params.id + "/coupon"
+    ),
     generateLink(
       LoyaltyRoundedIcon,
       "Discount History",
       "/seller/" + params.id + "/discountlog"
     ),
-    generateLink(AttachMoneyRoundedIcon, "Refund History", "/seller/" + params.id + "/refundlog"),
+    generateLink(
+      AttachMoneyRoundedIcon,
+      "Refund History",
+      "/seller/" + params.id + "/refundlog"
+    ),
   ];
 
   return (
@@ -113,18 +151,27 @@ export default function SellerConsoleSidebarLayout(props) {
         </Link>
         <List>
           {links.map(({ Icon, title, path }, index) => (
-            <ListItem button key={index} to={path} component={Link} sx={{
-              ...listStyle,
-              ...(pathname == path ? {
-                backgroundColor: "#FD6637", "& span": {
-                  color: "#ffffff",
-                },
+            <ListItem
+              button
+              key={index}
+              to={path}
+              component={Link}
+              sx={{
+                ...listStyle,
+                ...(pathname == path
+                  ? {
+                      backgroundColor: "#FD6637",
+                      "& span": {
+                        color: "#ffffff",
+                      },
 
-                "& svg": {
-                  color: "#ffffff",
-                }
-              } : {})
-            }}>
+                      "& svg": {
+                        color: "#ffffff",
+                      },
+                    }
+                  : {}),
+              }}
+            >
               <ListItemIcon>
                 <Icon className={classes.icon} />
               </ListItemIcon>
@@ -133,10 +180,17 @@ export default function SellerConsoleSidebarLayout(props) {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ minHeight: "100vh", flexGrow: 1, backgroundColor: "rgba(239, 239, 241, 0.7)" }}>
+      <Box
+        component="main"
+        sx={{
+          minHeight: "100vh",
+          flexGrow: 1,
+          backgroundColor: "rgba(239, 239, 241, 0.7)",
+        }}
+      >
         {props.children}
       </Box>
-    </Box >
+    </Box>
   );
 }
 
@@ -168,7 +222,7 @@ const listStyle = {
 
     "& svg": {
       color: "#ffffff",
-    }
+    },
   },
 
   "& span": {

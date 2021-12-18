@@ -53,6 +53,7 @@ import Promotion from "./_promotion/pages/Promotion";
 import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
 import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
+import SellerCreateCoupon from "./_seller/pages/SellerCreateCoupon"
 
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
@@ -319,6 +320,9 @@ function App() {
 
                       <Route path="/seller/:id/orderstatus">
                         <SellerOrderStatus />
+                      </Route>
+                      <Route path="/seller/:id/coupon">
+                        <SellerCreateCoupon />
                       </Route>
 
 

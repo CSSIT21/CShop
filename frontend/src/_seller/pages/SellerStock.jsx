@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-import config from '~/common/constants'
+import config from "~/common/constants";
 
 import React, { useState } from "react";
 
@@ -36,16 +36,64 @@ const SellerStock = () => {
       const res = await axios.get(
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/stock`
       );
-      console.log(res);
+      // console.log(res.data);
+      Productdata.push(res.data);
+      // console.log(Productdata[0]);
+      // console.log(Productdata[0].map(product =>console.log(product.id)))
+      createProduct()
+      // console.log(tests[0])
+      // console.log(rows)
     } catch (e) {
       console.log(e);
     }
   };
 
-  useEffect(() => {
-    fetchStock();
+  const Productdata = [];
+
+  useEffect(async () => {
+    await fetchStock();
+
     // console.log(shopid.id)
   }, []);
+
+  const rows = [
+    // createData(1, "Frozen yoghurt", 24, 4.0),
+    // createData(2, "Ice cream sandwich", 9, 37),v
+    // createData(3, "Eclair", 16, 24),
+    // createData(4, "Cupcake", 3, 67),
+    // createData(5, "Gingerbread", 16, 49),อ
+  ];
+
+  const createProduct = async () => {
+    return await Productdata[0].map((product) => {
+      rows.push(createData(product.id, product.title, product.quantity, product.price));
+      // console.log(rows)
+    });
+
+  };
+
+  const columns = [
+    { id: "productId", label: "productId" },
+
+    {
+      id: "productname",
+      label: "productname",
+      align: "right",
+    },
+
+    {
+      id: "amount",
+      label: "amount",
+      align: "right",
+      format: (value) => value.toLocaleString("en-US"),
+    },
+    {
+      id: "price",
+      label: "price/pcs",
+      align: "right",
+      format: (value) => value.toFixed(2),
+    },
+  ];
 
   const indicatorData = [
     {
@@ -92,37 +140,6 @@ const SellerStock = () => {
       price,
     };
   }
-
-  const rows = [
-    createData(1, "Frozen yoghurt", 24, 4.0),
-    createData(2, "Ice cream sandwich", 9, 37),
-    createData(3, "Eclair", 16, 24),
-    createData(4, "Cupcake", 3, 67),
-    createData(5, "Gingerbread", 16, 49),
-  ];
-
-  const columns = [
-    { id: "productId", label: "productId" },
-
-    {
-      id: "productname",
-      label: "productname",
-      align: "right",
-    },
-
-    {
-      id: "amount",
-      label: "amount",
-      align: "right",
-      format: (value) => value.toLocaleString("en-US"),
-    },
-    {
-      id: "price",
-      label: "price/pcs",
-      align: "right",
-      format: (value) => value.toFixed(2),
-    },
-  ];
 
   return (
     <>
