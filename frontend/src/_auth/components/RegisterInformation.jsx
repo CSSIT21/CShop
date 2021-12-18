@@ -10,7 +10,6 @@ import { useHistory } from "react-router";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { getUrl } from "~/common/utils";
 
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
@@ -81,7 +80,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
       setUserInfo({
         ...userInfo,
         url: path,
-        title: e.target.files[0].name,
+        title: e.target.files[0].name.slice(0, 50),
         file: e.target.files[0],
       });
     }
@@ -212,7 +211,10 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 error={phoneNumError.length === 0 ? false : true}
                 value={userInfo.phoneNumber}
                 onChange={(e) => {
-                  setUserInfo({ ...userInfo, phoneNumber: e.target.value });
+                  setUserInfo({
+                    ...userInfo,
+                    phoneNumber: e.target.value.slice(0, 10),
+                  });
                   setphoneNumError("");
                 }}
               />
