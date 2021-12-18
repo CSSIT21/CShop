@@ -41,6 +41,7 @@ export class UserCard extends React.Component {
     this.desc = 'Pending Description';
     this.address = {address_line: 'PENDING', postal_code: 'PENDING'};
     this.types = [];
+    this.path = ''
   }
 
   async componentDidMount(){
@@ -50,8 +51,12 @@ export class UserCard extends React.Component {
     const fetchedData2 = await axios.get(
       "http://localhost:8080/manageaccount/suspension/types"
     );
+    const fetchedData3 = await axios.get(
+      "http://localhost:8080/manageaccount/users/picture?id=" + this.props.user.customer_picture.customer_id
+    );
     this.address = fetchedData.data;
     this.types = fetchedData2.data;
+    this.path = fetchedData3.data.path;
     this.forceUpdate();
   }
 
@@ -144,7 +149,7 @@ export class UserCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '7%' }} className={classes.header}>
-              <Avatar alt={this.props.avatarInitials} src={this.props.path} sx={{ width: 60, height: 60 }}/>
+              <Avatar alt={this.props.avatarInitials} src={this.path} sx={{ width: 60, height: 60 }}/>
             </Box>
             <Box sx={{ width: '17%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{(this.props.user.customer_info.firstname + " " + this.props.user.customer_info.lastname)}</Typography>

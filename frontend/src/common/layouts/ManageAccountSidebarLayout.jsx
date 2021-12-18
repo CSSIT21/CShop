@@ -30,8 +30,6 @@ let links = [
     generateLink(CardGiftcardRoundedIcon, "Products", "/manage/products"),
     generateLink(HelpRoundedIcon, "Support", "/manage/tickets"),
     generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
-    generateLink(NoAccountsRoundedIcon, "Banned users", "/manage/bannedusers"),
-  generateLink(BlockRoundedIcon, "Banned sellers", "/manage/bannedsellers"),
 ];
 
 const openedMixin = (theme) => ({

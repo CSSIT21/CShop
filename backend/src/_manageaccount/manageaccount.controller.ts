@@ -7,18 +7,21 @@ import { UpdateSellerSuspensionDto } from './dto/update_sellersuspension.dto';
 import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('manageaccount')
 export class ManageaccountController {
   constructor(private readonly manageaccountService: ManageaccountService, public prisma: PrismaService) {}
 
   @Get()
-  findAll() {
+  @Public()
+  public findAll() {
     return this.prisma.product.findMany();
   }
 
   @Get('message')
-  getMessage(@Query('id') i: string){
+  @Public()
+  public getMessage(@Query('id') i: string){
     return this.prisma.product.findFirst({
       where: {
         id: parseInt(i)
@@ -28,7 +31,8 @@ export class ManageaccountController {
 
   //Research from this
   @Get('search')
-  searchAll(@Query('s') query:string){
+  @Public()
+  public searchAll(@Query('s') query:string){
     return this.prisma.product.findMany({
       where:{
         title:{contains:query,mode:'insensitive'}
@@ -37,7 +41,8 @@ export class ManageaccountController {
   }
 
   @Post('suspension/users/create')
-  async createUserSus(@Body() createUserSuspensionDto: CreateUserSuspensionDto, @Res() res){
+  @Public()
+  public async createUserSus(@Body() createUserSuspensionDto: CreateUserSuspensionDto, @Res() res){
     const userSus = await this.manageaccountService.createUserSuspension(createUserSuspensionDto);
     if(userSus){
       res.send({Success: true, userSus});
@@ -49,7 +54,8 @@ export class ManageaccountController {
   }
 
   @Post('suspension/sellers/create')
-  async createSellerSus(@Body() createSellerSuspensionDto: CreateSellerSuspensionDto, @Res() res){
+  @Public()
+  public async createSellerSus(@Body() createSellerSuspensionDto: CreateSellerSuspensionDto, @Res() res){
     const sellerSus = await this.manageaccountService.createSellerSuspension(createSellerSuspensionDto);
     if(sellerSus){
       res.send({Success: true, sellerSus});
@@ -61,7 +67,8 @@ export class ManageaccountController {
   }
 
   @Post('suspension/users/update')
-  async updateUserSus(@Body() updateUserSuspensionDto: UpdateUserSuspensionDto, @Res() res){
+  @Public()
+  public async updateUserSus(@Body() updateUserSuspensionDto: UpdateUserSuspensionDto, @Res() res){
     const userSus = await this.manageaccountService.updateUserSuspension(updateUserSuspensionDto);
     if(userSus){
       res.send({Success: true, userSus});
@@ -73,7 +80,8 @@ export class ManageaccountController {
   }
 
   @Post('suspension/sellers/update')
-  async updateSellerSus(@Body() updateSellerSuspensionDto: UpdateSellerSuspensionDto, @Res() res){
+  @Public()
+  public async updateSellerSus(@Body() updateSellerSuspensionDto: UpdateSellerSuspensionDto, @Res() res){
     const sellerSus = await this.manageaccountService.updateSellerSuspension(updateSellerSuspensionDto);
     if(sellerSus){
       res.send({Success: true, sellerSus});
@@ -85,7 +93,8 @@ export class ManageaccountController {
   }
 
   @Post('suspension/users/delete')
-  deleteUserSus(@Query('id') i: number){{
+  @Public()
+  public deleteUserSus(@Query('id') i: number){{
     return this.prisma.customer.update({
       where: {
         id: +i,
@@ -99,7 +108,8 @@ export class ManageaccountController {
   }}
 
   @Post('suspension/sellers/delete')
-  deleteSellerSus(@Query('id') i: number){{
+  @Public()
+  public deleteSellerSus(@Query('id') i: number){{
     return this.prisma.shop_info.update({
       where: {
         id: +i,
@@ -113,12 +123,14 @@ export class ManageaccountController {
   }}
 
   @Get('products')
-  getProducts(){
+  @Public()
+  public getProducts(){
     return this.prisma.product.findMany();
   }
 
   @Get('sellers')
-  getSellers(){
+  @Public()
+  public getSellers(){
     return this.prisma.shop_info.findMany({
       include:{
         shop_picture: true,
@@ -130,7 +142,8 @@ export class ManageaccountController {
   }
   
   @Get('sellers/unique')
-  getSellersU(@Query('id') i: number){
+  @Public()
+  public getSellersU(@Query('id') i: number){
     return this.prisma.shop_info.findFirst({
       where:{
         id: +i
@@ -139,7 +152,8 @@ export class ManageaccountController {
   }
 
   @Get('users')
-  getUsers(){
+  @Public()
+  public getUsers(){
     return this.prisma.customer.findMany({
       take: 2,
       include:{
@@ -152,7 +166,8 @@ export class ManageaccountController {
   }
 
   @Get('/address')
-  getAddress(@Query('id') i: number){
+  @Public()
+  public getAddress(@Query('id') i: number){
     return this.prisma.address.findFirst({
       where:{
         id: +i
@@ -160,13 +175,25 @@ export class ManageaccountController {
     });
   }
 
+  @Get('/users/picture')
+  @Public()
+  public getPic(@Query('id') i: number){
+    return this.prisma.customer_picture_file.findFirst({
+      where:{
+        id: +i
+      }
+    });
+  }
+
   @Get('/suspension/types')
-  getSusTypes(){
+  @Public()
+  public getSusTypes(){
     return this.prisma.admin_suspension_type.findMany();
   }
 
   @Get('/suspension/type')
-  getSusType(@Query('id') i: number){
+  @Public()
+  public getSusType(@Query('id') i: number){
     return this.prisma.admin_suspension_type.findFirst({
       where:{
         id: +i
@@ -175,7 +202,8 @@ export class ManageaccountController {
   }
 
   @Get('tickets')
-  getTickets(){
+  @Public()
+  public getTickets(){
     return this.prisma.admin_support_picture.findMany({
       include:{
         admin_support: true,
@@ -184,12 +212,14 @@ export class ManageaccountController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Public()
+  public findOne(@Param('id') id: string) {
     return this.manageaccountService.findOne(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Public()
+  public remove(@Param('id') id: string) {
     return this.manageaccountService.remove(+id);
   }
 }
