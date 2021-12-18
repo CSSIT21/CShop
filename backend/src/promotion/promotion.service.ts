@@ -141,6 +141,7 @@ export class PromotionService{
 		userDiscount.forEach((e) => {
 			discountId = [...discountId, e.discount_id];
 		});
+        console.log(discountId);
         return discountId;
     }
 

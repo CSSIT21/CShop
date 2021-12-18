@@ -21,12 +21,10 @@ export class PromotionController {
 		var userId = request.userId;
 		console.log(id)
 		console.log(userId)
-		const a = await this.promotionService.decodeevent(id);
-		const b = await this.promotionService.userGetCode(userId, id);
-		const c = await this.promotionService.checkcodeUser(userId);
-		console.log(a,b);
-        await res.send(a);
-		await res.send(c);
+		const a = await this.promotionService.userGetCode(userId, id);
+		const decreasecode = await this.promotionService.decodeevent(id)
+		const check = await this.promotionService.checkcodeUser(userId);
+		res.send({decreasecode,check})
 
 	}
 
@@ -39,10 +37,9 @@ export class PromotionController {
 		console.log(id)
 		console.log(userId)
 		const a = await this.promotionService.userGetCode(userId, id);
-		const b = await this.promotionService.decodeapp(id)
-		const c = await this.promotionService.checkcodeUser(userId);
-        res.send(b);
-		res.send(c);
+		const decreasecode = await this.promotionService.decodeapp(id)
+		const check = await this.promotionService.checkcodeUser(userId);
+		res.send({decreasecode,check})
 	}
 
 	@Post('/upshop')
@@ -54,10 +51,9 @@ export class PromotionController {
 		console.log(id)
 		console.log(userId)
 		const a = await this.promotionService.userGetCode(userId, id);
-		const b = await this.promotionService.decodeshop(id)
-		const c = await this.promotionService.checkcodeUser(userId);
-        res.send(b);
-		res.send(c);
+		const decreasecode = await this.promotionService.decodeshop(id)
+		const check = await this.promotionService.checkcodeUser(userId);
+		res.send({decreasecode,check})
 	}
 
 	@Post('/upre')
@@ -69,10 +65,9 @@ export class PromotionController {
 		console.log(id)
 		console.log(userId)
 		const a = await this.promotionService.userGetCode(userId, id);
-		const b = await this.promotionService.decodereward(id)
-		const c = await this.promotionService.checkcodeUser(userId);
-        res.send(b);
-		res.send(c);
+		const decreasecode = await this.promotionService.decodereward(id)
+		const check = await this.promotionService.checkcodeUser(userId);
+		res.send({decreasecode,check})
 	}
 
 	@Post('/upcate')
@@ -84,10 +79,9 @@ export class PromotionController {
 		console.log(id)
 		console.log(userId)
 		const a = await this.promotionService.userGetCode(userId, id);
-		const b = await this.promotionService.decodecategory(id)
-		const c = await this.promotionService.checkcodeUser(userId);
-        res.send(b);
-		res.send(c);
+		const decreasecode = await this.promotionService.decodecategory(id)
+		const check = await this.promotionService.checkcodeUser(userId);
+		res.send({decreasecode,check})
 	}
 
     @Post('/claim')
