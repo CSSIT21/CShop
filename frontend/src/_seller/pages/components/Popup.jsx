@@ -33,15 +33,48 @@ export default function Popup({
     p: 4,
   };
 
+  const shopid = useParams();
+
+  const [shopname, setShopname] = useState();
+  const [descrp, setDescription] = useState();
+  const [phonenumber, setPhonenumber] = useState();
+
   const updateInfo = async () => {
     try {
-      const res = await axios.post(
-        `${config.SERVER_URL}/sellerconsole/${shopid.id}/shopinfo`
+      await axios.post(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/updateShopinfo`,
+        {
+          id: shopid,
+          shop_name: shopname,
+          description: descrp,
+          phone_number: phonenumber,
+        }
       );
+      handleClose();
     } catch (e) {
       console.log(e);
     }
   };
+
+  const fetchShopInfo = async () => {
+    try {
+      const res = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/shopinfo`
+      );
+      // console.log(res.data.shop_name);
+      // console.log(res.data.description);
+      // console.log(res.data.phone_number);
+      setShopname(res.data.shop_name);
+      setDescription(res.data.description);
+      setPhonenumber(res.data.phone_number);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchShopInfo();
+  }, []);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -64,6 +97,10 @@ export default function Popup({
           autoFocus
           margin="dense"
           id="name"
+          onChange={(e) => {
+            setShopname(e.target.value);
+          }}
+          value={shopname}
           label="Shop name"
           type="email"
           fullWidth
@@ -72,8 +109,12 @@ export default function Popup({
         <TextField
           id="standard-multiline-static"
           label="Description"
+          onChange={(e) => {
+            setDescription(e.target.value);
+          }}
           multiline
           fullWidth
+          value={descrp}
           rows={5}
           variant="standard"
         />
@@ -82,8 +123,12 @@ export default function Popup({
             id="outlined-textarea"
             label="Phone number"
             placeholder="Phone : XXX-XXX-XXXX"
+            onChange={(e) => {
+              setPhonenumber(e.target.value);
+            }}
             type="number"
             variant="standard"
+            value={phonenumber}
             multiline
             fullWidth
           />
@@ -91,7 +136,7 @@ export default function Popup({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Save</Button>
+        <Button onClick={updateInfo}>Save</Button>
       </DialogActions>
     </Dialog>
   );
