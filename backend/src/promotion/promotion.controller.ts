@@ -84,14 +84,14 @@ export class PromotionController {
 		res.send({decreasecode,check})
 	}
 
-    @Post('/claim')
-	@Public()
-	async ClaimEvent (@Req() req, @Res() res): Promise<void>{
-		var request = req.body;
-		var userId = request.userId;
-        const a = await this.promotionService.checkcodeUser(userId);
-        res.send(a);      
-	}
+    // @Post('/claim')
+	// @Public()
+	// async ClaimEvent (@Req() req, @Res() res): Promise<void>{
+	// 	var request = req.body;
+	// 	var userId = request.userId;
+    //     const a = await this.promotionService.checkcodeUser(userId);
+    //     res.send(a);      
+	// }
 
 
 	 
