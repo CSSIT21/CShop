@@ -5,6 +5,10 @@ import products from '../../common/faker/fakeProducts';
 import VoucherCard from './VoucherCard';
 import ProductCartCard from './ProductCartCard';
 import CButton from "~/common/components/CButton";
+import {useRecoilState} from 'recoil'
+import {amountQuery} from "../recoil/chageamount"
+import axios from 'axios';
+import { useHistory } from 'react-router-dom'
 
 
 const coupons = [
@@ -56,6 +60,7 @@ const addresses = [{
 const MyCartItems = products.map(product => ({...product, amount: 1}));
 
 function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
+    const [amount,changeamount] = useRecoilState(amountQuery)
     const [address, setAddress] = useState(0);
     MyCartItems.length = 5;
     const [MyCart, setmyCart] = useState(allProduct);
@@ -67,6 +72,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     const [phoneNumber, setPhoneNumber] = useState(accountInfo.phone_number);
     const [addressInfo, setAddressInfo] = useState([]);
     const [activeID, setActiveID] = useState('');
+    const router = useHistory()
   
 
 
@@ -75,6 +81,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     useEffect(() => {
       setmyCart(allProduct)
     }, [allProduct])
+
     
     useEffect(() => {
       setAddressInfo(accountInfo.map(item => { 
@@ -85,6 +92,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
           phone: add.phone_number
         });
       }))
+
       accountInfo.forEach(item => {
         if (item.primary) { 
           setActiveID(item.address_id)
@@ -96,21 +104,23 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     function calculateDiscount(total,coupon){
       if(coupon == null) return 0;
       // if(coupon.type === 'nornal'){
-        
       // }else if(coupon.type === 'conditional'){
-
       // }
       if(total * coupon.value > coupon.limit) return coupon.limit;
       if(total < coupon.min) return 0;
-      console.log(total)
       return total * coupon.value;
     }
     
     function removeAll(e){
       e.preventDefault();
-      setProduct([]);
+      axios.post("http://localhost:8080/cart/removeallfromcart",{userID:accountInfo[0].customer_id}).then(item=>setProduct([]));
     }
-    console.log(accountInfo);
+
+    function confirmOrder(){
+      axios.post("http://localhost:8080/cart/updateamount",{updateAmount:amount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id : ""}`))
+      
+    }
+
     return <Box sx={{ width: '88%', marginBottom: '4.5rem'}}>
         <Box className={classes.header}>Shopping Cart</Box>
         <Stack direction="row" gap={15}>
@@ -152,7 +162,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
           </Box>
           <Stack direction="column" gap={2}>
             {/* {MyCart.map(product => <ProductCartCard setProduct={setProduct} product={product} key={product.id} />)} */}
-            {allProduct.map(product => <ProductCartCard setProduct={setProduct} product={product} key={product.id} />)}
+            {allProduct.map(product => <ProductCartCard userID={accountInfo[0]?.customer_id} setProduct={setProduct} product={product} key={product.id} />)}
           </Stack>
           </Stack>
           <Box sx={{width: '30%'}}> 
@@ -163,7 +173,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
                   <Box sx={{display: 'flex', color: 'black' }}>Total</Box>
                   <Box sx={{display: 'flex', color: "#FD6637",}}>{totalCost - discount} BAHT</Box>
                 </Box>
-                <CButton width="100%" height="54px" title="Comfirm" size="large" sx={{'& p': {fontSize: '18px'}}}/>
+                <CButton width="100%" height="54px" title="Comfirm" onClick={confirmOrder} size="large" sx={{'& p': {fontSize: '18px'}}}/>
               </Stack>
             <Box sx={{
               display: 'flex', justifyContent: 'space-between', borderRadius: "15px", backgroundColor: "white", padding: "15px", marginBottom: '5rem', fontSize: "20px"}}>

@@ -54,17 +54,45 @@ export class CartService {
     return { customerDetail,newD, customerDiscount };
   }
 
-  async addtocart(userID: number, productID: number, amount: number, colorID: number, sizeID: number) { 
+  async addtocart(userID: number, productID: number, amount: number, firstchoiceID: number, seconedchoiceID: number) { 
     const prisma = this.prisma
-    await prisma.order_cart_item.createMany({ data: { customer_id: userID, product_id: productID, quantity: amount, product_options: [colorID, sizeID], added_time: new Date() } })
+    let additem: any = { customer_id: userID, product_id: productID, quantity: amount, added_time: new Date() }
+    if (firstchoiceID) {
+      let product_options = [firstchoiceID]
+      if (seconedchoiceID) {
+        product_options.push(seconedchoiceID)
+      }
+      additem = {...additem , product_options}
+     }
+    await prisma.order_cart_item.createMany({ data: additem })
     return true;
   }
   
-  async removefromcart(userID: number, productID: number) { 
+  async removefromcart(orderID : number, userID:number, productID : number) {
     const prisma = this.prisma
-    await prisma.order_cart_item.deleteMany({ where: {customer_id: userID, product_id: productID}})
+    await prisma.order_cart_item.delete({ where: { id: orderID } })
+    await prisma.order_deleted_item.create({ data: {customer_id: userID, product_id: productID, time : new Date()} })
     return true;
   }
+  async removeallfromcart(userID:number){
+    const prisma = this.prisma
+    const data = await prisma.order_cart_item.findMany({where: { customer_id:userID }})
+    console.log(data)
+    data.forEach(async item=>{
+     await prisma.order_deleted_item.create({data:{customer_id: userID, product_id: item.product_id, time:  new Date()}})
+    } )
+    await prisma.order_cart_item.deleteMany({where:{customer_id:userID}})
+    return true
+  }
+
+  async updateamount(newamount : {id:number,amount:number}[]){
+    const prisma = this.prisma
+    newamount.forEach(async(data)=>{
+      await prisma.order_cart_item.update({where:{id:data.id},data:{quantity: data.amount }})
+    })
+    return true
+  }
+
 
   update(id: number, updateCartDto: UpdateCartDto) {
     return `This action updates a #${id} cart`;

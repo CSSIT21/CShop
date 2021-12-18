@@ -30,13 +30,21 @@ export class CartController {
 
   @Post('/addtocart') @Public()
   addtocart(@Body() request) { 
-    return this.cartService.addtocart(request.userID, request.productID, request.amount, request.colorID, request.sizeID);
+    return this.cartService.addtocart(request.userID, request.productID, request.amount, request.firstchoiceID, request.seconedchoiceID);
   }
 
+  @Post('/updateamount') @Public()
+  updateamount(@Body() request){
+    return this.cartService.updateamount(request.updateAmount)
+  }
   @Post('/removefromcart') @Public()
   removefromcart(@Body() request) { 
-    console.log(request);
-    return this.cartService.removefromcart(request.userID, request.productID);
+    return this.cartService.removefromcart(request.orderID,request.userID,request.productID);
+  }
+
+  @Post('/removeallfromcart') @Public()
+  removeallfromcart(@Body() request) { 
+    return this.cartService.removeallfromcart(request.userID);
   }
 
   @Delete(':id') @Public()

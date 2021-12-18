@@ -2,16 +2,28 @@ import { makeStyles } from "@mui/styles";
 import { Divider, Typography, Avatar, CardMedia, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import CancelIcon from '@mui/icons-material/CancelRounded';
+import axios from "axios";
+import products from "../../common/faker/fakeProducts";
+import {useRecoilState} from 'recoil'
+import {amountQuery} from "../recoil/chageamount"
 
-function ProductCartCard({ product, setProduct=void(0) }) {
+
+function ProductCartCard({ product, setProduct=void(0),userID }) {
     const classes = useStyles();
+    const [_,changeamount] = useRecoilState(amountQuery)
 
     function remove(){
+      console.log(product.orderID)
+      axios.post("http://localhost:8080/cart/removefromcart",{orderID: product.orderID,userID:userID,productID:product.id}).then(item=>{
         setProduct(products => {
-            products[products.indexOf(product)] = false;
-            return products.filter(p => p);
-        });
+          products[products.indexOf(product)] = false;
+          return products.filter(p => p);
+      });
+      }).catch(err=>console.log(err));
     }
+    
+
+  
 
     return (
       <Stack direction="row" gap={2} sx={{background: 'white', padding: '15px', borderRadius: '18px'}}>
@@ -44,10 +56,12 @@ function ProductCartCard({ product, setProduct=void(0) }) {
                 value={product.amount}
                 inputProps={{ min: 1, sx: { backgroundColor: 'white'}}}
                 size="small"
-                onChange={e => setProduct(products => {
+                onChange={e => {setProduct(products => {
                     products[products.indexOf(product)].amount = e.target.value;
                     return [...products];
-                })}
+                });
+                changeamount({id:product.orderID,amount: parseInt(e.target.value) })
+              }}
             />
         </Box>
         <Box sx={{width: '30%'}}>
