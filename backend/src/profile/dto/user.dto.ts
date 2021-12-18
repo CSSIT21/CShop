@@ -16,4 +16,5 @@ export class User {
 	postalCode: number;
 	url: string;
 	title: string;
+	recipient: string;
 }

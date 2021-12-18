@@ -6,15 +6,15 @@ import { Grid, Typography } from "@mui/material";
 const ContactInfo = ({ userInfo }) => {
   const classes = useStyles();
   const address =
-    userInfo.customer_address.address_id_from_customer_address.address_line +
+    userInfo.customer_address[0].address_id_from_customer_address.address_line +
     ", " +
-    userInfo.customer_address.address_id_from_customer_address.sub_district +
+    userInfo.customer_address[0].address_id_from_customer_address.sub_district +
     ", " +
-    userInfo.customer_address.address_id_from_customer_address.district +
+    userInfo.customer_address[0].address_id_from_customer_address.district +
     ", " +
-    userInfo.customer_address.address_id_from_customer_address.province +
+    userInfo.customer_address[0].address_id_from_customer_address.province +
     " " +
-    userInfo.customer_address.address_id_from_customer_address.postal_code;
+    userInfo.customer_address[0].address_id_from_customer_address.postal_code;
   return (
     <>
       <Box className={classes.container}>
