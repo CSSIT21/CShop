@@ -1606,9 +1606,10 @@ enum PaymentCreditTypes {
 }
 
 enum OrderStatus {
-  Preparing
+  Received_a_request
+  Received_a_package
   Delivering
-  Delivered
+  Success
 }
 
 enum ChatMessageTypes {
