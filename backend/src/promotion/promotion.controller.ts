@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { PromotionService } from './promotion.service';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -11,40 +11,38 @@ const prisma = new PrismaClient();
 @Controller('promotion')
 export class PromotionController {
 	constructor(private readonly promotionService: PromotionService, public prisma: PrismaService) {}
-
-	@Get('/test')
-		test(@Req() req, @Res() res): void{
-			res.send("Hello");
-		}
 	
 
 	@Post('/upevent')
-	AppCouponEvent(@Req() req, @Res() res): void {
-		var request = req.body;
-		var id = request.couponId;
+	async AppCouponEvent(@Body()request , @Res() res): Promise<void> {
+		var discount_id = request.discount_id;
 		var userId = request.userId;
-		this.promotionService.decodeevent(id);
-		this.promotionService.userGetCode(userId, id);
-        res.send(this.promotionService.decodeevent(id));
+		console.log(discount_id)
+		console.log(userId)
+		const a = await this.promotionService.decodeevent(discount_id);
+		const b = await this.promotionService.userGetCode(userId, discount_id);
+		console.log(a,b);
+        await res.send(a);
+
 	}
 
 	@Post('/upapp')
-	AppCouponApp(@Req() req, @Res() res): void {
+	async AppCouponApp(@Req() req, @Res() res): Promise<void> {
 		var request = req.body;
-		var id = request.couponId;
+		var id = request.discount_id;
 		var userId = request.userId;
-		this.promotionService.decodeapp(id);
-		this.promotionService.userGetCode(userId, id);
+		console.log(id)
+		console.log(userId)
+		await this.promotionService.userGetCode(userId, id);
         res.send(this.promotionService.decodeapp(id));
 	}
 
 	@Post('/upshop')
-	AppCouponShop(@Req() req, @Res() res): void {
+	async AppCouponShop(@Req() req, @Res() res): Promise<void> {
 		var request = req.body;
 		var id = request.couponId;
 		var userId = request.userId;
-		this.promotionService.decodeapp(id);
-		this.promotionService.userGetCode(userId, id);
+		await this.promotionService.userGetCode(userId, id);
         res.send(this.promotionService.decodeshop(id));
 	}
 
@@ -53,7 +51,6 @@ export class PromotionController {
 		var request = req.body;
 		var id = request.couponId;
 		var userId = request.userId;
-		this.promotionService.decodeapp(id);
 		this.promotionService.userGetCode(userId, id);
         res.send(this.promotionService.decodereward(id));
 	}
@@ -63,26 +60,63 @@ export class PromotionController {
 		var request = req.body;
 		var id = request.couponId;
 		var userId = request.userId;
-		this.promotionService.decodecategory(id);
 		this.promotionService.userGetCode(userId, id);
         res.send(this.promotionService.decodecategory(id));
 	}
 
-    @Post('/claimevent')
-	async Claim (@Req() req, @Res() res): Promise<void>{
+    @Post('/claim')
+	async ClaimEvent (@Req() req, @Res() res): Promise<void>{
 		var request = req.body;
 		var userId = request.userId;
         const a = await this.promotionService.checkcodeUser(userId);
-        const b = await this.promotionService.checkEvent(a);
-        res.send(b);      
+        res.send(a);      
 	}
 
-    @Post()
-    async usecoed(@Req() req, @Res() res): Promise<void>{
-        var request = req.body;
-        var id = request.couponId;
-        var userId = request.userId;
-    }
+
+	@Post('/showcode')
+	async showCodeEvent(@Req() req, @Res() res): Promise<void>{
+		var request = req.body;
+		var userId = request.userId;
+		res.send(await this.promotionService.showCode(userId));
+	}
+	// @Post('/claimapp')
+	// async ClaimApp (@Req() req, @Res() res): Promise<void>{
+	// 	var request = req.body;
+	// 	var userId = request.userId;
+    //     const a = await this.promotionService.checkcodeUser(userId);
+    //     // const b = await this.promotionService.checkApp(a);
+    //     res.send(a);      
+	// }
+
+	// @Post('/claimshop')
+	// async ClaimShop (@Req() req, @Res() res): Promise<void>{
+	// 	var request = req.body;
+	// 	var userId = request.userId;
+    //     const a = await this.promotionService.checkcodeUser(userId);
+    //     // const b = await this.promotionService.checkShop(a);
+    //     res.send(a);      
+	// }
+
+	// @Post('/claimapp')
+	// async Claimre (@Req() req, @Res() res): Promise<void>{
+	// 	var request = req.body;
+	// 	var userId = request.userId;
+    //     const a = await this.promotionService.checkcodeUser(userId);
+    //     // const b = await this.promotionService.checkReward(a);
+    //     res.send(a);      
+	// }
+
+
+	// @Post('/claimcategory')
+	// async ClaimCate (@Req() req, @Res() res): Promise<void>{
+	// 	var request = req.body;
+	// 	var userId = request.userId;
+    //     const a = await this.promotionService.checkcodeUser(userId);
+    //     // const b = await this.promotionService.checkCategory(a);
+    //     res.send(a);      
+	// }
+
+    
 
 
 }

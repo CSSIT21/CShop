@@ -80,9 +80,12 @@ const couponshops = [
 
 const Couponshop = () => {
   const classes = useStyles();
-  let apiUrl = "http://localhost:8080/promotion/";
-  
+  let apiUrl = "http://localhost:8080/promotion/"; 
+
   const [post,setPost] = useState(null);
+  useEffect(()=>{
+    axios.post(apiUrl+"showcode").then((req)=> setPost(req.data));
+  });
   // const [shop, setshop] = useState("");
 
   // const setShop = () => {

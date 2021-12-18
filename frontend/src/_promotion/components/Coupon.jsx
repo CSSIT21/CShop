@@ -50,7 +50,7 @@ const Coupon = ({coupon,claimProps = { title: "Claim", idx: 'idx'},}) => {
 
       <Divider orientation="vertical" flexItem />
       <Box sx={{marginLeft: "30px"}}>
-      <CButton {...claimProps} onClick={handleClaim, shop}/>
+      <CButton {...claimProps} onClick={handleClaim}/>
       </Box>
       
     </Box>
