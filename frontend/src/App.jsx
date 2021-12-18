@@ -1,5 +1,5 @@
 /** internal */
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,

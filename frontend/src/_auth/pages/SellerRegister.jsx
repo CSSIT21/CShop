@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, MenuItem, Button } from "@mui/material";
+import { TextField, MenuItem, Avatar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -7,20 +7,31 @@ import Grid from "@mui/material/Grid";
 import Success from "../components/Success";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useRecoilState } from "recoil";
+import authState from "../../common/store/authState";
 import Checkbox from "@mui/material/Checkbox";
 import config from "~/common/constants";
+import { getUrl } from "~/common/utils";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const SellerRegister = ({}) => {
   const classes = useStyles();
+  const [auth, setAuth] = useRecoilState(authState);
+  const [loading, setloading] = useState(false);
   const [state, setstate] = useState(true);
   const [addressData, setAddressData] = useState([]);
   const [province, setProvince] = useState([]);
   const [district, setDistrict] = useState([]);
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
+  const [reserveimage, setreserveimage] = useState();
   const [sellerInfo, setSellerInfo] = useState({
     shopName: "",
-    // shopImage: "",
+    shopImage: {
+      title: "",
+      path: "",
+      thumbnail: "",
+    },
     phone: "",
     address: "",
     subDistrict: "",
@@ -34,7 +45,7 @@ const SellerRegister = ({}) => {
       accountNumber: "",
     },
   });
-  const banks = ["SCB", "KBANK", "KTB", "BBL", "BAY", "CIMBT", "UOBT"];
+  const banks = ["SCB", "KBANK", "KTB", "TMB"];
 
   useEffect(() => {
     getData();
@@ -102,6 +113,19 @@ const SellerRegister = ({}) => {
   const [firstNameError, setFirstNameError] = useState("");
   const [lastnameError, setLastnameError] = useState("");
   const [accountNumberError, setAccountNumberError] = useState("");
+  const uploadFile = async (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      setSellerInfo({
+        ...sellerInfo,
+        shopImage: {
+          path: path,
+          title: e.target.files[0].name,
+          file: e.target.files[0],
+        },
+      });
+    }
+  };
   const checkInfo = () => {
     if (sellerInfo.shopName == "") {
       setShopNameError("This field is required");
@@ -152,27 +176,48 @@ const SellerRegister = ({}) => {
       createShop();
     }
   };
-  const createShop = () => {
+  const createShop = async () => {
     try {
-      axios
-        .post(`${config.SERVER_URL}/sellershop`, {
-          customer_id: 1,
-          shop_address_id: 1,
-          name: sellerInfo.shopName,
-          phoneNumber: sellerInfo.phone,
-          province: sellerInfo.province,
-          subDistrict: sellerInfo.subDistrict,
-          district: sellerInfo.district,
-          postalCode: sellerInfo.postalCode,
-          addressLine: sellerInfo.address,
-          bank: sellerInfo.bankInfo.name,
-          firstname: sellerInfo.bankInfo.firstName,
-          lastname: sellerInfo.bankInfo.lastName,
-          accountNum: sellerInfo.bankInfo.accountNumber,
-        })
-        .then(({ data }) => {
-          setstate(false);
-        });
+      setloading(true);
+      const url = await getUrl(sellerInfo.shopImage.file);
+      if (url.success) {
+        axios
+          .post(`${config.SERVER_URL}/sellershop`, {
+            customer_id: auth.user.id,
+            shop_name: sellerInfo.shopName,
+            phone_number: sellerInfo.phone,
+            province: sellerInfo.province,
+            sub_district: sellerInfo.subDistrict,
+            district: sellerInfo.district,
+            postal_code: sellerInfo.postalCode.toString(),
+            address_line: sellerInfo.address,
+            bank: sellerInfo.bankInfo.name,
+            firstname: sellerInfo.bankInfo.firstName,
+            lastname: sellerInfo.bankInfo.lastName,
+            account_number: sellerInfo.bankInfo.accountNumber.toString(),
+            title: sellerInfo.shopImage.title,
+            path: url.original_link,
+            thumbnail: url.original_link,
+          })
+          .then(() => {
+            axios
+              .get(`${config.SERVER_URL}/profile/me`, {
+                withCredentials: true,
+                validateStatus: () => true,
+              })
+              .then(({ data }) => {
+                if (data.success) {
+                  setAuth(({ isLoggedIn }) => ({
+                    isLoggedIn,
+                    user: data.user,
+                  }));
+                  setloading(false);
+                  setstate(false);
+                }
+              });
+          });
+      }
+
     } catch (e) {
       console.log(e.message);
     }
@@ -228,19 +273,33 @@ const SellerRegister = ({}) => {
               sx={{
                 display: "flex",
                 width: "60%",
-                justifyContent: "space-between",
+                alignItems: "center",
               }}
               className={classes.textFieldBox}
             >
-              <TextField type="file" sx={{ width: "80%" }} />
-              <Button
-                variant="contained"
-                style={{
-                  textTransform: "capitalize",
-                }}
-              >
-                Upload
-              </Button>
+              <Avatar
+                src={sellerInfo.shopImage.path}
+                alt="avatar"
+                sx={{ width: "150px", height: "150px", marginRight: "30px" }}
+              ></Avatar>
+              <label htmlFor={`outlined-button-file-`}>
+                <Button
+                  component="span"
+                  variant="outlined"
+                  sx={{ height: "42px", borderWidth: "2px" }}
+                >
+                  <input
+                    accept="image/*"
+                    type="file"
+                    style={{ display: "none" }}
+                    id={`outlined-button-file-`}
+                    onChange={(e) => {
+                      uploadFile(e);
+                    }}
+                  />
+                  Upload file
+                </Button>
+              </label>
             </Box>
 
             <Box>
@@ -509,7 +568,8 @@ const SellerRegister = ({}) => {
             />
           </FormGroup>
           <Box className={classes.button}>
-            <Button
+            <LoadingButton
+              loading={loading}
               variant="contained"
               style={{
                 width: "470px",
@@ -519,7 +579,7 @@ const SellerRegister = ({}) => {
               onClick={checkInfo}
             >
               Confirm
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
       ) : (

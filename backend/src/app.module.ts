@@ -22,19 +22,18 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		BannerModule,
 		HomeModule,
 		LogSystemModule,
-		PromotionModule,
-    SellershopModule,
-    ShopcustomizationModule,
-    ProfileModule
+		SellershopModule,
+		ShopcustomizationModule,
+		ProfileModule,
 	],
 
 	controllers: [AppController],
 	providers: [
-		// AppService,
-		// {
-		// 	provide: APP_GUARD,
-		// 	useClass: JwtAuthGuard,
-		// },
+		AppService,
+		{
+			provide: APP_GUARD,
+			useClass: JwtAuthGuard,
+		},
 	],
 })
-export class AppModule { }
+export class AppModule {}

@@ -26,4 +26,8 @@ export class RegisterDto {
 	addressLine: string;
 	district: string;
 	postalCode: number;
+
+	//** IMAGE */
+	url: string;
+	title: string;
 }

@@ -3,7 +3,7 @@ import {
   Divider,
   FormGroup,
   FormControlLabel,
-  Checkbox,
+  Radio,
 } from "@mui/material";
 import { useParams } from "react-router";
 const CateGoryFilter = ({ categories = [] }) => {
@@ -19,7 +19,7 @@ const CateGoryFilter = ({ categories = [] }) => {
             return (
               <FormControlLabel
                 key={idx}
-                control={<Checkbox />}
+                control={<Radio />}
                 label={category.title}
               />
             );

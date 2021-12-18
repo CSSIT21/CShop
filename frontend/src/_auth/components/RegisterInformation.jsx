@@ -10,6 +10,7 @@ import { useHistory } from "react-router";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import { getUrl } from "~/common/utils";
 
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
@@ -21,15 +22,15 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   const [lnError, setlnError] = useState("");
   const [phoneNumError, setphoneNumError] = useState("");
   const [genderError, setgenderError] = useState("");
-  const [image, setImage] = useState("");
 
   const checkInfo = () => {
     if (userInfo.email == "") {
-      Swal.fire(
-        "Register Error!",
-        "Please proceed back to enter email",
-        "error"
-      );
+      Swal.fire({
+        title: "Register Error!",
+        text: "Please proceed back to enter email",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       router.push("/register");
     }
     if (userInfo.password != userInfo.confirmPassword) {
@@ -61,15 +62,28 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
       userInfo.firstname != "" &&
       userInfo.lastname != "" &&
       userInfo.phoneNumber != "" &&
-      userInfo.gender != "Select Gender"
+      userInfo.gender != "Select Gender" &&
+      userInfo.url != ""
     ) {
       handleNext();
+    } else {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please check if all of your information have been filled",
+        icon: "error",
+        timer: 2000,
+      });
     }
   };
-  const uploadFile = (e) => {
+  const uploadFile = async (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target.files[0]);
-      setImage(path);
+      setUserInfo({
+        ...userInfo,
+        url: path,
+        title: e.target.files[0].name,
+        file: e.target.files[0],
+      });
     }
   };
   return (
@@ -242,6 +256,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DatePicker
                   value={userInfo.birthdate}
+                  sx={{ width: "100%" }}
                   renderInput={(params) => <TextField {...params} />}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, birthdate: e.toISOString() });
@@ -256,7 +271,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
               sx={{ display: "flex", alignItems: "end", margin: "50px 0px" }}
             >
               <Avatar
-                src={image}
+                src={userInfo.url}
                 alt=""
                 sx={{ width: "150px", height: "150px", marginRight: "30px" }}
               ></Avatar>
@@ -275,7 +290,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                       uploadFile(e);
                     }}
                   />
-                  Upload
+                  Upload file
                 </Button>
               </label>
             </Box>
@@ -332,7 +347,7 @@ const useStyles = makeStyles({
     marginTop: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
-    width: "35%",
+    width: "266px",
   },
   button: {
     display: "flex",
