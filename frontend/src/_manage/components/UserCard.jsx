@@ -215,7 +215,7 @@ export class UserCard extends React.Component {
           </DialogContentText>
           <Box sx={{width:'90%'}}>
           <TextField
-                id="month"
+                id="type"
                 variant="outlined"
                 sx={textField}
                 select

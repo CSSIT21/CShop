@@ -40,6 +40,7 @@ export class SellerCard extends React.Component {
     };
     this.type = 495;
     this.desc = 'Pending Description';
+    this.types = [];
   }
 
   handleExpandClick = () => {
@@ -59,6 +60,14 @@ export class SellerCard extends React.Component {
     this.open = false;
     this.forceUpdate();
   };
+
+  async componentDidMount(){
+    const fetchedData = await axios.get(
+      "http://localhost:8080/manageaccount/suspension/types"
+    );
+    this.types = fetchedData.data;
+    this.forceUpdate();
+  }
 
   addRes = async () => {
     
@@ -202,15 +211,22 @@ export class SellerCard extends React.Component {
           <DialogContentText sx={{width:'20%', marginLeft:'-64%'}} style={{ fontWeight: 600, fontSize: '17px'}}>
             Restriction Type
           </DialogContentText>
+          <Box sx={{width:'90%'}}>
           <TextField
-            align="center"
-            margin="dense"
-            id="type"
-            fullWidth
-            variant="outlined"
-            sx={{width:'80%!important'}}
-            onChange={this.changeType}
-          />
+                id="type"
+                variant="outlined"
+                sx={textField}
+                select
+                defaultValue={495}
+                onChange={this.changeType}
+              >
+                {this.types.map((type) => (
+                  <MenuItem key={type.id} value={type.id}>
+                    {type.title}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
         </DialogContent>
         <DialogContent>
           <DialogContentText sx={{width:'10%', marginLeft:'-70%'}} style={{ fontWeight: 600, fontSize: '17px'}}>
