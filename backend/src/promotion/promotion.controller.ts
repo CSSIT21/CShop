@@ -16,14 +16,16 @@ export class PromotionController {
 
 	@Post('/upevent')
 	async AppCouponEvent(@Body()request , @Res() res): Promise<void> {
-		var discount_id = request.discount_id;
+		var id = request.discount_id;
 		var userId = request.userId;
-		console.log(discount_id)
+		console.log(id)
 		console.log(userId)
-		const a = await this.promotionService.decodeevent(discount_id);
-		const b = await this.promotionService.userGetCode(userId, discount_id);
-		console.log(a,b);
+		const a = await this.promotionService.decodeevent(id);
+		const b = await this.promotionService.userGetCode(userId, id);
+		const c = await this.promotionService.checkcodeUser(userId);
+		console.log(a,b,c);
         await res.send(a);
+		await res.send(c);
 
 	}
 
@@ -34,35 +36,53 @@ export class PromotionController {
 		var userId = request.userId;
 		console.log(id)
 		console.log(userId)
-		await this.promotionService.userGetCode(userId, id);
-        res.send(this.promotionService.decodeapp(id));
+		const a = await this.promotionService.userGetCode(userId, id);
+		const b = await this.promotionService.decodeapp(id)
+		const c = await this.promotionService.checkcodeUser(userId);
+        res.send(b);
+		res.send(c);
 	}
 
 	@Post('/upshop')
 	async AppCouponShop(@Req() req, @Res() res): Promise<void> {
 		var request = req.body;
-		var id = request.couponId;
+		var id = request.discount_id;
 		var userId = request.userId;
-		await this.promotionService.userGetCode(userId, id);
-        res.send(this.promotionService.decodeshop(id));
+		console.log(id)
+		console.log(userId)
+		const a = await this.promotionService.userGetCode(userId, id);
+		const b = await this.promotionService.decodeapp(id)
+		const c = await this.promotionService.checkcodeUser(userId);
+        res.send(b);
+		res.send(c);
 	}
 
 	@Post('/upre')
-	AppCouponReward(@Req() req, @Res() res): void {
+	async AppCouponReward(@Req() req, @Res() res): Promise<void> {
 		var request = req.body;
-		var id = request.couponId;
+		var id = request.discount_id;
 		var userId = request.userId;
-		this.promotionService.userGetCode(userId, id);
-        res.send(this.promotionService.decodereward(id));
+		console.log(id)
+		console.log(userId)
+		const a = await this.promotionService.userGetCode(userId, id);
+		const b = await this.promotionService.decodeapp(id)
+		const c = await this.promotionService.checkcodeUser(userId);
+        res.send(b);
+		res.send(c);
 	}
 
 	@Post('/upcate')
-	AppCouponCategory(@Req() req, @Res() res): void {
+	async AppCouponCategory(@Req() req, @Res() res): Promise<void> {
 		var request = req.body;
-		var id = request.couponId;
+		var id = request.discount_id;
 		var userId = request.userId;
-		this.promotionService.userGetCode(userId, id);
-        res.send(this.promotionService.decodecategory(id));
+		console.log(id)
+		console.log(userId)
+		const a = await this.promotionService.userGetCode(userId, id);
+		const b = await this.promotionService.decodeapp(id)
+		const c = await this.promotionService.checkcodeUser(userId);
+        res.send(b);
+		res.send(c);
 	}
 
     @Post('/claim')
