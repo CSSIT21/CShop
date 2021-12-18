@@ -12,6 +12,7 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		PaymentModule
 	],
 	controllers: [AppController],
 	providers: [

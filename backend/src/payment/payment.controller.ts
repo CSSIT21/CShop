@@ -26,7 +26,10 @@ export class PaymentController {
 	constructor(private readonly paymentService: PaymentService, public prisma: PrismaService) {}
 
 	@Get()
+	@Public()
 	getHello(): string {
+		console.log("done");
+		
 		return 'Hello';
 	}
 
@@ -43,7 +46,8 @@ export class PaymentController {
 			ref1: '000',
 			ref3: process.env.ref3,
 		};
-		let accessToken: string;
+		let accessToken: any;
+		let d1: any;
 		const dataTest = {
 			applicationKey: process.env.API_Key,
 			applicationSecret: process.env.API_Secret,
@@ -60,26 +64,28 @@ export class PaymentController {
 			data: JSON.stringify(dataTest),
 		})
 			.then((response) => {
-				accessToken = response.data.data.accessToken;
+				d1 = (<any>response.data);
+				accessToken = d1.data.accessToken;
 			})
 			.catch((error) => {
 				console.error(error);
 			});
-		let str: string;
+		let str: any;
 		await Axios({
 			method: 'post',
 			url: 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create',
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept-Language': 'EN',
-				Authorization: 'Bearer' + accessToken,
+				Authorization: 'Bearer ' + accessToken,
 				RequestUId: process.env.uuid,
 				ResourceOwnerId: process.env.API_Key,
 			},
 			data: JSON.stringify(data),
 		})
 			.then((response) => {
-				str = response.data.data.qrRawData;
+				d1 = (<any> response.data)
+				str = d1.data.qrRawData;
 			})
 			.catch((error) => {
 				console.error(error);
@@ -154,6 +160,7 @@ export class PaymentController {
 	}
 
 	@Post('/wallet')
+	@Public()
 	async payByWallet(@Req() req, @Res() res) {
 		// const request = req.body;
 		// const userId = request.customerId;
@@ -164,18 +171,12 @@ export class PaymentController {
 		paymentId++;
 		transacWallet++;
 
-		const payByWallet = await this.prisma.payment_wallet.create({
-			data: {
-				payment_id: paymentId,
-				wallet_id: walletId,
-				wallet_transaction_id: transacWallet,
-			},
-		})
+		const payment = await this.prisma.payment.create
 	}
 	@Get('/test')
+	@Public()
 	async showPaymentWallet() {
 		
-		return await this.prisma.payment_wallet.findMany();
 	}
 
 
