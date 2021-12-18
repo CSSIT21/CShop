@@ -130,15 +130,15 @@ const SellerCreateCoupon = (props) => {
   };
 
   const handleSubmit = () => {
-    console.log(
-      `${code},${descpt},${minprice},${reduceprice},${startdate},${endate},${discountType},${discountClass},${max_quantity}
-      ${picPath},${picThumnail},${picTitle}`
-    );
-    console.log(tempShopid);
+    // console.log(
+    //   `${code},${descpt},${minprice},${reduceprice},${startdate},${endate},${discountType},${discountClass},${max_quantity}
+    //   ${picPath},${picThumnail},${picTitle}`
+    // );
+    // console.log(tempShopid);
 
     checkValidation();
     // console.log(minprice, reduceprice);
-    // window.location.reload(false);
+    window.location.reload(false);
   };
 
   const shopid = useParams();
