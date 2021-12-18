@@ -1,6 +1,9 @@
 import { useRef, useLayoutEffect, useState } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants"
 import { makeStyles } from "@mui/styles";
-import { Box, Typography, Button, Stack } from '@mui/material';
+import { Box, Typography, Button, Stack, CircularProgress } from '@mui/material';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
@@ -8,9 +11,10 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AddIcon from '@mui/icons-material/Add';
 import UploadButton from './UploadButton';
 import SubImage from './SubImage';
+import MainImage from './MainImage';
 import BannerInfo from './BannerInfo';
 import CButton from '~/common/components/CButton';
-import { noop } from '~/common/utils';
+import { noop, getUrl } from '~/common/utils';
 
 const BannerItem = ({
 	index = 0,
@@ -19,12 +23,16 @@ const BannerItem = ({
 	setItems = noop,
 	onNext = noop,
 	onPrev = noop,
-	onDelete = noop
+	getData = noop,
+	handleDeleteBanner = noop,
+	mainLoading = false,
 }) => {
 	const classes = useStyles();
 	const wrapper = useRef(null);
 	const [open, setOpen] = useState(false);
-	const { head, children = [] } = item.pictures;
+	const [addLoading, setAddLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
+	const { main, children = [] } = item.pictures;
 
 	useLayoutEffect(() => {
 		window.addEventListener('resize', () => onSetItem());
@@ -46,50 +54,72 @@ const BannerItem = ({
 		});
 	};
 
-	const onUploadSubImg = (e) => {
+	const handleAddSubImg = async (e) => {
 		if (e.target.files.length) {
-			const path = URL.createObjectURL(e.target.files[0]);
+			let file = e.target.files[0];
+			let bannerImage = {};
+			try {
+				setAddLoading(true);
+				const { success, original_link } = await getUrl(file);
 
-			setItems(items => {
-				items[index].pictures.children.push({
-					order: items[index].pictures.children.length,
-					path,
+				if (success) {
+					bannerImage = {
+						title: file.name,
+						position: "Sub",
+						path: original_link,
+						thumbnail: original_link,
+					};
+				}
+				else {
+					console.log(data.error);
+					return Swal.fire('Oop!', 'Cannot upload sub image', 'error');
+				}
+			}
+			catch (err) {
+				console.log(err.message);
+				setAddLoading(true);
+				return Swal.fire('Oop!', 'Cannot upload sub image', 'error');
+			}
+
+			axios
+				.post(`${config.SERVER_URL}/home/banner/${item.id}/sub`, { ...bannerImage })
+				.then(({ data }) => {
+					if (data.success) {
+						console.log(data.bannerPic);
+						getData();
+						setAddLoading(false);
+
+						Swal.fire('Done', "Already uploaded new sub image", 'success');
+					}
 				})
-
-				return [...items];
-			})
+				.catch((err) => {
+					console.log(err);
+					e.target.value = null;
+					return Swal.fire('Oop!', 'Cannot added new sub image', 'error');
+				})
 
 			setTimeout(() => onSetItem(), 500);
 			e.target.value = null;
 		}
 	};
 
-	const onDeleteSubImg = (subIndex) => {
-		setItems(items => {
-			items[index].pictures.children.splice(subIndex, 1);
-			return [...items];
-		});
-	};
-
-	const onInputChange = (value, attr) => {
-		setItems(items => {
-			items[index][attr] = value;
-			return [...items];
-		});
-	};
-
-	const onChipAdd = (value) => {
-		setItems(items => {
-			items[index].keywords.push(value);
-			return [...items];
-		});
-	};
-
-	const onChipDelete = (kwIndex) => {
-		setItems(items => {
-			items[index].keywords.splice(kwIndex, 1);
-			return [...items];
-		});
+	const onDeleteSubImg = async (id) => {
+		setDeleteLoading(true);
+		axios
+			.delete(`${config.SERVER_URL}/home/banner/${item.id}/sub/${id}`)
+			.then(({ data }) => {
+				if (data.success) {
+					console.log(data.deletedImage);
+					getData();
+					setDeleteLoading(false);
+					return Swal.fire('Done', "Already deleted sub image of this banner", 'success');
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				setDeleteLoading(false);
+				return Swal.fire('Oop!', 'Cannot delete sub image of this banner, please try again', 'error');
+			})
 	};
 
 	const onClickDialog = () => {
@@ -107,19 +137,13 @@ const BannerItem = ({
 			<Stack direction="column" gap={4}>
 				{/* Main Image */}
 				<Stack justifyContent="center">
-					<Box className={classes.hoverImage}>
-						<img
-							width="100%"
-							src={head}
-							alt={`Banner ${item.order}`}
-							style={{ display: "block", transition: "0.25s all ease-in-out" }}
-						/>
-						<DeleteRoundedIcon
-							className={classes.iconStyle}
-							sx={{ fontSize: "2rem" }}
-							onClick={() => onDelete(index)}
-						/>
-					</Box>
+					<MainImage
+						path={main.path}
+						title={main.title}
+						Icon={<DeleteRoundedIcon sx={{ fontSize: "2.2em" }} />}
+						onClickHandler={handleDeleteBanner}
+						loading={mainLoading}
+					/>
 				</Stack>
 
 				{/* Add picture button */}
@@ -139,35 +163,49 @@ const BannerItem = ({
 							height="42px"
 							onClick={onClickDialog}
 						/>
-						<UploadButton
-							onUploadImg={onUploadSubImg}
-							Icon={<AddIcon />}
-							title="More Pictures"
-							disabled={children.length === 4}
-						/>
+						<Box sx={{ m: 1, position: 'relative' }}>
+							<UploadButton
+								onUploadImg={handleAddSubImg}
+								Icon={<AddIcon />}
+								title="More Pictures"
+								disabled={children.length === 4 || addLoading}
+							/>
+							{addLoading && (
+								<CircularProgress
+									size={24}
+									sx={{
+										position: 'absolute',
+										top: '50%',
+										left: '50%',
+										marginTop: '-16px',
+										marginLeft: '-16px',
+									}}
+								/>
+							)}
+						</Box>
 					</Stack>
 
 					{/* Input form */}
 					<BannerInfo
+						setItems={setItems}
 						item={item}
-						onInputChange={onInputChange}
-						onChipAdd={onChipAdd}
-						onChipDelete={onChipDelete}
 						open={open}
-						onClose={onClickDialog}
+						getData={getData}
+						handleDialog={onClickDialog}
 					/>
 				</Stack>
 
 				{/* Sub Image */}
 				{children.length !== 0 &&
 					<Box sx={{ display: "flex", flexWrap: "wrap" }}>
-						{children.map((item, index) => (
-							<SubImage
+						{children.map((item) => (
+							< SubImage
+								key={item.id}
+								id={item.id}
 								path={item.path}
-								index={index}
-								title={`subImage ${index}`}
-								key={index}
+								title={item.title}
 								onDelete={onDeleteSubImg}
+								loading={deleteLoading}
 							/>
 						))}
 					</Box>
@@ -199,30 +237,6 @@ const useStyles = makeStyles({
 		width: "100%",
 		height: "auto",
 		borderBottom: '1px solid #C4C4C4',
-	},
-
-	hoverImage: {
-		position: "relative",
-
-		"&:hover img": {
-			opacity: "0.5",
-		},
-		"&:hover .MuiSvgIcon-root": {
-			opacity: "1",
-		},
-		"& .MuiSvgIcon-root": {
-			opacity: "0",
-		},
-	},
-
-	iconStyle: {
-		color: "#FD6637",
-		top: "50%",
-		left: "50%",
-		position: "absolute",
-		transform: "translate(-50%, -50%)",
-		transition: "0.25s all ease-in-out",
-		cursor: "pointer"
 	},
 });
 

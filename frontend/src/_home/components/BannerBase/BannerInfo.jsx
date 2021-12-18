@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants"
 import {
     Button,
     Dialog,
@@ -13,6 +16,7 @@ import {
     Chip,
     FormControlLabel,
     Grid,
+    CircularProgress,
 } from '@mui/material';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -21,17 +25,72 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { noop } from '~/common/utils';
 
 const BannerInfo = ({
+    setItems = noop,
     item = {},
-    onInputChange = noop,
-    onChipAdd = noop,
-    onChipDelete = noop,
     open = false,
-    onClose = noop
+    getData = noop,
+    handleDialog = noop,
 }) => {
     const [tempKeyword, setTempKeyword] = useState("");
+    const [description, setDescription] = useState(item.description);
+    const [start_date, setStart_date] = useState(item.start_date);
+    const [end_date, setEnd_date] = useState(item.end_date);
+    const [visible, setVisible] = useState(item.visible);
+    const [keywords, setKeywords] = useState(item.keywords);
+    const [loading, setLoading] = useState(false);
+
+    const handleUpdateInfo = () => {
+        setLoading(true);
+
+        axios
+            .patch(`${config.SERVER_URL}/home/banner/${item.id}`, {
+                description,
+                start_date,
+                end_date,
+                keywords,
+                visible,
+            })
+            .then(({ data }) => {
+                if (data.success) {
+                    console.log(data.bannerInfo);
+                    getData();
+                    setLoading(false);
+                    handleDialog();
+                    return Swal.fire('Done', "Already updated banner's information", 'success');
+                }
+            })
+            .catch((error) => {
+                console.log(err.message);
+                setLoading(false);
+                handleDialog();
+                return Swal.fire('Oop!', "Cannot update banner's information", 'error');
+            })
+    };
+
+    const onChipAdd = (value) => {
+        if (keywords.includes(value)) return;
+
+        setKeywords(keywords => {
+            return [...keywords, value];
+        });
+    };
+
+    const onChipDelete = (value) => {
+        setKeywords(keywords => {
+            return keywords.filter(keyword => keyword !== value);
+        });
+    };
+
+    const onClearChange = () => {
+        setDescription(item.description);
+        setStart_date(item.start_date);
+        setEnd_date(item.end_date);
+        setVisible(item.visible);
+        setKeywords(item.keywords);
+    };
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+        <Dialog open={open} fullWidth maxWidth="md">
             <DialogTitle>Banner Information</DialogTitle>
 
             <DialogContent>
@@ -44,8 +103,8 @@ const BannerInfo = ({
                             fullWidth
                             multiline
                             rows={3}
-                            value={item.description}
-                            onChange={(e) => onInputChange(e.target.value, "description")}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </Grid>
 
@@ -53,9 +112,9 @@ const BannerInfo = ({
                         <Typography fontSize={18} fontWeight={500} mb={2}>Start Date</Typography>
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                value={item.start_date}
+                                value={start_date}
                                 renderInput={(params) => <TextField {...params} />}
-                                onChange={(e) => onInputChange(e, "start_date")}
+                                onChange={(e) => setStart_date(e.toISOString())}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -64,9 +123,9 @@ const BannerInfo = ({
                         <Typography fontSize={18} fontWeight={500} mb={2}>End Date</Typography>
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                value={item.end_date}
+                                value={end_date}
                                 renderInput={(params) => <TextField {...params} />}
-                                onChange={(e) => onInputChange(e, "end_date")}
+                                onChange={(e) => setEnd_date(e.toISOString())}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -76,18 +135,18 @@ const BannerInfo = ({
                         <RadioGroup
                             aria-label="status"
                             name="controlled-radio-buttons-group"
-                            value={item.status}
-                            onChange={(e) => onInputChange(e.target.value, "status")}
+                            value={visible}
+                            onChange={(e) => setVisible(e.target.value === 'true')}
                         >
-                            <FormControlLabel label="Visible" value="true" control={<Radio />} />
-                            <FormControlLabel label="Invisible" value="false" control={<Radio />} />
+                            <FormControlLabel label="Visible" value={true} control={<Radio />} />
+                            <FormControlLabel label="Invisible" value={false} control={<Radio />} />
                         </RadioGroup>
                     </Grid>
 
                     <Grid item md={6}>
                         <Typography fontSize={18} fontWeight={500} mb={2}>Keywords</Typography>
                         <Grid container>
-                            {item.keywords.map((keyword, kwIndex) => (
+                            {keywords.map((keyword, kwIndex) => (
                                 <Grid item md={4} mb={2} mr={1} key={kwIndex}>
                                     <Chip
                                         label={keyword}
@@ -99,7 +158,7 @@ const BannerInfo = ({
                                             backgroundColor: "#FFF1EC"
                                         }}
                                         deleteIcon={<CancelRoundedIcon style={{ color: "#FD6637" }} />}
-                                        onDelete={() => onChipDelete(kwIndex)}
+                                        onDelete={() => onChipDelete(keyword)}
                                     />
                                 </Grid>
                             ))}
@@ -111,7 +170,7 @@ const BannerInfo = ({
                                 id="outlined-size-small"
                                 size="small"
                                 value={tempKeyword}
-                                disabled={item.keywords.length === 6}
+                                disabled={keywords.length === 6}
                                 onChange={(e) => setTempKeyword(e.target.value)}
                                 onKeyPress={(e) => {
                                     if (e.key === 'Enter') {
@@ -122,7 +181,7 @@ const BannerInfo = ({
                             />
 
                             <Typography fontSize={13} color="#A0A3BD" >
-                                {item.keywords.length}/6
+                                {keywords.length}/6
                             </Typography>
                         </Stack>
                     </Grid>
@@ -130,7 +189,15 @@ const BannerInfo = ({
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={onClose}>Finish</Button>
+                {loading
+                    ? (<Button><CircularProgress /></Button>)
+                    : (<>
+                        <Button onClick={() => {
+                            onClearChange();
+                            handleDialog();
+                        }}>Cancel</Button>
+                        <Button onClick={handleUpdateInfo}>Save</Button>
+                    </>)}
             </DialogActions>
         </Dialog>
     );

@@ -1,25 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, Query, ParseIntPipe } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
 import Axios from 'axios';
 import { Public } from 'src/common/decorators/public.decorator';
-import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+
 
 let request: object;
 let strQr: string;
-const omise = require('omise')({
-	publicKey: process.env.OMISE_PUBLIC_KEY,
-	secretKey: process.env.OMISE_SECRET_KEY,
-});
+let walletId = 0
+let paymentId = 0
+let transacWallet = 546;
+
+async function Hash(){
+	const saltOrRounds = 10;
+	const password = 'random_password';
+	const hash = await bcrypt.hash(password, saltOrRounds);
+	const salt = await bcrypt.genSalt();
+	return hash;
+}
+
 
 @Controller('payment')
 export class PaymentController {
 	constructor(private readonly paymentService: PaymentService, public prisma: PrismaService) {}
 
 	@Get()
+	@Public()
 	getHello(): string {
+		console.log("done");
+		
 		return 'Hello';
 	}
 
@@ -27,57 +37,18 @@ export class PaymentController {
 
 	@Get('/qrcode')
 	@Public()
-	async getQRcode(@Req() req, @Res() res): Promise<void> {
-		const data = {
-			qrType: 'PP',
-			ppType: 'BILLERID',
-			ppId: process.env.ppId,
-			amount: '250.00',
-			ref1: '000',
-			ref3: process.env.ref3,
-		};
-		let accessToken: string;
-		const dataTest = {
-			applicationKey: process.env.API_Key,
-			applicationSecret: process.env.API_Secret,
-		};
-		await Axios({
-			method: 'post',
-			url: 'https://api-sandbox.partners.scb/partners/sandbox/v1/oauth/token',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept-Language': 'EN',
-				RequestUId: process.env.uuid,
-				ResourceOwnerId: process.env.API_Key,
-			},
-			data: JSON.stringify(dataTest),
-		})
-			.then((response) => {
-				accessToken = response.data.data.accessToken;
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-		let str: string;
-		await Axios({
-			method: 'post',
-			url: 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept-Language': 'EN',
-				Authorization: 'Bearer' + accessToken,
-				RequestUId: process.env.uuid,
-				ResourceOwnerId: process.env.API_Key,
-			},
-			data: JSON.stringify(data),
-		})
-			.then((response) => {
-				str = response.data.data.qrRawData;
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-		res.send(str);
+	async getQRcode(){
+		try {
+			let rawQr: string;
+			rawQr = await this.paymentService.getQr();
+			return {
+				success: true,
+				 rawQr
+			}
+		}
+		catch(err) {
+			return this.paymentService.throwError(err)
+		}
 	}
 
 	@Post('/confirm')
@@ -131,4 +102,98 @@ export class PaymentController {
 	// });
 
 	//-----------------Wallet Willy---------------//
+	@Get('/createwallet')
+	@Public()
+	getWallet() {
+		try {
+			// const request = req.body;
+			// const userId = request.customerId;
+			let wallet = this.paymentService.getWallet();
+			return {
+				success: true,
+				wallet
+			}
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
+	}
+
+	@Get('/createwallet')
+	@Public()
+	createWallet(@Query('customerId', ParseIntPipe) customerId?: number,) {
+		try {
+			let wallet = this.paymentService.createWallet(customerId);
+			return {
+				success: true,
+				wallet
+			}
+			
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
+	}
+
+	@Post('/wallet')
+	@Public()
+	createPaymentWallet(@Query('order_id', ParseIntPipe) orderId?: number,) {
+			try {
+				let paymentWallet = this.paymentService.createPaymentWallet(orderId);
+				return {
+					success: true,
+					paymentWallet
+				}
+			} catch (err) {
+				return this.paymentService.throwError(err);
+			}
+	}
+	
+	@Post('/wallettrans')
+	@Public()
+	createTransactionWallet(
+		@Query('amount', ParseIntPipe) amount?: number,
+		@Query() desc?: string,
+		@Query('walletId', ParseIntPipe) walletId?: number,
+		@Query('paymentId', ParseIntPipe) paymentId?: number,
+	) {
+		try {
+			let transWallet = this.paymentService.createPaymentWalletTrans(amount,walletId,paymentId)
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
+		}
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@Get('/test')
+	@Public()
+	showPayWallet(@Query('paymentId', ParseIntPipe) paymentId: number) {
+		return this.paymentService.getWallet();
+	}
+
+	@Get('/testall')
+	@Public()
+	createWallets() {
+		try {
+			return this.paymentService.createAllWallets();
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
+	}
+
+
 }

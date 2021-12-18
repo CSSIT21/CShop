@@ -4,7 +4,7 @@ import { noot, noop } from '~/common/utils';
 import { nanoid } from 'nanoid';
 
 const UploadButton = ({
-	title = 'Upload',
+	title = "Choose",
 	Icon = noot,
 	height = "42px",
 	disabled = false,
