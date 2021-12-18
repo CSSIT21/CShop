@@ -6,18 +6,24 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
-const CategoryFilterAvailability = () => {
+
+const handleChange=()=>{
+   console.log('checkbox is toggled');
+};
+const SearchFilterAvailability = () => {
   return (
-    <Box sx={{ padding: '5px 0px 0px' }}>
+    <Box sx={{ padding: '10px 0px 0px' }}>
       <Divider />
       <Box sx={{ padding: '10px 0px 0px' }}>
         <h3>Availability</h3>
         <Box>
           <FormGroup>
-            <FormControlLabel control={<Checkbox />} label='Ready to Ship' />
+            <FormControlLabel 
+            control={<Checkbox />} 
+            onChange={} label='Ready to Ship' />
             <FormControlLabel
               control={<Checkbox />}
-              label='Include Out of Stock'
+              onChange={} label='Include Out of Stock'
             />
           </FormGroup>{' '}
         </Box>
@@ -26,4 +32,4 @@ const CategoryFilterAvailability = () => {
   );
 };
 
-export default CategoryFilterAvailability;
+export default SearchFilterAvailability;

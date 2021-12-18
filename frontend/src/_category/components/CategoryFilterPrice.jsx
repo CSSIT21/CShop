@@ -28,6 +28,7 @@ const CategoryFilterPrice = () => {
                         onChange={(e) =>
                             setValue((value) => [e.target.value, value[1]])
                         }
+                        
                     />
                 </Box>
 

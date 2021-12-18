@@ -4,4 +4,5 @@ const CategoryHeader = ({ title = "", ...rest }) => {
     return <img src={CategoryHeaderLogo} {...rest} alt="" />;
 };
 
+
 export default CategoryHeader;
