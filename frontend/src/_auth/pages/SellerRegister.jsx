@@ -243,7 +243,7 @@ const SellerRegister = ({}) => {
       console.log(e.message);
     }
   };
-  return 
+  return (
     <>
       <Box sx={{ width: "70%", margin: "0 auto" }}>
         <Box className={classes.header}>Become Partner with us</Box>
