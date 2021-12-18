@@ -26,7 +26,7 @@ const Header = ({ shopInfo = {}, follow = false }) => {
         }}
       >
         {auth.user.role == "SELLER" && auth.user.shop_info[0].id == id && (
-          <Link to={`/seller/1/dashboard`}>
+          <Link to={`/seller/${id}/dashboard`}>
             <Button
               sx={{ margin: "0 50px 0 0", padding: "10px 20px" }}
               variant="outlined"

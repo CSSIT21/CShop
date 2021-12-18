@@ -179,7 +179,16 @@ const SellerRegister = ({}) => {
   const createShop = async () => {
     try {
       setloading(true);
-      const url = await getUrl(sellerInfo.shopImage.file);
+      let url = {};
+      if (sellerInfo.shopImage.file) {
+        url = await getUrl(sellerInfo.shopImage.file);
+      } else {
+        url = {
+          success: true,
+          original_link:
+            "https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-store.png",
+        };
+      }
       if (url.success) {
         axios
           .post(`${config.SERVER_URL}/sellershop`, {
@@ -217,7 +226,6 @@ const SellerRegister = ({}) => {
               });
           });
       }
-
     } catch (e) {
       console.log(e.message);
     }
