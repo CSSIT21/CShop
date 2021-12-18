@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,11 +14,40 @@ import Chip from "@mui/material/Chip";
 import { Box } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 
-const StockBody = ({ rows, columns }) => {
+const StockBody = ({ columns }) => {
+  const shopid = useParams();
+  const [rows, setRows] = useState([]);
 
-  useEffect( () => {
-    console.log(rows)
+  const fetchStock = async () => {
+    try {
+      const res = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/stock`
+      );
+
+      const created = res.data
+        .slice(0, 50)
+        .map((el) => createData(el.id, el.title, el.quantity, el.price));
+
+      setRows(created);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(async () => {
+    await fetchStock();
+    // console.log(rows)
+    // console.log(shopid.id)
   }, []);
+
+  function createData(productId, productname, amount, price) {
+    return {
+      productId,
+      productname,
+      amount,
+      price,
+    };
+  }
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -71,7 +103,7 @@ const StockBody = ({ rows, columns }) => {
                             } else if (column.id === "status") {
                               if (value === "success") {
                                 return (
-                                    <Chip
+                                  <Chip
                                     label="Success"
                                     sx={{
                                       backgroundColor: "#f3ffd9",
@@ -82,7 +114,7 @@ const StockBody = ({ rows, columns }) => {
                                 );
                               } else {
                                 return (
-                                    <Chip
+                                  <Chip
                                     label="Cancel"
                                     sx={{
                                       backgroundColor: "#ffddd9",

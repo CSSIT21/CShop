@@ -7,24 +7,21 @@ import { Timestamp } from 'rxjs';
 
 @Injectable()
 export class SellerconsoleService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
 	async getstockHistory(shopid: number) {
-		const res = await this.prisma.product.findMany({
+		const res = await this.prisma.sconsole_stock_history.findMany({
 			where: {
 				shop_id: shopid,
 			},
 			select: {
-				id: true,
-				title: true,
-				sconsole_stock_history: {
-					select: {
-						quantity: true,
-						updated_date: true,
-					},
-				},
+				product_id: true,
+				product_id_from_sconsole_stock_history: { select: { title: true, quantity: true } },
+				quantity: true,
+				updated_date: true,
 			},
 		});
+
 		return res;
 	}
 
@@ -34,9 +31,9 @@ export class SellerconsoleService {
 				shop_id: shopid,
 			},
 			select: {
-				shop_id : true,
+				shop_id: true,
 				discount_id: true,
-				max_quantity : true,
+				max_quantity: true,
 				// customer_id_from_sconsole_discount_log: true,
 				// product_id_from_sconsole_discount_log: true,
 			},
@@ -82,9 +79,10 @@ export class SellerconsoleService {
 	async getOrderStatus(orderid: number) {
 		const res = await this.prisma.sconsole_order_status.findMany({
 			where: {
-				order_id: orderid
-			}, select: {}
-		})
+				order_id: orderid,
+			},
+			select: {},
+		});
 	}
 
 	async findOneOrder(orderid: number) {
@@ -124,7 +122,6 @@ export class SellerconsoleService {
 		});
 	}
 
-
 	seller_refundhistory(id: number) {
 		return `#${id}`;
 	}
@@ -139,7 +136,7 @@ export class SellerconsoleService {
 				title: true,
 				quantity: true,
 				price: true,
-				added_date:true,
+				added_date: true,
 			},
 		});
 	}
@@ -208,9 +205,9 @@ export class SellerconsoleService {
 				shop_id: id,
 			},
 			select: {
-				quantity: true
-			}
-		})
+				quantity: true,
+			},
+		});
 	}
 	async CardOfFollows(id: number) {
 		return await this.prisma.shop_info.findUnique({
@@ -219,8 +216,8 @@ export class SellerconsoleService {
 			},
 			select: {
 				followers: true,
-			}
-		})
+			},
+		});
 	}
 	async CardOfRating(id: number) {
 		return await this.prisma.product.aggregate({
@@ -229,8 +226,8 @@ export class SellerconsoleService {
 			},
 			_avg: {
 				rating: true,
-			}
-		})
+			},
+		});
 	}
 	async CardOfSales1(id: number) {
 		return await this.prisma.sconsole_order_history.findMany({
@@ -239,14 +236,14 @@ export class SellerconsoleService {
 			},
 			select: {
 				order_id: true,
-			}
-		})
+			},
+		});
 	}
 	async CardOfSales2(id: number) {
 		return await this.prisma.order.findMany({
 			where: {
 				id: id,
-				status: "Delivered",
+				status: 'Delivered',
 			},
 			select: {
 				total_price: true,
@@ -264,9 +261,19 @@ export class SellerconsoleService {
 	// 		}
 	// 	})
 	// }
-	async Discount(shop_id: number, code: string, starte_date: Date, end_date: Date, description: string,
-		class_types: DiscountClass, min_price: number, reduce_price: number, 
-		picture_path: string, picture_thumbnail: string, picture_title: string) {
+	async Discount(
+		shop_id: number,
+		code: string,
+		starte_date: Date,
+		end_date: Date,
+		description: string,
+		class_types: DiscountClass,
+		min_price: number,
+		reduce_price: number,
+		picture_path: string,
+		picture_thumbnail: string,
+		picture_title: string,
+	) {
 		if (class_types === DiscountClass.ReducePrice) {
 			const reducePrice = await this.prisma.discount.create({
 				data: {
@@ -274,16 +281,16 @@ export class SellerconsoleService {
 					start_date: new Date(),
 					end_date: new Date(),
 					description: description,
-					class: "ReducePrice",
+					class: 'ReducePrice',
 					min_price: min_price,
 					reduce_price: reduce_price,
-					discount_types: "Shop",
+					discount_types: 'Shop',
 					added_date: new Date(),
 					picture_path: picture_path,
 					picture_thumbnail: picture_thumbnail,
 					picture_title: picture_title,
-				}
-			})
+				},
+			});
 			return reducePrice.id;
 		} else {
 			const FreeShipping = await this.prisma.discount.create({
@@ -292,10 +299,10 @@ export class SellerconsoleService {
 					start_date: new Date(),
 					end_date: new Date(),
 					description: description,
-					class: "FreeShipping",
+					class: 'FreeShipping',
 					min_price: min_price,
 					reduce_price: reduce_price,
-					discount_types: "Shop",
+					discount_types: 'Shop',
 					added_date: new Date(),
 					picture_path: picture_path,
 					picture_thumbnail: picture_thumbnail,
@@ -324,6 +331,5 @@ export class SellerconsoleService {
 				max_quantity: true,
 			},
 		});
-
 	}
 }

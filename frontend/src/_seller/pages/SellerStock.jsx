@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-import config from "~/common/constants";
 
-import React, { useState } from "react";
+
+import React, { useState,useEffect } from "react";
 
 import Indicator from "./components/Indicator";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -20,8 +20,9 @@ import StockBody from "./components/TableContent/StockBody";
 import Avatar from "@mui/material/Avatar";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
-import { useEffect } from "react";
 
+
+import config from "~/common/constants";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -29,48 +30,9 @@ const SellerStock = () => {
   const Pagename = "Stock";
   const auth = useRecoilValue(authState);
 
-  const shopid = useParams();
 
-  const fetchStock = async () => {
-    try {
-      const res = await axios.get(
-        `${config.SERVER_URL}/sellerconsole/${shopid.id}/stock`
-      );
-      // console.log(res.data);
-      Productdata.push(res.data);
-      // console.log(Productdata[0]);
-      // console.log(Productdata[0].map(product =>console.log(product.id)))
-      await createProduct()
-      // console.log(tests[0])
-      console.log(rows)
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
-  const Productdata = [];
 
-  useEffect(async () => {
-    await fetchStock();
-
-    // console.log(shopid.id)
-  }, []);
-
-  const rows = [
-    // createData(1, "Frozen yoghurt", 24, 4.0),
-    // createData(2, "Ice cream sandwich", 9, 37),v
-    // createData(3, "Eclair", 16, 24),
-    // createData(4, "Cupcake", 3, 67),
-    // createData(5, "Gingerbread", 16, 49),
-  ];
-
-  const createProduct = async () => {
-    return await Productdata[0].map((product) => {
-      rows.push(createData(product.id, product.title, product.quantity, product.price));
-      // console.log(rows)
-    });
-
-  };
 
   const columns = [
     { id: "productId", label: "productId" },
@@ -187,7 +149,7 @@ const SellerStock = () => {
       </Box>
       <Box sx={{ mt: "4rem" }} />
 
-      <StockBody rows={rows} columns={columns} />
+      <StockBody columns={columns} />
     </>
   );
 };

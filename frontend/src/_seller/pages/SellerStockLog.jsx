@@ -1,31 +1,60 @@
-import React from "react";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import SellerSearch from "./components/SellerSearch";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
-
-import PropTypes from "prop-types";
-import { useTheme } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import LastPageIcon from "@mui/icons-material/LastPage";
 
 import StockLogBody from "./components/TableContent/StockLogBody";
 import PageHeader from "./components/PageHeader";
 
-function createData(productId, productName, Quantity, TradeType, Update_Date) {
-  return { productId, productName, Quantity, TradeType, Update_Date };
-}
+import React, { useState, useEffect } from "react";
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
 
 export default function SellerStockLog() {
   const Pagename = "Stock Log";
   const auth = useRecoilValue(authState);
+
+
+  const shopid = useParams();
+
+  const fetchStock = async () => {
+    try {
+      const res = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/stockhistory`
+      );
+      // console.log(res.data);
+      Productdata.push(res.data);
+      // console.log(Productdata)
+      await createProduct();
+      console.log(rows);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const Productdata = [];
+
+  useEffect(async () => {
+    await fetchStock();
+    // console.log(rows)
+    // console.log(shopid.id)
+  }, []);
+
+  const createProduct = async () => {
+    return await Productdata[0].map((product) => {
+      rows.push(
+        createData(product.id, product.title, product.quantity, product.price)
+        // {
+        //   productId: product.id,
+        //   productname: product.title,
+        //   amount: product.quantity,
+        //   price: product.price,
+        // }
+      );
+      // console.log(rows)
+    });
+  };  
 
   const columns = [
     { id: "productId", label: "productId" },
@@ -47,7 +76,11 @@ export default function SellerStockLog() {
       align: "right",
     },
   ];
-
+ 
+  function createData(productId, productName, Quantity, TradeType, Update_Date) {
+    return { productId, productName, Quantity, TradeType, Update_Date };
+  }
+  
   const rows = [
     createData("0081", "PopCornLv10", 10, "Import", "2021-11-21 11:15:16"),
     createData("0082", "PopCornLv11", 10, "Export", "2021-11-21 11:15:16"),
