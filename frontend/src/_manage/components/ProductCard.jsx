@@ -16,6 +16,7 @@ export class ProductCard extends React.Component {
     };
     this.seller = {shop_name: "PENDING"};
     this.path = '';
+    this.rating = 0;
   }
 
   dialogClickOpen = () => {
@@ -36,6 +37,18 @@ export class ProductCard extends React.Component {
 
     if(this.props.product.product_picture != null){
       this.path = this.props.product.product_picture[0].path;
+    }
+
+    let a = 0;
+
+  if(this.props.product.product_reviews.length != null){
+    this.props.product.product_reviews.forEach((re) => {
+      a = +a + re.rating;
+    })
+    this.rating = (a / this.props.product.product_reviews.length).toFixed(2);;
+    }
+    else{
+      this.rating = 'N/A';
     }
 
     this.forceUpdate();
@@ -68,12 +81,12 @@ export class ProductCard extends React.Component {
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
-              { this.props.product.rating < 2.5 ?
+              { this.rating < 2.5 ?
                 <Card variant="outlined" style={{
                   backgroundColor: "#E04A4A33",
                   border: 'none',
                   width: '75%'}}>
-                <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#812525'}}>{this.props.product.rating}</Typography>
+                <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#812525'}}>{this.rating}</Typography>
                 </Card> :
                 (
                   this.props.product.rating > 3.5 ?
@@ -81,20 +94,20 @@ export class ProductCard extends React.Component {
                     backgroundColor: "#B3E24B33",
                     border: 'none',
                     width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.product.rating}</Typography>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.rating}</Typography>
                   </Card> :
                   <Card variant="outlined" style={{
                     backgroundColor: "#F4AF5433",
                     border: 'none',
                     width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.props.product.rating}</Typography>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.rating}</Typography>
                   </Card>
                 )
               }
               </div>
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.product.comments}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.product.product_reviews.length}</Typography>
             </Box>
           </Box>
         </CardContent>
