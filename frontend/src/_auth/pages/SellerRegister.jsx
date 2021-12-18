@@ -32,6 +32,7 @@ const SellerRegister = ({}) => {
   const [district, setDistrict] = useState([]);
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
+  const [reserveimage, setreserveimage] = useState();
   const [sellerInfo, setSellerInfo] = useState({
     shopName: "",
     shopImage: {
@@ -242,7 +243,7 @@ const SellerRegister = ({}) => {
       console.log(e.message);
     }
   };
-  return (
+  return 
     <>
       <Box sx={{ width: "70%", margin: "0 auto" }}>
         <Box className={classes.header}>Become Partner with us</Box>
@@ -250,7 +251,6 @@ const SellerRegister = ({}) => {
           <Box className={classes.context}>
             <Box className={classes.genInfo} component="form">
               <Box className={classes.contextHeader}>Shop Information</Box>
-
               <Box className={classes.textFieldBox}>
                 <TextField
                   id="shopname"
