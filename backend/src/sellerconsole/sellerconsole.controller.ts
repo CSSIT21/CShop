@@ -132,6 +132,7 @@ export class SellerconsoleController {
 	}
 
 	@Post(':id/discount')
+	@Public()
 	async discount(@Body() request, @Res() res) {
 		var id = request.id;
 		var code = request.code;
@@ -147,7 +148,6 @@ export class SellerconsoleController {
 		var quantity = request.quantity;
 		var max_quantity = request.max_quantity;
 		const discountReduce = await this.sellerconsoleService.Discount(
-			id,
 			code,
 			start_date,
 			end_date,

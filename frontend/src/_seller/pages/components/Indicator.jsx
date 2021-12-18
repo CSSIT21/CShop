@@ -24,7 +24,7 @@ const Indicator = (props) => {
         </Box>
         <Box sx={{ color: "#A0A3BD" }}>{props.name}</Box>
       </Box>
-      <Box sx={{ display: "flex", marginLeft: "30%" }}>
+      <Box sx={{ display: "flex", marginLeft: "20%" }}>
         <props.icon sx={{ color: props.fontColor, fontSize: 72 }} />
       </Box>
     </Box>

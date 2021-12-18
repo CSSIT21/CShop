@@ -106,7 +106,13 @@ function SubModal() {
               }}
             /> */}
           </Stack>
-          <Box sx={{ display: "flex", justifyContent: "space-between",marginTop : 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 2,
+            }}
+          >
             <Button onClick={subClose}>No</Button>
             <SubBodyClick />
           </Box>
@@ -119,6 +125,7 @@ function SubModal() {
 const Input = styled("input")({
   display: "none",
 });
+
 function UploadButtons() {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
@@ -159,21 +166,68 @@ function UploadButtons() {
 //   );
 // }
 
+const CategoryType = [
+  {
+    value: "IT",
+    label: "IT",
+  },
+  {
+    value: "Education",
+    label: "Education",
+  },
+  {
+    value: "Fashion",
+    label: "Fashion",
+  },
+  {
+    value: "Kids",
+    label: "Kids",
+  },
+  {
+    value: "Beauty",
+    label: "Beauty",
+  },
+  {
+    value: "Furniture",
+    label: "Furniture",
+  },
+  {
+    value: "Electronics",
+    label: "Electronics",
+  },
+  {
+    value: "Food",
+    label: "Food",
+  },
+  {
+    value: "Sport",
+    label: "Sport",
+  },
+  {
+    value: "Accessories",
+    label: "Accessories",
+  },
+  {
+    value: "Others",
+    label: "Others",
+  },
+];
+
 export default function AddProduct({ product = false, setProduct = () => {} }) {
   const ProductAdd = () => setProduct(true);
   const ProduceClose = () => setProduct(false);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "400px",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+  // const style = {
+  //   position: "absolute",
+  //   top: "50%",
+  //   left: "50%",
+  //   transform: "translate(-50%, -50%)",
+  //   width: "400px",
+  //   bgcolor: "background.paper",
+  //   border: "2px solid #000",
+  //   boxShadow: 24,
+  //   p: 4,
+  // };
 
   return (
     <Dialog open={product} onClose={ProduceClose}>
@@ -184,15 +238,18 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
           fontSize: "36px",
           lineHeight: "54px",
           color: "#FD6637",
+          fontWeight: "bold",
         }}
       >
-        ADD NEW PRODUCT
+        ADD PRODUCT
       </DialogTitle>
       <DialogContent>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Box sx={{
-            width : "350px"
-          }}>
+          <Box
+            sx={{
+              width: "350px",
+            }}
+          >
             <TextField
               required
               id="standard-required"
@@ -230,12 +287,27 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
               id="date"
               type="datetime-local"
               variant="standard"
-              defaultValue="2017-05-24T10:30"
-              sx={{ width: 350, marginTop : 2}}
+              // defaultValue="2017-05-24T10:30"
+              sx={{ width: 350, marginTop: 2, mb: 3 }}
               InputLabelProps={{
                 shrink: true,
               }}
-            /> 
+            />
+            <TextField
+              defaultValue=""
+              id="standard-select-currency"
+              select
+              label="Category"
+              variant="outlined"
+              fullWidth
+              sx={{ width: "100%", mb: 3 }}
+            >
+              {CategoryType.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Box>
         </Box>
       </DialogContent>

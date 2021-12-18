@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import SellerSearch from "./components/SellerSearch";
 import Button from "@mui/material/Button";
@@ -11,6 +11,10 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl } from "@mui/material";
+
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const discountTypes = [
   {
@@ -57,6 +61,8 @@ const SellerCreateCoupon = (props) => {
   const [discountClass, setdiscountClass] = useState("");
   const [startdate, setStartdate] = useState("");
   const [endate, setEndate] = useState("");
+  const [quantity, setQuantity] = useState("0");
+  const [max_quantity, setMax] = useState("");
 
   const codeErrorText = "LIMIT 6 character ex.ABC123";
   const [codeError, setCodeError] = useState("LIMIT 6 character ex.ABC123");
@@ -70,6 +76,7 @@ const SellerCreateCoupon = (props) => {
   const [discountClassError, setdiscountClassError] = useState("");
   const [startdateError, setStartdateError] = useState("");
   const [endateError, setEndateError] = useState("");
+  const [max_quantityError, setMaxError] = useState("");
 
   const checkValidation = () => {
     if (code == "") {
@@ -102,16 +109,66 @@ const SellerCreateCoupon = (props) => {
     if (endate == "") {
       setEndateError("This field is required");
     }
+    if (max_quantity == "") {
+      setMaxError("This field is required");
+    }
+    if (
+      code != "" &&
+      descpt != "" &&
+      minprice != "" &&
+      discountClass != "" &&
+      reduceprice != "" &&
+      picPath != "" &&
+      picThumnail != "" &&
+      picTitle != "" &&
+      startdate != "" &&
+      endate != "" &&
+      max_quantity != ""
+    ) {
+      createCoupon();
+    }
   };
 
   const handleSubmit = () => {
-    // console.log(
-    //   `${discountType},${discountClass},${code},${startdate},${endate}`
-    // );
-    // window.location.reload(false);
+    console.log(
+      `${code},${descpt},${minprice},${reduceprice},${startdate},${endate},${discountType},${discountClass},${max_quantity}
+      ${picPath},${picThumnail},${picTitle}`
+    );
+    console.log(tempShopid);
+
     checkValidation();
-    console.log(minprice, reduceprice);
-    // window.alert("minecraft");
+    // console.log(minprice, reduceprice);
+    // window.location.reload(false);
+  };
+
+  const shopid = useParams();
+
+  const tempShopid = shopid.id;
+
+  const createCoupon = async () => {
+    try {
+      await axios.post(
+        `${config.SERVER_URL}/sellerconsole/${shopid}/discount`,
+        {
+          id: parseInt(tempShopid),
+          code: code,
+          start_date: startdate,
+          end_date: endate,
+          description: descpt,
+          class_types: discountClass,
+          min_price: parseInt(minprice),
+          reduce_price: parseInt(reduceprice),
+          picture_path: picPath,
+          picture_thumbnail: picThumnail,
+          picture_title: picTitle,
+          quantity: parseInt(quantity),
+          max_quantity: parseInt(max_quantity),
+        }
+      );
+      window.alert("Create Success");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -202,6 +259,28 @@ const SellerCreateCoupon = (props) => {
                 //   helperText="Some important text"
                 sx={{ width: "50%", mb: 3 }}
               />
+              <TextField
+                error={max_quantityError.length === 0 ? false : true}
+                value={max_quantity}
+                helperText={max_quantityError}
+                type="number"
+                inputProps={{
+                  inputMode: "numeric",
+                  pattern: "[0-9]*",
+                  maxLength: 12,
+                }}
+                onChange={(e) => {
+                  setMax(e.target.value);
+                }}
+                required
+                id="standard-required"
+                label="max quantity"
+                variant="outlined"
+                fullWidth
+                //   helperText="Some important text"
+                sx={{ width: "50%", mb: 3 }}
+              />
+              <br />
               <TextField
                 onChange={(e) => {
                   setdiscountClass(e.target.value);

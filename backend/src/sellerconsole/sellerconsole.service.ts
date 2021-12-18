@@ -255,7 +255,6 @@ export class SellerconsoleService {
 	// }
 	
 	async Discount(
-		shop_id: number,
 		code: string,
 		starte_date: Date,
 		end_date: Date,
