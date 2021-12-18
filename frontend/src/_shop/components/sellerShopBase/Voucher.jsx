@@ -33,14 +33,15 @@ const Voucher = ({ shopcoupons }) => {
   const [page, setPage] = useState(0);
   const couponsPerRow = 2;
   const totalPage = Math.ceil(coupons.length / couponsPerRow);
-  const handleClaim = (idx) => {
+  const handleClaim = (coupon_id) => {
     // macky api claim voucher
     setcoupons(
-      coupons.filter((coupon, id) => {
-        id != idx;
+      coupons.filter((coupon) => {
+        return coupon.discount_id != coupon_id;
       })
     );
   };
+  console.log(coupons);
   if (coupons.length > 0) {
     return (
       <Box className={classes.wrapper}>
@@ -66,13 +67,13 @@ const Voucher = ({ shopcoupons }) => {
           >
             {(coupon, idx) => (
               <Coupon
-                key={coupon.id}
+                key={coupon.discount_id}
                 coupon={coupon}
                 claimProps={{
                   disabled: coupon.claimed,
                   title: "Claim",
                 }}
-                onClick={() => handleClaim(idx)}
+                onClick={() => handleClaim(coupon.discount_id)}
               />
             )}
           </Carousel>

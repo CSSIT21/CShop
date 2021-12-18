@@ -36,7 +36,7 @@ const FollowButton = ({ follow = false, ...rest }) => {
           onClick={handleClick}
           {...rest}
         >
-          <AddIcon />
+          <AddIcon style={{marginRight: "5px"}} />
           Follow
         </LoadingButton>
       )}
