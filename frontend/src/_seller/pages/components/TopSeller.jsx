@@ -35,17 +35,6 @@ const TopSeller = () => {
         </Box>
       </Box>
 
-      <Button
-      variant="contained"
-      startIcon={<ConfirmationNumberOutlinedIcon/>}
-      sx={{
-        textTransform: "capitalize",
-        height: "44px",
-        marginLeft : 55,
-      }}>
-        <Typography sx={{ fontSize: "12px" }} onClick= {setOpen} > Coupon</Typography>
-      </Button>
-
       {userType === "seller" && (
         
         <Button

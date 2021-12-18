@@ -132,32 +132,32 @@ function UploadButtons() {
   );
 }
 
-function SelectVariants() {
-  const [Category, setCategory] = useState("");
+// function SelectVariants() {
+//   const [Category, setCategory] = useState("");
 
-  const categoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-  return (
-    <FormControl variant="standard" sx={{ m: 0, minWidth: 350, mt: "10px" }}>
-      <InputLabel id="demo-simple-select-standard-label">Category</InputLabel>
-      <Select
-        labelId="demo-simple-select-standard-label"
-        id="demo-simple-select-standard"
-        value={Category}
-        onChange={categoryChange}
-        label="Category"
-      >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
-      </Select>
-    </FormControl>
-  );
-}
+//   const categoryChange = (event) => {
+//     setCategory(event.target.value);
+//   };
+//   return (
+//     <FormControl variant="standard" sx={{ m: 0, minWidth: 350, mt: "10px" }}>
+//       <InputLabel id="demo-simple-select-standard-label">Category</InputLabel>
+//       <Select
+//         labelId="demo-simple-select-standard-label"
+//         id="demo-simple-select-standard"
+//         value={Category}
+//         onChange={categoryChange}
+//         label="Category"
+//       >
+//         <MenuItem value="">
+//           <em>None</em>
+//         </MenuItem>
+//         <MenuItem value={10}>Ten</MenuItem>
+//         <MenuItem value={20}>Twenty</MenuItem>
+//         <MenuItem value={30}>Thirty</MenuItem>
+//       </Select>
+//     </FormControl>
+//   );
+// }
 
 export default function AddProduct({ product = false, setProduct = () => {} }) {
   const ProductAdd = () => setProduct(true);
@@ -200,9 +200,6 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
               variant="standard"
               fullWidth
             />
-            <Box>
-              <SelectVariants  />
-            </Box>
             <Box
               sx={{
                 marginTop: "20px",
@@ -229,6 +226,16 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                 fullWidth
               />
             </Box>
+            <TextField
+              id="date"
+              type="datetime-local"
+              variant="standard"
+              defaultValue="2017-05-24T10:30"
+              sx={{ width: 350, marginTop : 2}}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            /> 
           </Box>
         </Box>
       </DialogContent>
