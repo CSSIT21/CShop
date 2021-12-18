@@ -40,9 +40,9 @@ const SellerStock = () => {
       Productdata.push(res.data);
       // console.log(Productdata[0]);
       // console.log(Productdata[0].map(product =>console.log(product.id)))
-      createProduct()
+      await createProduct()
       // console.log(tests[0])
-      // console.log(rows)
+      console.log(rows)
     } catch (e) {
       console.log(e);
     }
@@ -61,7 +61,7 @@ const SellerStock = () => {
     // createData(2, "Ice cream sandwich", 9, 37),v
     // createData(3, "Eclair", 16, 24),
     // createData(4, "Cupcake", 3, 67),
-    // createData(5, "Gingerbread", 16, 49),อ
+    // createData(5, "Gingerbread", 16, 49),
   ];
 
   const createProduct = async () => {

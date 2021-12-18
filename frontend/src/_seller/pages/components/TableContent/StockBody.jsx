@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +12,11 @@ import { Box } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 
 const StockBody = ({ rows, columns }) => {
+
+  useEffect( () => {
+    console.log(rows)
+  }, []);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
