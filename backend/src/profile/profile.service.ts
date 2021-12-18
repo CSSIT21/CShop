@@ -128,9 +128,14 @@ export class ProfileService {
 			};
 		}
 	}
-	public async getFollowingShop(data: User) {
+	public async getFollowingShop(data: User, page: number) {
 		const { id } = data;
 		try {
+			const count = await this.prisma.customer_followed_shop.count({
+				where: {
+					customer_id: id,
+				},
+			});
 			const followingShop = await this.prisma.customer_followed_shop.findMany({
 				where: {
 					customer_id: id,
@@ -149,9 +154,11 @@ export class ProfileService {
 					},
 				},
 			});
+			const filteredShop = followingShop.slice((page - 1) * 20, page * 20);
 			return {
 				success: true,
-				followingShop,
+				filteredShop,
+				count,
 			};
 		} catch (e) {
 			console.log(e.message);

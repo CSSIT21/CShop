@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { User } from './dto/user.dto';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
@@ -33,8 +33,8 @@ export class ProfileController {
 
 	@Post('/followingshop')
 	@Public()
-	public async getFollowingShop(@Body() data: User) {
-		return await this.profileService.getFollowingShop(data);
+	public async getFollowingShop(@Body() data: User, @Query('page', ParseIntPipe) page: number) {
+		return await this.profileService.getFollowingShop(data, page);
 	}
 
 	@Post('/address/get')
