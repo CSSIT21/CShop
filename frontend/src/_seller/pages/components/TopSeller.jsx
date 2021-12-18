@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import { Avatar, Typography, Modal } from "@mui/material";
@@ -7,19 +7,43 @@ import authState from "../../../common/store/authState";
 import Button from "@mui/material/Button";
 import { useHistory } from "react-router";
 import StoreIcon from "@mui/icons-material/Store";
-import Popup  from "./Popup";
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
+import Popup from "./Popup";
+import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const userType = "seller";
+
 const TopSeller = () => {
+  const shopid = useParams();
   const classes = useStyles();
   const auth = useRecoilValue(authState);
   const router = useHistory();
-  
-  const [open,setOpen] = useState(false);
+
+  const [open, setOpen] = useState(false);
+
+  const [shopinf, setShopinfo] = useState();
+
+  const fetchShopInfo = async () => {
+    try {
+      const res = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/shopinfo`
+      );
+      console.log(res.data)
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchShopInfo();
+  }, []);
 
   return (
-    <Box className={classes.container}><Popup open={open} setOpen = {setOpen} title = "" description = "" />
+    <Box className={classes.container}>
+      <Popup open={open} setOpen={setOpen} title="" description="" />
       <Box className={classes.profile}>
         <Avatar
           src={auth.user.url}
@@ -36,7 +60,6 @@ const TopSeller = () => {
       </Box>
 
       {userType === "seller" && (
-        
         <Button
           variant="contained"
           startIcon={<StoreIcon />}
@@ -46,13 +69,16 @@ const TopSeller = () => {
           }}
           // onClick={() => {
           //   router.push("/shop/1");
-          
+
           // }}
-          onClick = {() =>{
-            setOpen(true)
+          onClick={() => {
+            setOpen(true);
           }}
         >
-          <Typography sx={{ fontSize: "12px" }} onClick= {setOpen} > Edit</Typography>
+          <Typography sx={{ fontSize: "12px" }} onClick={setOpen}>
+            {" "}
+            Edit
+          </Typography>
         </Button>
       )}
     </Box>

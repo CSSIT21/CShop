@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, ParseIntPipe } from '@nestjs/common';
 import { SellerconsoleService } from './sellerconsole.service';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
@@ -27,88 +27,112 @@ export class SellerconsoleController {
 
 	@Get(':id/stock')
 	@Public()
-	 getStock(@Param('id') id : number){
-		 return this.sellerconsoleService.getStock(+id);
-	 }
+	async getStock(@Param('id') id: number, @Res() res) {
+		const result = await this.sellerconsoleService.getStock(+id);
+		res.send(result);
+	}
 
-	 @Get(':id/cardToProduct')
-	 @Public()
-	 getCardToProduct(@Param('id') id : number){
-		 return this.sellerconsoleService.CardOfProduct(+id);
-	 }
+	@Get(':id/cardToProduct')
+	@Public()
+	getCardToProduct(@Param('id') id: number) {
+		return this.sellerconsoleService.CardOfProduct(+id);
+	}
 
-	 @Get(':id/cardToFollows')
-	 @Public()
-	 getCardToFollows(@Param('id') id : number){
-		 return this.sellerconsoleService.CardOfFollows(+id);
-	 }
+	@Get(':id/cardToFollows')
+	@Public()
+	getCardToFollows(@Param('id') id: number) {
+		return this.sellerconsoleService.CardOfFollows(+id);
+	}
 
-	 @Get(':id/cardToRating')
-	 @Public()
-	 getCardToRating(@Param('id') id : number){
-		 return this.sellerconsoleService.CardOfRating(+id);
-	 }
-	
-	 @Get(':id/cardToSales')
-	 @Public()
-	 getCardToSales(@Param('id') id : number){
-		 return this.sellerconsoleService.CardOfSales1(+id);
-	 }
+	@Get(':id/cardToRating')
+	@Public()
+	getCardToRating(@Param('id') id: number) {
+		return this.sellerconsoleService.CardOfRating(+id);
+	}
 
-	 @Post(':id/stockLog')
-	 async getStockLog(@Body()request  , @Res() res ) : Promise <any>  {
-		 var id = request.id;
-		 var shop_id = request.shop_id;
-		 var title = request.title;
-		 var sub_title = request.sub_title;
-		 var price = request.price;
-		 var quantity = request.quantity;
-		 var category_id = request.category_id;
-		 var sold = request.sold;
-		 var suggest_products = request.suggest_products;
-		 var rating = request.rating;
-		console.log(shop_id)
-		const a = await this.sellerconsoleService.AddToStock(id ,shop_id,title,sub_title,price,quantity,category_id, sold,suggest_products,rating);
-		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id , quantity );
-		console.log(a,b);
+	@Get(':id/cardToSales')
+	@Public()
+	getCardToSales(@Param('id') id: number) {
+		return this.sellerconsoleService.CardOfSales1(+id);
+	}
+
+	@Post(':id/stockLog')
+	async getStockLog(@Body() request, @Res() res): Promise<any> {
+		var id = request.id;
+		var shop_id = request.shop_id;
+		var title = request.title;
+		var sub_title = request.sub_title;
+		var price = request.price;
+		var quantity = request.quantity;
+		var category_id = request.category_id;
+		var sold = request.sold;
+		var suggest_products = request.suggest_products;
+		var rating = request.rating;
+		console.log(shop_id);
+		const a = await this.sellerconsoleService.AddToStock(
+			id,
+			shop_id,
+			title,
+			sub_title,
+			price,
+			quantity,
+			category_id,
+			sold,
+			suggest_products,
+			rating,
+		);
+		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id, quantity);
+		console.log(a, b);
 		// res.send(a);
 		res.send(b);
 	}
 
 	@Get(':id/orderHistory')
-	async getOrderhistory(@Param('id') id:number){
+	async getOrderhistory(@Param('id') id: number) {
 		const res = await this.sellerconsoleService.getOrderHistory(+id);
-		return res
+		return res;
 	}
 
 	@Post(':id/acceptOrderStatus')
-	async acceptOrderStatus(@Body() Order,@Res() res){
-		let order_id= Order.order_id
-		let product_id= Order.product_id
-		let shop_id= Order.shop_id
-		let started_date = Order.started_date
-		let status= 'Accept'
-		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(order_id,product_id,shop_id,started_date,status)
-		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id)
-		res.send(addToOrderHistory)
-		res.send(removeOrderFromOrderStatus)
+	async acceptOrderStatus(@Body() Order, @Res() res) {
+		let order_id = Order.order_id;
+		let product_id = Order.product_id;
+		let shop_id = Order.shop_id;
+		let started_date = Order.started_date;
+		let status = 'Accept';
+		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(
+			order_id,
+			product_id,
+			shop_id,
+			started_date,
+			status,
+		);
+		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id);
+		res.send(addToOrderHistory);
+		res.send(removeOrderFromOrderStatus);
 	}
 
 	@Post(':id/cancelOrderStatus')
-	async cancelOrderStatus(@Body() Order,@Res() res){
-		let order_id= Order.order_id
-		let product_id= Order.product_id
-		let shop_id= Order.shop_id
-		let started_date = Order.started_date
-		let status= 'Cancel'
-		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(order_id,product_id,shop_id,started_date,status)
-		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id)
-		res.send(addToOrderHistory)
-		res.send(removeOrderFromOrderStatus)
+	async cancelOrderStatus(@Body() Order, @Res() res) {
+		let order_id = Order.order_id;
+		let product_id = Order.product_id;
+		let shop_id = Order.shop_id;
+		let started_date = Order.started_date;
+		let status = 'Cancel';
+		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(
+			order_id,
+			product_id,
+			shop_id,
+			started_date,
+			status,
+		);
+		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id);
+		res.send(addToOrderHistory);
+		res.send(removeOrderFromOrderStatus);
 	}
 
 	@Post(':id/discount')
-	async discount(@Body()request ,@Res () res){
+	async discount(@Body() request, @Res() res) {
 		var id = request.id;
 		var code = request.code;
 		var start_date = request.start_date;
@@ -122,12 +146,39 @@ export class SellerconsoleController {
 		var picture_title = request.picture_title;
 		var quantity = request.quantity;
 		var max_quantity = request.max_quantity;
-		const discountReduce = await this.sellerconsoleService.Discount(id ,code ,start_date ,end_date, description ,class_types ,min_price ,reduce_price,
-																				 picture_path ,picture_thumbnail ,picture_title);
-		const discountShop = await this.sellerconsoleService.DiscountShop(id,discountReduce,quantity, max_quantity)
+		const discountReduce = await this.sellerconsoleService.Discount(
+			id,
+			code,
+			start_date,
+			end_date,
+			description,
+			class_types,
+			min_price,
+			reduce_price,
+			picture_path,
+			picture_thumbnail,
+			picture_title,
+		);
+		const discountShop = await this.sellerconsoleService.DiscountShop(id, discountReduce, quantity, max_quantity);
 		res.send(discountShop);
 	}
 
+	@Get(':id/shopinfo')
+	@Public()
+	async getOneshopinfo(@Param('id', ParseIntPipe) shopid: number) {
+		const result = await this.sellerconsoleService.getShopInfo(shopid);
+		return result;
+	}
+
+	@Post(':id/updateShopinfo')
+	@Public()
+	async updateShopinfo(@Param('id', ParseIntPipe) shopid: number, @Body() request, @Res() res) {
+		let shopname = request.shop_name;
+		let phonenumber = request.phone_number;
+		let description = request.description;
+		const result = await this.sellerconsoleService.updateShopInfo(shopid, shopname, phonenumber, description);
+		res.send(result);
+	}
 }
 
 // @Post()

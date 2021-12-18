@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateSellerconsoleDto } from './dto/create-sellerconsole.dto';
 import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
-import { DiscountClass, DiscountTypes, OrderStatus, PrismaClient } from '@prisma/client';
+import { DiscountClass, DiscountTypes, OrderStatus, PrismaClient, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Timestamp } from 'rxjs';
 
@@ -127,7 +127,7 @@ export class SellerconsoleService {
 	}
 
 	async getStock(id: number) {
-		return await this.prisma.product.findMany({
+		const res = await this.prisma.product.findMany({
 			where: {
 				shop_id: id,
 			},
@@ -136,10 +136,12 @@ export class SellerconsoleService {
 				title: true,
 				quantity: true,
 				price: true,
-				added_date: true,
+				added_date: true
 			},
 		});
+		return res;
 	}
+
 	async AddToStock(
 		id: number,
 		shopId: number,
@@ -331,5 +333,35 @@ export class SellerconsoleService {
 				max_quantity: true,
 			},
 		});
+	}
+
+	async getShopInfo(shopid: number) {
+		const shopinfo = await this.prisma.shop_info.findUnique({
+			where: {
+				id: shopid,
+			},
+			select: {
+				shop_name: true,
+				phone_number: true,
+				description: true,
+				followers: true,
+				shop_picture: true,
+			},
+		});
+		return shopinfo;
+	}
+
+	async updateShopInfo(shopid: number, shopname: string, phonenumber: string, description: string) {
+		const shopinfo = await this.prisma.shop_info.update({
+			where: {
+				id: shopid,
+			},
+			data: {
+				shop_name: shopname,
+				phone_number: phonenumber,
+				description: description,
+			},
+		});
+		return shopinfo;
 	}
 }
