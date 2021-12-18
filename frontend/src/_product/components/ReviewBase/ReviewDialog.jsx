@@ -10,6 +10,9 @@ import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 import { getUrl } from "~/common/utils";
+import axios from "axios";
+import config from "~/common/constants";
+import Swal from "sweetalert2";
 // import { useRecoilValue } from "recoil";
 // import authState from "../../common/store/authState";
 
@@ -19,10 +22,27 @@ function ReviewDialog({
   productId = 20,
   shopId = 1,
   customerId = 1,
+  // ตัอย่างoptions
+  // กรณีที่สินค้ามีoption 2
+  // options = [
+  //   { firstChoice: "XL", secondChoice: "Pink" },
+  //   { firstChoice: "L", secondChoice: "Red" },
+  //   { firstChoice: "M", secondChoice: "Green" },
+  //   { firstChoice: "XL", secondChoice: "Pink" },
+  //   { firstChoice: "L", secondChoice: "Red" },
+  //   { firstChoice: "M", secondChoice: "Green" },
+  // ],
+  // กรณีที่สินค้ามีoption 1
+  // options = [
+  //   { firstChoice: "Pink" },
+  //   { firstChoice: "Red" },
+  //   { firstChoice: "Green" },
+  //   { firstChoice: "Pink" },
+  //   { firstChoice: "Red" },
+  //   { firstChoice: "Green" },
+  // ],
+  // กรณีที่สินค้าไม่มีoption
   options,
-  choices,
-  // options = [{optionName: "Size", choices:["XL", "L", "M", "XL", "L", "M"]}],
-  // choices = ["XL", "L", "M", "XL", "L", "M"],
   isReview = true, // ต้องถามธรรม์อีกที
 }) {
   // const auth = useRecoilValue(authState);
@@ -122,7 +142,13 @@ function ReviewDialog({
     console.log(rating);
     let concatComment = commentProductText;
     chipData.forEach((e) => {
-      if (e.clicked) concatComment = concatComment + ", " + e.label;
+      if (e.clicked) {
+        if (concatComment) {
+          concatComment += ", " + e.label;
+        } else {
+          concatComment += e.label;
+        }
+      }
     });
     console.log(concatComment);
     axios
@@ -137,26 +163,46 @@ function ReviewDialog({
       .then(({ data }) => {
         if (data.success) {
           console.log(data.review);
-        } else alert("Fail to fetch data :(");
+          commentShopText ? "" : handleClickOpenThankYouDialog();
+          //
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
 
     if (commentShopText) {
       console.log(commentShopText);
       axios
         .post(
-          `${config.SERVER_URL}/review-product/${productId}/${customerId}/create-shop-review`,
+          `${config.SERVER_URL}/review-product/${shopId}/${customerId}/create-shop-review`,
           {
-            shopId,
-            rating: starScore,
+            productId,
+            rating: 0,
             comment: commentShopText,
           }
         )
         .then(({ data }) => {
           if (data.success) {
             console.log(data.review);
-          } else alert("Fail to fetch data :(");
+            handleClickOpenThankYouDialog();
+          }
+        })
+        .catch((e) => {
+          console.log(e.message);
+          Swal.fire({
+            title: "Something went wrong!",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         });
     }
+    handleClickOpenThankYouDialog();
   };
 
   return (
@@ -182,8 +228,6 @@ function ReviewDialog({
           <ReviewDialogContents
             img={productImg}
             productName={[productName]}
-            options={options}
-            choices={choices}
             generatedCommentsData={chipData}
             setChipData={setChipData}
             commentProduct={commentProductText}
@@ -198,6 +242,7 @@ function ReviewDialog({
             deleteImage={deleteImage}
             starScore={starScore}
             setStarScore={setStarScore}
+            options={options}
           />
         </DialogContent>
         <DialogActions>

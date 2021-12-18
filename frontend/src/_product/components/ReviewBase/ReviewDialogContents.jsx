@@ -23,17 +23,11 @@ function ReviewDialogContents({
   img,
   productName,
   options,
-  choices,
 }) {
   return (
     <Box>
       <ConditionAccordion />
-      <ProductBox
-        img={img}
-        productName={[productName]}
-        options={options}
-        choices={choices}
-      />
+      <ProductBox img={img} productName={[productName]} options={options} />
       <StarBox starScore={starScore} setStarScore={setStarScore} />
       <GeneratedComments
         generatedComments={generatedCommentsData}

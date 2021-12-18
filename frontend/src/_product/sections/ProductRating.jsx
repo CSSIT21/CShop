@@ -56,7 +56,7 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
               Product Rating
             </Typography>
             <RatingStars
-              value={avgRating}
+              value={parseInt(avgRating)}
               iconStyle={iconStyle}
               padding={paddingStar}
             ></RatingStars>
@@ -85,7 +85,7 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
                       ? val.firstname + " " + val.lastname
                       : "undefined username"
                   }
-                  rating={val.rating}
+                  rating={parseInt(val.rating)}
                   comment={val.comment}
                   key={key}
                   reviewTime={val.review_time}

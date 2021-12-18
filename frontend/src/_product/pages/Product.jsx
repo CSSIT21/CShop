@@ -12,6 +12,7 @@ import axios from "axios";
 import config from "../../common/constants";
 import { useRecoilValue } from "recoil";
 import authState from "../../common/store/authState";
+import Swal from "sweetalert2";
 
 const ProductPage = (props) => {
   const auth = useRecoilValue(authState);
@@ -55,7 +56,12 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           navigator.clipboard.writeText(`http://localhost:8080/l/${data.link}`);
-        } else alert("Fail to fetch data :(");
+        } else
+          Swal.fire({
+            title: "Something went wrong!",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
       });
   };
 
@@ -63,24 +69,65 @@ const ProductPage = (props) => {
     window.scrollTo(0, 0);
 
     // Product
-    axios.get(`${config.SERVER_URL}/product/${id}`).then(({ data }) => {
-      if (data.success) {
-        setProductDetails(data.product_details);
-      } else alert("Fail to fetch data :(");
-    });
-    // Suggestion product
-    axios.get(`${config.SERVER_URL}/product/${id}/suggest`).then(({ data }) => {
-      if (data.success) {
-        setProductsSuggestion(data.suggest_products);
-      } else alert("Fail to fetch data :(");
-    });
+    axios
+      .get(`${config.SERVER_URL}/product/${id}`)
+      .then(({ data }) => {
+        if (data.success) {
+          setProductDetails(data.product_details);
+          // setProductTitle(data.product_details?.title);
+          let title = data.product_details.title;
+          console.log(data.product_details.title);
+          if (title) {
+            // Suggestion product
+            axios
+              .get(
+                `https://ml-2.cshop.cscms.ml/relatedProduct/${id}/${encodeURIComponent(
+                  title
+                )}`
+              )
+              .then(({ data }) => {
+                console.log(data);
+                // if (data.success) {
+                //   setProductsSuggestion(data.suggest_products);
+                // }
+              })
+              .catch((e) => {
+                console.log(e.message);
+                Swal.fire({
+                  title: "Something went wrong!",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              });
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
+
     // Shop
-    axios.get(`${config.SERVER_URL}/product/${id}/shop`).then(({ data }) => {
-      if (data.success) {
-        setShopId(data.shop_details.id);
-        setShopDetails(data.shop_details);
-      } else alert("Fail to fetch data :(");
-    });
+    axios
+      .get(`${config.SERVER_URL}/product/${id}/shop`)
+      .then(({ data }) => {
+        if (data.success) {
+          setShopId(data.shop_details.id);
+          setShopDetails(data.shop_details);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
     // Comments
     axios
       .get(`${config.SERVER_URL}/product/${id}/comments`)
@@ -88,7 +135,15 @@ const ProductPage = (props) => {
         if (data.success) {
           setComments(data.comments.comment_list);
           setAvgRating(data.comments.avg_product_rating);
-        } else alert("Fail to fetch data :(");
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
     // Get product pictures
     axios
@@ -96,7 +151,15 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setProductPictures(data.pictures);
-        } else alert("Fail to fetch data :(");
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
     // Get comment pictures
     axios
@@ -104,19 +167,39 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setCommentPictures(data.pictures);
-        } else alert("Fail to fetch data :(");
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
     // Get options
-    axios.get(`${config.SERVER_URL}/product/${id}/options`).then(({ data }) => {
-      if (data.success) {
-        setOptions(data.options);
-      } else alert("Fail to fetch data :(");
-    });
+    axios
+      .get(`${config.SERVER_URL}/product/${id}/options`)
+      .then(({ data }) => {
+        if (data.success) {
+          setOptions(data.options);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
   }, [id]);
 
   useEffect(() => {
     avgRatingFormat();
   }, [avgRating]);
+
+  // console.log(productTitle);
 
   return (
     <Box

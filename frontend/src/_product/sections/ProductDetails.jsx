@@ -91,7 +91,7 @@ const ProductDetails = ({
               marginBottom: "5px",
             }}
           >
-            {productDetails?.title.slice(0, 50)}
+            {productDetails?.title.slice(0, 120)}
             {productDetails?.title.length > 50 ? "..." : ""}
           </Typography>
         )}
@@ -148,13 +148,12 @@ const ProductDetails = ({
         {/* options */}
         {options &&
           options.map((e, key) => (
-            <Box sx={optionStyle}>
+            <Box sx={optionStyle} key={key}>
               <OptionsChip
                 handleClick={handleClickChoice}
                 list={e.product_choices}
                 name={e.name}
                 selected={selected}
-                key={key}
               />
             </Box>
           ))}
