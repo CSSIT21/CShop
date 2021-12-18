@@ -1,15 +1,10 @@
-body.error{
-    background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
-background-size: 1800% 1800%;
-
--webkit-animation: rainbow 18s ease infinite;
--z-animation: rainbow 18s ease infinite;
--o-animation: rainbow 18s ease infinite;
-  animation: rainbow 18s ease infinite;
+body.error {
+    background: red;
+    background-size: 1800% 1800%;
     color: white;
 }
 
-.error a{
+.error a {
     text-decoration: none;
     color: red;
     background-color: white;
@@ -18,42 +13,22 @@ background-size: 1800% 1800%;
     margin: 0px 10px;
     transition: all .25s ease-in-out;
 }
-.error a:hover{
+
+.error a:hover {
     color: white;
     background-color: rgba(255, 255, 255, 0.575);
 }
-.error span{
+
+.error span {
     padding: 5px;
     background-color: #ffffff5b;
     border-radius: 5px;
 }
 
-.error .naenam{
+.error .naenam {
     display: flex;
     padding: 5px;
     background-color: #ffffff5b;
     margin-top: 20px;
     border-radius: 5px;
-}
-
-
-@-webkit-keyframes rainbow {
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
-@-moz-keyframes rainbow {
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
-@-o-keyframes rainbow {
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
-@keyframes rainbow { 
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
 }

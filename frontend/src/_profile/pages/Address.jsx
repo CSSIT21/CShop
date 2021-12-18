@@ -5,28 +5,27 @@ import AccordionCommon from "~/common/components/AccordionCommon";
 import { makeStyles } from "@mui/styles";
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import ConfirmDialogs from "~/common/components/ConfirmDialogs";
 import axios from "axios";
-import { For } from "~/common/utils";
 import GridTitle from "../components/AddressBase/GridTitle";
+import { useRecoilValue } from "recoil";
+import authState from "../../common/store/authState";
+import Swal from "sweetalert2";
+import LoadingButton from "@mui/lab/LoadingButton";
+import config from "~/common/constants";
 
 const AddressPage = () => {
   const classes = useStyles();
-  const [openShopping, setopenShopping] = useState(true);
-  const [open, setOpen] = useState(false);
-  const addNewAddress = () => {
-    setOpen(true);
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+  const [address, setAddress] = useState([]);
+  const [openAddress, setopenAddress] = useState(false);
   const [addressData, setAddressData] = useState([]);
   const [province, setProvince] = useState([]);
   const [district, setDistrict] = useState([]);
   const [subDistrict, setSubDistrict] = useState([]);
   const [postalCode, setPostalCode] = useState([]);
+  const auth = useRecoilValue(authState);
   const [userAddress, setuserAddress] = useState({
-    name: "",
+    id: auth.user.id,
+    recipient: "",
     phoneNumber: "",
     addressLine: "",
     province: "",
@@ -34,6 +33,71 @@ const AddressPage = () => {
     subDistrict: "",
     postalCode: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const addNewAddress = () => {
+    console.log(userAddress);
+    if (
+      userAddress.recipient &&
+      userAddress.phoneNumber &&
+      userAddress.addressLine &&
+      userAddress.province &&
+      userAddress.district &&
+      userAddress.subDistrict &&
+      userAddress.postalCode
+    ) {
+      setIsLoading(true);
+      axios
+        .post(config.SERVER_URL + "/profile/address/add", userAddress)
+        .then(({ data }) => {
+          if (data.success) {
+            Swal.fire({
+              title: "Success!",
+              text: "Your address has been added!",
+              icon: "success",
+              timer: 3000,
+            });
+            axios
+              .post(config.SERVER_URL + "/profile/address/get", {
+                id: auth.user.id,
+              })
+              .then(({ data }) => {
+                setAddress(data.address);
+              });
+            clearAddress();
+          } else {
+            Swal.fire({
+              title: "Failed!",
+              text: "Please check if all information has been filled out!",
+              icon: "error",
+              confirmButtonText: "OK",
+              timer: 4000,
+            });
+          }
+          setIsLoading(false);
+        });
+    } else {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please check if all information has been filled out!",
+        icon: "error",
+        confirmButtonText: "OK",
+        timer: 4000,
+      });
+    }
+  };
+  const clearAddress = () => {
+    setuserAddress({
+      ...userAddress,
+      recipient: "",
+      phoneNumber: "",
+      addressLine: "",
+      province: "",
+      district: "",
+      subDistrict: "",
+      postalCode: "",
+    });
+  };
 
   const getData = async () => {
     const fetchedData = await axios.get(
@@ -42,6 +106,9 @@ const AddressPage = () => {
     setAddressData(fetchedData.data);
     setProvince([...new Set(fetchedData.data.map((el) => el.province))].sort());
   };
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     setDistrict(
@@ -87,13 +154,6 @@ const AddressPage = () => {
   }, [userAddress.subDistrict]);
   return (
     <>
-      <ConfirmDialogs
-        open={open}
-        handleClose={() => {
-          setOpen(false);
-        }}
-        text="Your information has been saved"
-      />
       <TopProfile />
       <Box className={classes.body}>
         <Box className={classes.container}>
@@ -110,8 +170,8 @@ const AddressPage = () => {
             title="Add New Address"
             subTitle="Please check the correct address and phone number registration
             for accurate and fast delivery"
-            open={openShopping}
-            setOpen={setopenShopping}
+            open={openAddress}
+            setOpen={setopenAddress}
           >
             <Box sx={{ marginBottom: "24px" }}>
               <Grid container>
@@ -120,12 +180,12 @@ const AddressPage = () => {
                   <TextField
                     sx={textField}
                     variant="outlined"
-                    value={userAddress.name}
+                    value={userAddress.recipient}
                     placeholder="Recipient's Name"
                     onChange={(e) => {
                       setuserAddress({
                         ...userAddress,
-                        name: e.target.value,
+                        recipient: e.target.value,
                       });
                     }}
                   ></TextField>
@@ -155,7 +215,7 @@ const AddressPage = () => {
             </Box>
             <Box sx={{ marginBottom: "24px" }}>
               <Grid container>
-                <GridTitle title="Select Province" />
+                <GridTitle title="Province" />
                 <Grid item xs={8}>
                   <TextField
                     sx={textField}
@@ -277,7 +337,7 @@ const AddressPage = () => {
                     onChange={(e) => {
                       setuserAddress({
                         ...userAddress,
-                        phoneNumber: e.target.value,
+                        phoneNumber: e.target.value.slice(0, 10),
                       });
                     }}
                   ></TextField>
@@ -285,18 +345,26 @@ const AddressPage = () => {
               </Grid>
             </Box>
             <Box className={classes.buttonGroup}>
-              <Button
-                className={classes.button}
-                variant="contained"
-                sx={{
-                  height: "45px",
-                  textTransform: "capitalize",
-                  fontSize: "16px",
-                }}
-                onClick={addNewAddress}
-              >
-                Add
-              </Button>
+              {!isLoading ? (
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  sx={{
+                    height: "45px",
+                    textTransform: "capitalize",
+                    fontSize: "16px",
+                  }}
+                  onClick={addNewAddress}
+                >
+                  Add
+                </Button>
+              ) : (
+                <LoadingButton
+                  loading
+                  variant="contained"
+                  className={classes.button}
+                ></LoadingButton>
+              )}
               <Button
                 className={classes.button}
                 sx={{
@@ -306,12 +374,13 @@ const AddressPage = () => {
                   fontSize: "16px",
                 }}
                 variant="outlined"
+                onClick={clearAddress}
               >
                 Cancel
               </Button>
             </Box>
           </AccordionCommon>
-          <AddressInfo />
+          <AddressInfo address={address} setAddress={setAddress} />
         </Box>
       </Box>
     </>
@@ -328,6 +397,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     width: "70%",
+    "@media (max-width:780px)": {
+      width: "100%",
+    },
   },
   buttonGroup: {
     margin: "56px 0",

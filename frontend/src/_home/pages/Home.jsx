@@ -1,11 +1,14 @@
-import TopBanner from "../components/TopBanner";
-import CategoriesSection from "../components/CategoriesSection";
-import BestsellerSection from "../components/BestsellerSection";
-import BottomBanner from "../components/BottomBanner";
-import Footer from "../../common/components/Footer";
 import { useState } from "react";
-import SuggestionSection from "../components/SuggestionSection";
+import Popup from "../components/HomeBase/Popup";
+import TopBanner from "../components/HomeBase/TopBanner";
+import CategoriesSection from "../components/HomeBase/CategoriesSection";
+import BestsellerSection from "../components/HomeBase/BestsellerSection";
+import BottomBanner from "../components/HomeBase/BottomBanner";
+import Footer from "../../common/components/Footer";
+import SuggestionSection from "../components/HomeBase/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
+import PartnerSection from "../components/HomeBase/PartnerSection";
+import AppReviewSection from "../components/HomeBase/AppReviewSection";
 
 const HomePage = () => {
   const [products, setProducts] = useState(fakeProducts);
@@ -21,11 +24,14 @@ const HomePage = () => {
 
   return (
     <>
+      <Popup />
       <TopBanner />
       <CategoriesSection />
       <BestsellerSection bestsellerItems={products} onFavourite={onFavourite} />
       <SuggestionSection suggestItems={products} onFavourite={onFavourite} />
       <BottomBanner />
+      <AppReviewSection/>
+      <PartnerSection />
       <Footer />
     </>
   );

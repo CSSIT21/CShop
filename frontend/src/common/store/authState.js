@@ -1,27 +1,27 @@
 import { atom } from "recoil";
+import { recoilPersist } from 'recoil-persist';
+import SecureLS from "secure-ls";
+var ls = new SecureLS({encodingType: 'aes'});
+
+const { persistAtom } = recoilPersist({
+  key: "storage",
+  storage: {
+    getItem: (key) => ls.get(key),
+    setItem: (key, value) => ls.set(key, value),
+  }
+});
 
 const authState = atom({
   key: "authState",
   default: {
-    isLoggedIn: true,
+    isLoggedIn: false,
     user: {
-      first_name: "Sirawit",
-      last_name: "Pratoomsuwan",
-      phoneNumber: "088-000-0000",
-      gender: "female",
-      email: "test@gmail.com",
-      password: "123456789",
-      url: "https://cdn.discordapp.com/attachments/681542997946794044/888113518182805614/unknown.png",
-      day: "31",
-      month: "2",
-      year: "2021",
-      addressLine: "126 Pracha Uthit Rd",
-      province: "Bangkok",
-      district: "Thung Khru",
-      subDistrict: "Bang Mot",
-      postalCode: "10140",
+      customer_info:{
+        
+      }
     },
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export default authState;

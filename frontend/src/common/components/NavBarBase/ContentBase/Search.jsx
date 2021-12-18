@@ -12,7 +12,7 @@ const Search = ({
   return (
     <>
       <Box className={classes.searchBox}>
-        <SearchIcon sx={{ color: "#A0A3BD" }} />
+        <SearchIcon className={classes.searchIcon} />
         <input className={classes.searchInput} placeholder={placeholder} />
         {showButton && <CButton title="Search" width="90px" height="38px" />}
       </Box>
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: 46,
     position: "relative",
-    padding: "0px 6px 0px 20px",
+    padding: "0px 6px 0px 24px",
 
     display: "flex",
     alignItems: "center",
@@ -46,12 +46,23 @@ const useStyles = makeStyles({
     color: "#A0A3BD",
     border: "none",
     backgroundColor: "transparent",
+    fontSize: "15px",
 
     "&:focus": {
       outline: "none",
       color: "black",
     },
   },
+
+  searchIcon: {
+    color: "#A0A3BD",
+    cursor: "pointer",
+
+    "&:hover": {
+      color: "#6e6e6e"
+    },
+  },
+
 });
 
 export default Search;
