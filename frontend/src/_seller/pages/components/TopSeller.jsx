@@ -24,15 +24,15 @@ const TopSeller = () => {
 
   const [open, setOpen] = useState(false);
 
-  let shid = "";
-  let shopName = "";
-  let shopDescription = "";
+  const [shid , setShid] = useState();
+  const [shopName , setShopname] = useState();
+  const [shopDescription, setShopDes] = useState();
   let shopFollowers = "";
-  let phoneNumber = "";
+  const [phoneNumber , setPhone] = useState();
 
   let shoppic = "";
-  let shoppath = "";
-  let shoppictitle = "";
+  const [shoppath , setShoppath] = useState();
+  const [shoppictitle,setshoppictitle] = useState();
   let shopthumnail = "";
 
   const fetchShopInfo = async () => {
@@ -40,15 +40,15 @@ const TopSeller = () => {
       const res = await axios.get(
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/shopinfo`
       );
-      shid = res.data.id;
-      shopName = res.data.shop_name;
-      shopDescription = res.data.description;
+      setShid(res.data.id);
+      setShopname(res.data.shop_name);
+      setShopDes(res.data.description);
       shopFollowers = res.data.followers;
-      phoneNumber = res.data.phone_number;
+      setPhone(res.data.phone_number);
 
       shoppic = res.data.shop_picture;
-      shoppath = shoppic.path;
-      shoppictitle = shoppic.title;
+      setShoppath(shoppic.path);
+      setshoppictitle(shoppic.title);
       shopthumnail = shoppic.thumnail;
 
       console.log(
@@ -90,13 +90,16 @@ const TopSeller = () => {
           src={shoppath}
           alt={shoppictitle}
         ></Avatar>
-
+        
         <Box className={classes.nametag}>
           <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
             {shopName}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            #ID{shid}
+            contact:{phoneNumber}
+          </Typography>
+          <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
+            discription:{shopDescription}
           </Typography>
         </Box>
       </Box>
