@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Logo from "../assets/images/Logo.svg";
-<<<<<<< HEAD
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import StoreRoundedIcon from '@mui/icons-material/StoreRounded';
 import NoAccountsRoundedIcon from '@mui/icons-material/NoAccountsRounded';
@@ -18,13 +17,6 @@ import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import ViewCarouselRoundedIcon from '@mui/icons-material/ViewCarouselRounded';
 import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
-=======
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import StoreRoundedIcon from "@mui/icons-material/StoreRounded";
-import NoAccountsRoundedIcon from "@mui/icons-material/NoAccountsRounded";
-import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
-import ViewCarouselRoundedIcon from "@mui/icons-material/ViewCarouselRounded";
->>>>>>> 77b47da91da205f0359e5cb5bda6f19bb4d03480
 import { Link, useLocation } from "react-router-dom";
 import { useMiddleware } from "../hooks";
 
@@ -33,19 +25,13 @@ const drawerWidth = 222;
 const generateLink = (Icon, title = "", path = "/") => ({ Icon, title, path });
 
 let links = [
-<<<<<<< HEAD
     generateLink(PersonRoundedIcon, "Users", "/manage/users"),
     generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
     generateLink(CardGiftcardRoundedIcon, "Products", "/manage/products"),
     generateLink(HelpRoundedIcon, "Support", "/manage/tickets"),
     generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
-=======
-  generateLink(PersonRoundedIcon, "Users", "/manage/users"),
-  generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
-  generateLink(NoAccountsRoundedIcon, "Banned users", "/manage/bannedusers"),
+    generateLink(NoAccountsRoundedIcon, "Banned users", "/manage/bannedusers"),
   generateLink(BlockRoundedIcon, "Banned sellers", "/manage/bannedsellers"),
-  generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
->>>>>>> 77b47da91da205f0359e5cb5bda6f19bb4d03480
 ];
 
 const openedMixin = (theme) => ({
@@ -150,20 +136,6 @@ export default function SidebarLayout(props) {
 }
 
 const useStyles = makeStyles({
-<<<<<<< HEAD
-    logo: {
-        display: "flex",
-        padding: "20px",
-        alignItems: "center",
-    },
-    icon: {
-        marginLeft: "12px",
-        marginRight: "-15px",
-        height: 28,
-        fontSize: 25,
-        color: "#A0A3BD",
-    },
-=======
   logo: {
     display: "flex",
     padding: "20px",
@@ -175,7 +147,6 @@ const useStyles = makeStyles({
     fontSize: 25,
     color: "#A0A3BD",
   },
->>>>>>> 77b47da91da205f0359e5cb5bda6f19bb4d03480
 });
 
 const listStyle = {

@@ -32,11 +32,7 @@
         "@nestjs/common": "^8.2.3",
         "@nestjs/core": "^8.0.0",
         "@nestjs/jwt": "^8.0.0",
-<<<<<<< HEAD
-        "@nestjs/mapped-types": "*",
-=======
         "@nestjs/mapped-types": "^1.0.1",
->>>>>>> 77b47da91da205f0359e5cb5bda6f19bb4d03480
         "@nestjs/passport": "^8.0.1",
         "@nestjs/platform-express": "^8.0.0",
         "@prisma/client": "^3.6.0",
