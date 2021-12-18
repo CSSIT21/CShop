@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
@@ -10,7 +11,32 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Indicator from "./components/Indicator";
 import { Chart } from "./components/TableContent/Chart";
 
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
 const SellerDashboard = () => {
+
+const shopid = useParams();
+
+const [productcard, setProduct] = useState();
+const [followerscard, setFollowers] = useState();
+const [ratingcard, setRating] = useState();
+const [salescard, setSales] = useState();
+
+  const getCard = async () =>{
+    const pd = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToProduct`)
+    const fl = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToFollows`)
+    const rt = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToRating`)
+    const sl = await axios.get(`${config.SERVER_URL}/sellerconsole/${shopid.id}/cardToSales`)
+    console.log(`${pd},${fl},${rt},${sl}`)
+    setProduct(pd)
+    setFollowers(fl)
+    setRating(rt)
+    setSales(sl)
+  }
+
+
   const indicatorData = [
     {
       id: 0,

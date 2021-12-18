@@ -28,26 +28,26 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Dashboard Chart',
+      text: 'Annual order amount',
     },
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
 
 export const data = {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
+      label: 'order amount',
       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
+    // {
+    //   // label: 'Dataset 2',
+    //   // data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+    //   // backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    // },
   ],
 };
 
