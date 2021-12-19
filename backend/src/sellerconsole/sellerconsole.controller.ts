@@ -192,7 +192,23 @@ export class SellerconsoleController {
 		const result = await this.sellerconsoleService.getCustomerViews(shopid);
 		res.send(result);
 	}
+
+	@Post(':id/flashShell')
+	@Public()
+	async  getflashShell (@Param('id', ParseIntPipe) shop_id: number, @Body() flash, @Res() res ) {
+		// var shop_id = flash.shop_id;
+		var title = flash.title;
+		var path = flash.path;
+		var thumbnail = flash.thumbnail;
+		var description  = flash.description;
+		// var started_date = flash.started_date;
+		// var ended_date = flash.ended_date;
+		const answer = await this.sellerconsoleService.getFlashShell(shop_id,title,path,thumbnail,description)
+		return answer;
+	}
 }
+
+	
 
 // @Post()
 //   @Public()

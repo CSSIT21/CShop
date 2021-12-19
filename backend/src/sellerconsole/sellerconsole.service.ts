@@ -396,4 +396,33 @@ export class SellerconsoleService {
 		});
 		return res
 	}
+
+	async getFlashShell(shopid : number, title : string , path : string ,thumbnail : string ,
+								description : string, ){
+		await this.prisma.shop_flashsale.create({
+			data : {
+				shop_id : shopid,
+				title : title,
+				path : path,
+				thumbnail : thumbnail,
+				description : description,
+				started_date : new Date(),
+				ended_date : new Date(),
+			},
+		});
+	const flash = await this.prisma.shop_flashsale.findMany({
+			where : {
+				shop_id : shopid,
+			},
+			select : {
+				title : true,
+				path : true,
+				thumbnail : true,
+				description : true,
+				started_date : true,
+				ended_date : true,
+			}
+		})
+		return flash
+	}
 }
