@@ -61,6 +61,12 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           navigator.clipboard.writeText(`http://localhost:8080/l/${data.link}`);
+          Swal.fire({
+            title: "Success!",
+            text: "Copied link",
+            icon: "success",
+            timer: 2000,
+          });
         } else
           Swal.fire({
             title: "Something went wrong!",

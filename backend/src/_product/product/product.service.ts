@@ -80,7 +80,7 @@ export class ProductService {
 							
 						}
 						}
-					}),
+					),
 				);
 			}
 			suggest_products_list = await Promise.all(suggest_products_list);
