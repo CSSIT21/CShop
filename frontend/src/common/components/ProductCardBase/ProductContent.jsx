@@ -45,10 +45,11 @@ const ProductContent = ({
           onClick={(e) => {
             e.preventDefault();
             onFavourite(product.id);
+            //api fav
           }}
           sx={{ fontWeight: "bold", fontSize: "22px" }}
         >
-          {product.favourite ? (
+          {product.customer_wishlist && product.customer_wishlist.length > 0 ? (
             <FavoriteRoundedIcon sx={{ color: "#FD6637" }} fontSize="inherit" />
           ) : (
             <FavoriteBorderRoundedIcon

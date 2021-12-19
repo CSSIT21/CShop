@@ -49,6 +49,7 @@ export class SellershopController {
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,
+		@Query('customer_id', new DefaultValuePipe(0), ParseIntPipe) customer_id: number,
 		@Res() res,
 	) {
 		const products = await this.sellershopService.getShopProduct(
@@ -60,6 +61,7 @@ export class SellershopController {
 			readyToShip,
 			outOfStock,
 			rating,
+			customer_id,
 		);
 
 		if (products) {
@@ -103,8 +105,12 @@ export class SellershopController {
 
 	@Get('sections/:id')
 	@Public()
-	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const sections = await this.sellershopService.getShopSection(id);
+	public async findSections(
+		@Param('id', ParseIntPipe) id: number,
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Res() res,
+	) {
+		const sections = await this.sellershopService.getShopSection(id, customer_id);
 		if (sections) {
 			res.send({ success: true, sections });
 		} else {
@@ -167,8 +173,12 @@ export class SellershopController {
 
 	@Get(':id/flashsale')
 	@Public()
-	public async findFlashSales(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const flashsale = await this.sellershopService.getFlashSale(id);
+	public async findFlashSales(
+		@Param('id', ParseIntPipe) id: number,
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Res() res,
+	) {
+		const flashsale = await this.sellershopService.getFlashSale(id, customer_id);
 		if (flashsale) {
 			res.send({ success: true, flashsale });
 		} else {
