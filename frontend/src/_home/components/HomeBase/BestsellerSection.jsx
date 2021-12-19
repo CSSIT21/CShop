@@ -8,17 +8,24 @@ import ProductCard from '~/common/components/ProductCard';
 import HeaderWithButton from './HeaderWithButton';
 import axios from "axios";
 import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+import { Typography } from '@mui/material';
 
 const BestsellerSection = () => {
 	const classes = useStyles();
+	const { isLoggedIn, user } = useRecoilValue(authState);
 	const [products, setProducts] = useState([]);
 	const [page, setPage] = useState(0);
 	const productsPerRow = 5;
 	const totalPage = Math.ceil(products.length / productsPerRow);
 
 	const getData = () => {
+		let id = 0;
+		if (isLoggedIn) id = user.id;
+
 		axios
-			.get(`${config.SEVER_URL}/home/bestsellers`)
+			.get(`${config.SERVER_URL}/home/bestsellers/${id}`)
 			.then(({ data }) => {
 				if (data.success) {
 					return setProducts(data.bestsellers);
@@ -36,10 +43,6 @@ const BestsellerSection = () => {
 		getData();
 	}, [])
 
-	const onFavorite = () => {
-
-	}
-
 	return (
 		<Box className={classes.bestsellerWrapper}>
 			<Box className={classes.bestsellerContent}>
@@ -49,23 +52,30 @@ const BestsellerSection = () => {
 					page={page}
 					setPage={setPage}
 					totalPage={totalPage}
+					isShow={products.length > 0}
 				/>
 
 				<Box className={classes.bestsellerCarousel}>
-					{products.length > 0 &&
-						<Carousel
+					{products.length > 0
+						? (<Carousel
 							items={products}
 							pageState={page}
 							setPageState={setPage}
-							itemsPerRow={productsPerRow}
-						>
+							itemsPerRow={productsPerRow}>
 							{(product) => (
 								<ProductCard
 									product={product}
-									to="/product/1"
 									key={product.id} />
 							)}
-						</Carousel>}
+						</Carousel>)
+						: (<Typography
+							textAlign="center"
+							fontSize={16}
+							fontWeight={400}
+							color="gray"
+							mt={3}>
+							No bestseller products to show
+						</Typography>)}
 				</Box>
 			</Box >
 

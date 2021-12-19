@@ -84,8 +84,6 @@ const BannerItem = ({
 				.post(`${config.SERVER_URL}/home/banner/${item.id}/sub`, { ...bannerImage })
 				.then(({ data }) => {
 					if (data.success) {
-						console.log(data.bannerPic);
-
 						let array = items;
 						array[index].pictures.children = [...array[index].pictures.children, data.bannerPic];
 						setItems(array);
@@ -112,8 +110,6 @@ const BannerItem = ({
 			.delete(`${config.SERVER_URL}/home/banner/${item.id}/sub/${id}`)
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.deletedImage);
-
 					let array = items;
 					array[index].pictures.children = array[index].pictures.children.filter((e) => {
 						return e.id != id

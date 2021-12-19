@@ -81,18 +81,29 @@ const AppReviewSection = () => {
                 Shop that...
             </Typography>
 
-            <Box className={classes.reviewSection}>
-                <ReviewCarousel
-                    reviews={reviews}
-                    currentPage={page}
-                    totalPage={totalPage}
-                    pageHandle={setPage}
-                    itemsPerRow={itemsPerRow}
-                />
-            </Box>
-
-            <CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
-        </Box>
+            {reviews.length > 0
+                ? (<>
+                    <Box className={classes.reviewSection}>
+                        <ReviewCarousel
+                            reviews={reviews}
+                            currentPage={page}
+                            totalPage={totalPage}
+                            pageHandle={setPage}
+                            itemsPerRow={itemsPerRow}
+                        />
+                    </Box>
+                    <CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
+                </>)
+                : (<Typography
+                    width={'100%'}
+                    textAlign="center"
+                    fontSize={16}
+                    fontWeight={400}
+                    color="gray"
+                    mt={5}>
+                    No review cards to show
+                </Typography>)}
+        </Box >
     );
 };
 

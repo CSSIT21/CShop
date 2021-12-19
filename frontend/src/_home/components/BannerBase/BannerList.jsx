@@ -41,8 +41,6 @@ const BannerList = ({ items = [], setItems = noop, }) => {
 		})
 	};
 
-	console.log(items);
-
 	const onNext = (index) => {
 		setItems((items) => {
 			return items.map((item, i) => {
@@ -65,11 +63,8 @@ const BannerList = ({ items = [], setItems = noop, }) => {
 			.delete(`${config.SERVER_URL}/home/banner/${id}`)
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.bannerInfo);
-
 					let array = items;
 					array = array.filter(item => item.id !== id);
-					console.log(array);
 					setItems(array);
 
 					setLoading(false);
