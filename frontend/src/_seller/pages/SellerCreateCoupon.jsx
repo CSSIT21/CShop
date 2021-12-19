@@ -78,7 +78,7 @@ const SellerCreateCoupon = (props) => {
   const [endateError, setEndateError] = useState("");
   const [max_quantityError, setMaxError] = useState("");
 
-  const checkValidation = () => {
+  const checkValidation = (e) => {
     if (code == "") {
       setCodeError("Invalid you need to provide 6 character");
     }
@@ -126,6 +126,9 @@ const SellerCreateCoupon = (props) => {
       max_quantity != ""
     ) {
       createCoupon();
+    }
+    else{
+      e.preventDefault();
     }
   };
 

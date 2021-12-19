@@ -127,14 +127,14 @@ export default function SellerConsoleSidebarLayout(props) {
       "Order History",
       "/seller/" + params.id + "/orderlog"
     ),
-    generateLink(
-      LocalOfferIcon,
-      "Add Coupon",
-      "/seller/" + params.id + "/coupon"
-    ),
+    // generateLink(
+    //   LocalOfferIcon,
+    //   "Add Coupon",
+    //   "/seller/" + params.id + "/coupon"
+    // ),
     generateLink(
       LoyaltyRoundedIcon,
-      "Discount History",
+      "Coupon",
       "/seller/" + params.id + "/discountlog"
     ),
     generateLink(

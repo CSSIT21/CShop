@@ -179,6 +179,13 @@ export class SellerconsoleController {
 		const result = await this.sellerconsoleService.updateShopInfo(shopid, shopname, phonenumber, description);
 		res.send(result);
 	}
+
+	@Get(':id/myCoupon')
+	@Public()
+	async getMyCoupon(@Param('id', ParseIntPipe) shopid: number, @Res() res) {
+		const result = await this.sellerconsoleService.getMyCoupon(shopid);
+		res.send(result);
+	}
 }
 
 // @Post()

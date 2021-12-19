@@ -25,7 +25,6 @@ const StockBody = ({ columns }) => {
       );
 
       const created = res.data
-        .slice(0, 50)
         .map((el) => createData(el.id, el.title, el.quantity, el.price));
       setRows(created);
     } catch (e) {
@@ -37,7 +36,7 @@ const StockBody = ({ columns }) => {
     await fetchStock();
     // console.log(rows)
     // console.log(shopid.id)
-  }, []);
+  }, [rows]);
 
   function createData(productId, productname, amount, price) {
     return {

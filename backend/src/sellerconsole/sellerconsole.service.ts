@@ -12,11 +12,13 @@ export class SellerconsoleService {
 	async getstockHistory(shopid: number) {
 		const res = await this.prisma.sconsole_stock_history.findMany({
 			where: {
-				shop_id: shopid,
+				shop_id: shopid,v
 			},
 			select: {
 				product_id: true,
-				product_id_from_sconsole_stock_history: { select: { title: true, quantity: true } },
+				product_id_from_sconsole_stock_history: {
+					select: { title: true, quantity: true, product_picture: { select: { path: true } } },
+				},
 				quantity: true,
 				updated_date: true,
 			},
@@ -136,7 +138,7 @@ export class SellerconsoleService {
 				title: true,
 				quantity: true,
 				price: true,
-				added_date: true
+				added_date: true,
 			},
 		});
 		return res;
@@ -231,16 +233,16 @@ export class SellerconsoleService {
 			},
 		});
 	}
-	async CardOfSales(id:number){
+	async CardOfSales(id: number) {
 		return await this.prisma.product.findMany({
 			where: {
-				shop_id : id,
-			}, 
-			select : {
-				sold : true,
-				price : true,
-			}
-		})
+				shop_id: id,
+			},
+			select: {
+				sold: true,
+				price: true,
+			},
+		});
 	}
 
 	// async Cheat(id: number){
@@ -253,7 +255,7 @@ export class SellerconsoleService {
 	// 		}
 	// 	})
 	// }
-	
+
 	async Discount(
 		code: string,
 		starte_date: Date,
@@ -270,8 +272,8 @@ export class SellerconsoleService {
 			const reducePrice = await this.prisma.discount.create({
 				data: {
 					code: code,
-					start_date: new Date(),
-					end_date: new Date(),
+					start_date: starte_date,
+					end_date: end_date,
 					description: description,
 					class: 'ReducePrice',
 					min_price: min_price,
@@ -288,8 +290,8 @@ export class SellerconsoleService {
 			const FreeShipping = await this.prisma.discount.create({
 				data: {
 					code: code,
-					start_date: new Date(),
-					end_date: new Date(),
+					start_date: starte_date,
+					end_date: end_date,
 					description: description,
 					class: 'FreeShipping',
 					min_price: min_price,
@@ -353,5 +355,17 @@ export class SellerconsoleService {
 			},
 		});
 		return shopinfo;
+	}
+
+	async getMyCoupon(shopid: number) {
+		const MyCoupon = await this.prisma.discount_shop.findMany({
+			where: {
+				shop_id: shopid,
+			},
+			include: {
+				discount_id_from_discount_shop: true,
+			},
+		});
+		return MyCoupon;
 	}
 }
