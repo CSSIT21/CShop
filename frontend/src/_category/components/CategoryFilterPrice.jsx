@@ -22,7 +22,7 @@ const CategoryFilterPrice = () => {
                         placeholder="Min cost"
                         value={value[0]}
                         min={0}
-                        max={500000}
+                        max={5000000}
                         type="number"
                         size="small"
                         onChange={(e) =>

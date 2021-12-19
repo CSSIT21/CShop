@@ -34,7 +34,7 @@ const CategoryPage = () => {
       .get(
         `http://localhost:8080/search?q=${q}&category=${id || 0}` +
           `&page=${page}&itemPerPage=${itemPerPage}&priceLow=${0}` +
-          `&priceHigh=${5500000}&rate=${0}` +
+          `&priceHigh=${5000000}&rate=${0}` +
           `&readyToShip=${true}&outOfStock=${false}`
       )
       .then((response) => {
