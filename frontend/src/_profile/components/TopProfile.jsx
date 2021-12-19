@@ -43,7 +43,7 @@ const TopProfile = () => {
       const path = URL.createObjectURL(e.target.files[0]);
       setImage(path);
       setimageFile(e.target.files[0]);
-      setimageTitle(e.target.files[0].name);
+      setimageTitle(e.target.files[0].name.slice(0, 50));
     }
   };
   const handleUpdateImage = async () => {

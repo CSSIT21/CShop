@@ -369,7 +369,7 @@ export class SellershopService {
 					let section;
 
 					switch (parsedsections[index].type) {
-						case 'Banners':
+						case 'Banner':
 							section = await this.prisma.shop_banner.findUnique({
 								where: {
 									id: parsedsections[index].id,
@@ -377,7 +377,7 @@ export class SellershopService {
 							});
 							section = { ...section, type: 1 };
 							break;
-						case 'BannersCarousel':
+						case 'BannerCarousel':
 							section = await this.prisma.shop_banner_carousel.findUnique({
 								where: {
 									id: parsedsections[index].id,

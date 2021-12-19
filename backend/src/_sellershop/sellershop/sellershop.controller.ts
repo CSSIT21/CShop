@@ -45,7 +45,7 @@ export class SellershopController {
 		@Query('page', ParseIntPipe) page: number,
 		@Query('category', new DefaultValuePipe(0), ParseIntPipe) category_id: number,
 		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
-		@Query('priceHigh', new DefaultValuePipe(0), ParseFloatPipe) priceHigh: number,
+		@Query('priceHigh', new DefaultValuePipe(50000), ParseFloatPipe) priceHigh: number,
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,

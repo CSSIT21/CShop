@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { PromotionModule } from './promotion/promotion.module';
 import { ProfileModule } from './profile/profile.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
 import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
@@ -25,8 +26,10 @@ import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		PromotionModule,
 		ManageaccountModule
 	],
+
 	controllers: [AppController],
 	providers: [
 		AppService,
