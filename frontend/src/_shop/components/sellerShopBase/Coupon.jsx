@@ -22,7 +22,16 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 
   return (
     <Box className={classes.couponbox}>
-      <img src={CouponPic} width="150px" alt="coupon picture" />
+      <img
+        src={CouponPic}
+        // src={
+        //   coupon.discount_id_from_discount_shop.picture_path
+        //     ? coupon.discount_id_from_discount_shop.picture_path
+        //     : CouponPic
+        // }
+        width="150px"
+        alt="coupon picture"
+      />
 
       <Box className={classes.text}>
         <Typography sx={titleStyle}>
@@ -30,7 +39,7 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
         </Typography>
         <BorderLinearProgress
           variant="determinate"
-          value={Math.ceil(100 * (coupon.quantity / 200))}
+          value={Math.ceil(100 * (coupon.quantity / coupon.max_quantity))}
           sx={{ margin: "10px 0" }}
         />
         <Typography sx={remainStyle}>
@@ -50,12 +59,10 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 const useStyles = makeStyles({
   couponbox: {
     margin: "0px auto",
-    maxWidth: "80%",
+    width: "100%",
     padding: "15px",
-
     display: "flex",
     alignItems: "center",
-
     borderRadius: "15px",
     backgroundColor: "#FFFFFF",
   },

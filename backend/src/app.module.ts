@@ -17,7 +17,6 @@ import { ReviewProductModule } from './_product/review-product/review-product.mo
 import { ShortLinkModule } from './_product/short-link/short-link.module';
 import { CommentModule } from './_product/comment/comment.module';
 
-
 @Module({
 	imports: [
 		HttpModule,

@@ -10,7 +10,6 @@ export class AuthenticationService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	public async register(data: RegisterDto) {
-		console.log(data);
 		const {
 			email,
 			password,
@@ -85,8 +84,9 @@ export class AuthenticationService {
 			});
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
-				if (e.code === 'P2002')
-					throw new HttpException('A new user cannot be created with this email or username', 500);
+				console.log(e.message);
+
+				if (e.code === 'P2002') throw new HttpException('A new user cannot be created with this email', 500);
 
 				throw new HttpException('Error creating profile please check your information!', 500);
 			}

@@ -10,7 +10,6 @@ import { useHistory } from "react-router";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { getUrl } from "~/common/utils";
 
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
@@ -77,11 +76,12 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
   };
   const uploadFile = async (e) => {
     if (e.target.files.length) {
-      const url = await getUrl(e.target.files[0]);
+      const path = URL.createObjectURL(e.target.files[0]);
       setUserInfo({
         ...userInfo,
-        url: url.original_link,
-        title: e.target.files[0].name,
+        url: path,
+        title: e.target.files[0].name.slice(0, 50),
+        file: e.target.files[0],
       });
     }
   };
@@ -211,7 +211,10 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 error={phoneNumError.length === 0 ? false : true}
                 value={userInfo.phoneNumber}
                 onChange={(e) => {
-                  setUserInfo({ ...userInfo, phoneNumber: e.target.value });
+                  setUserInfo({
+                    ...userInfo,
+                    phoneNumber: e.target.value.slice(0, 10),
+                  });
                   setphoneNumError("");
                 }}
               />
@@ -255,6 +258,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DatePicker
                   value={userInfo.birthdate}
+                  sx={{ width: "100%" }}
                   renderInput={(params) => <TextField {...params} />}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, birthdate: e.toISOString() });
@@ -345,7 +349,7 @@ const useStyles = makeStyles({
     marginTop: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
-    width: "35%",
+    width: "266px",
   },
   button: {
     display: "flex",

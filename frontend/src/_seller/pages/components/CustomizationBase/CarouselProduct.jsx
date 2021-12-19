@@ -91,11 +91,19 @@ const CarouselProduct = ({
           spacing={2}
           sx={{ width: "100%", height: "100%", pointerEvents: "none" }}
         >
-          {information[id].content.products.slice(0, 5).map((product, idx) => (
-            <Grid item xs={2.4} key={idx}>
-              <ProductCard product={product} />
-            </Grid>
-          ))}
+          {information[id]
+            ? information[id].content.products
+                .slice(0, 5)
+                .map((product, idx) => (
+                  <Grid item xs={2.4} key={idx}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ))
+            : [...Array(5)].slice(0, 5).map((product, idx) => (
+                <Grid item xs={2.4} key={idx}>
+                  <ProductCard product={product} />
+                </Grid>
+              ))}
         </Grid>
       </div>
       <Box
