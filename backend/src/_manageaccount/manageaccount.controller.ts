@@ -8,6 +8,7 @@ import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
 import { Public } from 'src/common/decorators/public.decorator';
+import { identity } from 'rxjs';
 
 @Controller('manageaccount')
 export class ManageaccountController {
@@ -128,6 +129,19 @@ export class ManageaccountController {
     return this.prisma.product.findMany({
       include:{
         product_picture: true,
+        product_reviews: true,
+      }
+    });
+  }
+
+  @Get('products/shop_id')
+  @Public()
+  public getProductsByShopID(@Query('id') i: number){
+    return this.prisma.product.findMany({
+      where:{
+        shop_id: +i
+      },
+      include:{
         product_reviews: true,
       }
     });

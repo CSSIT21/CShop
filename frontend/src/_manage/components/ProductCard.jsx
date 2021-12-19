@@ -35,17 +35,17 @@ export class ProductCard extends React.Component {
     );
     this.seller.shop_name = fetchedData.data.shop_name;
 
-    if(this.props.product.product_picture != null){
+    if(this.props.product.product_picture.length > 0){
       this.path = this.props.product.product_picture[0].path;
     }
 
     let a = 0;
 
-  if(this.props.product.product_reviews.length != null){
+  if(this.props.product.product_reviews.length > 0){
     this.props.product.product_reviews.forEach((re) => {
       a = +a + re.rating;
     })
-    this.rating = (a / this.props.product.product_reviews.length).toFixed(2);;
+    this.rating = (a / this.props.product.product_reviews.length).toFixed(2);
     }
     else{
       this.rating = 'N/A';
@@ -89,7 +89,7 @@ export class ProductCard extends React.Component {
                 <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#812525'}}>{this.rating}</Typography>
                 </Card> :
                 (
-                  this.props.product.rating > 3.5 ?
+                  this.rating > 3.5 ?
                   <Card variant="outlined" style={{
                     backgroundColor: "#B3E24B33",
                     border: 'none',

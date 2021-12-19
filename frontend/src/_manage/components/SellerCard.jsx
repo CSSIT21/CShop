@@ -41,6 +41,8 @@ export class SellerCard extends React.Component {
     this.type = 495;
     this.desc = 'Pending Description';
     this.types = [];
+    this.productCount = 'PENDING';
+    this.rating = 'PENDING';
   }
 
   handleExpandClick = () => {
@@ -65,7 +67,30 @@ export class SellerCard extends React.Component {
     const fetchedData = await axios.get(
       "http://localhost:8080/manageaccount/suspension/types"
     );
+    const fetchedData2 = await axios.get(
+      "http://localhost:8080/manageaccount/products/shop_id?id=" + this.props.seller.id
+    );
     this.types = fetchedData.data;
+    this.productCount = fetchedData2.data.length;
+
+    let a = 0;
+
+    if(fetchedData2.data.length > 0){
+      fetchedData2.data.forEach((item) => {
+        let b = 0;
+        if(item.product_reviews.length > 0){
+        item.product_reviews.forEach((re) => {
+          b = +b + re.rating
+        })
+        a = +a + (b / item.product_reviews.length)
+        }
+      });
+      this.rating = (a / fetchedData2.data.length).toFixed(2);
+    }
+    else{
+      this.rating = 'N/A'
+    }
+
     this.forceUpdate();
   }
 
@@ -143,7 +168,7 @@ export class SellerCard extends React.Component {
             <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.seller.shop_name}</Typography>
             </Box>
             <Box sx={{ width: '8%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.productCount}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.productCount}</Typography>
             </Box>
             <Box sx={{ width: '9.5%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.followers}</Typography>
@@ -156,26 +181,26 @@ export class SellerCard extends React.Component {
             </Box>
             <Box sx={{ width: '10%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
-              { this.props.seller.rating < 2.5 ?
+              { this.rating < 2.5 ?
                 <Card variant="outlined" style={{
                   backgroundColor: "#E04A4A33",
                   border: 'none',
                   width: '75%'}}>
-                <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#812525'}}>{this.props.seller.rating}</Typography>
+                <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#812525'}}>{this.rating}</Typography>
                 </Card> :
                 (
-                  this.props.seller.rating > 3.5 ?
+                  this.rating > 3.5 ?
                   <Card variant="outlined" style={{
                     backgroundColor: "#B3E24B33",
                     border: 'none',
                     width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.seller.rating}</Typography>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.rating}</Typography>
                   </Card> :
                   <Card variant="outlined" style={{
                     backgroundColor: "#F4AF5433",
                     border: 'none',
                     width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.props.seller.rating}</Typography>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.rating}</Typography>
                   </Card>
                 )
               }

@@ -162,8 +162,6 @@ const ManageAccountPage = () => {
                               <MenuItem value={'quantity'}>Stock</MenuItem>
                               <MenuItem value={'sold'}>Sold</MenuItem>
                               <MenuItem value={'shop_id'}>Shop Name</MenuItem>
-                              <MenuItem value={'rating'}>Ratings</MenuItem>
-                              <MenuItem value={'comments'}>Comments</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
