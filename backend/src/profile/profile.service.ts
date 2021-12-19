@@ -3,6 +3,7 @@ import { Gender } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './dto/user.dto';
 import * as CryptoJs from 'crypto-js';
+import { FavouriteProduct } from './dto/favourite.dto';
 
 @Injectable()
 export class ProfileService {
@@ -288,6 +289,38 @@ export class ProfileService {
 			console.log(e.message);
 			return {
 				success: false,
+			};
+		}
+	}
+	public async favourite(data: FavouriteProduct) {
+		const { customer_id, product_id } = data;
+		try {
+			const check = await this.prisma.customer_wishlist.findFirst({
+				where: {
+					customer_id: customer_id,
+					product_id: product_id,
+				},
+			});
+			if (check) {
+				await this.prisma.customer_wishlist.delete({
+					where: {
+						id: check.id,
+					},
+				});
+				return 'You delete this product from your wishlist';
+			}
+			await this.prisma.customer_wishlist.create({
+				data: {
+					customer_id: customer_id,
+					product_id: product_id,
+				},
+			});
+			return 'You add this product to your wishlist';
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
 			};
 		}
 	}
