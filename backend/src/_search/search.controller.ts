@@ -19,6 +19,7 @@ import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import axios from 'axios';
 
+
 @Controller('search')
 export class SearchController {
 	constructor(private readonly searchService: SearchService, public prisma: PrismaService) {}
