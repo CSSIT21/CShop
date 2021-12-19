@@ -10,6 +10,8 @@ import StoreIcon from "@mui/icons-material/Store";
 import Popup from "./Popup";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import CircularProgress from "@mui/material/CircularProgress";
+import { orange } from "@mui/material/colors";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -72,31 +74,53 @@ const TopSeller = () => {
     fetchShopInfo();
   }, []);
 
+  const primary = orange[800];
+
   return (
     <Box className={classes.container}>
       <Popup open={open} setOpen={setOpen} title="" description="" />
       <Box className={classes.profile}>
-        <Avatar
-          sx={{
-            width: 80,
-            height: 80,
-            marginRight: "25px",
-          }}
-          // src="https://drive.cshop.cscms.ml/files/2021/12-17/ywyxwpmhnvrb.jpeg"
-          src={shoppath}
-          alt={shoppictitle}
-        ></Avatar>
+        {shoppath ? (
+          <Avatar
+            sx={{
+              width: 100,
+              height: 100,
+              marginRight: "25px",
+            }}
+            // src="https://drive.cshop.cscms.ml/files/2021/12-17/ywyxwpmhnvrb.jpeg"
+            src={shoppath}
+            alt={shoppictitle}
+          ></Avatar>
+        ) : (
+          <CircularProgress color="primary" sx={{ mr: 4 }} />
+        )}
 
         <Box className={classes.nametag}>
-          <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-            {shopName}
-          </Typography>
-          <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            <LocalPhoneIcon />:{phoneNumber}
-          </Typography>
-          <Typography sx={{ fontWeight: "400" }} variant="caption">
-            {shopDescription}
-          </Typography>
+          <Box>
+              
+            <Typography sx={{ fontSize: "24px", fontWeight: "600" }} color="primary">
+              {shopName}
+            </Typography>
+            <Typography sx={{ fontWeight: "400" }} variant="caption">
+              {shopDescription}
+            </Typography>
+            <Typography
+              sx={{
+                fontWeight: "400",
+                display: "flex",
+                alignItems: "center",
+                color:'#8B8B8B'
+              }}
+              variant="caption"
+              display="block"
+            >
+              {/* <Avatar sx={{ bgcolor: orange[100], mr: 1 }}>
+              <LocalPhoneIcon color="primary" />
+            </Avatar> */}
+
+              {phoneNumber}
+            </Typography>
+          </Box>
         </Box>
       </Box>
 
@@ -129,6 +153,7 @@ export default TopSeller;
 
 const useStyles = makeStyles({
   container: {
+    width: "100%",
     backgroundColor: "white",
     display: "flex",
     justifyContent: "space-between",
@@ -140,6 +165,7 @@ const useStyles = makeStyles({
     display: "flex",
   },
   nametag: {
+    padding: 4,
     color: "black",
   },
 });

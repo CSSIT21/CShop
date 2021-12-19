@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Indicator = (props) => {
   return (

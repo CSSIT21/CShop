@@ -84,6 +84,7 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
+import SellerFlashSalesLog from "./_seller/pages/SellerFlashSalesLog";
 
 
 function App() {
@@ -324,8 +325,9 @@ function App() {
                       <Route path="/seller/:id/coupon">
                         <SellerCreateCoupon />
                       </Route>
-
-
+                      <Route path="/seller/:id/flashsalelog">
+                        <SellerFlashSalesLog />
+                      </Route>
                     </Suspense>
                   </SellerConsoleSidebarLayout>
                 </Route>

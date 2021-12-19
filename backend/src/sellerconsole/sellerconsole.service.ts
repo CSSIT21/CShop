@@ -4,6 +4,7 @@ import { UpdateSellerconsoleDto } from './dto/update-sellerconsole.dto';
 import { DiscountClass, DiscountTypes, OrderStatus, PrismaClient, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Timestamp } from 'rxjs';
+import e from 'express';
 
 @Injectable()
 export class SellerconsoleService {
@@ -51,39 +52,58 @@ export class SellerconsoleService {
 		return res;
 	}
 
-	async getOrderHistory(shopid: number) {
-		const res = await this.prisma.sconsole_order_history.findMany({
-			where: {
-				shop_id: shopid,
-			},
-			select: {
-				order_id_from_sconsole_order_history: {
-					select: {
-						id: true,
-						customer_id_from_order: {
-							select: {
-								customer_info: {
-									select: {
-										firstname: true,
-										lastname: true,
-									},
-								},
-							},
-						},
-						total_price: true,
-						order_date: true,
-					},
-				},
-				product_id_from_sconsole_order_history: {
-					select: {
-						title: true,
-					},
-				},
-				status: true,
-			},
-		});
+	// async getOrderHistory(shopid: number) {
+	// 	const res = await this.prisma.sconsole_order_history.findMany({
+	// 		where: {
+	// 			shop_id: shopid,
+	// 		},
+	// 		select: {
+	// 			order_id_from_sconsole_order_history: {
+	// 				select: {
+	// 					id: true,
+	// 					customer_id_from_order: {
+	// 						select: {
+	// 							customer_info: {
+	// 								select: {
+	// 									firstname: true,
+	// 									lastname: true,
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					total_price: true,
+	// 					order_date: true,
+	// 				},
+	// 			},
+	// 			product_id_from_sconsole_order_history: {
+	// 				select: {
+	// 					title: true,
+	// 				},
+	// 			},
+	// 			status: true,
+	// 		},
+	// 	});
 
-		return res;
+	// 	return res;
+	// }
+
+	async getOrderLog(shopid: number) {
+		const result = await this.prisma.$queryRaw`SELECT order_item.order_id as order_id,
+		customer_picture_file.path as avatar,
+		product.title as productname,
+		CONCAT(customer_info.firstname, ' ', customer_info.lastname) as customername,
+		order_item.quantity as amount,
+		order_item.quantity * order_item.price as totalprice,
+		"order".status as status,
+		"order".order_date as orderdate
+		FROM product
+		INNER JOIN order_item ON product.id = order_item.product_id
+		INNER JOIN "order" ON "order".id = order_item.order_id
+		INNER JOIN customer_info ON customer_info.customer_id = "order".customer_id
+		INNER JOIN customer_picture ON customer_picture.customer_id = "order".customer_id
+		INNER JOIN customer_picture_file ON customer_picture_file.id = customer_picture.picture_id
+		WHERE product.shop_id = ${shopid}`;
+		return result;
 	}
 
 	async getOrderStatus(orderid: number) {
@@ -241,12 +261,12 @@ export class SellerconsoleService {
 				price: true,
 			},
 		});
-		
-		const prices = temp.map((el) => (el.price * el.sold))
+
+		const prices = temp.map((el) => el.price * el.sold);
 
 		let price = 0;
-		prices.forEach((el) => price += el);
-		return { price }
+		prices.forEach((el) => (price += el));
+		return { price };
 	}
 
 	// async Cheat(id: number){
@@ -379,7 +399,7 @@ export class SellerconsoleService {
 				shop_id: shopid,
 			},
 			select: {
-				id:true,
+				id: true,
 				customer_id_from_home_shop_log: {
 					select: {
 						customer_info: {
@@ -391,10 +411,25 @@ export class SellerconsoleService {
 						},
 					},
 				},
-				view_date:true
+				view_date: true,
 			},
 		});
-		return res
+		return res;
+	}
+
+	async getFlashsales(shopid: number) {
+		const res = await this.prisma.shop_flashsale.findMany({
+			where: {
+				shop_id: shopid,
+			},
+			select: {
+				id: true,
+				title: true,
+				started_date: true,
+				ended_date: true,
+			},
+		});
+		return res;
 	}
 
 	async getFlashShell(shopid : number, title : string , path : string ,thumbnail : string ,

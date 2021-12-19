@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import { Box } from "@mui/system";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Avatar, Typography, Modal } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -17,7 +19,7 @@ const ViewLogBody = ({ columns }) => {
   const shopid = useParams();
   const [rows, setRows] = useState([]);
 
-  function createData(id,firstname, lastname, gender, view_date) {
+  function createData(id, firstname, lastname, gender, view_date) {
     return {
       id,
       firstname,
@@ -88,43 +90,62 @@ const ViewLogBody = ({ columns }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {/* {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value} */}
+            {rows ? (
+              rows.length == 0 ? (
+                <TableRow>
+                  <TableCell sx={{ display: "block", textAlign: "center" }}>
+                    <Typography variant="h4" component="div">
+                      No Data （；´д｀）ゞ
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    return (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {/* {column.format && typeof value === "number"
+                            ? column.format(value)
+                            : value} */}
 
-                          {(() => {
-                            if (column.format && typeof value === "number") {
-                              return column.format(value);
-                            } else if (column.id === "picture_path") {
-                              return (
-                                <Avatar
-                                  src={value}
-                                  variant="rounded"
-                                  sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                  }}
-                                ></Avatar>
-                              );
-                            } else {
-                              return value;
-                            }
-                          })()}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+                              {(() => {
+                                if (
+                                  column.format &&
+                                  typeof value === "number"
+                                ) {
+                                  return column.format(value);
+                                } else if (column.id === "picture_path") {
+                                  return (
+                                    <Avatar
+                                      src={value}
+                                      variant="rounded"
+                                      sx={{
+                                        display: "flex",
+                                        width: "100%",
+                                      }}
+                                    ></Avatar>
+                                  );
+                                } else {
+                                  return value;
+                                }
+                              })()}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })
+              )
+            ) : (
+              <TableCell>
+                <LinearProgress />
+              </TableCell>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -29,23 +29,6 @@ const SellerDiscountLog = () => {
   const shopid = useParams();
   const shopint = shopid.id;
   const Pagename = "Coupon";
-  // const auth = useRecoilValue(authState);
-
-  // const rows = [
-  //   createData(1, "Chicken Wing", "John A", "2021-11-21 11:15:16"),
-  //   createData(2, "Chicken Wang", "John B", "2021-11-22 12:15:16"),
-  //   createData(3, "Chicken Wong", "John C", "2021-11-23 13:15:16"),
-  //   createData(4, "Chicken Weng", "John D", "2021-11-24 14:15:16"),
-  //   createData(5, "Chicken Wung", "John E", "2021-11-25 15:15:16"),
-  //   createData(6, "Chicken Bee", "John F", "2021-11-26 16:15:16"),
-  //   createData(7, "Chicken Aaa", "John G", "2021-11-27 17:15:16"),
-  // ];
-  // ------------------------------------
-
-  // const testparams = (e) => {
-  //   console.log(shopint);
-  //   e.preventDefault();
-  // };
 
   const columns = [
     { id: "discountID", label: "discountID" },
@@ -136,29 +119,6 @@ const SellerDiscountLog = () => {
       </Box>
 
       <Box sx={{ mt: "3rem" }} />
-
-      {/* <LogTable rows={rows} headerName={headerName} /> */}
-
-      {/* <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <LogHeader headerName={headerName} />
-          <HistoryDiscount
-            rowsPerPage={rowsPerPage}
-            page={page}
-            emptyRows={emptyRows}
-            rows={rows}
-          />
-          <LogFooter
-            rows={rows}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            handleChangePage={handleChangePage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-            TablePaginationActions={TablePaginationActions}
-          />
-        </Table>
-      </TableContainer> */}
-      {/* <HistoryTable rows={rows} columns={columns} /> */}
       <HistoryDiscountBody columns={columns} />
     </Box>
   );

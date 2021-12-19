@@ -10,6 +10,7 @@ import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Indicator from "./Indicator";
 import { Chart } from "./TableContent/Chart";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -102,16 +103,30 @@ const CardGroup = () => {
           justifyContent: "space-between",
         }}
       >
-        {indicatorData.map((indicator) => (
-          <Indicator
-            value={indicator.value}
-            name={indicator.name}
-            color={indicator.color}
-            fontColor={indicator.fontColor}
-            icon={indicator.icon}
-            key={indicator.id}
-          />
-        ))}
+        {csl ? (
+          indicatorData.map((indicator) => (
+            <Indicator
+              value={indicator.value}
+              name={indicator.name}
+              color={indicator.color}
+              fontColor={indicator.fontColor}
+              icon={indicator.icon}
+              key={indicator.id}
+            />
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+              width: "100%",
+              mt:5
+            }}
+          >
+            <CircularProgress color="inherit" />
+          </Box>
+        )}
       </Box>
     </>
   );

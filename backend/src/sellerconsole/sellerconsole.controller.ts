@@ -86,11 +86,11 @@ export class SellerconsoleController {
 		res.send(b);
 	}
 
-	@Get(':id/orderHistory')
-	async getOrderhistory(@Param('id') id: number) {
-		const res = await this.sellerconsoleService.getOrderHistory(+id);
-		return res;
-	}
+	// @Get(':id/orderHistory')
+	// async getOrderhistory(@Param('id') id: number) {
+	// 	const res = await this.sellerconsoleService.getOrderHistory(+id);
+	// 	return res;
+	// }
 
 	@Post(':id/acceptOrderStatus')
 	async acceptOrderStatus(@Body() Order, @Res() res) {
@@ -206,6 +206,21 @@ export class SellerconsoleController {
 		const answer = await this.sellerconsoleService.getFlashShell(shop_id,title,path,thumbnail,description)
 		return answer;
 	}
+	@Get(':id/getFlashsales')
+	@Public()
+	async getFlashsales(@Param('id', ParseIntPipe) shopid: number, @Res() res) {
+		const result = await this.sellerconsoleService.getFlashsales(shopid);
+		res.send(result);
+	}
+	
+	@Get(':id/getorderlog')
+	@Public()
+	async getOrderlog(@Param('id', ParseIntPipe) shopid: number, @Res() res) {
+		const result = await this.sellerconsoleService.getOrderLog(shopid);
+		res.send(result);
+	}
+
+	
 }
 
 	
