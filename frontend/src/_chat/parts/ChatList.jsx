@@ -82,9 +82,10 @@ const ChatList = (props) => {
                             message.content_type === 'Text'
                                 ? message.content
                                 : message.sender === props.user_id
-                                    ? message.content_type === 'Image'
-                                        ? 'You sent an image' : 'You sent a video'
-                                    : message.content_type
+                                ? message.content_type === 'Image'
+                                    ? 'You sent an image'
+                                    : 'You sent a video'
+                                : message.content_type
                         }
                         pic={
                             message.sender === props.user_id
