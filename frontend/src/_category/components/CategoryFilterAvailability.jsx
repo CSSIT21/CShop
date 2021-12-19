@@ -6,7 +6,18 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
-const CategoryFilterAvailability = () => {
+import { useState } from 'react';
+
+const CategoryFilterAvailability = ({ setReadyToShip, setOutOfStock }) => {
+
+  const handleReadyToShipClick = () => {
+    setReadyToShip((readyToShip) => !readyToShip);
+  };
+
+  const handleOutOfStockClick = () => {
+    setOutOfStock((outOfStock) => !outOfStock);
+  };
+
   return (
     <Box sx={{ padding: '5px 0px 0px' }}>
       <Divider />
@@ -14,12 +25,17 @@ const CategoryFilterAvailability = () => {
         <h3>Availability</h3>
         <Box>
           <FormGroup>
-            <FormControlLabel control={<Checkbox />} label='Ready to Ship' />
             <FormControlLabel
+              onClick={handleReadyToShipClick}
+              control={<Checkbox />}
+              label='Ready to Ship'
+            />
+            <FormControlLabel
+              onClick={handleOutOfStockClick}
               control={<Checkbox />}
               label='Include Out of Stock'
             />
-          </FormGroup>{' '}
+          </FormGroup>
         </Box>
       </Box>
     </Box>

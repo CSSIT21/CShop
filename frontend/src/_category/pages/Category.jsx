@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Box, Divider, Grid, Pagination } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Grid,
+  Pagination,
+  CircularProgress,
+  Backdrop,
+} from '@mui/material';
 import { FilterAltOutlined } from '@mui/icons-material';
 import CategoryHeader from '../components/CategoryHeader';
 
@@ -28,22 +35,42 @@ const CategoryPage = () => {
   const [page, setPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(12);
   const [totalPage, setTotalPage] = useState(0);
-  const fetchProducts = (page) => {
-    console.log('currentPage', page);
+  
+  /** filter */
+  const [readyToShip, setReadyToShip] = useState(false);
+  const [outOfStock, setOutOfStock] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const MIN_PRICE = 0,
+    MAX_PRICE = 1500;
+  const [price, setPrice] = useState([MIN_PRICE, MAX_PRICE]);
+  /**rate */
+  const [rate, setRate] = useState(0);
+  
+
+  const fetchProducts = (
+    page,
+    readyToShip,
+    outOfStock,
+    price = [MIN_PRICE, MAX_PRICE]
+  ) => {
+    console.log('currentPage', page, readyToShip, outOfStock, price , rate);
+    setLoading(true);
     axios
       .get(
         `http://localhost:8080/search?q=${q}&category=${id || 0}` +
-          `&page=${page}&itemPerPage=${itemPerPage}&priceLow=${0}` +
-          `&priceHigh=${5000000}&rate=${0}` +
-          `&readyToShip=${true}&outOfStock=${false}`
+          `&page=${page}&itemPerPage=${itemPerPage}&priceLow=${price[0]}` +
+          `&priceHigh=${price[1]}&rate=${rate}` +
+          `&readyToShip=${readyToShip}&outOfStock=${outOfStock}`
       )
       .then((response) => {
         console.log(response.data);
         setItems(response.data.products);
         setTotalPage(response.data.pageCount);
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err.message);
+        setLoading(false);
       });
   };
 
@@ -55,8 +82,8 @@ const CategoryPage = () => {
 
   useEffect(() => {
     console.log(q, page);
-    debouncedFetching(page);
-  }, [page]);
+    debouncedFetching(page, readyToShip, outOfStock, price, rate);
+  }, [page, readyToShip, outOfStock, price, rate]);
 
   const onFavourite = (e, idx) => {
     e.preventDefault();
@@ -73,6 +100,12 @@ const CategoryPage = () => {
 
   return (
     <Box sx={{ padding: '25px 50px' }}>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color='inherit' />
+      </Backdrop>
       {id && (
         <Box>
           <CategoryHeader style={{ width: '100%' }} />
@@ -92,10 +125,21 @@ const CategoryPage = () => {
             <FilterAltOutlined size='large' />
           </Box>
           <Divider />
-          <CategoryFilterPrice />
-          <CategoryFilterRate />
+          <CategoryFilterPrice
+            setPrice={setPrice}
+            price={price}
+            MIN_PRICE={MIN_PRICE}
+            MAX_PRICE={MAX_PRICE}
+          />
+          <CategoryFilterRate 
+          setRate = {setRate}
+          rate = {rate}
+          />
 
-          <CategoryFilterAvailability />
+          <CategoryFilterAvailability
+            setReadyToShip={setReadyToShip}
+            setOutOfStock={setOutOfStock}
+          />
         </Box>
 
         <Box sx={{ width: '80%' }}>
@@ -107,7 +151,7 @@ const CategoryPage = () => {
             <For
               each={items}
               children={(item) => (
-                <Grid item xs={6} md={3} mb={3}>
+                <Grid item xs={6} md={3} mb={3} key={item.title}>
                   <ProductCard
                     product={item}
                     onFavourite={onFavourite}

@@ -18,7 +18,7 @@ import { UpdateSearchDto } from './dto/update-search.dto';
 import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import axios from 'axios';
-
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('search')
 export class SearchController {
@@ -35,6 +35,7 @@ export class SearchController {
 	}
 
 	@Get()
+	@Public()
 	async findAll(
 		@Query('q', new DefaultValuePipe('')) query: string,
 		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
@@ -72,8 +73,9 @@ export class SearchController {
 			},
 			include: {
 				product_picture: true,
-			}
+			},
 		});
+
 		return {
 			success: true,
 			products: products.slice((page - 1) * itemPerPage, page * itemPerPage),

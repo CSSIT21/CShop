@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import CButton from '../../CButton';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
 
@@ -17,9 +17,11 @@ const Search = ({
   const classes = useStyles();
   const [result, setResult] = useState([]);
   const [keyWord, setKeyWord] = useState(q);
-
+  const { id } = useParams(); 
   const searching = () => {
-    location.href = '/search?q=' + keyWord.trim();
+    if(id && id > 0)
+      location.href = `/search/category/${id}?q=` + keyWord.trim();
+    else location.href = `/search?q=` + keyWord.trim();
   };
 
   return (
