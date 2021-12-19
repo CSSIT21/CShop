@@ -43,6 +43,7 @@ export class SellerCard extends React.Component {
     this.types = [];
     this.productCount = 'PENDING';
     this.rating = 'PENDING';
+    this.cancelRate = '0%';
   }
 
   handleExpandClick = () => {
@@ -174,7 +175,7 @@ export class SellerCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.followers}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.cancelRate}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.cancelRate}</Typography>
             </Box>
             <Box sx={{ width: '13%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.seller.join_date.slice(0, 10)}</Typography>

@@ -3,6 +3,7 @@ import { CreateUserSuspensionDto } from './dto/create_usersuspension.dto';
 import { CreateSellerSuspensionDto } from './dto/create_sellersuspension.dto';
 import { UpdateUserSuspensionDto } from './dto/update_usersuspension.dto';
 import { UpdateSellerSuspensionDto } from './dto/update_sellersuspension.dto';
+import { CreateTicketDto } from './dto/create_ticket.dto';
 import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -10,6 +11,33 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ManageaccountService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async createTicket(createTicketDto: CreateTicketDto) {
+    try {
+			await this.prisma.admin_support.create({
+				data: {
+          title: createTicketDto.title,
+          description: createTicketDto.description,
+          target: createTicketDto.target,
+          admin_id: createTicketDto.admin_id,
+          customer_id: createTicketDto.customer_id,
+          support_type_id: createTicketDto.support_type_id,
+          sent_date: new Date(),
+          //ended_date: new Date(createTicketDto.year, createTicketDto.month, createTicketDto.day),
+          ended_date: null,
+          picture_id: createTicketDto.picture_id
+				},
+			});
+			return 'Ticket Added!';
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error creating ticket!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error creating ticket body incorrect', 500);
+		}
+  }
+  
   async createUserSuspension(createUserSuspensionDto: CreateUserSuspensionDto) {
     try {
 			await this.prisma.admin_customer_suspensions.create({

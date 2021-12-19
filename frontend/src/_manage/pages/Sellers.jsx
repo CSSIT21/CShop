@@ -153,11 +153,8 @@ const ManageSellerAccountPage = () => {
                             >
                               <MenuItem value={'shop_name'}>Name</MenuItem>
                               <MenuItem value={'id'}>User ID</MenuItem>
-                              <MenuItem value={'productCount'}>Products</MenuItem>
                               <MenuItem value={'followers'}>Followers</MenuItem>
-                              <MenuItem value={'cancelRate'}>Cancel Rate</MenuItem>
                               <MenuItem value={'date'}>Join Date</MenuItem>
-                              <MenuItem value={'rating'}>Rating</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>

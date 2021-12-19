@@ -4,6 +4,7 @@ import { CreateUserSuspensionDto } from './dto/create_usersuspension.dto';
 import { CreateSellerSuspensionDto } from './dto/create_sellersuspension.dto';
 import { UpdateUserSuspensionDto } from './dto/update_usersuspension.dto';
 import { UpdateSellerSuspensionDto } from './dto/update_sellersuspension.dto';
+import { CreateTicketDto } from './dto/create_ticket.dto';
 import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
@@ -39,6 +40,19 @@ export class ManageaccountController {
         title:{contains:query,mode:'insensitive'}
       }
     });
+  }
+
+  @Post('tickets/create')
+  @Public()
+  public async createTicket(@Body() createTicketDto: CreateTicketDto, @Res() res){
+    const ticket = await this.manageaccountService.createTicket(createTicketDto);
+    if(ticket){
+      res.send({Success: true, ticket});
+    } else {
+      res.send({
+        Success : false,
+      });
+    }
   }
 
   @Post('suspension/users/create')
@@ -184,6 +198,19 @@ export class ManageaccountController {
     });
   }
 
+  @Get('users/id')
+  @Public()
+  public getUsersById(@Query('id') i: number){
+    return this.prisma.customer.findFirst({
+      where:{
+        id: +i
+      },
+      include:{
+        customer_info: true,
+      }
+    });
+  }
+
   @Get('/address')
   @Public()
   public getAddress(@Query('id') i: number){
@@ -223,9 +250,19 @@ export class ManageaccountController {
   @Get('tickets')
   @Public()
   public getTickets(){
-    return this.prisma.admin_support_picture.findMany({
+    return this.prisma.admin_support.findMany({
       include:{
-        admin_support: true,
+        admin_support_status: true
+      }
+    });
+  }
+
+  @Get('tickets/type')
+  @Public()
+  public getTicketType(@Query('id') i: number){
+    return this.prisma.admin_support_type.findFirst({
+      where:{
+        id: +i
       }
     });
   }

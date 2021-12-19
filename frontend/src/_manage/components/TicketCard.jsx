@@ -14,6 +14,7 @@ import { InputLabel } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SupportMedia from "../components/SupportMedia";
+import axios from "axios";
 
 export class TicketCard extends React.Component {
   constructor(props) {
@@ -22,9 +23,9 @@ export class TicketCard extends React.Component {
       expand: false
     };
     this.open = false;
-    this.status = {
-      value: this.props.ticket.status
-    };
+    this.status = this.props.ticket.admin_support_status.status;
+    this.filer = {firstname: 'PENDING', lastname: ''};
+    this.type = {title:'PENDING'};
   }
 
   handleExpandClick = () => {
@@ -52,8 +53,21 @@ export class TicketCard extends React.Component {
   };
 
   changeStatus = (event) => {
-    this.status = event.target.value;
-    this.props.setStatus(this.props.ticket.id, event.target.value);
+    this.status.status = event.target.value;
+    this.forceUpdate();
+  }
+
+  async componentDidMount(){
+    const fetchedData = await axios.get(
+      "http://localhost:8080/manageaccount/users/id?id=" + this.props.ticket.customer_id
+    );
+    const fetchedData2 = await axios.get(
+      "http://localhost:8080/manageaccount/tickets/type?id=" + this.props.ticket.support_type_id
+    );
+
+    this.filer = fetchedData.data.customer_info;
+    this.type = fetchedData2.data;
+
     this.forceUpdate();
   }
 
@@ -68,10 +82,10 @@ export class TicketCard extends React.Component {
               <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', wordWrap: 'break-word', lineClamp: 1}}>{this.props.ticket.title}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.type_title}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.type.title}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.customer_id}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.filer.firstname + " " + this.filer.lastname}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.target}</Typography>
@@ -84,18 +98,18 @@ export class TicketCard extends React.Component {
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>
-              { this.props.ticket.status === 'Open' ?
+              { (this.status.status === 'Open' || this.status.status === 'In Progress') ?
                   <Card variant="outlined" style={{
                     backgroundColor: "#F4AF5433",
                     border: 'none',
                     width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.props.ticket.status}</Typography>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#D28C40'}}>{this.status.status}</Typography>
                   </Card> :
                   <Card variant="outlined" style={{
                     backgroundColor: "#B3E24B33",
                     border: 'none',
                     width: '75%'}}>
-                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.props.ticket.status}</Typography>
+                  <Typography style={{ fontSize: '15px', textAlign: 'center', color: '#5B8125'}}>{this.status.status}</Typography>
                   </Card>
               }
               </div>
@@ -146,13 +160,14 @@ export class TicketCard extends React.Component {
                           id="status"
                           labelId="status-label"
                           label="Status"
-                          defaultValue={this.status.value}
+                          defaultValue={this.status.status}
                           className={classes.root}
                           onChange={this.changeStatus}
                         >
-                          <MenuItem value={'Open'}>Open</MenuItem>
-                          <MenuItem value={'In Progress'}>In Progress</MenuItem>
-                          <MenuItem value={'Closed'}>Closed</MenuItem>
+                          <MenuItem value={"No Type"}>N/A</MenuItem>
+                          <MenuItem value={"Open"}>Open</MenuItem>
+                          <MenuItem value={"In Progress"}>In Progress</MenuItem>
+                          <MenuItem value={"Closed"}>Closed</MenuItem>
                         </Select>
                     </FormControl>
                   </Box>

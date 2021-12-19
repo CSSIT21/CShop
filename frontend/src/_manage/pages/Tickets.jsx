@@ -162,7 +162,7 @@ const ManageSellerAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '50%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Tickets ({(!showClosed ? (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status != 'Closed';})).length : tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Tickets ({(!showClosed ? (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_support_status.status.status != 'Closed';})).length : tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
                         <Box sx={{ width: '16%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Type</Typography>
@@ -195,7 +195,7 @@ const ManageSellerAccountPage = () => {
                             (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             : (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.status != 'Closed';
+                                return obj.admin_support_status.status.status != 'Closed';
                             })
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
