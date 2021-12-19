@@ -26,7 +26,7 @@ model customer {
   customer_info                 customer_info?
   old_password                  customer_old_password?
   customer_picture              customer_picture?
-  wishlist                      customer_wishlist?
+  wishlist                      customer_wishlist[]
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend[]
@@ -40,7 +40,7 @@ model customer {
   home_shop_log                 home_shop_log[]
   order                         order[]
   order_cart_item               order_cart_item[]
-  order_deleted_item            order_deleted_item?
+  order_deleted_item            order_deleted_item[]
   order_rebuy                   order_rebuy?
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
@@ -118,10 +118,12 @@ model customer_old_password {
 }
 
 model customer_wishlist {
-  customer_id                        Int      @id
+  customer_id                        Int
   product_id                         Int
   added_date                         DateTime @default(now())
+  id                                 Int      @id @default(autoincrement())
   customer_id_from_customer_wishlist customer @relation(fields: [customer_id], references: [id])
+  product                            product  @relation(fields: [product_id], references: [id])
 }
 
 model customer_followed_shop {
@@ -315,6 +317,7 @@ model product {
   shop_id_from_product            shop_info                        @relation(fields: [shop_id], references: [id])
   business_product_view_records   business_product_view_records?
   business_product_view_summaries business_product_view_summaries?
+  customer_wishlist               customer_wishlist[]
   home_add_to_cart_log            home_add_to_cart_log[]
   home_product_log                home_product_log[]
   order_cancel_refund             order_cancel_refund[]
@@ -677,9 +680,10 @@ model payment_deeplink {
 }
 
 model order_deleted_item {
-  customer_id                         Int      @id
+  customer_id                         Int
   product_id                          Int
   time                                DateTime @db.Timestamp(6)
+  id                                  Int      @id @default(autoincrement())
   customer_id_from_order_deleted_item customer @relation(fields: [customer_id], references: [id])
   product_id_from_order_deleted_item  product  @relation(fields: [product_id], references: [id])
 }
@@ -1486,9 +1490,10 @@ model delivery_admin {
 }
 
 model delivery_admin_log {
-  admin_id                Int                     @id
+  admin_id                Int
   delivery_id             Int
   updated_time            DateTime                @db.Timestamp(6)
+  id                      Int                     @id @default(autoincrement())
   delivery_product_status delivery_product_status @relation(fields: [delivery_id], references: [id])
 }
 
@@ -1577,6 +1582,7 @@ enum PaymentTypes {
   QR
   Deeplink
   Card
+  Wallet
 }
 
 enum PaymentCardTransactionStatus {
