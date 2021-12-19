@@ -141,7 +141,7 @@ const ChoiceForPay = () => {
                         </Box>
                     </RadioGroup>
                     <Box className={classes.boxButton}>
-                        <Link to={"/"+value}>
+                        <Link to={"/payment/"+value}>
                             <Button className={classes.confirmButton} color="primary">
                                 Confirm
                             </Button>
