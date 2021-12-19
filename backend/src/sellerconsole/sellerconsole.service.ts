@@ -373,7 +373,6 @@ export class SellerconsoleService {
 				shop_id: shopid,
 			},
 			select: {
-				view_date:true,
 				customer_id_from_home_shop_log: {
 					select: {
 						customer_info: {
