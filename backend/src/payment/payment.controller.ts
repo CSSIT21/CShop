@@ -37,10 +37,10 @@ export class PaymentController {
 
 	@Get('/qrcode')
 	@Public()
-	async getQRcode(){
+	async getQRcode(@Query('userId', ParseIntPipe) userId: number){
 		try {
 			let rawQr: string;
-			rawQr = await this.paymentService.getQr();
+			rawQr = await this.paymentService.getQr(userId);
 			return {
 				success: true,
 				 rawQr
@@ -236,7 +236,9 @@ export class PaymentController {
 	@Get('/test')
 	@Public()
 	showPayWallet() {
-		return this.prisma.shop_info.findMany();
+		// return this.prisma.shop_info.findMany();
+		// return this.paymentService.sellerIncomeRecipt(1);
+		return Math.floor(Math.random()*1677721599999999999999).toString(16);
 	}
 
 	@Get('/testall')
