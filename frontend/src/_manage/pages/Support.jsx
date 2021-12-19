@@ -16,6 +16,7 @@ import { MenuItem } from '@mui/material';
 import { Button } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import SupportMedia from "../components/SupportMedia";
+import axios from "axios";
 
 const cardStyle = {
     width: '100%',
@@ -35,38 +36,49 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
-    const [type, setType] = React.useState('');
+    const [type, setType] = React.useState(0);
     const setTicketType = (event) => {
         setType(event.target.value);
       };
 
-    const [sortOrder, setSortOrder] = React.useState(false);
-    const toggleSort = () => {
-        setSortOrder(!sortOrder);
-      }
+    const [desc, setDesc] = React.useState('');
+    const setDescription = (event) => {
+          setDesc(event.target.value);
+        };
 
-    const [showClosed, setShowClosed] = React.useState(false);
-    const toggleShowClosed = () => {
-        setShowClosed(!showClosed);
-        setPage(1);
+    const [target, setTarget] = React.useState('');
+    const setTicketTarget = (event) => {
+            setTarget(event.target.value);
+        };
+
+    const [picture, setPicture] = React.useState("https://via.placeholder.com/410x360");
+    const setPictureUpload = (event) => {
+        console.log(event.target.value);
+        setPicture(event.target.value);
+      };
+
+    const [picture64, setPicture64] = React.useState('');
+    const setPictureUpload64 = (ba) => {
+        setPicture64(ba);
+      };
+
+    const submitTicket = () => {
+        console.log(type + " | " + desc  + " | " + target  + " | " + picture64);
+    };
+
+    const onImageChange = (event) => {
+        setPicture(URL.createObjectURL(event.target.files[0]));
+        encodeImageFileAsURL(event.target);
+    }
+
+    function encodeImageFileAsURL(element) {
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          setPictureUpload64(reader.result.split(",")[1])
         }
-
-    const [page, setPage] = React.useState(1);
-    const handlePagination = (event) => {
-        setPage(event.target.textContent);
-    }
-
-    const [search, setSearch] = React.useState('');
-    const handleSearch = (event) => {
-        setSearch(event.target.value);
-    }
-
-    const setStatus = (ticketid, status) => {
-        tickets.filter(ticket => ticket.id === ticketid)[0].status = status;
-    }
-
-    const [picture, setPicture] = React.useState({title: 'fake support picture',
-    image: "https://via.placeholder.com/410x360"});
+        reader.readAsDataURL(file);
+      }
 
     return (
         <Box sx={{ margin: '25px 0px' }}>
@@ -93,9 +105,10 @@ const ManageSellerAccountPage = () => {
                               className={classes.root}
                               onChange={setTicketType}
                             >
-                              <MenuItem value={'user'}>User Report</MenuItem>
-                              <MenuItem value={'seller'}>Seller Report</MenuItem>
-                              <MenuItem value={'bug'}>Bug Report</MenuItem>
+                              <MenuItem value={0}>Select Type</MenuItem>
+                              <MenuItem value={1}>User Report</MenuItem>
+                              <MenuItem value={2}>Seller Report</MenuItem>
+                              <MenuItem value={3}>Bug Report</MenuItem>
                             </Select>
                         </FormControl>
                         <FormControl sx={{ width: '40%' }}>
@@ -105,8 +118,9 @@ const ManageSellerAccountPage = () => {
                                 label="What are you reporting?"
                                 id="target"
                                 fullWidth
-                                placeholder="e.g., RudeUser, ScamSeller, Shop Bug..."
+                                placeholder="e.g., RudeUser145, ScamSeller495, Shop Bug..."
                                 variant="outlined"
+                                onChange={setTicketTarget}
                             />
                         </FormControl>
                     </Box>
@@ -121,6 +135,7 @@ const ManageSellerAccountPage = () => {
                             multiline
                             fullWidth
                             rows={8}
+                            onChange={setDescription}
                             placeholder="Describe your report"
                             variant="outlined"
                             sx={{width:'80%!important'}}
@@ -128,7 +143,7 @@ const ManageSellerAccountPage = () => {
                     </Box>
                     <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                         <Box sx={{width:'25%', display:'flex', flexDirection: 'column', justifyContent: 'center', margin:'2.2% 10%'}}>
-                            <SupportMedia image={picture.image} title={picture.title} />
+                            <SupportMedia image={picture} title={picture.title} />
                             <Box sx={{ margin:'15px 0px' }}>
                                 <Button
                                     variant="outlined"
@@ -139,12 +154,13 @@ const ManageSellerAccountPage = () => {
                                 <input
                                     type="file"
                                     hidden
+                                    onChange={onImageChange}
                                 />
                                 </Button>
                             </Box>
                         </Box>
                         <Box sx={{width: '20%', display:'flex', alignItems:'flex-end', margin: '27.5px'}}>
-                            <Button variant="contained" size="large" sx={{margin:"10px"}}>Submit Ticket</Button>
+                            <Button variant="contained" size="large" sx={{margin:"10px"}} onClick={submitTicket}>Submit Ticket</Button>
                         </Box>
                     </Box>
                 </CardContent>
