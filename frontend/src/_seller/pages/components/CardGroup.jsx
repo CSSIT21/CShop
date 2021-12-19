@@ -41,12 +41,12 @@ const CardGroup = () => {
       // console.log(pd.data.quantity);
       // console.log(fl.data.followers);
       // console.log(rt.data._avg.rating );
-      // console.log(sl.data);
+      // console.log(sl.data.price);
 
       setCpd(pd.data.quantity);
       setCfl(fl.data.followers);
       setCrt(rt.data._avg.rating);
-      setCsl(sl.data);
+      setCsl(sl.data.price);
     } catch (e) {
       console.log(e);
     }
@@ -84,7 +84,7 @@ const CardGroup = () => {
     },
     {
       id: 3,
-      // value: {csl},
+      value: csl,
       name: "Sales",
       color: "#E0F8F2",
       fontColor: "#43D5AE",

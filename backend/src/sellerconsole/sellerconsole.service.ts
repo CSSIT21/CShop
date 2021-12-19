@@ -232,7 +232,7 @@ export class SellerconsoleService {
 		});
 	}
 	async CardOfSales(id: number) {
-		return await this.prisma.product.findMany({
+		const temp = await this.prisma.product.findMany({
 			where: {
 				shop_id: id,
 			},
@@ -241,6 +241,12 @@ export class SellerconsoleService {
 				price: true,
 			},
 		});
+		
+		const prices = temp.map((el) => (el.price * el.sold))
+
+		let price = 0;
+		prices.forEach((el) => price += el);
+		return { price }
 	}
 
 	// async Cheat(id: number){
@@ -288,8 +294,8 @@ export class SellerconsoleService {
 			const FreeShipping = await this.prisma.discount.create({
 				data: {
 					code: code,
-					start_date: starte_date,
-					end_date: end_date,
+					start_date: new Date(starte_date),
+					end_date: new Date(end_date),
 					description: description,
 					class: 'FreeShipping',
 					min_price: min_price,
