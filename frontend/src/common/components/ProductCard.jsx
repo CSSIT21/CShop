@@ -3,6 +3,7 @@ import ProductMedia from "./ProductCardBase/ProductMedia";
 import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const cardStyle = {
   width: "100%",
@@ -26,7 +27,6 @@ const productTemplate = {
 };
 
 const ProductCard = (props) => {
-  const router = useHistory();
   const {
     product = productTemplate,
     to = "/product/1",
@@ -35,26 +35,28 @@ const ProductCard = (props) => {
     addToCart = false,
   } = props;
   const handleClick = () => {
-    router.push(`/product/${product.id}`);
+    //axios get log
   };
   return (
-    <Card variant="outlined" sx={cardStyle} onClick={handleClick}>
-      <ProductMedia
-        image={
-          product.product_picture?.length > 0
-            ? product.product_picture[0].path
-            : null
-        }
-        title={product.title}
-      />
-      <ProductContent
-        product={product}
-        status={status}
-        statusProps={props}
-        addToCart={addToCart}
-        onFavourite={onFavourite}
-      />
-    </Card>
+    <Link to={"/product/" + product.id}>
+      <Card variant="outlined" sx={cardStyle} onClick={handleClick}>
+        <ProductMedia
+          image={
+            product.product_picture?.length > 0
+              ? product.product_picture[0].path
+              : null
+          }
+          title={product.title}
+        />
+        <ProductContent
+          product={product}
+          status={status}
+          statusProps={props}
+          addToCart={addToCart}
+          onFavourite={onFavourite}
+        />
+      </Card>
+    </Link>
   );
 };
 
