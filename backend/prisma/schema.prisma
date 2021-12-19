@@ -26,7 +26,7 @@ model customer {
   customer_info                 customer_info?
   old_password                  customer_old_password?
   customer_picture              customer_picture?
-  wishlist                      customer_wishlist?
+  wishlist                      customer_wishlist[]
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin[]
   discount_customer_spend       discount_customer_spend[]
@@ -118,9 +118,11 @@ model customer_old_password {
 }
 
 model customer_wishlist {
-  customer_id                        Int      @id
+  id                                 Int      @id @default(autoincrement())
+  customer_id                        Int
   product_id                         Int
   added_date                         DateTime @default(now())
+  product_id_from_wishlist           product  @relation(fields: [product_id], references: [id])
   customer_id_from_customer_wishlist customer @relation(fields: [customer_id], references: [id])
 }
 
@@ -349,6 +351,7 @@ model product {
   sconsole_refund_history         sconsole_refund_history[]
   sconsole_set_lanch_product      sconsole_set_lanch_product?
   sconsole_stock_history          sconsole_stock_history[]
+  customer_wishlist               customer_wishlist[]
 }
 
 model product_picture {
