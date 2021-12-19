@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Axios from 'axios';
+import React from 'react';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import ChoiceForPay from '../components/ChoiceForPay';
@@ -23,11 +22,9 @@ const useStyles = makeStyles({
 })
 
 
-const payment = () => {
+const Payment = () => {
 
     const classes = useStyles();
-
-
 
     return (
         <Box>
@@ -41,4 +38,4 @@ const payment = () => {
     )
 }
 
-export default payment
+export default Payment;

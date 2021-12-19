@@ -43,43 +43,26 @@ const useStyles = makeStyles({
       },
       
 })
+
+
 const qrCode = "0002010102123032011563959634889012902091234678325204701153037645406100.005802TH5905CShop6007BANGKOK62340523202111151028050140000000703CMQ630447C0";
 
-
-const [Qr, setQr] = useState(0)
-const getData = () => {
-    axios
-     .get(`${config.SERVER_URL}/qrcode`)
-     .then(({data}) => {
-      if (data.success) {
-       return setQr(data.rawQr);
-      }
-      else {
-       return console.log(data);
-      }
-     })
-     .catch((err) => {
-      return console.log(err.message);
-     })
-   };
-  
-   useEffect(() => {
-    getData();
-   }, [])
 
 const PaidByQr = () => {
     const classes = useStyles();
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(5);
+    const [display, setDisplay] = useState("none")
 
     function updateTime() {
-    if (minutes == 0 && seconds == 0) {
+    if (minutes === 0 && seconds === 0) {
         setSeconds(0);
         setMinutes(5);
+        setDisplay("")
         //set time out qr not valid 
         //click to be defualt state
     } else {
-        if (seconds == 0) {
+        if (seconds === 0) {
         setMinutes((minutes) => minutes - 1);
         setSeconds(59);
         } else {
@@ -116,13 +99,13 @@ const PaidByQr = () => {
                 </Box>
                 <Box className = {classes.sizeQr}>
                     {qrCode.length > 1 ? (
-                        <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${Qr}`}/>
+                        <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}/>
                     ) : null}
                 </Box>
                 <Box className={classes.boxDetail}>
                     <Typography>QRcode valid until {time} </Typography>
                     <Typography marginBottom={2}>time remaining {minutes} minutes {seconds} seconds</Typography>
-                    <CButton title="generate new qr" height="38px"/>
+                    <CButton sx={{display : display}} title="generate new qr" height="38px"/>
                 </Box>
             </Box>
         </Box> 

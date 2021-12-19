@@ -3,14 +3,14 @@ import LazyImage from '../../common/components/LazyImage/LazyImage'
 import { CheckCircleOutline, RadioButtonUnchecked,  } from '@mui/icons-material'
 import { Checkbox, Divider, FormControlLabel, TextField, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
 import VisaCardIcon from '../assets/images/Visa_2021.svg'
 import CButton from '../../common/components/CButton'
-import axios from "axios" 
 
 
-const getData = () => {
+
+//const getData = () => {
 //     axios
 //      .get(`${config.SERVER_URL}/creditcard`)
 //      .then(({data}) => {
@@ -30,7 +30,6 @@ const getData = () => {
 //     getData();
 //    }, [])
 
-   const [nameOnCard, setNameOnCard] = useState("")
 const CreditCard = () => {
     const classes = useStyles();
     return (
@@ -144,5 +143,5 @@ const useStyles = makeStyles({
       flexDirection: "row",
     },
   });
-}
+
 export default CreditCard;
