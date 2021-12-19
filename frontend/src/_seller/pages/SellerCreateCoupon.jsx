@@ -126,8 +126,7 @@ const SellerCreateCoupon = (props) => {
       max_quantity != ""
     ) {
       createCoupon();
-    }
-    else{
+    } else {
       e.preventDefault();
     }
   };
@@ -141,7 +140,6 @@ const SellerCreateCoupon = (props) => {
 
     checkValidation();
     // console.log(minprice, reduceprice);
-    window.location.reload(false);
   };
 
   const shopid = useParams();
@@ -155,8 +153,8 @@ const SellerCreateCoupon = (props) => {
         {
           id: parseInt(tempShopid),
           code: code,
-          start_date: startdate,
-          end_date: endate,
+          start_date: startdate.toLocaleString(),
+          end_date: endate.toLocaleString(),
           description: descpt,
           class_types: discountClass,
           min_price: parseInt(minprice),
@@ -168,7 +166,11 @@ const SellerCreateCoupon = (props) => {
           max_quantity: parseInt(max_quantity),
         }
       );
-      window.alert("Create Success");
+
+      if (createCoupon) {
+        window.alert("Create Success");
+        window.location.reload(false);
+      }
     } catch (e) {
       console.log(e);
     }

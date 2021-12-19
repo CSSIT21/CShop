@@ -107,21 +107,21 @@ export default function SellerConsoleSidebarLayout(props) {
       "Page customization",
       "/seller/" + params.id + "/customize"
     ),
-    generateLink(
-      ShoppingBasketRoundedIcon,
-      "FlashSale Log",
-      "/seller/" + params.id + "/flashsalelog"
-    ),
+    // generateLink(
+    //   ShoppingBasketRoundedIcon,
+    //   "FlashSale Log",
+    //   "/seller/" + params.id + "/flashsalelog"
+    // ),
     generateLink(
       ShowChartRoundedIcon,
       "Stock Log",
       "/seller/" + params.id + "/stocklog"
     ),
-    generateLink(
-      FormatListBulletedRoundedIcon,
-      "Order Status",
-      "/seller/" + params.id + "/orderstatus"
-    ),
+    // generateLink(
+    //   FormatListBulletedRoundedIcon,
+    //   "Order Status",
+    //   "/seller/" + params.id + "/orderstatus"
+    // ),
     generateLink(
       ReceiptRoundedIcon,
       "Order History",
@@ -137,11 +137,11 @@ export default function SellerConsoleSidebarLayout(props) {
       "Coupon",
       "/seller/" + params.id + "/discountlog"
     ),
-    generateLink(
-      AttachMoneyRoundedIcon,
-      "Refund History",
-      "/seller/" + params.id + "/refundlog"
-    ),
+    // generateLink(
+    //   AttachMoneyRoundedIcon,
+    //   "Refund History",
+    //   "/seller/" + params.id + "/refundlog"
+    // ),
   ];
 
   return (
