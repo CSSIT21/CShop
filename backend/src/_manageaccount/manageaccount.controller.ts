@@ -37,8 +37,21 @@ export class ManageaccountController {
 
   @Post('tickets/update/status')
   @Public()
-  public async updateTickets(@Body() updateTicketDto: UpdateTicketDto, @Res() res){
+  public async updateTicketsStatus(@Body() updateTicketDto: UpdateTicketDto, @Res() res){
     const ticket = await this.manageaccountService.updateTicketStatus(updateTicketDto);
+    if(ticket){
+      res.send({Success: true, ticket});
+    } else {
+      res.send({
+        Success : false,
+      });
+    }
+  }
+
+  @Post('tickets/update/admin')
+  @Public()
+  public async updateTicketsAdmin(@Body() updateTicketDto: UpdateTicketDto, @Res() res){
+    const ticket = await this.manageaccountService.updateTicketAdmin(updateTicketDto);
     if(ticket){
       res.send({Success: true, ticket});
     } else {

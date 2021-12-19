@@ -71,6 +71,27 @@ export class ManageaccountService {
 			throw new HttpException('Error updating ticket', 500);
 		}
   }
+
+  async updateTicketAdmin(updateTicketDto: UpdateTicketDto) {
+    try {
+			await this.prisma.admin_support.update({
+        where: {
+          id: updateTicketDto.id,
+        },
+				data: {
+          admin_id: updateTicketDto.admin_id
+				},
+			});
+			return 'Ticket Updated!';
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error updating ticket!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error updating ticket', 500);
+		}
+  }
   
   async createUserSuspension(createUserSuspensionDto: CreateUserSuspensionDto) {
     try {
