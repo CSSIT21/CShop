@@ -9,6 +9,8 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 export class PaymentService {
     constructor(private readonly prisma: PrismaService) { }
     
+    
+    //OR code
     async getQr() {
         const data = {
             qrType: 'PP',
@@ -65,6 +67,10 @@ export class PaymentService {
         return str;
     }
 
+
+
+
+    //Wallet
     async getWallet() {
         return await this.prisma.wallet.findMany();
         // console.log(wallet);
@@ -153,9 +159,9 @@ export class PaymentService {
             }
         })
     }
-
+    
     async createPaymentWalletTrans(amount?: number, walletId?: number, paymentId?: number) {
-        return await this.prisma.payment_transaction.create({
+        let createTrans = await this.prisma.payment_transaction.create({
             data: {
                 amount: amount,
                 time: new Date().toISOString(),
@@ -169,12 +175,29 @@ export class PaymentService {
                             create: {
                                 payment_id: paymentId,
                                 wallet_id: walletId,
-                            }
-                        }
-                    }
-                }
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        let oldBalance = await this.prisma.wallet.findFirst({
+            where: {
+                id: walletId,
+            },
+            select: {
+                balance: true,
             }
         })
+        let decreaseBalance = await this.prisma.wallet.update({
+            where: {
+                id: walletId,
+            },
+            data: {
+                balance: oldBalance.balance + amount,
+            }
+        })
+        return decreaseBalance;
     }
 
     async searchPayment(paymentId?: number) {
@@ -185,12 +208,8 @@ export class PaymentService {
         })
     }
 
-    async searchTrans(transId: number) {
-        return this.prisma.payment_transaction.findFirst({
-            where: {
-                id: transId
-            }
-        })
+    async searchTrans() {
+        return this.prisma.payment_transaction.findMany();
     }
     async searLog(customerId: number) {
         return await this.prisma.home_payment_log.findFirst({
@@ -199,6 +218,112 @@ export class PaymentService {
             }
         })
     }
+
+
+
+    //Credit Card
+    async createCreditCard(cardNo: string, exp: Date, cvc: string, userId: number) {
+        return await this.prisma.payment_credit_card.create({
+            data: {
+                card_number: cardNo,
+                expire_date: exp.toISOString(),
+                cvc: cvc,
+                type: "MasterCard",
+                payment_credit_card_owner: {
+                    create: {
+                        customer_id: userId,
+                    }
+                }
+            }
+        })
+    }
+
+    async createPaymentCard(orderId?: number) {
+        // let orderDetail = await this.prisma.order_detail.findUnique({
+        //     where: {
+        //         order_id: orderId,
+        //     }
+        // })
+        let order = await this.prisma.order.findFirst({
+            where: {
+                id: orderId,
+            },
+            select: {
+                total_price: true,
+                customer_id: true,
+            },
+        })
+        return await this.prisma.payment.create({
+            data: {
+                order_id: orderId,
+                type: "Card",
+                amount: order.total_price,
+                status: "Pending",
+                created_date: new Date().toISOString(),
+                updated_date: new Date().toISOString(),
+                home_payment_log: {
+                    create: {
+                        customer_id: order.customer_id,
+                        issue_at: new Date().toISOString(),
+                    },
+                }, 
+            }
+        })
+    }
+    
+
+    async createPaymentCardTrans(amount?: number, cardId?: number, paymentId?: number) {
+        return await this.prisma.payment_transaction.create({
+            data: {
+                amount: amount,
+                time: new Date().toISOString(),
+                desc: "Wow",
+                payment_credit_card_transaction: {
+                    create: {
+                        card_id:cardId,
+                        status: "Success",
+                        refund_id: 0,
+                        payment_card: {
+                            create: {
+                                payment_id: paymentId,
+                                card_id: cardId,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+
+
+
+    // Shop income
+    async paymentShopBankAcc(shopId: number, firstname: string, lastname: string, accountNo: string) {
+        return await this.prisma.payment_shop_bank_account.create({
+            data: {
+                shop_id: shopId,
+                firstname: firstname,
+                lastname: lastname,
+                bank: "SCB",
+                account_number: accountNo,
+            }
+        })
+    }
+
+    async sellerIncome(shopId: number, orderId: number, amount: number) {
+        return await this.prisma.payment_seller_income.create({
+            data: {
+                shop_id: shopId,
+                order_id: orderId,
+                total_price: amount,
+                time: new Date().toISOString()
+            }
+        })
+    }
+
+    
+
+
 
 
 
