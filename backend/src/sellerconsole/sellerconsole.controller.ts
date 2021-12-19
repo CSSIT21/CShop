@@ -52,7 +52,7 @@ export class SellerconsoleController {
 
 	@Get(':id/cardToSales')
 	@Public()
-	getCardToSales(@Param('id') id: number) {
+	getCardToSales(@Param('id', ParseIntPipe) id: number) {
 		return this.sellerconsoleService.CardOfSales(+id);
 	}
 

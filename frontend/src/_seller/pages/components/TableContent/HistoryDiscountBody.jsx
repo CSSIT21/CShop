@@ -49,7 +49,7 @@ const HistoryDiscountBody = ({ columns }) => {
       );
 
       const created = res.data.map((el) =>
-        createData(
+        (createData(
           el.discount_id,
           el.discount_id_from_discount_shop.code,
           el.discount_id_from_discount_shop.picture_path,
@@ -59,7 +59,7 @@ const HistoryDiscountBody = ({ columns }) => {
           el.discount_id_from_discount_shop.discount_types,
           el.quantity,
           el.max_quantity
-        )
+        ))
       );
       setRows(created);
       // console.log(rows)

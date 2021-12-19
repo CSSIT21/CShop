@@ -9,7 +9,14 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Chip from "@mui/material/Chip";
 import { Box } from "@mui/system";
-const StockLogBody = ({ rows, columns }) => {
+import { Avatar, Typography, Modal } from "@mui/material";
+
+import { useState, useEffect } from "react";
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+const StockLogBody = ({ columns }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -21,6 +28,60 @@ const StockLogBody = ({ rows, columns }) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const [rows, setRows] = useState([]);
+
+  const shopid = useParams();
+
+  const [Ttype, setTtype] = useState("Import");
+
+  const fetchStockLog = async () => {
+    try {
+      const res = await axios.get(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/stockhistory`
+      );
+      const created = res.data.map((el) =>
+        createData(
+          el.product_id,
+          el.product_id_from_sconsole_stock_history.product_picture.path,
+          el.product_id_from_sconsole_stock_history.title,
+          el.quantity,
+          Ttype,
+          el.product_id_from_sconsole_stock_history.quantity,
+          el.updated_date
+        )
+      );
+      setRows(created);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchStockLog();
+    // console.log(rows)
+    // console.log(shopid.id)
+  }, [rows]);
+
+  function createData(
+    productId,
+    product_picture,
+    productName,
+    quantity,
+    TradeType,
+    totalquantity,
+    update_date
+  ) {
+    return {
+      productId,
+      product_picture,
+      productName,
+      quantity,
+      TradeType,
+      totalquantity,
+      update_date,
+    };
+  }
 
   return (
     <>
@@ -85,6 +146,17 @@ const StockLogBody = ({ rows, columns }) => {
                                   />
                                 );
                               }
+                            } else if (column.id === "product_picture") {
+                              return (
+                                <Avatar
+                                  src={value}
+                                  variant="rounded"
+                                  sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                  }}
+                                ></Avatar>
+                              );
                             } else {
                               return value;
                             }
