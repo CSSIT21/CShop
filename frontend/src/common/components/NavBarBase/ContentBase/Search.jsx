@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
-
+import { nanoid } from 'nanoid';
 const Search = ({
   showButton = true,
   placeholder = 'What are you looking for?',
@@ -17,11 +17,11 @@ const Search = ({
   const classes = useStyles();
   const [result, setResult] = useState([]);
   const [keyWord, setKeyWord] = useState(q);
-  const { id } = useParams(); 
+  const { id } = useParams();
   const searching = () => {
-    if(id && id > 0)
-      location.href = `/search/category/${id}?q=` + keyWord.trim();
-    else location.href = `/search?q=` + keyWord.trim();
+    if (id && id > 0)
+      router.push(`/search/category/${id}?q=${keyWord.trim()}&id=${nanoid()}`);
+    else router.push(`/search?q=${keyWord.trim()}&id=${nanoid()}`);
   };
 
   return (
@@ -33,6 +33,11 @@ const Search = ({
           className={classes.searchInput}
           placeholder={placeholder}
           onChange={(e) => setKeyWord(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              searching();
+            }
+          }}
         />
         {showButton && (
           <CButton

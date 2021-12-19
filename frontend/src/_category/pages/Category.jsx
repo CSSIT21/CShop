@@ -8,6 +8,7 @@ import {
   Pagination,
   CircularProgress,
   Backdrop,
+  Alert,
 } from '@mui/material';
 import { FilterAltOutlined } from '@mui/icons-material';
 import CategoryHeader from '../components/CategoryHeader';
@@ -29,13 +30,14 @@ const CategoryPage = () => {
   // http://localhost:3000/search/category/1 -> id
   const { id } = useParams();
   const q =
-    qs.parse(window.location.search, { ignoreQueryPrefix: true }).q || '';
+    qs.parse(window.location.search, { ignoreQueryPrefix: true }).q.trim() ||
+    '';
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(12);
   const [totalPage, setTotalPage] = useState(0);
-  
+
   /** filter */
   const [readyToShip, setReadyToShip] = useState(false);
   const [outOfStock, setOutOfStock] = useState(false);
@@ -45,15 +47,16 @@ const CategoryPage = () => {
   const [price, setPrice] = useState([MIN_PRICE, MAX_PRICE]);
   /**rate */
   const [rate, setRate] = useState(0);
-  
 
   const fetchProducts = (
     page,
     readyToShip,
     outOfStock,
-    price = [MIN_PRICE, MAX_PRICE]
+    price = [MIN_PRICE, MAX_PRICE],
+    rate,
+    q
   ) => {
-    console.log('currentPage', page, readyToShip, outOfStock, price , rate);
+    console.log('currentPage', page, readyToShip, outOfStock, price, rate, q);
     setLoading(true);
     axios
       .get(
@@ -77,13 +80,21 @@ const CategoryPage = () => {
   const debouncedFetching = useMemo(() => debounce(fetchProducts, 500), []);
 
   useEffect(() => {
-    fetchProducts(page);
+    fetchProducts(page, readyToShip, outOfStock, price, rate, q);
   }, []);
 
   useEffect(() => {
     console.log(q, page);
-    debouncedFetching(page, readyToShip, outOfStock, price, rate);
-  }, [page, readyToShip, outOfStock, price, rate]);
+    debouncedFetching(page, readyToShip, outOfStock, price, rate, q);
+  }, [
+    qs.parse(window.location.search, { ignoreQueryPrefix: true }).id,
+    q,
+    page,
+    readyToShip,
+    outOfStock,
+    price,
+    rate,
+  ]);
 
   const onFavourite = (e, idx) => {
     e.preventDefault();
@@ -131,10 +142,7 @@ const CategoryPage = () => {
             MIN_PRICE={MIN_PRICE}
             MAX_PRICE={MAX_PRICE}
           />
-          <CategoryFilterRate 
-          setRate = {setRate}
-          rate = {rate}
-          />
+          <CategoryFilterRate setRate={setRate} rate={rate} />
 
           <CategoryFilterAvailability
             setReadyToShip={setReadyToShip}
@@ -143,6 +151,17 @@ const CategoryPage = () => {
         </Box>
 
         <Box sx={{ width: '80%' }}>
+          {items.length <= 0 && (
+            <Grid container spacing={2}>
+              <Alert
+                icon={false}
+                severity='warning'
+                sx={{ width: '100%', justifyContent: 'center' }}
+              >
+                Sorry, no results found with this keyword <b>{q}</b>.
+              </Alert>
+            </Grid>
+          )}
           <Grid
             container
             spacing={2}
@@ -150,8 +169,8 @@ const CategoryPage = () => {
           >
             <For
               each={items}
-              children={(item) => (
-                <Grid item xs={6} md={3} mb={3} key={item.title}>
+              children={(item, idx) => (
+                <Grid item xs={6} md={3} mb={3} key={idx + item.title}>
                   <ProductCard
                     product={item}
                     onFavourite={onFavourite}
