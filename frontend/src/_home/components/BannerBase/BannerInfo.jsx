@@ -26,24 +26,24 @@ import { noop } from '~/common/utils';
 
 const BannerInfo = ({
     setItems = noop,
-    item = {},
+    items = [],
+    index = 0,
     open = false,
-    getData = noop,
     handleDialog = noop,
 }) => {
     const [tempKeyword, setTempKeyword] = useState("");
-    const [description, setDescription] = useState(item.description);
-    const [start_date, setStart_date] = useState(item.start_date);
-    const [end_date, setEnd_date] = useState(item.end_date);
-    const [visible, setVisible] = useState(item.visible);
-    const [keywords, setKeywords] = useState(item.keywords);
+    const [description, setDescription] = useState(items[index]?.description);
+    const [start_date, setStart_date] = useState(items[index]?.start_date);
+    const [end_date, setEnd_date] = useState(items[index]?.end_date);
+    const [visible, setVisible] = useState(items[index]?.visible);
+    const [keywords, setKeywords] = useState(items[index]?.keywords);
     const [loading, setLoading] = useState(false);
 
     const handleUpdateInfo = () => {
         setLoading(true);
 
         axios
-            .patch(`${config.SERVER_URL}/home/banner/${item.id}`, {
+            .patch(`${config.SERVER_URL}/home/banner/${items[index].id}`, {
                 description,
                 start_date,
                 end_date,
@@ -53,14 +53,21 @@ const BannerInfo = ({
             .then(({ data }) => {
                 if (data.success) {
                     console.log(data.bannerInfo);
-                    getData();
+
+                    let array = items;
+                    array[index] = {
+                        ...data.bannerInfo,
+                        pictures: items[index].pictures
+                    }
+                    setItems(array);
+
                     setLoading(false);
                     handleDialog();
                     return Swal.fire('Done', "Already updated banner's information", 'success');
                 }
             })
             .catch((error) => {
-                console.log(err.message);
+                console.log(error.message);
                 setLoading(false);
                 handleDialog();
                 return Swal.fire('Oop!', "Cannot update banner's information", 'error');
@@ -82,11 +89,11 @@ const BannerInfo = ({
     };
 
     const onClearChange = () => {
-        setDescription(item.description);
-        setStart_date(item.start_date);
-        setEnd_date(item.end_date);
-        setVisible(item.visible);
-        setKeywords(item.keywords);
+        setDescription(items[index].description);
+        setStart_date(items[index].start_date);
+        setEnd_date(items[index].end_date);
+        setVisible(items[index].visible);
+        setKeywords(items[index].keywords);
     };
 
     return (
@@ -138,8 +145,8 @@ const BannerInfo = ({
                             value={visible}
                             onChange={(e) => setVisible(e.target.value === 'true')}
                         >
-                            <FormControlLabel label="Visible" value={true} control={<Radio />} />
-                            <FormControlLabel label="Invisible" value={false} control={<Radio />} />
+                            <FormControlLabel label="Visible" value="true" control={<Radio />} />
+                            <FormControlLabel label="Invisible" value="false" control={<Radio />} />
                         </RadioGroup>
                     </Grid>
 

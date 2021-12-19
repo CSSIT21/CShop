@@ -7,24 +7,21 @@ import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import ProductCard from '~/common/components/ProductCard';
 import HeaderWithButton from './HeaderWithButton';
 import axios from "axios";
-import Swal from 'sweetalert2';
 import config from "~/common/constants";
 
-const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
-
+const BestsellerSection = () => {
 	const classes = useStyles();
-
-	const [products, setProducts] = useState(bestsellerItems);
+	const [products, setProducts] = useState([]);
 	const [page, setPage] = useState(0);
 	const productsPerRow = 5;
 	const totalPage = Math.ceil(products.length / productsPerRow);
 
-	const getData = () =>{
+	const getData = () => {
 		axios
-		.get(`${config.SEVER_URL}/bestsellers`)
-		.then(({data}) => {
-			if (data.success) {
-				return setBestseller(data.bestsellers);
+			.get(`${config.SEVER_URL}/home/bestsellers`)
+			.then(({ data }) => {
+				if (data.success) {
+					return setProducts(data.bestsellers);
 				}
 				else {
 					return console.log(data);
@@ -39,6 +36,10 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 		getData();
 	}, [])
 
+	const onFavorite = () => {
+
+	}
+
 	return (
 		<Box className={classes.bestsellerWrapper}>
 			<Box className={classes.bestsellerContent}>
@@ -51,20 +52,20 @@ const BestsellerSection = ({ bestsellerItems, onFavourite }) => {
 				/>
 
 				<Box className={classes.bestsellerCarousel}>
-					<Carousel
-						items={products}
-						pageState={page}
-						setPageState={setPage}
-						itemsPerRow={productsPerRow}
-					>
-						{(product, idx) => (
-							<ProductCard
-								product={product}
-								onFavourite={onFavourite}
-								to="/product/1"
-								key={product.id} />
-						)}
-					</Carousel>
+					{products.length > 0 &&
+						<Carousel
+							items={products}
+							pageState={page}
+							setPageState={setPage}
+							itemsPerRow={productsPerRow}
+						>
+							{(product) => (
+								<ProductCard
+									product={product}
+									to="/product/1"
+									key={product.id} />
+							)}
+						</Carousel>}
 				</Box>
 			</Box >
 

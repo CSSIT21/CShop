@@ -5,21 +5,20 @@ import { Typography, Button } from "@mui/material";
 import CButton from "~/common/components/CButton";
 import GridCard from "../commonBase/GridCard";
 import axios from "axios";
-import Swal from 'sweetalert2';
 import config from "~/common/constants";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 
-const SuggestionSection = ({ suggestItems, onFavourite }) => {
-	const auth = useRecoilValue(authState);
-	const [products, setProducts] = useState(suggestItems);
+const SuggestionSection = () => {
+	const { user } = useRecoilValue(authState);
+	const [products, setProducts] = useState([]);
 	const [skip, setSkip] = useState(0);
 	const classes = useStyles();
-	
+
 	const getData = () => {
 		axios
-			.get(`${config.SERVER_URL}/suggestions/${auth.user.id}?take=16&skip=${skip}`)
-			.then(({data}) => {
+			.get(`${config.SERVER_URL}/home/suggestions/${user.id}?take=16&skip=${skip}`)
+			.then(({ data }) => {
 				if (data.success) {
 					return setProducts(data.suggestions);
 				}
@@ -35,8 +34,8 @@ const SuggestionSection = ({ suggestItems, onFavourite }) => {
 	const getMoreData = () => {
 		setSkip(skip + 12);
 		axios
-			.get(`${config.SERVER_URL}/suggestions/${auth.user.id}?take=12&skip=${skip}`)
-			.then(({data}) => {
+			.get(`${config.SERVER_URL}/home/suggestions/${user.id}?take=12&skip=${skip}`)
+			.then(({ data }) => {
 				if (data.success) {
 					return setProducts(products => [...products, ...data.suggestions]);
 				}
@@ -48,7 +47,7 @@ const SuggestionSection = ({ suggestItems, onFavourite }) => {
 				return console.log(err.message);
 			})
 	};
-	
+
 	useEffect(() => {
 		getData();
 	}, [])
@@ -60,7 +59,7 @@ const SuggestionSection = ({ suggestItems, onFavourite }) => {
 				<Button href="/home/suggest" className={classes.suggestionButton} color="primary" >Show all </Button>
 			</Box>
 
-			<GridCard addToCart={false} products={products} onFavorite={onFavourite} />
+			<GridCard addToCart={false} products={products} />
 
 			<Box display="flex" justifyContent="center">
 				<CButton title="Show more products" height='40px' onClick={getMoreData} />

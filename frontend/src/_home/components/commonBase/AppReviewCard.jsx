@@ -7,9 +7,11 @@ const AppReviewCard = ({ review }) => {
     const classes = useStyles();
 
     return (
-        <Box className={classes.commentWrapper} sx={{ background: `linear-gradient(92.51deg, ${review.bgColor} -0.02%, #FFFFFF 83.97%)` }}>
+        <Box className={classes.commentWrapper} sx={{ background: `linear-gradient(92.51deg, ${review.theme_color} -0.02%, #FFFFFF 83.97%)` }}>
             <Box className={classes.commentBox}>
-                <Typography>
+                <Typography sx={{
+
+                }}>
                     {review.comment}
                 </Typography>
             </Box>
@@ -38,20 +40,20 @@ const AppReviewCard = ({ review }) => {
 
 const useStyles = makeStyles({
     commentWrapper: {
+        display: 'flex',
         width: '100%',
         padding: '20px 30px',
         borderRadius: '20px',
-
-        display: 'flex',
-        justifyContent: "space-between",
     },
 
     commentBox: {
+        width: '70%',
         display: 'flex',
-        alignItems: "center",
+        alignItems: 'center',
     },
 
     profileBox: {
+        width: "30%",
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-end",

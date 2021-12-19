@@ -8,7 +8,6 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import EmailIcon from '@mui/icons-material/Email';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import axios from "axios";
-import Swal from 'sweetalert2';
 import config from "~/common/constants";
 
 const PartnerSection = () => {
@@ -17,32 +16,32 @@ const PartnerSection = () => {
     const classes = useStyles();
 
     const getData = () => {
-		axios
-			.get(`${config.SERVER_URL}/partners`)
-			.then(({data}) => {
-				if (data.success) {
+        axios
+            .get(`${config.SERVER_URL}/home/partners`)
+            .then(({ data }) => {
+                if (data.success) {
                     let deliveryTemp = [], paymentTemp = [];
 
-					data.partners.forEach(partner => {
+                    data.partners.forEach(partner => {
                         if (partner.type === 'PaymentMethod') paymentTemp.push(partner);
                         else if (partner.type === 'Delivery') deliveryTemp.push(partner);
                     });
 
                     setPayment(paymentTemp);
                     setDelivery(deliveryTemp);
-				}
-				else {
-					return console.log(data);
-				}
-			})
-			.catch((err) => {
-				return console.log(err.message);
-			})
-	};
+                }
+                else {
+                    return console.log(data);
+                }
+            })
+            .catch((err) => {
+                return console.log(err.message);
+            })
+    };
 
-	useEffect(() => {
-		getData();
-	}, [])
+    useEffect(() => {
+        getData();
+    }, [])
 
     return (
         <Box className={classes.partnerWrapper}>

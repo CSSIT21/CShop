@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
 import BannerItem from './BannerItem';
 import { noop } from '~/common/utils';
 
-const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
+const BannerList = ({ items = [], setItems = noop, }) => {
 	const [loading, setLoading] = useState(false);
 
 	let height = 0;
@@ -51,7 +51,7 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 		})
 	};
 
-	const handleDeleteBanner = (id, index) => {
+	const handleDeleteBanner = (id) => {
 		setLoading(true);
 		axios
 			.delete(`${config.SERVER_URL}/home/banner/${id}`)
@@ -59,11 +59,11 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 				if (data.success) {
 					console.log(data.bannerInfo);
 
-					// setItems(items => {
-					// 	items.splice(index, 1)
-					// 	return [...items];
-					// });
-					getData();
+					let array = items;
+					array = array.filter(item => item.id !== id);
+					console.log(array);
+					setItems(array);
+
 					setLoading(false);
 					return Swal.fire('Done', "Already deleted the banner", 'success');
 				}
@@ -96,8 +96,7 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 							setItems={setItems}
 							onNext={onNext}
 							onPrev={onPrev}
-							getData={getData}
-							handleDeleteBanner={() => handleDeleteBanner(item.id, index)}
+							handleDeleteBanner={() => handleDeleteBanner(item.id)}
 							mainLoading={loading}
 						/>
 					</animated.div>

@@ -8,7 +8,6 @@ import { Typography } from '@mui/material';
 import HeaderWithButton from './HeaderWithButton';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import Swal from 'sweetalert2';
 import config from "~/common/constants";
 
 const CategoriesSection = () => {
@@ -20,8 +19,8 @@ const CategoriesSection = () => {
 
 	const getData = () => {
 		axios
-			.get(`${config.SERVER_URL}/categories`)
-			.then(({data}) => {
+			.get(`${config.SERVER_URL}/home/categories`)
+			.then(({ data }) => {
 				if (data.success) {
 					return setCategories(data.categories);
 				}
@@ -50,21 +49,22 @@ const CategoriesSection = () => {
 					setPage={setPage}
 				/>
 
-				<Carousel
-					items={categories}
-					pageState={page}
-					setPageState={setPage}
-					itemsPerRow={itemsPerRow}
-				>
-					{({id, name, icon_id_from_category}) => (
-						<Link to={`/search/category/${id}`}>
-							<Box className={classes.categoriesItem} key={id}>
-								<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
-								<img src={icon_id_from_category.path} alt={icon_id_from_category.title} />
-							</Box>
-						</Link>
-					)}
-				</Carousel>
+				{categories.length > 0 &&
+					<Carousel
+						items={categories}
+						pageState={page}
+						setPageState={setPage}
+						itemsPerRow={itemsPerRow}
+					>
+						{({ id, name, icon_id_from_category }) => (
+							<Link to={`/search/category/${id}`}>
+								<Box className={classes.categoriesItem} key={id}>
+									<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
+									<img src={icon_id_from_category.path} alt={icon_id_from_category.title} />
+								</Box>
+							</Link>
+						)}
+					</Carousel>}
 			</Box >
 
 			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
