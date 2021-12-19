@@ -16,12 +16,11 @@ import Swal from "sweetalert2";
 
 const ProductPage = (props) => {
   const auth = useRecoilValue(authState);
-  console.log(auth);
   const [productsSuggestion, setProductsSuggestion] = useState();
   const [productDetails, setProductDetails] = useState({ title: "" });
   const [commentPictures, setCommentPictures] = useState();
-  // const [firstchoiceId, setFirstchoiceId] = useState();
-  // const [secondchoiceId, setSecondchoiceId] = useState();
+  const [selected, setSelected] = useState({});
+  const [open, setOpen] = useState(false);
   const [productPictures, setProductPictures] = useState();
   const [shopDetail, setShopDetails] = useState();
   const [comments, setComments] = useState();
@@ -173,21 +172,29 @@ const ProductPage = (props) => {
           confirmButtonText: "OK",
         });
       });
+
     //
   }, [id]);
 
   const addToCart = () => {
+    let options = [Object.keys(selected).length];
+    Object.entries(selected).forEach(([key, value], i) => {
+      console.log(i);
+      options[i] = value;
+      console.log(`${key}: ${value}`);
+    });
     axios
-      .post(`${config.SERVER_URL}/cart/aadtocart`, {
-        userID: auth,
-        productId: id,
+      .post(`${config.SERVER_URL}/cart/addtocart`, {
+        userID: auth.user.customer_info?.customer_id,
+        productId: parseInt(id),
         amount: count,
-        firstchoiceId,
-        secondchoiceId,
+        firstchoiceId: options[0] ? options[0] : undefined,
+        secondchoiceId: options[1] ? options[1] : undefined,
       })
       .then(({ data }) => {
-        if (data.success) {
+        if (data) {
           console.log(data);
+          setOpen(true);
         }
       })
       .catch((e) => {
@@ -243,7 +250,6 @@ const ProductPage = (props) => {
         console.log(data);
         if (data.success) {
           setProductsSuggestion(data.suggest_products);
-          console.log(data.suggest_products);
         }
       })
       .catch((e) => {
@@ -281,10 +287,12 @@ const ProductPage = (props) => {
           favorite={favorite}
           setFavorite={setFavorite}
           addToCart={addToCart}
-          // firstchoiceId={firstchoiceId}
-          // setFirstchoiceId={setFirstchoiceId}
-          // secondchoiceId={secondchoiceId}
-          // setSecondchoiceId={setSecondchoiceId}
+          selected={selected}
+          setSelected={setSelected}
+          count={count}
+          setCount={setCount}
+          open={open}
+          setOpen={setOpen}
         />
         <ShopDetails
           shopId={shopId}

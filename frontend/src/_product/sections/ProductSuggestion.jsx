@@ -13,7 +13,6 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
     let path = "/product/" + id;
     return path;
   };
-  console.log(suggestionItems);
   const classes = useStyles();
   const productsPerRow = 4;
   const totalPage = Math.ceil(suggestionItems?.length / productsPerRow);
@@ -38,21 +37,23 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
         </Box>
 
         <Box className={classes.suggestionCarousel}>
-          <Carousel
-            items={suggestionItems}
-            pageState={page}
-            setPageState={setPage}
-            itemsPerRow={4}
-          >
-            {(item, idx) => (
-              <ProductCard
-                product={item}
-                onFavourite={() => onFavourite(item)}
-                to={() => productPage(item.id)}
-                key={item.id}
-              />
-            )}
-          </Carousel>
+          {suggestionItems.length > 0 && (
+            <Carousel
+              items={suggestionItems}
+              pageState={page}
+              setPageState={setPage}
+              itemsPerRow={4}
+            >
+              {(item, idx) => (
+                <ProductCard
+                  product={item}
+                  onFavourite={() => onFavourite(item)}
+                  to={() => productPage(item.id)}
+                  key={item.id}
+                />
+              )}
+            </Carousel>
+          )}
         </Box>
       </Box>
 

@@ -71,7 +71,14 @@ export class ProductService {
 							id:true,
 							title: true,
 							price: true,
-							product_picture:{take:1}
+							product_picture: { take: 1 },
+							// , select: {
+							// id:true,
+							// title: true,
+							// price: true,
+							// product_picture: { take: 1 }.
+							
+						}
 						}
 					}),
 				);
