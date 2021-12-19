@@ -39,7 +39,7 @@ export class HomeService {
     });
   }
 
-  async findBestSeller() {
+  async findBestSeller(customer_id: number) {
     return this.prisma.product.findMany({
       orderBy: {
         sold: "desc",
@@ -47,12 +47,15 @@ export class HomeService {
       take: 20,
       include: {
         product_picture: true,
+        customer_wishlist: {
+          where: { customer_id },
+        }
       },
     });
   }
 
   async getPopUp() {
-    return this.prisma.home_popup.findMany({
+    return this.prisma.home_popup.findFirst({
       where: {
         start_date: {
           lte: new Date().toISOString(),
@@ -77,30 +80,24 @@ export class HomeService {
     skip?: number;
   }) {
     const { where, take, skip } = params;
-    const productIds = await this.prisma.customer_wishlist.findMany({
+    const products = await this.prisma.customer_wishlist.findMany({
       where,
       take,
       skip,
-      select: {
-        product_id: true,
+      include: {
+        product: {
+          include: {
+            product_picture: true,
+          }
+        }
       },
     })
 
-    const products = [];
-    for (let id of productIds) {
-      let product = await this.prisma.product.findUnique({
-        where: {
-          id: id.product_id
-        },
-        include: {
-          product_picture: true,
-        },
-      });
-
-      products.push(product);
-    }
-
-    return products;
+    const count = products.length;
+    return {
+      products,
+      count,
+    };
   }
 
   async findSuggestion(params: {

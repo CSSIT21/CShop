@@ -21,11 +21,11 @@ export class HomeController {
     }
   }
 
-  @Get("bestsellers")
+  @Get("bestsellers/:id")
   @Public()
-  async findAllSeller() {
+  async findAllSeller(@Param('id', ParseIntPipe) customer_id: number) {
     try {
-      const bestsellers = await this.homeService.findBestSeller();
+      const bestsellers = await this.homeService.findBestSeller(customer_id);
       return {
         success: true,
         bestsellers,
