@@ -14,7 +14,7 @@ export class ManageaccountService {
 
   async createTicket(createTicketDto: CreateTicketDto) {
     try {
-			await this.prisma.admin_support.create({
+			const ticket = await this.prisma.admin_support.create({
 				data: {
           title: createTicketDto.title,
           description: createTicketDto.description,
@@ -28,6 +28,12 @@ export class ManageaccountService {
           picture_id: createTicketDto.picture_id
 				},
 			});
+        await this.prisma.admin_support_status.create({
+          data: {
+            support_id: ticket.id,
+            status: {"status": "Open"}
+          },
+        });
 			return 'Ticket Added!';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {

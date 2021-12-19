@@ -142,12 +142,12 @@ const ManageSellerAccountPage = () => {
                               onChange={setSort}
                             >
                               <MenuItem value={'description'}>Content</MenuItem>
-                              <MenuItem value={'type'}>Type</MenuItem>
-                              <MenuItem value={'filer'}>Filer</MenuItem>
+                              <MenuItem value={'support_type_id'}>Type</MenuItem>
+                              <MenuItem value={'customer_id'}>Filer</MenuItem>
                               <MenuItem value={'target'}>Target</MenuItem>
-                              <MenuItem value={'filedDate'}>Filed Date</MenuItem>
-                              <MenuItem value={'assignee'}>Assingee</MenuItem>
-                              <MenuItem value={'status'}>Status</MenuItem>
+                              <MenuItem value={'sent_date'}>Filed Date</MenuItem>
+                              <MenuItem value={'admin_id'}>Assingee</MenuItem>
+                              <MenuItem value={'admin_support_status.status.status'}>Status</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
