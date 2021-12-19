@@ -273,6 +273,16 @@ export class ManageaccountController {
     });
   }
 
+  @Get('tickets/picture')
+  @Public()
+  public getTicketsPicture(@Query('id') i: number){
+    return this.prisma.admin_support_picture.findMany({
+      where:{
+        id: +i
+      }
+    });
+  }
+
   @Get(':id')
   @Public()
   public findOne(@Param('id') id: string) {

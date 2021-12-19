@@ -27,6 +27,7 @@ export class TicketCard extends React.Component {
     this.filer = {firstname: 'PENDING', lastname: ''};
     this.admin = {firstname: 'Not', lastname: 'Assigned'};
     this.type = {title:'PENDING'};
+    this.path = '';
   }
 
   handleExpandClick = () => {
@@ -52,6 +53,32 @@ export class TicketCard extends React.Component {
     this.forceUpdate();
     this.dialogClose();
   };
+
+  changeAdmin = async () => {
+    const res = await axios.post(
+      "http://localhost:8080/manageaccount/tickets/update/admin",
+      {
+        "id": this.props.ticket.id,
+        "status": '',
+        "admin_id": 1
+      }
+    );
+
+    document.location.reload();
+  }
+
+  returnAdmin = async () => {
+    const res = await axios.post(
+      "http://localhost:8080/manageaccount/tickets/update/admin",
+      {
+        "id": this.props.ticket.id,
+        "status": '',
+        "admin_id": 2
+      }
+    );
+
+    document.location.reload();
+  }
 
   changeStatus = async (event) => { 
     this.status.status = event.target.value;
@@ -81,10 +108,17 @@ export class TicketCard extends React.Component {
     const fetchedData2 = await axios.get(
       "http://localhost:8080/manageaccount/tickets/type?id=" + this.props.ticket.support_type_id
     );
+    const fetchedData4 = await axios.get(
+      "http://localhost:8080/manageaccount/tickets/picture?id=" + this.props.ticket.picture_id
+    );
 
     this.filer = fetchedData.data.customer_info;
     this.type = fetchedData2.data;
     this.admin = fetchedData3.data.customer_info;
+
+    if(fetchedData4.data.length > 0){
+      this.path = fetchedData4.data[0];
+    }
 
     this.forceUpdate();
   }
@@ -160,16 +194,16 @@ export class TicketCard extends React.Component {
               </Box>
 
               <Box sx={{width:'25%', display:'flex', flexDirection: 'column', justifyContent: 'center', margin:'16px'}}>
-                <SupportMedia image={this.props.ticket.path} title={this.props.ticket.path} />
+                <SupportMedia image={this.path.path} title={this.path.title} />
               </Box>
 
               <Box sx={{display:'flex', flexDirection: 'column', margin:'25px'}}>
                 <Box>
                   <Box>
-                    <Button variant="contained" size="large" sx={{margin:"10px"}}>Take Ticket</Button>
+                    <Button variant="contained" size="large" sx={{margin:"10px"}} onClick={this.changeAdmin}>Take Ticket</Button>
                   </Box>
                   <Box>
-                    <Button size="large" sx={{margin:"10px"}}>Return Ticket</Button>
+                    <Button size="large" sx={{margin:"10px"}} onClick={this.returnAdmin}>Return Ticket</Button>
                   </Box>
                   <Box>
                     <InputLabel id="status-label" sx={{ top: '5px', left: '10px' }}>Status</InputLabel>
