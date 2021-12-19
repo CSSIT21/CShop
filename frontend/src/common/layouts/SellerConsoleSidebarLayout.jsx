@@ -107,11 +107,11 @@ export default function SellerConsoleSidebarLayout(props) {
       "Page customization",
       "/seller/" + params.id + "/customize"
     ),
-    // generateLink(
-    //   ShoppingBasketRoundedIcon,
-    //   "FlashSale Log",
-    //   "/seller/" + params.id + "/flashsalelog"
-    // ),
+    generateLink(
+      ShoppingBasketRoundedIcon,
+      "FlashSale Log",
+      "/seller/" + params.id + "/flashsalelog"
+    ),
     generateLink(
       ShowChartRoundedIcon,
       "Stock Log",
