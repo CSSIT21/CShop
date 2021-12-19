@@ -231,14 +231,14 @@ model shop_flashsale {
 }
 
 model shop_flashsale_history {
-  flashsale_id                             Int            @id
-  shop_id                                  Int
-  started_date                             DateTime       @default(now())
-  ended_date                               DateTime       @default(now())
-  products                                 Json[]
-  quantity                                 Json
-  flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
+  flashsale_id                        Int            @id
+  shop_id                             Int
+  started_date                        DateTime       @default(now())
+  ended_date                          DateTime       @default(now())
+  products                            Json[]
+  quantity                            Json
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_shop_flashsale_history shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model shop_banner {
@@ -1045,13 +1045,13 @@ model sconsole_discount_log {
 }
 
 model sconsole_flashsale_log {
-  id                                       Int            @id @default(autoincrement())
-  shop_id                                  Int
-  flashsale_id                             Int
-  added_date                               DateTime       @default(now()) @db.Timestamp(6)
-  ended_date                               DateTime?      @db.Timestamp(6)
-  flashsale_id_from_sconsole_flashsale_log shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_sconsole_flashsale_log      shop_info      @relation(fields: [shop_id], references: [id])
+  id                                  Int            @id @default(autoincrement())
+  shop_id                             Int
+  flashsale_id                        Int
+  added_date                          DateTime       @default(now()) @db.Timestamp(6)
+  ended_date                          DateTime?      @db.Timestamp(6)
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_sconsole_flashsale_log shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model sconsole_order_history {
