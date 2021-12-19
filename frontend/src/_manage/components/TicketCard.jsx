@@ -53,9 +53,22 @@ export class TicketCard extends React.Component {
     this.dialogClose();
   };
 
-  changeStatus = (event) => {
+  changeStatus = async (event) => { 
     this.status.status = event.target.value;
-    this.forceUpdate();
+
+    if(this.props.ticket.admin_support_status != null){
+      const res = await axios.post(
+        "http://localhost:8080/manageaccount/tickets/update/status",
+        {
+          "id": this.props.ticket.id,
+          "status": event.target.value,
+          "admin_id": 999
+        }
+      );
+    }
+    
+    document.location.reload();
+    this.dialogClose();
   }
 
   async componentDidMount(){
@@ -169,7 +182,6 @@ export class TicketCard extends React.Component {
                           className={classes.root}
                           onChange={this.changeStatus}
                         >
-                          <MenuItem value={"No Type"}>N/A</MenuItem>
                           <MenuItem value={"Open"}>Open</MenuItem>
                           <MenuItem value={"In Progress"}>In Progress</MenuItem>
                           <MenuItem value={"Closed"}>Closed</MenuItem>

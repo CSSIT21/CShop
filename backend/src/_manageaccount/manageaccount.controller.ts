@@ -5,6 +5,7 @@ import { CreateSellerSuspensionDto } from './dto/create_sellersuspension.dto';
 import { UpdateUserSuspensionDto } from './dto/update_usersuspension.dto';
 import { UpdateSellerSuspensionDto } from './dto/update_sellersuspension.dto';
 import { CreateTicketDto } from './dto/create_ticket.dto';
+import { UpdateTicketDto } from './dto/update_ticket.dto';
 import { Prisma, PrismaClient } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
@@ -21,31 +22,23 @@ export class ManageaccountController {
     return this.prisma.product.findMany();
   }
 
-  @Get('message')
-  @Public()
-  public getMessage(@Query('id') i: string){
-    return this.prisma.product.findFirst({
-      where: {
-        id: parseInt(i)
-      }
-    });
-  }
-
-  //Research from this
-  @Get('search')
-  @Public()
-  public searchAll(@Query('s') query:string){
-    return this.prisma.product.findMany({
-      where:{
-        title:{contains:query,mode:'insensitive'}
-      }
-    });
-  }
-
   @Post('tickets/create')
   @Public()
   public async createTicket(@Body() createTicketDto: CreateTicketDto, @Res() res){
     const ticket = await this.manageaccountService.createTicket(createTicketDto);
+    if(ticket){
+      res.send({Success: true, ticket});
+    } else {
+      res.send({
+        Success : false,
+      });
+    }
+  }
+
+  @Post('tickets/update/status')
+  @Public()
+  public async updateTickets(@Body() updateTicketDto: UpdateTicketDto, @Res() res){
+    const ticket = await this.manageaccountService.updateTicketStatus(updateTicketDto);
     if(ticket){
       res.send({Success: true, ticket});
     } else {

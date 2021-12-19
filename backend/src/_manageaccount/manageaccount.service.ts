@@ -4,6 +4,7 @@ import { CreateSellerSuspensionDto } from './dto/create_sellersuspension.dto';
 import { UpdateUserSuspensionDto } from './dto/update_usersuspension.dto';
 import { UpdateSellerSuspensionDto } from './dto/update_sellersuspension.dto';
 import { CreateTicketDto } from './dto/create_ticket.dto';
+import { UpdateTicketDto } from './dto/update_ticket.dto';
 import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -35,6 +36,33 @@ export class ManageaccountService {
 			}
 			console.log(e.message);
 			throw new HttpException('Error creating ticket body incorrect', 500);
+		}
+  }
+
+  async updateTicketStatus(updateTicketDto: UpdateTicketDto) {
+    try {
+			await this.prisma.admin_support.update({
+        where: {
+          id: updateTicketDto.id,
+        },
+				data: {
+          admin_support_status:{
+            update:{
+              status:{
+                status: updateTicketDto.status,
+              }
+            }
+          },
+				},
+			});
+			return 'Ticket Updated!';
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error updating ticket!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error updating ticket', 500);
 		}
   }
   
@@ -86,7 +114,6 @@ export class ManageaccountService {
 		}
   }
 
-  //TEST THIS - USER
   async updateUserSuspension(updateUserSuspensionDto: UpdateUserSuspensionDto) {
     try {
 			await this.prisma.customer.update({
@@ -117,7 +144,6 @@ export class ManageaccountService {
 		}
   }
 
-  //TEST THIS - SELLER
   async updateSellerSuspension(updateSellerSuspensionDto: UpdateSellerSuspensionDto) {
     try {
 			await this.prisma.shop_info.update({
