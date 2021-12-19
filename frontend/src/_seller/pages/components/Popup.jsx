@@ -51,6 +51,7 @@ export default function Popup({
         }
       );
       handleClose();
+      window.location.reload(false);
     } catch (e) {
       console.log(e);
     }
