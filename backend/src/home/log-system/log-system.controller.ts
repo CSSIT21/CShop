@@ -1,13 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { LogSystemService } from './log-system.service';
 import { CreateAddToCartLogDto } from './dto/create-add-to-cart-log.dto';
 import { CreateDiscountLogDto } from './dto/create-discount-log.dto';
 import { CreatePaymentLogDto } from './dto/create-payment-log.dto';
 import { CreateProductLogDto } from './dto/create-product-log.dto';
 import { CreateShopLogDto } from './dto/create-shop-log.dto';
-
-import { prisma } from '@prisma/client';
-import { IsNumber } from 'class-validator';
 import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('log-system')
@@ -168,14 +165,14 @@ export class LogSystemController {
 		@Query('paymentId', ParseIntPipe) paymentId?: number,
 	) {
 		try {
-			const discount = await this.logSystemService.getPayment({
+			const payment = await this.logSystemService.getPayment({
 				customer_id: customerId,
 				payment_id: paymentId,
 			});
 
 			return {
 				success: true,
-				discount,
+				payment,
 			};
 		} catch (err) {
 			this.logSystemService.throwError(err);
