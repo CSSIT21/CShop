@@ -9,9 +9,7 @@ const AppReviewCard = ({ review }) => {
     return (
         <Box className={classes.commentWrapper} sx={{ background: `linear-gradient(92.51deg, ${review.theme_color} -0.02%, #FFFFFF 83.97%)` }}>
             <Box className={classes.commentBox}>
-                <Typography sx={{
-
-                }}>
+                <Typography >
                     {review.comment}
                 </Typography>
             </Box>
@@ -26,12 +24,12 @@ const AppReviewCard = ({ review }) => {
                         marginBottom: 1,
                     }}
                 />
-                <Typography color="#394160" fontSize="13px" fontWeight={500} mb={0.5}>
+                <Typography color="#394160" fontSize="14px" fontWeight={500} mb={0.5}>
                     {review.nickname}
                 </Typography>
 
-                <Typography color="#A0A3BD" fontSize="10px" fontWeight={400}>
-                    Commented on {review.review_date}
+                <Typography color="#A0A3BD" fontSize="12px" fontWeight={400}>
+                    reviewed on {review.review_date.split('T')[0]}
                 </Typography>
             </Box>
         </Box >

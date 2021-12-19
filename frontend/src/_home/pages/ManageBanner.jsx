@@ -15,7 +15,7 @@ const ManageBanner = () => {
 	const [items, setItems] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
-	console.log(items);
+
 	useEffect(() => {
 		getData();
 	}, []);
@@ -52,7 +52,6 @@ const ManageBanner = () => {
 				})
 		});
 
-		getData();
 		return Swal.fire('Done', "Updated the change of banners successfully", 'success');
 	};
 

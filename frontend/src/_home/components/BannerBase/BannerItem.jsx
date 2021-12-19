@@ -106,9 +106,8 @@ const BannerItem = ({
 		}
 	};
 
-	const onDeleteSubImg = async () => {
+	const onDeleteSubImg = async (id) => {
 		setDeleteLoading(true);
-		console.log(id);
 		axios
 			.delete(`${config.SERVER_URL}/home/banner/${item.id}/sub/${id}`)
 			.then(({ data }) => {

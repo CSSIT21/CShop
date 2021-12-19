@@ -27,9 +27,13 @@ const BannerList = ({ items = [], setItems = noop, }) => {
 		setItems((items) => {
 			return items.map((item, i) => {
 				if (i == index) {
+					items[index].order = i;
+					// items[index - 1].order = i + 1;
 					return items[i - 1];
 				}
 				else if (i == index - 1) {
+					items[index - 1].order = i + 2;
+					// items[index].order = i + 2;
 					return items[i + 1];
 				}
 				return item;
@@ -37,13 +41,17 @@ const BannerList = ({ items = [], setItems = noop, }) => {
 		})
 	};
 
+	console.log(items);
+
 	const onNext = (index) => {
 		setItems((items) => {
 			return items.map((item, i) => {
 				if (i == index) {
+					items[index].order = i + 2;
 					return items[i + 1];
 				}
 				else if (i == index + 1) {
+					items[index + 1].order = i;
 					return items[i - 1];
 				}
 				return item;
