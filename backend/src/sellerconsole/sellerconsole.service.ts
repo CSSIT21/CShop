@@ -379,6 +379,7 @@ export class SellerconsoleService {
 				shop_id: shopid,
 			},
 			select: {
+				id:true,
 				customer_id_from_home_shop_log: {
 					select: {
 						customer_info: {
@@ -390,7 +391,7 @@ export class SellerconsoleService {
 						},
 					},
 				},
-				
+				view_date:true
 			},
 		});
 		return res

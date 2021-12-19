@@ -11,6 +11,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Indicator from "./components/Indicator";
 import { Chart } from "./components/TableContent/Chart";
 import CardGroup from "./components/CardGroup";
+import ViewLog from "./components/ViewLog";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -21,7 +22,20 @@ const SellerDashboard = () => {
     <Box>
       <TopSeller />
       <CardGroup />
-      {/* <Chart/> */}
+
+      <Box
+        sx={{
+          Width: "95%",
+          pl: 4,
+          pr: 4,
+          // display: "flex",
+          // textAlign: "center",
+          // justifyContent: "center",
+        }}
+      >
+        {/* <Chart /> */}
+        <ViewLog />
+      </Box>
     </Box>
   );
 };

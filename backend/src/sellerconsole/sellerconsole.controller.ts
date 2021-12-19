@@ -27,7 +27,7 @@ export class SellerconsoleController {
 
 	@Get(':id/stock')
 	@Public()
-	async getStock(@Param('id') id: number, @Res() res) {
+	async getStock(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const result = await this.sellerconsoleService.getStock(+id);
 		res.send(result);
 	}

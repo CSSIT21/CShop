@@ -223,23 +223,23 @@ export class LogSystemController {
     }
   }
 
-  @Post('shop/:customer_id/:shop_id')
-  async createShop(
-    @Param('customer_id', ParseIntPipe) customerId: number,
-    @Param('shop_id', ParseIntPipe) shopId: number,
-    @Body() shopDto: CreateShopLogDto,
-  ) {
-    try {
-      const data = this.logSystemService.crateShop(shopDto, customerId, shopId);
+  // @Post('shop/:customer_id/:shop_id')
+  // async createShop(
+  //   @Param('customer_id', ParseIntPipe) customerId: number,
+  //   @Param('shop_id', ParseIntPipe) shopId: number,
+  //   @Body() shopDto: CreateShopLogDto,
+  // ) {
+  //   try {
+  //     const data = this.logSystemService.crateShop(shopDto, customerId, shopId);
 
-      return {
-        success: true,
-        data,
-      };
-    } catch (err) {
-      this.logSystemService.throwError(err);
-    }
-  }
+  //     return {
+  //       success: true,
+  //       data,
+  //     };
+  //   } catch (err) {
+  //     this.logSystemService.throwError(err);
+  //   }
+  // }
 
   // No condition
   @Get('shop-all')
