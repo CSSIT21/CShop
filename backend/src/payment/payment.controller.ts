@@ -1,14 +1,15 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
 import Axios from 'axios';
 import { Public } from 'src/common/decorators/public.decorator';
-import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { readFile, writeFile } from 'fs/promises';
+import { fileURLToPath } from 'url';
 
 let request: object;
 let strQr: string;
+
 const omise = require('omise')({
 	publicKey: process.env.OMISE_PUBLIC_KEY,
 	secretKey: process.env.OMISE_SECRET_KEY,
@@ -89,11 +90,13 @@ export class PaymentController {
 	}
 
 	@Get('/status')
+	@Public()
 	getStatus(@Req() req, @Res() res): void {
 		res.send({ request });
 	}
 
 	@Get('/clear')
+	@Public()
 	getClear(@Req() req, @Res() res): void {
 		request = {
 			clear: true,
@@ -103,32 +106,32 @@ export class PaymentController {
 
 	//------------------------Internet Banking Pin------------------------//
 
-	// @Post('/Krungsri')
-	// @Public()
-	// async getKrungsri(@Req() req, @Res() res): Promise<void> {
-	//   let source: String;
-	//   const data = {
-	//     'amount': '250.00',
-	//     'currency': 'THB',
-	//     'type': 'internet_banking_bay',
-	//     }
-	//     await Axios({
-	//       method: 'post',
-	//       url: 'https://api.omise.co/sources',
-	//       data: JSON.stringify(data),
-	//     })
-	//       .then((response) => {
-	//         source = response.data.id;
-	//       })
-	//       .catch((error) => {
-	//         console.error(error);
-	//       });
+	@Post('/krungsri')
+	@Public()
+	async getKrungsri(@Req() req, @Res() res): Promise<void> {
+		const checkoutInternetBanking = async (req, res, next) => {
+			const { id, total_price, token } = req.body;
+		  
+			try {
+			  const charge = await omise.charges.create({
+				total_price,
+				source: token,
+				currency: "THB",
+				return_uri: "http://localhost:3000/success"
+			  });
+		  
+			  res.send({
+				authorizeUri: charge.authorize_uri
+			  });
+			} catch (error) {
+			  console.log(error);
+			}
+		  
+			next();
+		  };
+	}
 
-	//-----------------Credit Card Spy---------------//
-	// var omise = require('omise')({
-	//   'publicKey': process.env.OMISE_PUBLIC_KEY,
-	//   'secretKey': process.env.OMISE_SECRET_KEY,
-	// });
 
-	//-----------------Wallet Willy---------------//
+
+
 }
