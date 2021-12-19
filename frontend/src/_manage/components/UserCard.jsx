@@ -41,7 +41,7 @@ export class UserCard extends React.Component {
     this.desc = 'Pending Description';
     this.address = {address_line: 'PENDING', postal_code: 'PENDING'};
     this.types = [];
-    this.path = ''
+    this.path = '';
   }
 
   async componentDidMount(){
@@ -89,7 +89,7 @@ export class UserCard extends React.Component {
           "description": this.desc,
           "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
-          "admin_id": 100,
+          "admin_id": 1,
           "day": this.editDate.day+1,
           "month": this.editDate.month-1,
           "year": this.editDate.year
@@ -104,7 +104,7 @@ export class UserCard extends React.Component {
           "description": this.desc,
           "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
-          "admin_id": 100,
+          "admin_id": 1,
           "day": this.editDate.day+1,
           "month": this.editDate.month-1,
           "year": this.editDate.year

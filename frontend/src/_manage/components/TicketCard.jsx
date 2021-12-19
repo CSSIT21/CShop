@@ -25,6 +25,7 @@ export class TicketCard extends React.Component {
     this.open = false;
     this.status = this.props.ticket.admin_support_status.status;
     this.filer = {firstname: 'PENDING', lastname: ''};
+    this.admin = {firstname: 'Not', lastname: 'Assigned'};
     this.type = {title:'PENDING'};
   }
 
@@ -61,12 +62,16 @@ export class TicketCard extends React.Component {
     const fetchedData = await axios.get(
       "http://localhost:8080/manageaccount/users/id?id=" + this.props.ticket.customer_id
     );
+    const fetchedData3 = await axios.get(
+      "http://localhost:8080/manageaccount/users/id?id=" + this.props.ticket.admin_id
+    );
     const fetchedData2 = await axios.get(
       "http://localhost:8080/manageaccount/tickets/type?id=" + this.props.ticket.support_type_id
     );
 
     this.filer = fetchedData.data.customer_info;
     this.type = fetchedData2.data;
+    this.admin = fetchedData3.data.customer_info;
 
     this.forceUpdate();
   }
@@ -94,7 +99,7 @@ export class TicketCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.sent_date}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.admin_id}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.admin.firstname + " " + this.admin.lastname}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}> 
               <div style={{ display:'flex', justifyContent:'center' }}>

@@ -12,12 +12,19 @@ export class SellerCard extends React.Component {
   constructor(props) {
     super(props);
     this.type = {data:{title: 'PENDING'}};
+    this.admin = {firstname: 'Not', lastname: 'Assigned'};
   }
 
   async componentDidMount(){
     this.type = await axios.get(
       "http://localhost:8080/manageaccount/suspension/type?id=" + this.props.res.suspension_type_id
     );
+    const fetchedData = await axios.get(
+      "http://localhost:8080/manageaccount/users/id?id=" + this.props.res.admin_id
+    );
+
+    this.admin = fetchedData.data.customer_info;
+
     this.forceUpdate();
   }
 
@@ -36,7 +43,7 @@ export class SellerCard extends React.Component {
                 </Box>
                 <Box sx={{ width: '15%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Assigner</Typography>
-                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.props.res.admin_id}</Typography>
+                  <Typography noWrap style={{ fontWeight: 600, fontSize: '15px'}}>{this.admin.firstname + " " + this.admin.lastname}</Typography>
                 </Box>
                 <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
                   <Typography noWrap style={{ fontSize: '15px', color: '#FD6637'}}>Start Time</Typography>
