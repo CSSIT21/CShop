@@ -10,45 +10,53 @@ const InputBox = () => {
     const classes = useStyles();
 
     const [deliveryStatus, setDeliveryStatus] = useState(null);
+    console.log(deliveryStatus);
 
     return (
         <Box className={classes.inputBox} sx={{ boxShadow: 3 }}>
             <Box>
                 <TrackingSearch setDelivery={setDeliveryStatus} />
-                {deliveryStatus && deliveryStatus.trackingNumber.length > 0 ? (
+                {deliveryStatus &&
+                deliveryStatus?.detail.tracking_number.length > 0 ? (
                     <Box>
-                        <DeliveryProgress status={deliveryStatus.status} />
-                        <TrackingNumber
-                            trackingNumber={deliveryStatus.trackingNumber}
+                        <DeliveryProgress
+                            status={deliveryStatus?.detail.status}
                         />
-                        {deliveryStatus?.details.length > 1 ? (
-                            deliveryStatus?.details
+                        <TrackingNumber
+                            trackingNumber={
+                                deliveryStatus?.detail.tracking_number
+                            }
+                        />
+                        {deliveryStatus?.detail.delivery_detail.length > 1 ? (
+                            deliveryStatus?.detail.delivery_detail
                                 .map((el, idx) => {
                                     if (idx === 0) {
                                         return (
                                             <TimelineDot
                                                 position={-1}
-                                                time={el.date}
-                                                detail={el.description}
+                                                time={el.time}
+                                                detail={el.detail}
                                             />
                                         );
                                     } else if (
                                         idx ===
-                                        deliveryStatus.details.length - 1
+                                        deliveryStatus?.detail.delivery_detail
+                                            .length -
+                                            1
                                     ) {
                                         return (
                                             <TimelineDot
                                                 position={1}
-                                                time={el.date}
-                                                detail={el.description}
+                                                time={el.time}
+                                                detail={el.detail}
                                             />
                                         );
                                     } else {
                                         return (
                                             <TimelineDot
                                                 position={0}
-                                                time={el.date}
-                                                detail={el.description}
+                                                time={el.time}
+                                                detail={el.detail}
                                             />
                                         );
                                     }
@@ -57,8 +65,14 @@ const InputBox = () => {
                         ) : (
                             <TimelineDot
                                 position={1}
-                                time={deliveryStatus?.details[0].date}
-                                detail={deliveryStatus?.details[0].description}
+                                time={
+                                    deliveryStatus?.detail.delivery_detail[0]
+                                        .time
+                                }
+                                detail={
+                                    deliveryStatus?.detail.delivery_detail[0]
+                                        .detail
+                                }
                                 size={1}
                             />
                         )}

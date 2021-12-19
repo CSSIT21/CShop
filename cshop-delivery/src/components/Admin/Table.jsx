@@ -97,7 +97,7 @@ export default function TableStatus({ data }) {
                                 </StyledTableCell>
                                 {pathname === "/admin/success" ? (
                                     <StyledTableCell align="center">
-                                        12-12-2021 10:56
+                                        {convertTime(row.complete_date)}
                                     </StyledTableCell>
                                 ) : (
                                     <StyledTableCell
@@ -109,11 +109,18 @@ export default function TableStatus({ data }) {
                                             width="100%"
                                             justifyContent="center"
                                         >
-                                            <SelectButton status={row.status} />
+                                            <SelectButton
+                                                status={row.status}
+                                                tracking_number={
+                                                    row.tracking_number
+                                                }
+                                            />
                                             <IconButton
                                                 sx={{ margin: "0 10px" }}
                                                 onClick={() => {
-                                                    editDialogRef.current.open();
+                                                    editDialogRef.current.open(
+                                                        row.tracking_number
+                                                    );
                                                 }}
                                             >
                                                 <BorderColorIcon />

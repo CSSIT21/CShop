@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Query } from '@nestjs/common';
 import { DeliveryService } from './delivery.service';
 import { Address } from './dto/address.dto';
+import { ChangeStatus } from './dto/change-status.dto';
 import { DeliveryLoginDTO } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
+import { UpdateDetailDTO } from './dto/update-detail.dto';
 
 @Controller('delivery')
 export class DeliveryController {
@@ -51,6 +53,21 @@ export class DeliveryController {
 	@Get('success')
 	getAllSuccess() {
 		return this.deliveryService.getAllSuccess();
+	}
+
+	@Post('change-status')
+	changeStatus(@Body() newStatus: ChangeStatus) {
+		return this.deliveryService.changeStatus(newStatus)
+	}
+
+	@Post('update-detail')
+	updateDetail(@Body() newDetail: UpdateDetailDTO) {
+		return this.deliveryService.updateDetail(newDetail)
+	}
+
+	@Get('search')
+	getDetail(@Query('tracking') trackingNumber: string) {
+		return this.deliveryService.getDetail(trackingNumber)
 	}
 
 	@Get(':id')

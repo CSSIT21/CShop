@@ -1,4 +1,4 @@
-import { Injectable, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HmacSHA512 } from 'crypto-js';
 import { DeliveryLoginDTO } from './dto/create-delivery.dto';
@@ -6,7 +6,8 @@ import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 import { nanoid } from 'nanoid';
 import * as province from './file/province.json'
 import { Address } from './dto/address.dto';
-import { DeliveryStatusDTO } from './dto/delivery-status.dto';
+import { ChangeStatus } from './dto/change-status.dto';
+import { UpdateDetailDTO } from './dto/update-detail.dto';
 
 @Injectable()
 export class DeliveryService {
@@ -31,7 +32,6 @@ export class DeliveryService {
 				}
 			})
 
-			console.log(login.username);
 			if (login) {
 				return {
 					success: true,
@@ -51,6 +51,29 @@ export class DeliveryService {
 		}
 	}
 
+	public async getDetail(tracking_number: string) {
+		try {
+			const fetchedDetail = await this.prisma.delivery_product_status.findFirst({
+				where: {
+					tracking_number: tracking_number
+				}
+			})
+			if (fetchedDetail) {
+				return {
+					detail: fetchedDetail
+				}
+			} else {
+				success: false
+			}
+		} catch (e) {
+			return {
+				success: false,
+				e
+			}
+		}
+
+	}
+
 	public async generateTrackingNumber(address: Address) {
 		let provinceNumber = province[address.province]
 
@@ -64,8 +87,6 @@ export class DeliveryService {
 				province: provinceNumber.toString()
 			}
 		})
-
-		//CS00XXXXXX (6)
 
 		const changeTrackingNumber = () => {
 			const id = createTrackingNumber.id.toString()
@@ -104,9 +125,7 @@ export class DeliveryService {
 			return fetchedRequest
 
 		} catch (e) {
-			return {
-				e
-			}
+			return e
 		}
 	}
 
@@ -120,9 +139,7 @@ export class DeliveryService {
 			return fetchedRequest
 
 		} catch (e) {
-			return {
-				e
-			}
+			return e
 		}
 	}
 
@@ -136,9 +153,7 @@ export class DeliveryService {
 			return fetchedRequest
 
 		} catch (e) {
-			return {
-				e
-			}
+			return e
 		}
 	}
 
@@ -152,9 +167,143 @@ export class DeliveryService {
 			return fetchedRequest
 
 		} catch (e) {
-			return {
-				e
+			return e
+		}
+	}
+
+	public async updateDetail(newDetail: UpdateDetailDTO) {
+		try {
+			let decryptPassword = HmacSHA512(newDetail.password, process.env.PASSWORD_KEY).toString()
+
+			const checkAdmin = await this.prisma.delivery_admin.findFirst({
+				where: {
+					username: newDetail.username,
+					password: decryptPassword,
+					token: newDetail.token
+				}
+			})
+			if (checkAdmin) {
+				const fetchedId = await this.prisma.delivery_product_status.findFirst({
+					where: {
+						tracking_number: newDetail.trackingNumber
+					}
+				})
+				const updateDetail = await this.prisma.delivery_product_status.update({
+					where: {
+						id: fetchedId.id
+					},
+					data: {
+						latest_update: new Date(Date.now()),
+						delivery_detail: {
+							push: {
+								detail: newDetail.newDetail,
+								time: Date.now()
+							}
+						}
+					}
+				})
+
+				if (updateDetail) {
+					return {
+						success: true
+					}
+				} else {
+					return {
+						success: false
+					}
+				}
+			} else {
+				return {
+					success: false
+				}
 			}
+
+		} catch (e) {
+
+		}
+	}
+
+	public async changeStatus(newStatus: ChangeStatus) {
+		try {
+			let decryptPassword = HmacSHA512(newStatus.password, process.env.PASSWORD_KEY).toString()
+			const checkAdmin = await this.prisma.delivery_admin.findFirst({
+				where: {
+					username: newStatus.username,
+					password: decryptPassword,
+					token: newStatus.token
+				}
+			})
+
+			if (checkAdmin) {
+				const fetchedStatusId = await this.prisma.delivery_product_status.findFirst({
+					where: {
+						tracking_number: newStatus.trackingNumber
+					},
+				})
+
+				const updateStatusFunc = async () => {
+					if (newStatus.newStatus === "Success") {
+						const updateStatus = await this.prisma.delivery_product_status.update({
+							where: {
+								id: fetchedStatusId.id
+							},
+							data: {
+								status: newStatus.newStatus,
+								latest_update: new Date(Date.now()),
+								complete_date: new Date(Date.now()),
+								delivery_detail: {
+									push: {
+										detail: newStatus.newStatus,
+										time: Date.now()
+									}
+								}
+							}
+						})
+						const updateAdmin = await this.prisma.delivery_admin_log.create({
+							data: {
+								admin_id: checkAdmin.id,
+								delivery_id: updateStatus.id
+							}
+						})
+						return updateAdmin
+
+					} else {
+						const updateStatus = await this.prisma.delivery_product_status.update({
+							where: {
+								id: fetchedStatusId.id
+							},
+							data: {
+								status: newStatus.newStatus,
+								latest_update: new Date(Date.now()),
+								delivery_detail: {
+									push: {
+										detail: newStatus.newStatus,
+										time: Date.now()
+									}
+								}
+							}
+						})
+						const updateAdmin = await this.prisma.delivery_admin_log.create({
+							data: {
+								admin_id: checkAdmin.id,
+								delivery_id: updateStatus.id
+							}
+						})
+						return updateAdmin
+					}
+				}
+				if ((await updateStatusFunc()).admin_id) {
+					return {
+						success: true
+					}
+				}
+			} else {
+				return {
+					success: false,
+				}
+			}
+		} catch (e) {
+			return e
 		}
 	}
 

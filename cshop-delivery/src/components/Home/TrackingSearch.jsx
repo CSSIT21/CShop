@@ -4,50 +4,24 @@ import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import axios from "axios";
 
 const TrackingSearch = ({ setDelivery }) => {
     const classes = useStyles();
     const [trackingNumber, setTrackingNumber] = useState("");
     const [checkLength, setCheckLength] = useState(false);
 
-    const search = () => {
-        if (trackingNumber.length < 10) {
-            setCheckLength(true);
-            setDelivery(null);
-        } else {
-            setDelivery({
-                trackingNumber: trackingNumber,
-                status: "Delivering",
-                details: [
-                    {
-                        date: "2021-11-07",
-                        description: "sending to Bangkok",
-                    },
-                    {
-                        date: "2021-11-08",
-                        description: "sending to Bangkok",
-                    },
-                    {
-                        date: "2021-11-08",
-                        description: "sending to Bangkok",
-                    },
-                    {
-                        date: "2021-11-08",
-                        description: "sending to Bangkok",
-                    },
-                    {
-                        date: "2021-11-08",
-                        description: "sending to Bangkok",
-                    },
-                ],
-            });
-            setCheckLength(false);
-        }
+    const fetchedTrackingNumber = async () => {
+        const getTrackingNumber = await axios.get(
+            `http://localhost:8080/delivery/search?tracking=${trackingNumber}`
+        );
+        setDelivery(getTrackingNumber.data);
     };
 
     const keyCheck = (e) => {
         if (e.key === "Enter") {
-            search(e.target.value);
+            setTrackingNumber(e.target.value);
+            fetchedTrackingNumber();
         }
     };
 
@@ -82,7 +56,7 @@ const TrackingSearch = ({ setDelivery }) => {
                         height: "55px",
                         margin: "0 10px",
                     }}
-                    onClick={search}
+                    onClick={fetchedTrackingNumber}
                 >
                     <Typography>Track</Typography>
                 </ColorButton>

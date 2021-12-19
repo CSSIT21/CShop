@@ -734,7 +734,7 @@ model order {
   order_billing          order_billing?
   order_cancel_refund    order_cancel_refund[]
   order_detail           order_detail?
-  order_item             order_item?
+  order_item             order_item[]
   order_refund_item      order_refund_item[]
   sconsole_order_history sconsole_order_history[]
   sconsole_order_status  sconsole_order_status[]
@@ -749,7 +749,8 @@ model order_status {
 }
 
 model order_item {
-  order_id                   Int          @id
+  id                         Int          @id @default(autoincrement())
+  order_id                   Int
   product_id                 Int
   product_options            Int[]
   quantity                   Int
@@ -1326,9 +1327,10 @@ model home_add_to_cart_log {
 }
 
 model home_shop_log {
+  id                             Int       @id @default(autoincrement())
   customer_id                    Int
   shop_id                        Int
-  id                             Int       @id @default(autoincrement())
+  view_date                      DateTime  @db.Timestamp
   customer_id_from_home_shop_log customer  @relation(fields: [customer_id], references: [id])
   shop_id_from_home_shop_log     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -1509,7 +1511,7 @@ model delivery_product_status {
   complete_date      DateTime?            @db.Timestamp(6)
   recipient_name     String?              @db.VarChar(60)
   status             String               @default("Received a request")
-  delivery_detail    Json
+  delivery_detail    Json[]
   province           String               @db.VarChar(2)
   delivery_admin_log delivery_admin_log[]
   order_status       order_status[]
@@ -1526,7 +1528,7 @@ model delivery_admin_log {
   id                                  Int                     @id @default(autoincrement())
   admin_id                            Int
   delivery_id                         Int
-  updated_time                        DateTime                @db.Timestamp(6)
+  updated_time                        DateTime                @default(now()) @db.Timestamp(6)
   delivery_id_from_delivery_admin_log delivery_product_status @relation(fields: [delivery_id], references: [id])
 }
 

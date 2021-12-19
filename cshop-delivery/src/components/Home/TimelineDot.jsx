@@ -14,6 +14,11 @@ const TimelineDot = ({ position, time, detail, size = 0 }) => {
         size: size,
     });
 
+    const convertTime = (time) => {
+        const converted = time.split("T");
+        return `${converted[0]}  ${converted[1].substring(0, 5)}`;
+    };
+
     return (
         <div className={classes.root}>
             <div className={classes.dot} />
@@ -22,7 +27,9 @@ const TimelineDot = ({ position, time, detail, size = 0 }) => {
             <Box marginLeft={12} marginY={2} width="100%">
                 <Card sx={{ width: "100%" }} elevation={0}>
                     <CardContent>
-                        <Typography>{time}</Typography>
+                        <Typography>
+                            {convertTime(new Date(time).toISOString())}
+                        </Typography>
                         <Typography>{detail}</Typography>
                     </CardContent>
                 </Card>

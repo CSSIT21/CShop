@@ -7,13 +7,14 @@ import Select from "@mui/material/Select";
 import { useLocation } from "react-router-dom";
 import ConfirmProgressUpdateDialog from "./ConfirmProgressUpdateDialog";
 
-export default function SelectButton({ status }) {
-    const [age, setAge] = React.useState("");
+export default function SelectButton({ status, tracking_number }) {
+    // const [newProgress, setNewProgress] = React.useState(status);
     const confirmDialog = React.useRef(null);
 
     const handleChange = (event) => {
-        confirmDialog.current.open(age);
-        setAge(event.target.value);
+        console.log(event.target.value);
+        confirmDialog.current.open(event.target.value, tracking_number, status);
+        // setNewProgress(event.target.value);
     };
 
     const location = useLocation();
@@ -39,18 +40,26 @@ export default function SelectButton({ status }) {
                     id="demo-simple-select"
                     placeholder={status}
                     label={status}
+                    value={status}
                     onChange={handleChange}
                     fullWidth
                 >
-                    {checkPath() < 2 ? (
-                        <MenuItem value={2}>Received a package</MenuItem>
-                    ) : null}
-                    {checkPath() < 3 ? (
-                        <MenuItem value={3}>Delivering</MenuItem>
-                    ) : null}
-                    {checkPath() < 4 ? (
-                        <MenuItem value={4}>Success</MenuItem>
-                    ) : null}
+                    <MenuItem value="Received a request" disabled>
+                        Received a request
+                    </MenuItem>
+                    <MenuItem
+                        value="Received a package"
+                        disabled={checkPath() === 1 ? false : true}
+                    >
+                        Received a package
+                    </MenuItem>
+                    <MenuItem
+                        value="Delivering"
+                        disabled={checkPath() !== 3 ? false : true}
+                    >
+                        Delivering
+                    </MenuItem>
+                    <MenuItem value="Success">Success</MenuItem>
                 </Select>
             </FormControl>
             <ConfirmProgressUpdateDialog ref={confirmDialog} />
