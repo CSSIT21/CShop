@@ -121,9 +121,9 @@ const ChoiceForPay = () => {
                         <Box className={classes.boxStyle}>
                             <FormControlLabel className={classes.checkBox} value="banking" label={
                                 <Box>
-                                    Internet Bnaking
+                                    Internet Banking
                                     <Box className={classes.internetBank}>
-                                        <AccountBalance />
+                                        <AccountBalance/>
                                     </Box>
                                 </Box>
                             } control={ <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} /> }  
