@@ -20,11 +20,11 @@ export class SellerconsoleService {
 					select: {
 						title: true,
 						quantity: true,
-						product_picture:{
+						product_picture: {
 							select: {
-								path: true
-							}
-						}
+								path: true,
+							},
+						},
 					},
 				},
 				quantity: true,
@@ -163,7 +163,7 @@ export class SellerconsoleService {
 		// sold: number,
 		// suggest_product: number[],
 		// rating: number,
-	) {	
+	) {
 		const productId = await this.prisma.product.create({
 			data: {
 				shop_id: shopId,
@@ -175,7 +175,7 @@ export class SellerconsoleService {
 				sold: 0,
 				suggest_products: [],
 				rating: 0,
-			}
+			},
 		});
 		return productId.id;
 	}
@@ -365,5 +365,29 @@ export class SellerconsoleService {
 			},
 		});
 		return MyCoupon;
+	}
+
+	async getCustomerViews(shopid: number) {
+		const res = await this.prisma.home_shop_log.findMany({
+			where: {
+				shop_id: shopid,
+			},
+			select: {
+				view_date:true,
+				customer_id_from_home_shop_log: {
+					select: {
+						customer_info: {
+							select: {
+								firstname: true,
+								lastname: true,
+								gender: true,
+							},
+						},
+					},
+				},
+				
+			},
+		});
+		return res
 	}
 }

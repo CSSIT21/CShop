@@ -185,6 +185,13 @@ export class SellerconsoleController {
 		const result = await this.sellerconsoleService.getMyCoupon(shopid);
 		res.send(result);
 	}
+
+	@Get(':id/getcustomerviews')
+	@Public()
+	async getCustomerViews(@Param('id', ParseIntPipe) shopid: number, @Res() res) {
+		const result = await this.sellerconsoleService.getCustomerViews(shopid);
+		res.send(result);
+	}
 }
 
 // @Post()
