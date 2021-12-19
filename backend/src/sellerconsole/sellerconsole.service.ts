@@ -155,19 +155,8 @@ export class SellerconsoleService {
 		// sold: number,
 		// suggest_product: number[],
 		// rating: number,
-	) {
-		console.log({
-			shop_id: shopId,
-			title: title,
-			sub_title: sub_title,
-			price: price,
-			quantity: quantity,
-			category_id: categoryId,
-			// sold: sold,
-			// suggest_products: suggest_product,
-			// rating: rating,
-		});
-		await this.prisma.product.create({
+	) {	
+		const productId = await this.prisma.product.create({
 			data: {
 				shop_id: shopId,
 				title: title,
@@ -178,8 +167,9 @@ export class SellerconsoleService {
 				sold: 0,
 				suggest_products: [],
 				rating: 0,
-			},
+			}
 		});
+		return productId.id;
 	}
 	async UpdatetoStockLog(shopId: number, productId: number, quantity: number) {
 		await this.prisma.sconsole_stock_history.create({

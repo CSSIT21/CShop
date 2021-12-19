@@ -79,7 +79,8 @@ export class SellerconsoleController {
 			quantity,
 			category_id,
 		);
-		const b = await this.sellerconsoleService.UpdatetoStockLog(shop_id, id, quantity);
+		console.log(a);
+		const b = await this.sellerconsoleService.UpdatetoStockLog(shop_id, a, quantity);
 		console.log(a, b);
 		// res.send(a);
 		res.send(b);

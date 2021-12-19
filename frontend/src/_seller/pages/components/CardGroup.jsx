@@ -59,7 +59,7 @@ const CardGroup = () => {
   const indicatorData = [
     {
       id: 0,
-      // value: {cpd},
+      value: cpd,
       name: "Product",
       color: "#FEF3F1",
       fontColor: "#FD8A75",
@@ -67,7 +67,7 @@ const CardGroup = () => {
     },
     {
       id: 1,
-      // value: {cfl},
+      value: cfl,
       name: "Followers",
       color: "#FCF6DE",
       fontColor: "#EAC52E",
@@ -75,7 +75,7 @@ const CardGroup = () => {
     },
     {
       id: 2,
-      // value: {crt},
+      value: crt,
       name: "Rating",
       color: "#E1F4F8",
       fontColor: "#42B8D4",
