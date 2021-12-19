@@ -17,7 +17,15 @@ export class SellerconsoleService {
 			select: {
 				product_id: true,
 				product_id_from_sconsole_stock_history: {
-					select: { title: true, quantity: true, product_picture: { select: { path: true } } },
+					select: {
+						title: true,
+						quantity: true,
+						product_picture:{
+							select: {
+								path: true
+							}
+						}
+					},
 				},
 				quantity: true,
 				updated_date: true,

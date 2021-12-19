@@ -54,7 +54,8 @@ const CardGroup = () => {
 
   useEffect(() => {
     fetchCard();
-  }, []);
+    console.log(cpd)
+  }, cpd);
 
   const indicatorData = [
     {
