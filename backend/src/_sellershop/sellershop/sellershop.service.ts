@@ -7,7 +7,7 @@ import { User } from 'src/authentication/dto/user.dto';
 
 @Injectable()
 export class SellershopService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	public async findOne(id: number) {
 		try {
