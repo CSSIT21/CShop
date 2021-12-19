@@ -30,4 +30,28 @@ export class ProfileController {
 	public async updateImage(@Body() data: User) {
 		return await this.profileService.updateImage(data);
 	}
+
+	@Post('/followingshop')
+	@Public()
+	public async getFollowingShop(@Body() data: User) {
+		return await this.profileService.getFollowingShop(data);
+	}
+
+	@Post('/address/get')
+	@Public()
+	public async getAddress(@Body() data: User) {
+		return await this.profileService.getAddress(data);
+	}
+
+	@Post('/address/delete')
+	@Public()
+	public async deleteAddress(@Body() data: User) {
+		return await this.profileService.deleteAddress(data);
+	}
+
+	@Post('/address/add')
+	@Public()
+	public async addAddress(@Body() data: User) {
+		return await this.profileService.addAddress(data);
+	}
 }
