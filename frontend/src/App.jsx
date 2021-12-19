@@ -81,6 +81,9 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
+import CreditCard from "./_payment/pages/CreditCard";
+import Payment from "./_payment/pages/Payment"
+import PaidByQr from "./_payment/pages/PaidByQr";
 
 function App() {
   return (
@@ -269,6 +272,27 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShoppingCartPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route exact path="/creditcard">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CreditCard/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route exact path="/payment">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Payment/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route exact path="/paidbyQr">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <PaidByQr/>
                     </Suspense>
                   </MainLayout>
                 </Route>

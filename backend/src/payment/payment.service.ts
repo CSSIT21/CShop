@@ -206,8 +206,39 @@ export class PaymentService {
 
 
 
+    //------------------------------creditcard--------------------------------
+    async createPaymentCreditCard(orderId: number){
+            let order = await this.prisma.order.findFirst({
+                where: {
+                    id: orderId,
+                },
+                select: {
+                    total_price: true,
+                    customer_id: true,
+                },
+            })
+            return await this.prisma.payment.create({
+                data: {
+                    order_id: orderId,
+                    type: "Card",
+                    amount: order.total_price,
+                    status: "Pending",
+                    created_date: new Date(),
+                    updated_date: new Date(),
+                    home_payment_log: {
+                        create: {
+                            customer_id: order.customer_id,
+                            issue_at: new Date().toISOString(),
+                        },
+                    }, 
+                }
+            })
+        }
+    
+    
 
 
+    //-------------------------------etc----------------------------
     throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       console.log(err.message);

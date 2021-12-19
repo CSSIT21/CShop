@@ -40,7 +40,7 @@ model customer {
   home_shop_log                 home_shop_log[]
   order                         order[]
   order_cart_item               order_cart_item[]
-  order_deleted_item            order_deleted_item?
+  order_deleted_item            order_deleted_item[]
   order_rebuy                   order_rebuy?
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
@@ -677,9 +677,10 @@ model payment_deeplink {
 }
 
 model order_deleted_item {
-  customer_id                         Int      @id
+  customer_id                         Int
   product_id                          Int
   time                                DateTime @db.Timestamp(6)
+  id                                  Int      @id @default(autoincrement())
   customer_id_from_order_deleted_item customer @relation(fields: [customer_id], references: [id])
   product_id_from_order_deleted_item  product  @relation(fields: [product_id], references: [id])
 }

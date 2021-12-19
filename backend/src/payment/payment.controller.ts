@@ -96,10 +96,19 @@ export class PaymentController {
 	//       });
 
 	//-----------------Credit Card Spy---------------//
-	// var omise = require('omise')({
-	//   'publicKey': process.env.OMISE_PUBLIC_KEY,
-	//   'secretKey': process.env.OMISE_SECRET_KEY,
-	// });
+	@Post('/createCreditCard')
+	@Public()
+	createCreditCard(@Query('customerId', ParseIntPipe) customerId?: number,) {
+		try {
+			let creditcard = this.paymentService.createPaymentCreditCard(customerId);
+			return {
+				success: true,
+				creditcard }}
+		catch (err) {
+			return this.paymentService.throwError(err);
+		}
+	}
+
 
 	//-----------------Wallet Willy---------------//
 	@Get('/createwallet')
@@ -118,7 +127,7 @@ export class PaymentController {
 		}
 	}
 
-	@Get('/createwallet')
+	@Post('/createwallet')
 	@Public()
 	createWallet(@Query('customerId', ParseIntPipe) customerId?: number,) {
 		try {
