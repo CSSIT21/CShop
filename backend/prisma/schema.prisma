@@ -45,10 +45,10 @@ model customer {
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
   product_reviews               product_reviews[]
-  rem_number_interaction_user   rem_number_interaction_user?
-  rem_number_payment_product    rem_number_payment_product?
-  rem_number_product_in_cart    rem_number_product_in_cart?
-  rem_number_view_product       rem_number_view_product?
+  rem_number_interaction_user   rem_number_interaction_user[]
+  rem_number_payment_product    rem_number_payment_product[]
+  rem_number_product_in_cart    rem_number_product_in_cart[]
+  rem_number_view_product       rem_number_view_product[]
   rem_suggestion_homepage       rem_suggestion_homepage?
   sconsole_discount_log         sconsole_discount_log[]
   sconsole_refund               sconsole_refund[]
@@ -946,7 +946,8 @@ model chat_deleted_message {
 }
 
 model rem_number_view_product {
-  customer_id                              Int      @id
+  id                                       Int      @id @default(autoincrement())
+  customer_id                              Int
   product_id                               Int
   total_view                               Int
   event_id                                 Int
@@ -957,7 +958,8 @@ model rem_number_view_product {
 }
 
 model rem_number_product_in_cart {
-  customer_id                                 Int      @id
+  id                                          Int      @id @default(autoincrement())
+  customer_id                                 Int
   product_id                                  Int
   sum_in_cart                                 Int
   added_time                                  DateTime @default(now()) @db.Timestamp(6)
@@ -968,7 +970,8 @@ model rem_number_product_in_cart {
 }
 
 model rem_number_payment_product {
-  customer_id                                 Int      @id
+  id                                          Int      @id @default(autoincrement())
+  customer_id                                 Int
   product_id                                  Int
   sum_buy                                     Int
   added_time                                  DateTime @default(now()) @db.Timestamp(6)
@@ -979,7 +982,8 @@ model rem_number_payment_product {
 }
 
 model rem_number_interaction_user {
-  customer_id                                  Int      @id
+  id                                           Int      @id @default(autoincrement())
+  customer_id                                  Int
   product_id                                   Int
   interaction_score                            Int
   added_time                                   DateTime @default(now()) @db.Timestamp(6)
