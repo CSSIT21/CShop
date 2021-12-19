@@ -19,7 +19,7 @@ import Swal from "sweetalert2";
 function ReviewDialog({
   productImg = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
   productName = "Product Name",
-  productId = 20,
+  productId = 1,
   shopId = 1,
   customerId = 1,
   // ตัอย่างoptions

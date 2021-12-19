@@ -24,10 +24,11 @@ const ProductPage = (props) => {
   const [comments, setComments] = useState();
   const [avgRating, setAvgRating] = useState();
   const [options, setOptions] = useState();
+  const [favorite, setFavorite] = useState(true);
   const [shopId, setShopId] = useState(-1);
   const { id } = useParams();
 
-  const onFavourite = (index) => {
+  const onFavouriteSuggestion = (index) => {
     setProductsSuggestion((products) => {
       const target = products[index];
       target.favourite = !target.favourite;
@@ -74,31 +75,29 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setProductDetails(data.product_details);
-          // setProductTitle(data.product_details?.title);
           let title = data.product_details.title;
-          console.log(data.product_details.title);
           if (title) {
             // Suggestion product
-            axios
-              .get(
-                `https://ml-2.cshop.cscms.ml/relatedProduct/${id}/${encodeURIComponent(
-                  title
-                )}`
-              )
-              .then(({ data }) => {
-                console.log(data);
-                // if (data.success) {
-                //   setProductsSuggestion(data.suggest_products);
-                // }
-              })
-              .catch((e) => {
-                console.log(e.message);
-                Swal.fire({
-                  title: "Something went wrong!",
-                  icon: "error",
-                  confirmButtonText: "OK",
-                });
-              });
+            // axios
+            //   .get(
+            //     `https://ml-2.cshop.cscms.ml/relatedProduct/${id}/${encodeURIComponent(
+            //       title
+            //     )}`
+            //   )
+            //   .then(({ data }) => {
+            //     console.log(data);
+            //     if (data.success) {
+            //       setProductsSuggestion(data.suggest_products);
+            //     }
+            //   })
+            //   .catch((e) => {
+            //     console.log(e.message);
+            //     Swal.fire({
+            //       title: "Something went wrong!",
+            //       icon: "error",
+            //       confirmButtonText: "OK",
+            //     });
+            //   });
           }
         }
       })
@@ -218,6 +217,8 @@ const ProductPage = (props) => {
           options={options}
           setOptions={setOptions}
           auth={auth}
+          favorite={favorite}
+          setFavorite={setFavorite}
         />
         <ShopDetails
           shopId={shopId}
@@ -227,7 +228,7 @@ const ProductPage = (props) => {
         />
         <ProductSuggestion
           suggestionItems={productsSuggestion}
-          onFavourite={onFavourite}
+          onFavourite={onFavouriteSuggestion}
         />
         <ProductDescription
           productDetails={productDetails?.product_detail?.info}

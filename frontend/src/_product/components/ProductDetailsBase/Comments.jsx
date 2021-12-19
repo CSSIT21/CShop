@@ -31,21 +31,21 @@ const Comments = ({
   const [page, setPage] = useState(0);
   const photoPerRow = 1;
   const totalPage = Math.ceil(reviewPhoto.length / photoPerRow);
-  const onPrev = () => {
-    if (page === 0) {
-      setPage(totalPage - 1);
-    } else {
-      setPage(page - 1);
-    }
-  };
+  // const onPrev = () => {
+  //   if (page === 0) {
+  //     setPage(totalPage - 1);
+  //   } else {
+  //     setPage(page - 1);
+  //   }
+  // };
 
-  const onNext = () => {
-    if (totalPage - 1 === page) {
-      setPage(0);
-    } else {
-      setPage(page + 1);
-    }
-  };
+  // const onNext = () => {
+  //   if (totalPage - 1 === page) {
+  //     setPage(0);
+  //   } else {
+  //     setPage(page + 1);
+  //   }
+  // };
 
   const handleClickOpenDialog = (id) => {
     setPage(id);
@@ -55,7 +55,6 @@ const Comments = ({
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
   return (
     <Box
       sx={{
@@ -79,7 +78,6 @@ const Comments = ({
               ? imageURL
               : "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg"
           }
-          // imageURL.path
           sx={{
             width: 64,
             height: 64,
@@ -142,13 +140,13 @@ const Comments = ({
                   setPage={setPage}
                   page={page}
                   id={key}
-                  img={val}
+                  // img={val.path}
                   key={key}
                   handleClickOpen={handleClickOpenDialog}
                 >
                   {
                     <Box variant="outlined">
-                      <img src={val} style={imageStyle} alt={key} />
+                      <img src={val?.path} style={imageStyle} alt={key} />
                     </Box>
                   }
                 </ReviewPhoto>
@@ -158,7 +156,7 @@ const Comments = ({
             {reviewPhoto?.length >= 6 && (
               <ReviewPhoto
                 id={5}
-                img={reviewPhoto[5]}
+                img={reviewPhoto[5]?.path}
                 setPage={setPage}
                 page={page}
                 handleClickOpen={handleClickOpenDialog}

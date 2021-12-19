@@ -79,6 +79,7 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
                 <Comments
                   imageURL={
                     val?.customer_id_from_product_reviews.customer_picture
+                      .picture_id_from_customer_picture?.path
                   }
                   username={
                     val.firstname && val.lastname
@@ -90,7 +91,7 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
                   key={key}
                   reviewTime={val.review_time}
                   reviewPhoto={commentPictures[key]?.comment_pictures}
-                ></Comments>
+                />
               ))}
               <Box sx={{ marginTop: "50px" }}>
                 {commentOffset > comments?.length ? (

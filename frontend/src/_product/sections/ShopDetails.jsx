@@ -53,7 +53,7 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
         {/* element-left */}
         <Avatar
           alt="Shop"
-          src="/static/images/avatar/1.jpg"
+          src={shopDetail?.shop_picture.path}
           sx={{
             width: 95,
             height: 95,

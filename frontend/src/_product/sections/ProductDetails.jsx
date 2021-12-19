@@ -13,6 +13,8 @@ import pic1 from "~/common/assets/images/iphone-black.png";
 import pic2 from "~/common/assets/images/iphone-blue.png";
 import pic3 from "~/common/assets/images/iphone-pink.png";
 import pic4 from "~/common/assets/images/iphone-red.png";
+import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 const ProductDetails = ({
   auth,
   copyLink,
@@ -20,6 +22,8 @@ const ProductDetails = ({
   options,
   setOptions,
   productPictures,
+  favorite,
+  setFavorite,
 }) => {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(1);
@@ -100,17 +104,19 @@ const ProductDetails = ({
             <IconButton onClick={copyLink}>
               <ShareIcon sx={{ color: "#A0A3BD", fontSize: "22px" }} />
             </IconButton>
-            {/* <IconButton
+            <IconButton
               onClick={(e) => {
-                e.preventDefault();
-                onFavourite(productDetails?);
+                setFavorite(!favorite);
+                console.log(favorite);
+                // e.preventDefault();
+                // onFavourite(productDetails?);
               }}
               sx={{
                 fontWeight: "bold",
                 fontSize: "22px",
               }}
             >
-              {product.favourite ? (
+              {favorite ? (
                 <FavoriteRoundedIcon
                   sx={{ color: "#A0A3BD" }}
                   fontSize="inherit"
@@ -121,7 +127,7 @@ const ProductDetails = ({
                   fontSize="inherit"
                 />
               )}
-            </IconButton> */}
+            </IconButton>
           </Box>
         </Box>
         <Typography

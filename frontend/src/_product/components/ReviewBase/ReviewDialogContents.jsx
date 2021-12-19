@@ -4,6 +4,7 @@ import ProductBox from "./ProductBox";
 import StarBox from "./StarBox";
 import GeneratedComments from "./GeneratedComments";
 import CommentsBox from "./CommentsBox";
+import { Typography } from "@mui/material";
 
 function ReviewDialogContents({
   generatedCommentsData,
