@@ -143,7 +143,7 @@ export class TicketCard extends React.Component {
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.target}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.sent_date}</Typography>
+              <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.props.ticket.sent_date.slice(0, 10)}</Typography>
             </Box>
             <Box sx={{ width: '11%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontSize: '15px', textAlign: 'center'}}>{this.admin.firstname + " " + this.admin.lastname}</Typography>

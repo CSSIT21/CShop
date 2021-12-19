@@ -263,6 +263,7 @@ export class ManageaccountController {
     });
   }
 
+
   @Get('tickets/type')
   @Public()
   public getTicketType(@Query('id') i: number){

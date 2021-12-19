@@ -8,5 +8,5 @@ export class CreateTicketDto {
     day: number
     month: number
     year: number
-    picture_id:number
+    path:string
 }

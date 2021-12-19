@@ -25,7 +25,7 @@ export class ManageaccountService {
           sent_date: new Date(),
           //ended_date: new Date(createTicketDto.year, createTicketDto.month, createTicketDto.day),
           ended_date: null,
-          picture_id: createTicketDto.picture_id
+          picture_id: 0
 				},
 			});
         await this.prisma.admin_support_status.create({
@@ -34,6 +34,22 @@ export class ManageaccountService {
             status: {"status": "Open"}
           },
         });
+        await this.prisma.admin_support_picture.create({
+          data: {
+            id: ticket.id,
+            title: ticket.title,
+            thumbnail: createTicketDto.path,
+            path: createTicketDto.path
+          },
+        });
+        await this.prisma.admin_support.update({
+          where:{
+            id: ticket.id
+          },
+          data:{
+            picture_id: ticket.id
+          }
+        })
 			return 'Ticket Added!';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {

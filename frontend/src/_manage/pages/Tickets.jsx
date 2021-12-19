@@ -147,7 +147,6 @@ const ManageSellerAccountPage = () => {
                               <MenuItem value={'target'}>Target</MenuItem>
                               <MenuItem value={'sent_date'}>Filed Date</MenuItem>
                               <MenuItem value={'admin_id'}>Assingee</MenuItem>
-                              <MenuItem value={'admin_support_status.status.status'}>Status</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>

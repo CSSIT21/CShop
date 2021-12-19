@@ -67,8 +67,50 @@ const ManageSellerAccountPage = () => {
         setPicture64(ba);
       };
 
-    const submitTicket = () => {
-        console.log(type + " | " + title + " | " + desc  + " | " + target  + " | " + picture64);
+    const [submitstatus, setStatus] = React.useState('');
+    const setSubmitStatus = (sa) => {
+        setStatus(sa);
+      };
+
+    const config = {
+        headers: { Authorization: `Bearer abcd1234cs21` }
+    };
+
+    const bodyParameters = {
+        "payload": picture64,
+	    "mime": "png"
+     };
+
+    const submitTicket = async () => {
+        const res = await axios.post(
+            "https://drive.cshop.cscms.ml/api/upload/base64",
+            bodyParameters,
+            config
+          );
+          const path = res.data.original_link;
+          if(res != null){
+          const res = await axios.post(
+            "http://localhost:8080/manageaccount/tickets/create",
+            {
+                "title":title,
+                "description":desc,
+                "target":target,
+                "admin_id":2,
+                "customer_id":1,
+                "support_type_id":type,
+                "day": 1,
+                "month": 1,
+                "year": 1,
+                "path":path
+            }
+          );
+          if(res){
+              setSubmitStatus('Ticket Submitted!');
+          }
+          else{
+            setSubmitStatus('Ticket Submission Failed! Try Again Later.');
+          }
+        }
     };
 
     const onImageChange = (event) => {
@@ -184,6 +226,9 @@ const ManageSellerAccountPage = () => {
                         </Box>
                     </Box>
                 </CardContent>
+                    <Box sx={{display:'flex', justifyContent:'center', margin:'15px'}}>
+                        <Typography style={{ fontWeight: 600, fontSize: '32px' }} color="primary">{submitstatus}</Typography>
+                    </Box>
             </Card>
         </Box>
     );
