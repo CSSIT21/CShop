@@ -32,7 +32,6 @@ const NewBannerDialog = ({
 	itemCount = 0,
 	open = false,
 	handleDialog = noop,
-	handleAddItem = noop,
 }) => {
 	const [description, setDescription] = useState("");
 	const [start_date, setStart_date] = useState(new Date);
@@ -66,6 +65,7 @@ const NewBannerDialog = ({
 			else {
 				console.log(data.error);
 				handleDialog();
+				setLoading(false);
 				return Swal.fire('Oop!', 'Cannot upload image', 'error');
 			}
 		}
@@ -104,6 +104,7 @@ const NewBannerDialog = ({
 			})
 			.catch((err) => {
 				console.log(err);
+				setLoading(false);
 				handleDialog();
 				return Swal.fire('Oop!', 'Cannot create a new banner', 'error');
 			})

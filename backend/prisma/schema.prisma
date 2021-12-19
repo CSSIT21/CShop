@@ -26,7 +26,7 @@ model customer {
   customer_info                 customer_info?
   old_password                  customer_old_password?
   customer_picture              customer_picture?
-  wishlist                      customer_wishlist?
+  wishlist                      customer_wishlist[]
   discount_coin_information     discount_coin_information[]
   discount_customer_coin        discount_customer_coin?
   discount_customer_spend       discount_customer_spend[]
@@ -118,10 +118,12 @@ model customer_old_password {
 }
 
 model customer_wishlist {
-  customer_id                        Int      @id
+  customer_id                        Int
   product_id                         Int
   added_date                         DateTime @default(now())
+  id                                 Int      @id @default(autoincrement())
   customer_id_from_customer_wishlist customer @relation(fields: [customer_id], references: [id])
+  product                            product  @relation(fields: [product_id], references: [id])
 }
 
 model customer_followed_shop {
@@ -231,14 +233,14 @@ model shop_flashsale {
 }
 
 model shop_flashsale_history {
-  flashsale_id                             Int            @id
-  shop_id                                  Int
-  started_date                             DateTime       @default(now())
-  ended_date                               DateTime       @default(now())
-  products                                 Json[]
-  quantity                                 Json
-  flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
+  flashsale_id                        Int            @id
+  shop_id                             Int
+  started_date                        DateTime       @default(now())
+  ended_date                          DateTime       @default(now())
+  products                            Json[]
+  quantity                            Json
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_shop_flashsale_history shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model shop_banner {
@@ -315,6 +317,7 @@ model product {
   shop_id_from_product            shop_info                        @relation(fields: [shop_id], references: [id])
   business_product_view_records   business_product_view_records?
   business_product_view_summaries business_product_view_summaries?
+  customer_wishlist               customer_wishlist[]
   home_add_to_cart_log            home_add_to_cart_log[]
   home_product_log                home_product_log[]
   order_cancel_refund             order_cancel_refund[]
@@ -1046,13 +1049,13 @@ model sconsole_discount_log {
 }
 
 model sconsole_flashsale_log {
-  id                                       Int            @id @default(autoincrement())
-  shop_id                                  Int
-  flashsale_id                             Int
-  added_date                               DateTime       @default(now()) @db.Timestamp(6)
-  ended_date                               DateTime?      @db.Timestamp(6)
-  flashsale_id_from_sconsole_flashsale_log shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_sconsole_flashsale_log      shop_info      @relation(fields: [shop_id], references: [id])
+  id                                  Int            @id @default(autoincrement())
+  shop_id                             Int
+  flashsale_id                        Int
+  added_date                          DateTime       @default(now()) @db.Timestamp(6)
+  ended_date                          DateTime?      @db.Timestamp(6)
+  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_sconsole_flashsale_log shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model sconsole_order_history {
