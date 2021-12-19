@@ -46,6 +46,11 @@ const ManageSellerAccountPage = () => {
           setDesc(event.target.value);
         };
 
+    const [title, setTitle] = React.useState('');
+    const setTicketTitle = (event) => {
+            setTitle(event.target.value);
+        };
+
     const [target, setTarget] = React.useState('');
     const setTicketTarget = (event) => {
             setTarget(event.target.value);
@@ -63,7 +68,7 @@ const ManageSellerAccountPage = () => {
       };
 
     const submitTicket = () => {
-        console.log(type + " | " + desc  + " | " + target  + " | " + picture64);
+        console.log(type + " | " + title + " | " + desc  + " | " + target  + " | " + picture64);
     };
 
     const onImageChange = (event) => {
@@ -123,6 +128,21 @@ const ManageSellerAccountPage = () => {
                                 onChange={setTicketTarget}
                             />
                         </FormControl>
+                    </Box>
+                    <Box sx={{ display:'flex', justifyContent:'left', marginLeft:'12%'}}>
+                        <Typography style={{ fontWeight: 600, fontSize: '23px' }} color="primary">Title</Typography>
+                    </Box>
+                    <Box sx={{display:'flex', justifyContent:'center', margin:'7px 15px'}}>
+                        <TextField
+                            align="center"
+                            margin="dense"
+                            id="desc"
+                            fullWidth
+                            onChange={setTicketTitle}
+                            placeholder="Set your ticket's title"
+                            variant="outlined"
+                            sx={{width:'80%!important'}}
+                        />
                     </Box>
                     <Box sx={{ display:'flex', justifyContent:'left', marginLeft:'12%'}}>
                         <Typography style={{ fontWeight: 600, fontSize: '23px' }} color="primary">Description</Typography>
