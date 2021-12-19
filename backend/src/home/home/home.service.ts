@@ -12,6 +12,9 @@ export class HomeService {
   async findAllReviews() {
     return this.prisma.home_app_review.findMany({
       take: 20,
+      orderBy: {
+        review_date: "desc",
+      },
     });
   }
 
@@ -38,7 +41,7 @@ export class HomeService {
 
   async findBestSeller() {
     return this.prisma.product.findMany({
-      orderBy:{
+      orderBy: {
         sold: "desc",
       },
       take: 20,
@@ -48,9 +51,9 @@ export class HomeService {
     });
   }
 
-  async getPopUp(){
+  async getPopUp() {
     return this.prisma.home_popup.findMany({
-      where : {
+      where: {
         start_date: {
           lte: new Date().toISOString(),
         },
@@ -58,7 +61,7 @@ export class HomeService {
           gte: new Date().toISOString(),
         },
       },
-      select:{
+      select: {
         start_date: true,
         end_date: true,
         description: true,
@@ -72,8 +75,8 @@ export class HomeService {
     where?: Prisma.customer_wishlistWhereInput;
     take?: number;
     skip?: number;
-  }){
-    const {where, take, skip} = params;
+  }) {
+    const { where, take, skip } = params;
     const productIds = await this.prisma.customer_wishlist.findMany({
       where,
       take,
@@ -96,7 +99,7 @@ export class HomeService {
 
       products.push(product);
     }
-    
+
     return products;
   }
 
@@ -104,10 +107,10 @@ export class HomeService {
     where?: Prisma.rem_suggestion_homepageWhereUniqueInput;
     take?: number;
     skip?: number;
-  }){
-    const {where, take, skip} = params;
+  }) {
+    const { where, take, skip } = params;
 
-    const {product_id} = await this.prisma.rem_suggestion_homepage.findUnique({
+    const { product_id } = await this.prisma.rem_suggestion_homepage.findUnique({
       where,
       select: {
         product_id: true,
@@ -131,14 +134,14 @@ export class HomeService {
     return products;
   }
 
-  async findCategory(){
+  async findCategory() {
     return this.prisma.category.findMany({
-      select:{
+      select: {
         id: true,
         name: true,
         icon_id_from_category: {
           select: {
-            id:true,
+            id: true,
             title: true,
             path: true,
           },

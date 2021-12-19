@@ -1,90 +1,86 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { HomeService } from './home.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { get } from 'http';
-import { Prisma, product_picture } from '@prisma/client';
 import { Public } from 'src/common/decorators/public.decorator';
 
 
 @Controller('home')
 export class HomeController {
-  constructor(private readonly homeService: HomeService) {}
+  constructor(private readonly homeService: HomeService) { }
 
-
-  @Get("review")
+  @Get("reviews")
   @Public()
-  async findAllReviews(){
-    try{
+  async findAllReviews() {
+    try {
       const reviews = await this.homeService.findAllReviews();
-      return{
-        success : true,
+      return {
+        success: true,
         reviews
       }
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
 
   @Get("bestsellers")
   @Public()
-  async findAllSeller(){
-    try{
+  async findAllSeller() {
+    try {
       const bestsellers = await this.homeService.findBestSeller();
-      return{
-        success : true,
+      return {
+        success: true,
         bestsellers,
       }
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
 
   @Get("partners")
   @Public()
-  async findAllPartners(){
-    try{
+  async findAllPartners() {
+    try {
       const partners = await this.homeService.findAllPartners();
-      return{
-        success : true,
+      return {
+        success: true,
         partners
       }
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
-  
+
   @Get("popup")
   @Public()
-  async getPopUp(){
-    try{
+  async getPopUp() {
+    try {
       const popup = await this.homeService.getPopUp();
-      return{
-        success : true,
+      return {
+        success: true,
         popup
       }
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
 
   @Get("suggestions/:id")
   @Public()
-  async findSuggestion(@Param('id', ParseIntPipe) customer_id: number, 
-        @Query('take', ParseIntPipe) take?: number,
-        @Query('skip', ParseIntPipe) skip?: number
-  ){
-    try{
+  async findSuggestion(@Param('id', ParseIntPipe) customer_id: number,
+    @Query('take', ParseIntPipe) take?: number,
+    @Query('skip', ParseIntPipe) skip?: number
+  ) {
+    try {
       const suggestions = await this.homeService.findSuggestion({
-        where: {customer_id},
+        where: { customer_id },
         take,
         skip,
       });
-      
-      return{
-        success : true,
+
+      return {
+        success: true,
         suggestions
       };
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
@@ -92,38 +88,38 @@ export class HomeController {
   @Get("favorites/:id")
   @Public()
   async findFavorite(@Param('id', ParseIntPipe) customer_id: number,
-        @Query('take', ParseIntPipe) take?: number,
-        @Query('skip', ParseIntPipe) skip?: number){
-    try{
+    @Query('take', ParseIntPipe) take?: number,
+    @Query('skip', ParseIntPipe) skip?: number) {
+    try {
       const favorites = await this.homeService.findFavorite({
-        where: {customer_id},
+        where: { customer_id },
         take,
         skip,
       });
-      
-      return{
+
+      return {
         success: true,
         favorites
       };
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
 
   @Get("categories")
   @Public()
-  async findcategory(){
-    try{
+  async findcategory() {
+    try {
       const categories = await this.homeService.findCategory();
 
-      return{
-        success : true,
+      return {
+        success: true,
         categories
       };
-    }catch(err){
+    } catch (err) {
       this.homeService.throwError(err);
     }
   }
 }
 
- 
+

@@ -19,9 +19,6 @@ export class BannerService {
   // Get all banners with information and images by 'visible' condition
   async getBanners(checkVisible: boolean) {
     let where = {
-      start_date: {
-        lte: new Date().toISOString(),
-      },
       end_date: {
         gte: new Date().toISOString(),
       },
@@ -29,6 +26,9 @@ export class BannerService {
 
     if (checkVisible) {
       where['visible'] = true;
+      where['start_date'] = {
+        lte: new Date().toISOString(),
+      }
     }
 
     const infos = await this.getInfos({
@@ -138,7 +138,7 @@ export class BannerService {
     data: Prisma.home_bannerUpdateInput;
     where?: Prisma.home_banner_pictureWhereInput;
   }) {
-    const {data, where} = params;
+    const { data, where } = params;
     return this.prisma.home_banner.updateMany({
       data,
       where,
