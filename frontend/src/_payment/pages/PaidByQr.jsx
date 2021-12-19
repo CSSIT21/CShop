@@ -46,6 +46,26 @@ const useStyles = makeStyles({
 const qrCode = "0002010102123032011563959634889012902091234678325204701153037645406100.005802TH5905CShop6007BANGKOK62340523202111151028050140000000703CMQ630447C0";
 
 
+const [Qr, setQr] = useState(0)
+const getData = () => {
+    axios
+     .get(`${config.SERVER_URL}/qrcode`)
+     .then(({data}) => {
+      if (data.success) {
+       return setQr(data.rawQr);
+      }
+      else {
+       return console.log(data);
+      }
+     })
+     .catch((err) => {
+      return console.log(err.message);
+     })
+   };
+  
+   useEffect(() => {
+    getData();
+   }, [])
 
 const PaidByQr = () => {
     const classes = useStyles();
@@ -96,7 +116,7 @@ const PaidByQr = () => {
                 </Box>
                 <Box className = {classes.sizeQr}>
                     {qrCode.length > 1 ? (
-                        <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}/>
+                        <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${Qr}`}/>
                     ) : null}
                 </Box>
                 <Box className={classes.boxDetail}>
