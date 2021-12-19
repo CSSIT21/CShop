@@ -35,7 +35,7 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 
       <Box className={classes.text}>
         <Typography sx={titleStyle}>
-          {coupon.discount_id_from_discount_shop.code}{" "}
+          {coupon.discount_id_from_discount_shop.description}{" "}
         </Typography>
         <BorderLinearProgress
           variant="determinate"
@@ -68,7 +68,6 @@ const useStyles = makeStyles({
   },
 
   text: {
-    width: "300px",
     padding: "0 20px",
   },
 });
@@ -77,6 +76,11 @@ const titleStyle = {
   fontSize: "20px",
   fontWeight: 600,
   color: "#FD6637",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  display: "-webkit-box",
+  WebkitLineClamp: 1 /* number of lines to show */,
+  WebkitBoxOrient: "vertical",
 };
 
 const remainStyle = {
