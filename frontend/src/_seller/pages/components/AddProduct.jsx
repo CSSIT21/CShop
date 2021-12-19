@@ -249,8 +249,10 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
       }
       );
       handleClose();
+      // window.location.reload(false);
     }catch (e){
       console.log(e);
+      window.location.reload(false);
     }
   }
 
