@@ -1,13 +1,14 @@
-import { Controller, Get, Param, ParseIntPipe, Res } from '@nestjs/common';
+import { Body,Controller, Get, Param, ParseIntPipe, Post, Res } from '@nestjs/common';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ProductService } from './product.service';
+import { SuggestionProductDto } from './dto/suggestion-product.dto';
 
 @Controller('product')
 export class ProductController {
-    constructor(private readonly productService: ProductService) { }
-    
+	constructor(private readonly productService: ProductService) {}
+
 	@Get('/:id')
-		@Public()
+	@Public()
 	public async findProductDetails(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const product_details = await this.productService.getProductDetails(id);
 		if (product_details) {
@@ -18,8 +19,8 @@ export class ProductController {
 			});
 		}
 	}
-    
-	@Get('/:id/suggest')
+
+	@Get(':id/getSuggest')
 	@Public()
 	public async findSuggestProducts(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const suggest_products = await this.productService.getSuggestProducts(id);
@@ -32,8 +33,25 @@ export class ProductController {
 		}
 	}
 
+	@Post(':id/updateSuggest')
+	@Public()
+	public async updateSuggestProducts(
+		@Body() suggestionProductDto: SuggestionProductDto,
+		@Param('id', ParseIntPipe) id: number,
+		@Res() res,
+	) {
+		const suggest_product = await this.productService.updateSuggestionProducts(id,suggestionProductDto);
+		if (suggest_product) {
+			res.send({ success: true, suggest_product });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
+
 	@Get('/shortlink/:id')
-		@Public()
+	@Public()
 	public async copyShortLink(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const link = await this.productService.getShortLink(id);
 		if (link) {
@@ -46,7 +64,7 @@ export class ProductController {
 	}
 
 	@Get('/:id/shop')
-		@Public()
+	@Public()
 	public async findShopDetails(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const shop_details = await this.productService.getShopDetails(id);
 		if (shop_details) {
@@ -59,7 +77,7 @@ export class ProductController {
 	}
 
 	@Get('/:id/pictures')
-		@Public()
+	@Public()
 	public async findProductPictures(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const pictures = await this.productService.getProductPictures(id);
 		if (pictures) {
@@ -72,7 +90,7 @@ export class ProductController {
 	}
 
 	@Get('/:id/options')
-		@Public()
+	@Public()
 	public async findOptions(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const options = await this.productService.getOptions(id);
 		if (options) {

@@ -8,12 +8,15 @@ import ProductCard from "../../common/components/ProductCard";
 import CarouselButton from "../../common/components/CarouselButton";
 
 const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
-  const [products, setProducts] = useState(suggestionItems);
   const [page, setPage] = useState(0);
-
+  const productPage = (id) => {
+    let path = "/product/" + id;
+    return path;
+  };
+  console.log(suggestionItems);
   const classes = useStyles();
   const productsPerRow = 4;
-  const totalPage = Math.ceil(products.length / productsPerRow);
+  const totalPage = Math.ceil(suggestionItems?.length / productsPerRow);
 
   return (
     <Box className={classes.suggestionWrapper}>
@@ -36,7 +39,7 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
 
         <Box className={classes.suggestionCarousel}>
           <Carousel
-            items={products}
+            items={suggestionItems}
             pageState={page}
             setPageState={setPage}
             itemsPerRow={4}
@@ -44,8 +47,8 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
             {(item, idx) => (
               <ProductCard
                 product={item}
-                onFavourite={onFavourite}
-                to="/product/2"
+                onFavourite={() => onFavourite(item)}
+                to={() => productPage(item.id)}
                 key={item.id}
               />
             )}

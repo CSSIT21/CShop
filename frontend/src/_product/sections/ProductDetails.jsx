@@ -24,9 +24,16 @@ const ProductDetails = ({
   productPictures,
   favorite,
   setFavorite,
+  count,
+  setCount,
+  firstchoiceId,
+  setFirstchoiceId,
+  secondchoiceId,
+  setSecondchoiceId,
+  addToCart,
 }) => {
   const [open, setOpen] = useState(false);
-  const [count, setCount] = useState(1);
+
   const [selected, setSelected] = useState({});
 
   const handleClickClose = () => {
@@ -36,6 +43,7 @@ const ProductDetails = ({
     // CHECK optionCheck, choiceChek
     if (auth.isLoggedIn) {
       // axios from Plume
+      addToCart();
       setOpen(true);
     } else location.href = "http://localhost:3000/register";
   };
@@ -49,6 +57,9 @@ const ProductDetails = ({
 
   const handleClickChoice = (e) => {
     setSelected((selected) => ({ ...selected, [e.product_options_id]: e.id }));
+    // if (Object.key(selected).length() > 1) {
+    //   setSecondchoiceId();
+    // }
   };
 
   return (

@@ -2,6 +2,7 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { nanoid } from 'nanoid';
+import { SuggestionProductDto } from './dto/suggestion-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -27,6 +28,27 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
+	
+	public async updateSuggestionProducts(id: number, suggestionProductDto: SuggestionProductDto) {
+		try {
+			const update = await this.prisma.product.update({
+				where: {
+					id: id,
+				},
+				data: {
+					suggest_products: suggestionProductDto.products,
+				},
+			})
+			return  update;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error querying products please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error querying products request body incorrect', 500);
+		}
+}
 
 	public async getSuggestProducts(id: number) {
 		try {

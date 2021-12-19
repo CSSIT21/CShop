@@ -16,9 +16,12 @@ import Swal from "sweetalert2";
 
 const ProductPage = (props) => {
   const auth = useRecoilValue(authState);
-  const [productsSuggestion, setProductsSuggestion] = useState(fakeProducts);
+  console.log(auth);
+  const [productsSuggestion, setProductsSuggestion] = useState();
   const [productDetails, setProductDetails] = useState({ title: "" });
   const [commentPictures, setCommentPictures] = useState();
+  // const [firstchoiceId, setFirstchoiceId] = useState();
+  // const [secondchoiceId, setSecondchoiceId] = useState();
   const [productPictures, setProductPictures] = useState();
   const [shopDetail, setShopDetails] = useState();
   const [comments, setComments] = useState();
@@ -26,10 +29,12 @@ const ProductPage = (props) => {
   const [options, setOptions] = useState();
   const [favorite, setFavorite] = useState(true);
   const [shopId, setShopId] = useState(-1);
+  const [count, setCount] = useState(1);
   const { id } = useParams();
 
   const onFavouriteSuggestion = (index) => {
     setProductsSuggestion((products) => {
+      console.log(products);
       const target = products[index];
       target.favourite = !target.favourite;
 
@@ -75,30 +80,6 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setProductDetails(data.product_details);
-          let title = data.product_details.title;
-          if (title) {
-            // Suggestion product
-            // axios
-            //   .get(
-            //     `https://ml-2.cshop.cscms.ml/relatedProduct/${id}/${encodeURIComponent(
-            //       title
-            //     )}`
-            //   )
-            //   .then(({ data }) => {
-            //     console.log(data);
-            //     if (data.success) {
-            //       setProductsSuggestion(data.suggest_products);
-            //     }
-            //   })
-            //   .catch((e) => {
-            //     console.log(e.message);
-            //     Swal.fire({
-            //       title: "Something went wrong!",
-            //       icon: "error",
-            //       confirmButtonText: "OK",
-            //     });
-            //   });
-          }
         }
       })
       .catch((e) => {
@@ -109,7 +90,7 @@ const ProductPage = (props) => {
           confirmButtonText: "OK",
         });
       });
-
+    updateSuggestProduct();
     // Shop
     axios
       .get(`${config.SERVER_URL}/product/${id}/shop`)
@@ -192,8 +173,88 @@ const ProductPage = (props) => {
           confirmButtonText: "OK",
         });
       });
+    //
   }, [id]);
 
+  const addToCart = () => {
+    axios
+      .post(`${config.SERVER_URL}/cart/aadtocart`, {
+        userID: auth,
+        productId: id,
+        amount: count,
+        firstchoiceId,
+        secondchoiceId,
+      })
+      .then(({ data }) => {
+        if (data.success) {
+          console.log(data);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
+  };
+
+  const updateSuggestProduct = () => {
+    // Update suggestion product id
+    axios
+      .get(`https://ml-1.cshop.cscms.ml/relatedProduct?id=${id}`)
+      .then(({ data }) => {
+        if (data) {
+          console.log(data);
+          // Update here -- > getSuggestProduct(data)
+          axios
+            .post(`${config.SERVER_URL}/product/${id}/updateSuggest`, data)
+            .then(({ data }) => {
+              if (data.success) {
+                getSuggestProduct();
+              }
+            })
+            .catch((e) => {
+              console.log(e.message);
+              Swal.fire({
+                title: "Something went wrong!",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            });
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
+  };
+
+  const getSuggestProduct = () => {
+    // Get suggestion product detail
+    axios
+      .get(`${config.SERVER_URL}/product/${id}/getSuggest`)
+      .then(({ data }) => {
+        console.log(data);
+        if (data.success) {
+          setProductsSuggestion(data.suggest_products);
+          console.log(data.suggest_products);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
+  };
   useEffect(() => {
     avgRatingFormat();
   }, [avgRating]);
@@ -219,6 +280,11 @@ const ProductPage = (props) => {
           auth={auth}
           favorite={favorite}
           setFavorite={setFavorite}
+          addToCart={addToCart}
+          // firstchoiceId={firstchoiceId}
+          // setFirstchoiceId={setFirstchoiceId}
+          // secondchoiceId={secondchoiceId}
+          // setSecondchoiceId={setSecondchoiceId}
         />
         <ShopDetails
           shopId={shopId}
@@ -227,7 +293,7 @@ const ProductPage = (props) => {
           avgRating={avgRating}
         />
         <ProductSuggestion
-          suggestionItems={productsSuggestion}
+          suggestionItems={productsSuggestion || []}
           onFavourite={onFavouriteSuggestion}
         />
         <ProductDescription
