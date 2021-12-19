@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import CouponPic from "~/common/assets/images/voucher-pic.png";
-import CButton from "~/common/components/CButton";
+import LoadingButton from "@mui/lab/LoadingButton";
 import BorderLinearProgress from "~/common/components/BorderLinearProgress";
 import { noop } from "~/common/utils";
 import dayjs from "dayjs";
@@ -12,7 +12,7 @@ import * as relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
-const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
+const Coupon = ({ coupon, onClick = noop, loading }) => {
   const classes = useStyles();
   const [date, setdate] = useState();
 
@@ -24,11 +24,11 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
     <Box className={classes.couponbox}>
       <img
         src={CouponPic}
-        // src={
-        //   coupon.discount_id_from_discount_shop.picture_path
-        //     ? coupon.discount_id_from_discount_shop.picture_path
-        //     : CouponPic
-        // }
+        src={
+          coupon.discount_id_from_discount_shop.picture_path
+            ? coupon.discount_id_from_discount_shop.picture_path
+            : CouponPic
+        }
         width="150px"
         alt="coupon picture"
       />
@@ -50,7 +50,9 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 
       <Divider orientation="vertical" flexItem />
       <Box sx={{ marginLeft: "30px" }}>
-        <CButton {...claimProps} onClick={onClick} />
+        <LoadingButton loading={loading} onClick={onClick} variant="contained">
+          Claim
+        </LoadingButton>
       </Box>
     </Box>
   );
@@ -62,13 +64,13 @@ const useStyles = makeStyles({
     width: "100%",
     padding: "15px",
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
     borderRadius: "15px",
     backgroundColor: "#FFFFFF",
   },
 
   text: {
-    width: "300px",
     padding: "0 20px",
   },
 });

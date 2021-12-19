@@ -1,19 +1,19 @@
 import { Box, Slider, TextField } from "@mui/material";
-import { useState } from "react";
-const CategoryFilterPrice = ({
-  setpriceLow,
-  setpriceHigh,
-}) => {
-  const [value, setValue] = useState([0, 500000]);
+import { useState, useEffect } from "react";
+const CategoryFilterPrice = ({ setpriceLow, setpriceHigh }) => {
+  const [value, setValue] = useState([0, 5000]);
   function valuetext(value) {
     return `${value}°C`;
   }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setpriceLow(newValue[0]);
-    setpriceHigh(newValue[1]);
   };
+
+  useEffect(() => {
+    setpriceLow(value[0]);
+    setpriceHigh(value[1]);
+  }, [value]);
 
   return (
     <Box>
@@ -27,7 +27,7 @@ const CategoryFilterPrice = ({
             placeholder="Min cost"
             value={value[0]}
             min={0}
-            max={500000}
+            max={5000}
             type="number"
             size="small"
             onChange={(e) => setValue((value) => [e.target.value, value[1]])}
@@ -50,7 +50,7 @@ const CategoryFilterPrice = ({
             type="number"
             placeholder="Max cost"
             min={0}
-            max={500000}
+            max={5000}
             value={value[1]}
             size="small"
             onChange={(e) => setValue((value) => [value[0], e.target.value])}
@@ -61,8 +61,8 @@ const CategoryFilterPrice = ({
       <Slider
         getAriaLabel={() => "Temperature range"}
         min={0}
-        step={1000}
-        max={500000}
+        step={100}
+        max={5000}
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"

@@ -12,31 +12,6 @@ import {
 import { isFunc, isUndef } from "./../../utils/index";
 import CButton from "~/common/components/CButton";
 
-const contentStyle = {
-  display: "flex",
-  alignContent: "center",
-  justifyContent: "space-between",
-  padding: "15px 5px 0px 5px",
-};
-
-const actionStyle = {
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "0 0 0 5px",
-};
-
-const titleStyle = {
-  flex: 1,
-
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  display: "-webkit-box",
-  WebkitLineClamp: 1 /* number of lines to show */,
-  WebkitBoxOrient: "vertical",
-};
-
 const ProductContent = ({
   product,
   status,
@@ -70,10 +45,11 @@ const ProductContent = ({
           onClick={(e) => {
             e.preventDefault();
             onFavourite(product.id);
+            //api fav
           }}
           sx={{ fontWeight: "bold", fontSize: "22px" }}
         >
-          {product.favourite ? (
+          {product.customer_wishlist && product.customer_wishlist.length > 0 ? (
             <FavoriteRoundedIcon sx={{ color: "#FD6637" }} fontSize="inherit" />
           ) : (
             <FavoriteBorderRoundedIcon
@@ -94,6 +70,31 @@ const ProductContent = ({
       )}
     </>
   );
+};
+
+const contentStyle = {
+  display: "flex",
+  alignContent: "center",
+  justifyContent: "space-between",
+  padding: "15px 5px 0px 5px",
+};
+
+const actionStyle = {
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "0 0 0 5px",
+};
+
+const titleStyle = {
+  flex: 1,
+
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  display: "-webkit-box",
+  WebkitLineClamp: 1 /* number of lines to show */,
+  WebkitBoxOrient: "vertical",
 };
 
 export default ProductContent;

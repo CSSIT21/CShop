@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import config from "~/common/constants";
 import Skeleton from "@mui/material/Skeleton";
 import { useRecoilValue } from "recoil";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import authState from "~/common/store/authState";
 
 const SellerShop = () => {
@@ -27,12 +28,27 @@ const SellerShop = () => {
   const [follow, setfollow] = useState(false);
   const [menus, setmenus] = useState([]);
   const [flashSale, setflashSale] = useState();
-  const onFavourite = (index) => {
-    // setflashItems((flashItems) => {
-    //   const target = flashItems[index];
-    //   target.favourite = !target.favourite;
-    //   return [...flashItems];
-    // });
+  const [flashSaleItems, setflashSaleItems] = useState([]);
+  const onFavourite = (id) => {
+    setflashSaleItems((items) => {
+      if (auth.isLoggedIn) {
+        const target = items.find((e) => e.id == id);
+        if (target.customer_wishlist.length > 0) {
+          target.customer_wishlist.pop();
+        } else {
+          target.customer_wishlist = [
+            { product_id: target.id, customer_id: auth.user.id },
+          ];
+        }
+      } else {
+        Swal.fire({
+          title: "Please login to add a product to your wishlist!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      return [...items];
+    });
   };
   useEffect(() => {
     axios
@@ -46,33 +62,45 @@ const SellerShop = () => {
         history.push("/*");
       })
       .then(() => {
+        let userId = 0;
+        if (auth.isLoggedIn) {
+          console.log("login");
+          userId = auth.user.id;
+        }
         axios
           .get(
-            `${config.SERVER_URL}/sellershop/follow/${id}?customer_id=${auth.user.id}`
+            `${config.SERVER_URL}/sellershop/follow/${id}?customer_id=${userId}`
           )
           .then(({ data }) => {
             setfollow(data.result);
           });
+
         axios
-          .get(`${config.SERVER_URL}/sellershop/sections/${id}`)
+          .get(
+            `${config.SERVER_URL}/sellershop/sections/${id}?customer_id=${userId}`
+          )
           .then(({ data }) => {
             setsections(data.sections);
           });
         axios
           .post(`${config.SERVER_URL}/sellershop/${id}/shopdiscounts`, {
-            customer_id: auth.user.id,
+            customer_id: userId,
           })
           .then(({ data }) => {
             setcoupons(data.shopvouchers);
           });
         axios
-          .get(`${config.SERVER_URL}/sellershop/${id}/flashsale`)
-          .then(({ data }) => {
-            setflashSale(data.flashsale);
-          })
-          .then(() => {
-            setloading(false);
+          .get(
+            `${config.SERVER_URL}/sellershop/${id}/flashsale?customer_id=${userId}`
+          )
+          .then(async ({ data }) => {
+            console.log(data);
+            await setflashSaleItems(data.flashsale.products_info);
+            await setflashSale(data.flashsale);
           });
+      })
+      .then(() => {
+        setloading(false);
       });
   }, []);
 
@@ -106,7 +134,11 @@ const SellerShop = () => {
             </Box>
           )}
           {flashSale && (
-            <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
+            <FlashSale
+              flashSale={flashSale}
+              flashSaleItems={flashSaleItems}
+              onFavourite={onFavourite}
+            />
           )}
           {coupons && (
             <Box className={classes.containerWhite}>
