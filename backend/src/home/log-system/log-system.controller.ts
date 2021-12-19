@@ -242,11 +242,11 @@ export class LogSystemController {
 		@Body() shopDto: CreateShopLogDto,
 	) {
 		try {
-			const data = this.logSystemService.crateShop(shopDto, customerId, shopId);
+			const shop = this.logSystemService.crateShop(shopDto, customerId, shopId);
 
 			return {
 				success: true,
-				data,
+				shop,
 			};
 		} catch (err) {
 			this.logSystemService.throwError(err);
