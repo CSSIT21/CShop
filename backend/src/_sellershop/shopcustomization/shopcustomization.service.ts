@@ -54,7 +54,7 @@ export class ShopcustomizationService {
 						let section;
 
 						switch (parsedsections[index].type) {
-							case 'Banners':
+							case 'Banner':
 								section = await this.prisma.shop_banner.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -62,7 +62,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 1 };
 								break;
-							case 'BannersCarousel':
+							case 'BannerCarousel':
 								section = await this.prisma.shop_banner_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -561,7 +561,9 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async createProductCarouselSelect(shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput) {
+	async createProductCarouselSelect(
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
+	) {
 		try {
 			await this.prisma.shop_product_carousel_select.create({
 				data: shop_product_carousel_selectCreateInput,

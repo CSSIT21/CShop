@@ -145,8 +145,8 @@ const BannerInfo = ({
                             value={visible}
                             onChange={(e) => setVisible(e.target.value === 'true')}
                         >
-                            <FormControlLabel label="Visible" value="true" control={<Radio />} />
-                            <FormControlLabel label="Invisible" value="false" control={<Radio />} />
+                            <FormControlLabel label="Visible" value={true} control={<Radio />} />
+                            <FormControlLabel label="Invisible" value={false} control={<Radio />} />
                         </RadioGroup>
                     </Grid>
 

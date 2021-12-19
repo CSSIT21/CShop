@@ -37,6 +37,7 @@ export class SellershopService {
 					shop_id: shopinfo.id,
 				},
 			});
+
 			let rating = fetchrating._avg.rating;
 
 			return { ...shopinfo, products, categories, rating };
@@ -293,13 +294,63 @@ export class SellershopService {
 		}
 	}
 
-	// async followShop(user_id: number, shop_id:number){
-	// 	try {
-	// 		const check = await this.prisma.customer_followed_shop
-	// 	} catch (error) {
+	public async checkFollow(customer_id: number, shop_id: number) {
+		try {
+			const check = await this.prisma.customer_followed_shop.findFirst({
+				where: {
+					customer_id: customer_id,
+					shop_id: shop_id,
+				},
+			});
+			if (check) {
+				return true;
+			}
+			return false;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error querying infomation please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error querying infomation request body incorrect', 500);
+		}
+	}
 
-	// 	}
-	// };
+	public async followShop(
+		customer_followed_shopCreateManyInput: Prisma.customer_followed_shopCreateManyInput,
+		id: number,
+	) {
+		try {
+			const check = await this.prisma.customer_followed_shop.findFirst({
+				where: {
+					customer_id: customer_followed_shopCreateManyInput.customer_id,
+					shop_id: id,
+				},
+			});
+			if (check) {
+				await this.prisma.customer_followed_shop.delete({
+					where: {
+						id: check.id,
+					},
+				});
+				return 'You unfollow this shop';
+			}
+			await this.prisma.customer_followed_shop.create({
+				data: {
+					customer_id: customer_followed_shopCreateManyInput.customer_id,
+					shop_id: id,
+				},
+			});
+			return 'You follow this shop';
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error querying infomation please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error querying infomation request body incorrect', 500);
+		}
+	}
 
 	public async getShopSection(id: number) {
 		try {
@@ -318,7 +369,7 @@ export class SellershopService {
 					let section;
 
 					switch (parsedsections[index].type) {
-						case 'Banners':
+						case 'Banner':
 							section = await this.prisma.shop_banner.findUnique({
 								where: {
 									id: parsedsections[index].id,
@@ -326,7 +377,7 @@ export class SellershopService {
 							});
 							section = { ...section, type: 1 };
 							break;
-						case 'BannersCarousel':
+						case 'BannerCarousel':
 							section = await this.prisma.shop_banner_carousel.findUnique({
 								where: {
 									id: parsedsections[index].id,
@@ -518,19 +569,22 @@ export class SellershopService {
 					},
 				},
 			});
-			let productsId = JSON.parse(JSON.stringify(flashsale.products)).map((e) => e.id);
-			const products_info = await this.prisma.product.findMany({
-				where: {
-					id: {
-						in: productsId,
+			if (flashsale) {
+				let productsId = JSON.parse(JSON.stringify(flashsale.products)).map((e) => e.id);
+				const products_info = await this.prisma.product.findMany({
+					where: {
+						id: {
+							in: productsId,
+						},
 					},
-				},
-				include: {
-					product_picture: true,
-				},
-			});
+					include: {
+						product_picture: true,
+					},
+				});
 
-			return { ...flashsale, products_info };
+				return { ...flashsale, products_info };
+			}
+			return flashsale;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -546,6 +600,7 @@ export class SellershopService {
 		shop_infoCreateInput: Prisma.shop_infoCreateInput,
 		addressCreateInput: Prisma.addressCreateInput,
 		payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
+		shop_pictureCreateInput: Prisma.shop_pictureCreateInput,
 	) {
 		try {
 			const address = await this.prisma.address.create({
@@ -577,6 +632,13 @@ export class SellershopService {
 							bank: payment_shop_bank_accountCreateInput.bank,
 							firstname: payment_shop_bank_accountCreateInput.firstname,
 							lastname: payment_shop_bank_accountCreateInput.lastname,
+						},
+					},
+					shop_picture: {
+						create: {
+							path: shop_pictureCreateInput.path,
+							thumbnail: shop_pictureCreateInput.thumbnail,
+							title: shop_pictureCreateInput.title,
 						},
 					},
 				},

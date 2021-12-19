@@ -13,7 +13,6 @@ import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
 
-
 @Module({
 	imports: [
 		HttpModule,

@@ -179,9 +179,9 @@ export class BannerService {
   throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       console.log(err.message);
-      throw new HttpException(err.message, 500);
+      throw new HttpException("Error in the internal server", 500);
     }
     console.log(err.message);
-    throw new HttpException(err.message, 500);
+    throw new HttpException("Something when wrong", 500);
   }
 }

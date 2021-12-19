@@ -16,12 +16,18 @@ import { useParams } from "react-router";
 const Bestseller1 =
   "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg";
 
-const Filter = ({ categories = [] }) => {
+const Filter = ({ categories = [], category_Id = 0 }) => {
   const { id, cateId } = useParams();
   const [count, setcount] = useState(0);
   const itemPerPage = 16;
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
+  const [categoryId, setcategoryId] = useState(category_Id);
+  const [priceLow, setpriceLow] = useState(0);
+  const [priceHigh, setpriceHigh] = useState(50000);
+  const [readyToShip, setreadyToShip] = useState(true);
+  const [outOfStock, setoutOfStock] = useState(false);
+  const [rating, setrating] = useState(0);
   const onFavourite = (index) => {
     setItems((items) => {
       const target = items[index];
@@ -36,13 +42,15 @@ const Filter = ({ categories = [] }) => {
 
   useEffect(async () => {
     await axios
-      .get(`${config.SERVER_URL}/sellershop/products/${id}?page=${page}`)
+      .get(
+        `${config.SERVER_URL}/sellershop/products/${id}?page=${page}&category=${categoryId}&priceLow=${priceLow}&priceHigh=${priceHigh}&readyToShip=${readyToShip}&outOfStock=${outOfStock}&rating=${rating}`
+      )
       .then(({ data }) => {
         setItems(data.products);
         setcount(data.count);
         console.log(data);
       });
-  }, [page]);
+  }, [page, categoryId, priceLow, priceHigh, rating, readyToShip, outOfStock]);
   return (
     <Box sx={{ padding: "25px 50px" }}>
       <Box sx={{ display: "flex" }}>
@@ -59,11 +67,23 @@ const Filter = ({ categories = [] }) => {
             <FilterAltOutlined size="large" />
           </Box>
           <Divider />
-          <CateGoryFilter categories={categories} />
-          <CategoryFilterPrice />
-          <CategoryFilterRate />
+          <CateGoryFilter
+            categories={categories}
+            categoryId={categoryId}
+            setcategoryId={setcategoryId}
+          />
+          <CategoryFilterPrice
+            setpriceLow={setpriceLow}
+            setpriceHigh={setpriceHigh}
+          />
+          <CategoryFilterRate setrating={setrating} />
           <CateGoryFilterService />
-          <CategoryFilterAvailability />
+          <CategoryFilterAvailability
+            readyToShip={readyToShip}
+            setreadyToShip={setreadyToShip}
+            setoutOfStock={setoutOfStock}
+            outOfStock={outOfStock}
+          />
         </Box>
 
         <Box sx={{ width: "80%" }}>

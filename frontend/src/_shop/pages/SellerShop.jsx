@@ -5,10 +5,6 @@ import Voucher from "../components/sellerShopBase/Voucher";
 import Content from "../components/sellerShopBase/Content";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import CategoryPic1 from "~/common/assets/images/category-1.png";
-import CategoryPic2 from "~/common/assets/images/category-2.png";
-import BannerImage from "~/_home/assets/images/TopBanner.png";
-import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
 import axios from "axios";
@@ -28,6 +24,7 @@ const SellerShop = () => {
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
+  const [follow, setfollow] = useState(false);
   const [menus, setmenus] = useState([]);
   const [flashSale, setflashSale] = useState();
   const onFavourite = (index) => {
@@ -37,7 +34,6 @@ const SellerShop = () => {
     //   return [...flashItems];
     // });
   };
-
   useEffect(() => {
     axios
       .get(`${config.SERVER_URL}/sellershop/${id}`)
@@ -51,7 +47,14 @@ const SellerShop = () => {
       })
       .then(() => {
         axios
-          .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
+          .get(
+            `${config.SERVER_URL}/sellershop/follow/${id}?customer_id=${auth.user.id}`
+          )
+          .then(({ data }) => {
+            setfollow(data.result);
+          });
+        axios
+          .get(`${config.SERVER_URL}/sellershop/sections/${id}`)
           .then(({ data }) => {
             setsections(data.sections);
           });
@@ -87,7 +90,7 @@ const SellerShop = () => {
             {loading ? (
               <Skeleton animation="wave" width="100%" height="200px" />
             ) : (
-              <Header shopInfo={shopInfo} />
+              <Header shopInfo={shopInfo} follow={follow} />
             )}
           </Box>
           <Box
@@ -97,10 +100,11 @@ const SellerShop = () => {
               backgroundColor: "#D9DBE9",
             }}
           />
-
-          <Box className={classes.containerWhite}>
-            <TabsController categories={menus} />
-          </Box>
+          {menus && (
+            <Box className={classes.containerWhite}>
+              <TabsController categories={menus} />
+            </Box>
+          )}
           {flashSale && (
             <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
           )}
