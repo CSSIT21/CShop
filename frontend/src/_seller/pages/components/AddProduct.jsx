@@ -18,6 +18,10 @@ import Stack from "@mui/material/Stack";
 import CropOriginalIcon from "@mui/icons-material/CropOriginal";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
 const subBodyClick = {
   position: "absolute",
   top: "50%",
@@ -73,7 +77,7 @@ const style = {
   pb: 3,
 };
 
-function SubModal() {
+function SubModal({updateProduct}) {
   const [subAdd, setSubAdd] = useState(false);
   const subOpen = () => {
     setSubAdd(true);
@@ -83,7 +87,7 @@ function SubModal() {
   };
   return (
     <Box>
-      <Button onClick={subOpen}>ADD</Button>
+      <Button onClick={updateProduct}>ADD</Button> :
       <Modal
         hideBackdrop
         open={subAdd}
@@ -168,47 +172,47 @@ function UploadButtons() {
 
 const CategoryType = [
   {
-    value: "IT",
+    value: 1,
     label: "IT",
   },
   {
-    value: "Education",
+    value: 2,
     label: "Education",
   },
   {
-    value: "Fashion",
+    value: 3,
     label: "Fashion",
   },
   {
-    value: "Kids",
+    value: 4,
     label: "Kids",
   },
   {
-    value: "Beauty",
+    value: 5,
     label: "Beauty",
   },
   {
-    value: "Furniture",
+    value: 6,
     label: "Furniture",
   },
   {
-    value: "Electronics",
+    value: 7,
     label: "Electronics",
   },
   {
-    value: "Food",
+    value: 8,
     label: "Food",
   },
   {
-    value: "Sport",
+    value: 9,
     label: "Sport",
   },
   {
-    value: "Accessories",
+    value: 10,
     label: "Accessories",
   },
   {
-    value: "Others",
+    value: 11,
     label: "Others",
   },
 ];
@@ -217,17 +221,43 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
   const ProductAdd = () => setProduct(true);
   const ProduceClose = () => setProduct(false);
 
-  // const style = {
-  //   position: "absolute",
-  //   top: "50%",
-  //   left: "50%",
-  //   transform: "translate(-50%, -50%)",
-  //   width: "400px",
-  //   bgcolor: "background.paper",
-  //   border: "2px solid #000",
-  //   boxShadow: 24,
-  //   p: 4,
-  // };
+  const shopid = useParams();
+
+  const [title , setTitle] = useState();
+  const [quant , setQuantity] = useState();
+  const [price , setPrice] = useState();
+  const [category , setCategory] = useState();
+  const [subTitle , setSubtitle] = useState();
+  // const [sold , setSold] = useState();
+  // const [suggest , setSuggest] = useState();
+  // const [rate , setRating] = useState();
+
+  const updateProduct = async () => {
+    try{
+      await axios.post(
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/addToProduct`,
+        {
+          shop_id : parseInt(shopid.id),
+          title : title,
+          quantity : parseInt(quant),
+          price : parseInt(price),
+          category_id : parseInt(category),
+          sub_title : subTitle,
+          // sold : parseInt(sold),
+          // suggest_products : [],
+          // rating : parseInt(rate),
+      }
+      );
+      handleClose();
+    }catch (e){
+      console.log(e);
+    }
+  }
+
+  // useEffect(() => {
+  //   updateProduct();
+  // }, []);
+
 
   return (
     <Dialog open={product} onClose={ProduceClose}>
@@ -256,6 +286,9 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
               placeholder="Title"
               variant="standard"
               fullWidth
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
             />
             <Box
               sx={{
@@ -268,6 +301,9 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                 placeholder="Price"
                 variant="standard"
                 fullWidth
+                onChange={(e) => {
+                  setPrice(e.target.value);
+                }}
               />
             </Box>
             <Box
@@ -281,25 +317,36 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                 placeholder="Quantity"
                 variant="standard"
                 fullWidth
+                onChange={(e) => {
+                  setQuantity(e.target.value);
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                marginTop: "20px",
+              }}
+            >
+              <TextField
+                required
+                id="standard-required"
+                placeholder="Sub Title"
+                variant="standard"
+                fullWidth
+                onChange={(e) => {
+                  setSubtitle(e.target.value);
+                }}
               />
             </Box>
             <TextField
-              id="date"
-              type="datetime-local"
-              variant="standard"
-              // defaultValue="2017-05-24T10:30"
-              sx={{ width: 350, marginTop: 2, mb: 3 }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              defaultValue=""
               id="standard-select-currency"
               select
               label="Category"
-              variant="outlined"
+              variant="standard"
               fullWidth
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
               sx={{ width: "100%", mb: 3 }}
             >
               {CategoryType.map((option) => (
@@ -313,7 +360,7 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={ProduceClose}>Cancel</Button>
-        <SubModal />
+        <Button onClick={updateProduct}>Confirm</Button>
       </DialogActions>
     </Dialog>
   );

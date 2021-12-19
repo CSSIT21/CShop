@@ -12,7 +12,7 @@ export class SellerconsoleService {
 	async getstockHistory(shopid: number) {
 		const res = await this.prisma.sconsole_stock_history.findMany({
 			where: {
-				shop_id: shopid,v
+				shop_id: shopid,
 			},
 			select: {
 				product_id: true,
@@ -152,9 +152,9 @@ export class SellerconsoleService {
 		price: number,
 		quantity: number,
 		categoryId: number,
-		sold: number,
-		suggest_product: number[],
-		rating: number,
+		// sold: number,
+		// suggest_product: number[],
+		// rating: number,
 	) {
 		console.log({
 			shop_id: shopId,
@@ -163,9 +163,9 @@ export class SellerconsoleService {
 			price: price,
 			quantity: quantity,
 			category_id: categoryId,
-			sold: sold,
-			suggest_products: suggest_product,
-			rating: rating,
+			// sold: sold,
+			// suggest_products: suggest_product,
+			// rating: rating,
 		});
 		await this.prisma.product.create({
 			data: {
@@ -175,9 +175,9 @@ export class SellerconsoleService {
 				price: price,
 				quantity: quantity,
 				category_id: categoryId,
-				sold: sold,
-				suggest_products: suggest_product,
-				rating: rating,
+				sold: 0,
+				suggest_products: [],
+				rating: 0,
 			},
 		});
 	}

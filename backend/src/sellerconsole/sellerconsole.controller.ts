@@ -56,7 +56,8 @@ export class SellerconsoleController {
 		return this.sellerconsoleService.CardOfSales(+id);
 	}
 
-	@Post(':id/stockLog')
+	@Post(':id/addToProduct')
+	@Public()
 	async getStockLog(@Body() request, @Res() res): Promise<any> {
 		var id = request.id;
 		var shop_id = request.shop_id;
@@ -65,9 +66,9 @@ export class SellerconsoleController {
 		var price = request.price;
 		var quantity = request.quantity;
 		var category_id = request.category_id;
-		var sold = request.sold;
-		var suggest_products = request.suggest_products;
-		var rating = request.rating;
+		// var sold = request.sold;
+		// var suggest_products = request.suggest_products;
+		// var rating = request.rating;
 		console.log(shop_id);
 		const a = await this.sellerconsoleService.AddToStock(
 			id,
@@ -77,11 +78,8 @@ export class SellerconsoleController {
 			price,
 			quantity,
 			category_id,
-			sold,
-			suggest_products,
-			rating,
 		);
-		const b = await this.sellerconsoleService.UpdatetoStockLog(id, shop_id, quantity);
+		const b = await this.sellerconsoleService.UpdatetoStockLog(shop_id, id, quantity);
 		console.log(a, b);
 		// res.send(a);
 		res.send(b);
