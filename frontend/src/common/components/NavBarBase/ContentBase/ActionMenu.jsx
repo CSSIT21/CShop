@@ -4,7 +4,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Badge, Fab } from '@mui/material';
 import { Box } from '@mui/system';
 import { For } from '~/common/utils';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 const actionLists = [
 	{
@@ -17,13 +17,13 @@ const actionLists = [
 		label: "notification",
 		icon: NotificationsNoneIcon,
 		value: 5,
-		path: '/chat'
+		path: '/notification'
 	},
 	{
 		label: "cart",
 		icon: ShoppingCartOutlinedIcon,
 		value: '66+',
-		path: '/chat'
+		path: '/cart'
 	}
 ];
 
