@@ -75,14 +75,15 @@ export class LogSystemService {
     });
   }
 
-  // async crateShop(shopDto: CreateShopLogDto, customer_id: number, shop_id: number) {
-  //   return this.prisma.home_shop_log.create({
-  //     data: {
-  //       customer_id,
-  //       shop_id,
-  //     },
-  //   });
-  // }
+  async crateShop(shopDto: CreateShopLogDto, customer_id: number, shop_id: number) {
+    return this.prisma.home_shop_log.create({
+		data: {
+			customer_id,
+			shop_id,
+			view_date: new Date(shopDto.view_date).toISOString(),
+		},
+	});
+  }
 
   async getShop(where?: Prisma.home_shop_logWhereInput) {
     return this.prisma.home_shop_log.findMany({

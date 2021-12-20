@@ -6,7 +6,7 @@ import { Prisma } from '.prisma/client';
 
 @Injectable()
 export class ShopcustomizationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getSection(id: number) {
 		try {
@@ -54,7 +54,7 @@ export class ShopcustomizationService {
 						let section;
 
 						switch (parsedsections[index].type) {
-							case 'Banners':
+							case 'Banner':
 								section = await this.prisma.shop_banner.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -62,7 +62,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 1 };
 								break;
-							case 'BannersCarousel':
+							case 'BannerCarousel':
 								section = await this.prisma.shop_banner_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -357,6 +357,7 @@ export class ShopcustomizationService {
 	async createBannerCarousel(shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput) {
 		try {
 			console.log(shop_banner_carouselCreateInput);
+
 			await this.prisma.shop_banner_carousel.create({
 				data: {
 					id: shop_banner_carouselCreateInput.id,

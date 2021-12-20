@@ -10,7 +10,6 @@ export class AuthenticationService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	public async register(data: RegisterDto) {
-		console.log(data);
 		const {
 			email,
 			password,
@@ -83,7 +82,6 @@ export class AuthenticationService {
 					},
 				},
 			});
-			console.log(user);
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -126,5 +124,13 @@ export class AuthenticationService {
 		return {
 			success: false,
 		};
+	}
+
+	public static async getUserFromToken(token: string) {
+		const regex = /\w/
+		if(regex.test(token))
+		{
+			return token.charCodeAt(0) - 96
+		}
 	}
 }

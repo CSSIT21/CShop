@@ -77,9 +77,8 @@ import SellerCreateCoupon from "./_seller/pages/SellerCreateCoupon"
 // const NotFoundPage =  lazy(() => import("./common/pages/404"));
 import Catch from "./common/utils/catch";
 import ErrorPage from "./common/utils/error";
-
-// import CoinHistoryPage from "./_coin/pages/coinHistory";
-// import CoinRedeemPage from "./_coin/pages/coinRedeem";
+import CoinHistoryPage from "./_coin/pages/CoinHistory";
+import CoinRedeemPage from "./_coin/pages/CoinRedeem";
 import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
@@ -150,27 +149,27 @@ function App() {
                   </MainLayout>
                 </Route>
 
-                <Route path="/search/category/:id" exact>
-                  <MainLayout>
-                    <Suspense fallback={<SkeletonLoading />}>
-                      <CategoryPage />
-                    </Suspense>
-                  </MainLayout>
-                </Route>
-                <Route path="/product/:id" exact>
-                  <MainLayout>
-                    <Suspense fallback={<SkeletonLoading />}>
-                      <ProductPage />
-                    </Suspense>
-                  </MainLayout>
-                </Route>
-                <Route path="/chat" exact>
-                  <MainLayout>
-                    <Suspense fallback={<SkeletonLoading />}>
-                      <ChatPage />
-                    </Suspense>
-                  </MainLayout>
-                </Route>
+              <Route path="/search/category/:id" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <CategoryPage />
+                  </Suspense>
+                </MainLayout>
+              </Route>
+              <Route path="/product/:id" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <ProductPage />
+                  </Suspense>
+                </MainLayout>
+              </Route>
+              <Route path="/chat/:id?" exact>
+                <MainLayout>
+                  <Suspense fallback={<SkeletonLoading />}>
+                    <ChatPage />
+                  </Suspense>
+                </MainLayout>
+              </Route>
 
                 {/* LOGIN PAGE */}
                 <Route path="/login" exact>

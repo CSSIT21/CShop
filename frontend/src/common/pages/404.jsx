@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { nanoid } from 'nanoid';
 const NotFoundPage = () => {
   const classes = useStyles();

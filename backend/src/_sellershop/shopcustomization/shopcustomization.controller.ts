@@ -8,7 +8,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('shopcustomization')
 export class ShopcustomizationController {
-	constructor(private readonly shopcustomizationService: ShopcustomizationService) {}
+	constructor(private readonly shopcustomizationService: ShopcustomizationService) { }
 
 	@Get(':id')
 	@Public()

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Typography, Dialog, DialogContent, Button } from "@mui/material";
@@ -6,54 +6,59 @@ import Grid from "@mui/material/Grid";
 import AddressDetail from "./AddressDetail";
 import { For } from "../../../common/utils";
 import Slide from "@mui/material/Slide";
+import { useRecoilValue } from "recoil";
+import authState from "../../../common/store/authState";
+import axios from "axios";
+import Swal from "sweetalert2";
+import LoadingButton from "@mui/lab/LoadingButton";
+import config from "~/common/constants";
 
-const data = [
-  {
-    id: 1,
-    primary: true,
-    name: "Athippat Chirawongnathiporn",
-    address: "69/3 Koh Kwang Sub-district, Muang District, Chanthaburi 22000",
-    phoneNumber: "0853844385",
-  },
-  {
-    id: 2,
-    primary: false,
-    name: "Jirasin Jarethammajit",
-    address:
-      "123 Soi Lemoningz 22, Lemoningz Rd, Monterey, Pattaya, Chonburi 20970",
-    phoneNumber: "0949384955",
-  },
-  {
-    id: 3,
-    primary: false,
-    name: "Apisit Maneerat",
-    address: "23/54 Soi 4 Los Angeles, California, United State 90011",
-    phoneNumber: "0908738834",
-  },
-  {
-    id: 4,
-    primary: false,
-    name: "Apisit Maneerat",
-    address: "23/54 Soi 4 Los Angeles, California, United State 90011",
-    phoneNumber: "0908738834",
-  },
-];
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const AddressInfo = () => {
+const AddressInfo = ({ address, setAddress = () => {} }) => {
   const classes = useStyles();
-  const [address, setAddress] = useState(data);
   const [deleteId, setdeleteId] = useState(0);
   const [open, setOpen] = useState(false);
+  const auth = useRecoilValue(authState);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleDeleteAddress = () => {
-    setAddress(address.filter((e) => e.id !== deleteId));
-    setOpen(false);
-  };
   const handleCloseDialog = () => {
     setOpen(false);
+    setdeleteId(0);
   };
+  const handleDeleteAddress = () => {
+    setIsLoading(true);
+    axios
+      .post(config.SERVER_URL + "/profile/address/delete", {
+        id: auth.user.id,
+        addressId: deleteId,
+      })
+      .then(({ data }) => {
+        Swal.fire({
+          title: "Delete success!",
+          text: "Your address has been deleted!",
+          icon: "success",
+          timer: 3000,
+        });
+        axios
+          .post(config.SERVER_URL + "/profile/address/get", {
+            id: auth.user.id,
+          })
+          .then(({ data }) => {
+            setAddress(data.address);
+          });
+        setIsLoading(false);
+        setOpen(false);
+      });
+  };
+  useEffect(() => {
+    axios
+      .post(config.SERVER_URL + "/profile/address/get", { id: auth.user.id })
+      .then(({ data }) => {
+        setAddress(data.address);
+      });
+  }, []);
 
   return (
     <Box sx={{ width: "100%", marginTop: "50px", paddingBottom: "170px" }}>
@@ -96,13 +101,22 @@ const AddressInfo = () => {
             >
               No
             </Button>
-            <Button
-              variant="contained"
-              className={classes.button}
-              onClick={handleDeleteAddress}
-            >
-              Yes
-            </Button>
+
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                className={classes.button}
+                onClick={handleDeleteAddress}
+              >
+                Yes
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                className={classes.button}
+              ></LoadingButton>
+            )}
           </Box>
         </DialogContent>
       </Dialog>
@@ -118,12 +132,10 @@ const AddressInfo = () => {
             Recipient's Name
           </Grid>
           <Grid item xs={1}></Grid>
-
           <Grid item xs={3}>
             Address
           </Grid>
           <Grid item xs={1}></Grid>
-
           <Grid item xs={2}>
             Phone Number
           </Grid>
@@ -137,7 +149,7 @@ const AddressInfo = () => {
                 key={idx}
                 data={item}
                 index={idx}
-                handleDeleteAddress={() => {
+                handleOpenDelete={() => {
                   setdeleteId(item.id);
                   setOpen(true);
                 }}

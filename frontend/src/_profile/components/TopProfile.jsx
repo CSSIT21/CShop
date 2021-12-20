@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { Avatar, Typography, Button } from "@mui/material";
 import { useRecoilState } from "recoil";
 import authState from "../../common/store/authState";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import StoreIcon from "@mui/icons-material/Store";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -43,7 +43,7 @@ const TopProfile = () => {
       const path = URL.createObjectURL(e.target.files[0]);
       setImage(path);
       setimageFile(e.target.files[0]);
-      setimageTitle(e.target.files[0].name);
+      setimageTitle(e.target.files[0].name.slice(0, 50));
     }
   };
   const handleUpdateImage = async () => {

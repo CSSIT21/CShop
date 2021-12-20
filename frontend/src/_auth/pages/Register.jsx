@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import CButton from "../../common/components/CButton";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import { useRecoilState } from "recoil";
