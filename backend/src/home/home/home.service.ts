@@ -85,7 +85,7 @@ export class HomeService {
       take,
       skip,
       include: {
-        product: {
+        product_id_from_wishlist: {
           include: {
             product_picture: true,
           }

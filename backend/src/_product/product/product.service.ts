@@ -8,17 +8,23 @@ import { SuggestionProductDto } from './dto/suggestion-product.dto';
 export class ProductService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	public async getProductDetails(id: number) {
+	public async getProductDetails(id: number, customerId : number) {
 		try {
 			const product = await this.prisma.product.findUnique({
 				where: {
 					id: id,
-				}, include: {
-					product_detail:true
-				}
+				},
+				include: {
+					product_detail: true,
+					customer_wishlist: {
+						where: {
+							customer_id: customerId,
+						},
+					},
+				},
 			});
 
-			return  product;
+			return product;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -28,7 +34,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-	
+
 	public async updateSuggestionProducts(id: number, suggestionProductDto: SuggestionProductDto) {
 		try {
 			const update = await this.prisma.product.update({
@@ -38,8 +44,8 @@ export class ProductService {
 				data: {
 					suggest_products: suggestionProductDto.products,
 				},
-			})
-			return  update;
+			});
+			return update;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -48,9 +54,9 @@ export class ProductService {
 			console.log(e.message);
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
-}
+	}
 
-	public async getSuggestProducts(id: number) {
+	public async getSuggestProducts(id: number, customerId : number) {
 		try {
 			const suggest_products_id = await this.prisma.product.findFirst({
 				where: {
@@ -67,20 +73,19 @@ export class ProductService {
 					this.prisma.product.findFirst({
 						where: {
 							id: suggest_products_id.suggest_products[i],
-						}, select: {
-							id:true,
+						},
+						select: {
+							id: true,
 							title: true,
 							price: true,
 							product_picture: { take: 1 },
-							// , select: {
-							// id:true,
-							// title: true,
-							// price: true,
-							// product_picture: { take: 1 }.
-							
-						}
-						}
-					),
+							customer_wishlist: {
+								where: {
+									customer_id: customerId,
+								},
+							},
+						},
+					}),
 				);
 			}
 			suggest_products_list = await Promise.all(suggest_products_list);

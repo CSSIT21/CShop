@@ -43,7 +43,6 @@ function ReviewDialog({
   // ],
   // กรณีที่สินค้าไม่มีoption
   options,
-  isReview = true, // ต้องถามธรรม์อีกที
 }) {
   // const auth = useRecoilValue(authState);
   const [open, setOpen] = useState(false);
@@ -207,7 +206,7 @@ function ReviewDialog({
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} disabled={!isReview}>
+      <Button variant="outlined" onClick={handleClickOpen}>
         Review
       </Button>
 
