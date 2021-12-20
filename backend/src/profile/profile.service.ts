@@ -379,6 +379,7 @@ export class ProfileService {
 						select: {
 							product_id: true,
 							quantity: true,
+							product_options: true,
 							product_id_from_order_item: {
 								select: {
 									title: true,
@@ -394,7 +395,6 @@ export class ProfileService {
 					},
 				},
 			});
-
 			return orderDetail;
 		} catch (e) {
 			console.log(e.message);

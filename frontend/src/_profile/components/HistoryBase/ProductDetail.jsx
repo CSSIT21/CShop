@@ -3,11 +3,10 @@ import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import Divider from "@mui/material/Divider";
 import ReviewDialog from "../../../_product/components/ReviewBase/ReviewDialog";
 
-const ProductDetail = ({ data, status }) => {
+const ProductDetail = ({ data, status, customerId }) => {
   const [reviewable, setreviewable] = useState(true);
   const classes = useStyles();
 
@@ -53,7 +52,15 @@ const ProductDetail = ({ data, status }) => {
             // >
             //   Review
             // </Button>
-            <ReviewDialog />
+            <ReviewDialog
+              productImg={
+                data.product_id_from_order_item.product_picture[0].path
+              }
+              productName={data.product_id_from_order_item.title}
+              productId={data.product_id}
+              shopId={data.product_id_from_order_item.shop_id}
+              customerId={customerId}
+            />
           ) : (
             <></>
           )}

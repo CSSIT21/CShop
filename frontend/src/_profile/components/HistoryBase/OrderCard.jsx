@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Grid, Typography, Chip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { For } from "~/common/utils";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const OrderCard = ({ data }) => {
   const classes = useStyles();

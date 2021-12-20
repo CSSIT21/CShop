@@ -24,7 +24,6 @@ const OrderDetail = () => {
   const auth = useRecoilValue(authState);
   const [reviewable, setreviewable] = useState(true);
   const [onLoad, setonLoad] = useState(false);
-
   const [orderDetail, setorderDetail] = useState({});
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -97,7 +96,7 @@ const OrderDetail = () => {
                   startIcon={<ShoppingCartRoundedIcon />}
                   onClick={() => setOpen(true)}
                 >
-                  Buy again
+                  Buy Again
                 </Button>
               )}
 
@@ -115,11 +114,12 @@ const OrderDetail = () => {
             <Grid item xs={14}>
               <Divider />
             </Grid>
-            {products.map((product) => (
+            {products.map((product, idx) => (
               <ProductDetail
-                key={orderDetail.id}
+                key={idx}
                 data={product}
                 status={orderDetail.status}
+                customerId={auth.user.id}
               />
             ))}
           </Grid>
