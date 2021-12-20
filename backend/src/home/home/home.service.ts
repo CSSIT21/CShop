@@ -28,6 +28,9 @@ export class HomeService {
           gte: new Date().toISOString(),
         },
       },
+      orderBy: {
+        start_date: 'asc'
+      },
       select: {
         id: true,
         name: true,
@@ -86,12 +89,12 @@ export class HomeService {
       take,
       skip,
       include: {
-        product: {
+        product_id_from_wishlist: {
           include: {
             product_picture: true,
             customer_wishlist: {
-              where: { customer_id },
-            },
+              where: { customer_id }
+            }
           }
         }
       },
