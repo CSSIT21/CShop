@@ -144,27 +144,34 @@ function App() {
                   </MainLayout>
                 </Route>
 
-              <Route path="/search/category/:id" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <CategoryPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/product/:id" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <ProductPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/chat/:id?" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <ChatPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
+                <Route path="/search/category/:id" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/search" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/product/:id" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ProductPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/chat" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ChatPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
 
                 {/* LOGIN PAGE */}
                 <Route path="/login" exact>

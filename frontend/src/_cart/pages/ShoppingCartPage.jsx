@@ -2,25 +2,25 @@ import { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import ProductSuggestion from "../components/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
-import CartSection from "../components/CartSection";
-import axios from "axios";
+import CartSection from '../components/CartSection';
+import axios from 'axios';
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
 
-function ShoppingCartPage() {
-  const [products, setProducts] = useState([]);
-  const [sugproduct, setSugproduct] = useState(fakeProducts);
-  const [discounts, setDiscounts] = useState([]);
-  const [accountInfo, setAccountInfo] = useState([]);
-  const auth = useRecoilValue(authState);
 
-  useEffect(() => {
-    axios.get(`http://localhost:8080/cart/${auth.user.id}`).then((item) => {
-      setProducts(
-        item.data.newD.map((item) => {
-          return {
-            ...{
-              orderID: item.id,
+
+function ShoppingCartPage() {
+    const [products, setProducts] = useState([]);
+    const [sugproduct, setSugproduct] = useState(fakeProducts);
+    const [discounts, setDiscounts] = useState([]);
+    const [accountInfo, setAccountInfo] = useState([]);
+    const auth = useRecoilValue(authState);
+    
+    useEffect(() => {
+        axios.get(`http://localhost:8080/cart/${auth.user.id}`).then(item => {
+            setProducts(item.data.newD.map(item => {
+                return ({...{
+                orderID: item.id,
               ...item.productName,
               image: item.productName.product_picture[0].path || "",
               amount: item.quantity,

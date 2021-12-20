@@ -67,6 +67,39 @@ export class CartService {
     await prisma.order_cart_item.createMany({ data: additem })
     return true;
   }
+
+
+  
+  async rebuy(userID: number, cartitems: { productID: number, amount: number, firstchoiceID: number, seconedchoiceID: number,price:number }[]) {
+    const prisma = this.prisma
+    const data = cartitems.map(item => { 
+      if (item.firstchoiceID) {
+        let product_options = [item.firstchoiceID]
+        if (item.seconedchoiceID) {
+          product_options.push(item.seconedchoiceID)
+        }
+        return ({ customer_id: userID, product_id: item.productID, quantity: item.amount, added_time: new Date(),product_options })
+       }
+      return ({ customer_id: userID, product_id: item.productID, quantity: item.amount, added_time: new Date() }) })
+
+    await prisma.order_cart_item.createMany({ data: data })
+
+
+    const rebuydata = cartitems.map(item=>{
+      if (item.firstchoiceID) {
+        let product_options = [item.firstchoiceID]
+        if (item.seconedchoiceID) {
+          product_options.push(item.seconedchoiceID)
+        }
+        return ({ customer_id: userID, product_id: item.productID, date: new Date(),price:item.price,product_options })
+       }
+      return({ customer_id: userID, product_id: item.productID, date: new Date(),price:item.price })
+    
+    })
+    await prisma.order_rebuy.createMany({data: rebuydata})
+    return true;
+  }
+
   
   async removefromcart(orderID : number, userID:number, productID : number) {
     const prisma = this.prisma
