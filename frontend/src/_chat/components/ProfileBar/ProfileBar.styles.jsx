@@ -57,6 +57,23 @@ const useStyles = makeStyles({
         width: '15px !important',
         height: '16px !important',
         margin: '0px'
+    },
+    userStatus:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    activeButton:{
+        color: '#00BF9D',
+        width: '12px !important',
+        height:'12px !important',
+        marginRight:'7px !important'
+    },
+    offlineButton:{
+        color: '#C0C0C0	',
+        width: '12px !important',
+        height:'12px !important',
+        marginRight:'7px !important'
     }
 })
 

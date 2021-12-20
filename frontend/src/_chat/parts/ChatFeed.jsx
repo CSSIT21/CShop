@@ -90,7 +90,7 @@ const ChatFeed = (props) => {
                 <Box className={classes.chatFeedTitle}>
                     <ProfileBar
                         displayName={messages.shop_name}
-                        status="active"
+                        status={true}
                         pic={messages.shop_pic}
                         url={'/shop/' + messages.shop_id}
                         notification={messages.is_muted}
@@ -126,7 +126,7 @@ const ChatFeed = (props) => {
                 <Box className={classes.chatFeedTitle}>
                     <ProfileBar
                         displayName={messages.shop_name}
-                        status="active"
+                        status={true}
                         pic={messages.shop_pic}
                         url={'/shop/' + messages.shop_id}
                         notification={messages.is_muted}

@@ -5,6 +5,7 @@ import { IconButton } from '@mui/material'
 import useStyles from './ProfileBar.styles'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff'
+import CircleIcon from '@mui/icons-material/Circle';
 
 const ProfileBar = (props) => {
     const classes = useStyles()
@@ -17,7 +18,10 @@ const ProfileBar = (props) => {
 
                 <Box className={classes.profileBarDisplayName}>
                     <Typography variant="h6">{props.displayName}</Typography>
-                    <Typography variant="body2">{props.status}</Typography>
+                    {props.status ? (<Box className={classes.userStatus}><CircleIcon className={classes.activeButton}/>
+                    <Typography variant="body2" sx={{color:'#A0A3BD'}}>Active now</Typography></Box> ) : (<Box className={classes.userStatus}><CircleIcon className={classes.offlineButton}/>
+                    <Typography variant="body2" sx={{color:'#A0A3BD'}}>Offline</Typography></Box>)}
+                    
                 </Box>
             </Box>
             <Box className={classes.buttonZone}>
