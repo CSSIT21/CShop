@@ -44,10 +44,7 @@ export class DeliveryService {
 			}
 
 		} catch (e) {
-			return {
-				success: false,
-				e
-			};
+			return e
 		}
 	}
 
@@ -66,10 +63,7 @@ export class DeliveryService {
 				success: false
 			}
 		} catch (e) {
-			return {
-				success: false,
-				e
-			}
+			return e
 		}
 
 	}
@@ -114,53 +108,23 @@ export class DeliveryService {
 		}
 	}
 
-	public async getAllRequests() {
+	public async getAdminCheckStatus(status: string) {
 		try {
-			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
-				where: {
-					status: "Received a request"
+			const checkStatus = (v): string => {
+				switch (v) {
+					case 'request':
+						return "Received a request";
+					case 'packages':
+						return 'Received a package';
+					case 'delivering':
+						return 'Delivering';
+					default:
+						return 'Success'
 				}
-			})
-			return fetchedRequest
-
-		} catch (e) {
-			return e
-		}
-	}
-
-	public async getAllpackages() {
-		try {
+			}
 			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
 				where: {
-					status: "Received a package"
-				}
-			})
-			return fetchedRequest
-
-		} catch (e) {
-			return e
-		}
-	}
-
-	public async getAllDelivering() {
-		try {
-			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
-				where: {
-					status: "Delivering"
-				}
-			})
-			return fetchedRequest
-
-		} catch (e) {
-			return e
-		}
-	}
-
-	public async getAllSuccess() {
-		try {
-			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
-				where: {
-					status: "Success"
+					status: checkStatus(status)
 				}
 			})
 			return fetchedRequest
@@ -218,7 +182,7 @@ export class DeliveryService {
 			}
 
 		} catch (e) {
-
+			return e
 		}
 	}
 
@@ -304,21 +268,5 @@ export class DeliveryService {
 		} catch (e) {
 			return e
 		}
-	}
-
-	findAll() {
-		return `This action returns all delivery`;
-	}
-
-	findOne(id: number) {
-		return `This action returns a #${id} delivery`;
-	}
-
-	update(id: number, updateDeliveryDto: UpdateDeliveryDto) {
-		return `This action updates a #${id} delivery`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} delivery`;
 	}
 }
