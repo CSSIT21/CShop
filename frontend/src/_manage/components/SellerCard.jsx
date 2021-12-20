@@ -105,7 +105,7 @@ export class SellerCard extends React.Component {
           "description": this.desc,
           "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
-          "admin_id": 2,
+          "admin_id": this.props.auth.user.id,
           "day": this.editDate.day+1,
           "month": this.editDate.month-1,
           "year": this.editDate.year
@@ -120,7 +120,7 @@ export class SellerCard extends React.Component {
           "description": this.desc,
           "picture_id": 0,
           "suspension_type_id": parseInt(this.type),
-          "admin_id": 2,
+          "admin_id": this.props.auth.user.id,
           "day": this.editDate.day+1,
           "month": this.editDate.month-1,
           "year": this.editDate.year

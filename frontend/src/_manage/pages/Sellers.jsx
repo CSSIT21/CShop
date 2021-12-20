@@ -21,6 +21,8 @@ import SellerCard from "../components/SellerCard";
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import axios from "axios";
+import authState from '../../common/store/authState';
+import { useRecoilValue } from "recoil";
 
 const cardStyle = {
     width: '100%',
@@ -108,6 +110,8 @@ const ManageSellerAccountPage = () => {
     useEffect(()=>{
         setSellers(); 
     }, [])
+
+    const auth = useRecoilValue(authState);
 
     return (
         <div>
@@ -206,7 +210,7 @@ const ManageSellerAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <SellerCard seller={key} deleteRestriction={deleteRestriction}/>
+                                    <SellerCard seller={key} deleteRestriction={deleteRestriction} auth={auth}/>
                                 </div>
                             </li>
                         ))}
