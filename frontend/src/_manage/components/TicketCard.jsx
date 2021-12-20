@@ -25,7 +25,7 @@ export class TicketCard extends React.Component {
     this.open = false;
     this.status = this.props.ticket.admin_support_status.status;
     this.filer = {firstname: 'PENDING', lastname: ''};
-    this.admin = {firstname: 'Not', lastname: 'Assigned'};
+    this.admin = {firstname: 'PENDING', lastname: ''};
     this.type = {title:'PENDING'};
     this.path = '';
   }
@@ -73,7 +73,7 @@ export class TicketCard extends React.Component {
       {
         "id": this.props.ticket.id,
         "status": '',
-        "admin_id": 1
+        "admin_id": 1111
       }
     );
 
@@ -116,6 +116,8 @@ export class TicketCard extends React.Component {
     this.filer = fetchedData.data.customer_info;
     this.type = fetchedData2.data;
     this.admin = fetchedData3.data.customer_info;
+
+    console.log(fetchedData.data)
 
     if(fetchedData4.data.length > 0){
       this.path = fetchedData4.data[0];

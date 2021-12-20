@@ -97,7 +97,7 @@ const ManageSellerAccountPage = () => {
                 "title":title,
                 "description":desc,
                 "target":target,
-                "admin_id":2,
+                "admin_id":1111,
                 "customer_id":auth.user.id,
                 "support_type_id":type,
                 "day": 1,
