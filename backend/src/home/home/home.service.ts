@@ -39,7 +39,7 @@ export class HomeService {
     });
   }
 
-  async findBestSeller(customer_id: number) {
+  /*async findBestSeller(customer_id: number) {
     return this.prisma.product.findMany({
       orderBy: {
         sold: "desc",
@@ -52,7 +52,7 @@ export class HomeService {
         }
       },
     });
-  }
+  }*/
 
   async getPopUp() {
     return this.prisma.home_popup.findFirst({
@@ -74,7 +74,7 @@ export class HomeService {
     });
   }
 
-  async findFavorite(params: {
+  /*async findFavorite(params: {
     where?: Prisma.customer_wishlistWhereInput;
     take?: number;
     skip?: number;
@@ -98,7 +98,7 @@ export class HomeService {
       products,
       count,
     };
-  }
+  }*/
 
   async findSuggestion(params: {
     where?: Prisma.rem_suggestion_homepageWhereUniqueInput;
