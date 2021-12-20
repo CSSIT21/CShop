@@ -58,23 +58,24 @@ export class SellerconsoleController {
 
 	@Post(':id/addToProduct')
 	@Public()
-	async getStockLog(@Body() request, @Res() res): Promise<any> {
-		var id = request.id;
-		var shop_id = request.shop_id;
-		var title = request.title;
-		var sub_title = request.sub_title;
-		var price = request.price;
-		var quantity = request.quantity;
-		var category_id = request.category_id;
-		var path = request.path;
-		var thumbnail= request.thumbnail;
-		var pictitle = request.title;
-		// var sold = request.sold;
-		// var suggest_products = request.suggest_products;
-		// var rating = request.rating;
-		console.log(shop_id);
-		const a = await this.sellerconsoleService.AddToStock(
-			id,
+	async AddToStock(@Body() request, @Res() res): Promise<any> {
+		// shopId: number,
+		// title: string,
+		// sub_title: string,
+		// price: number,
+		// quantity: number,
+		// categoryId: number,
+		// path: string,
+		// thumbnail: string,
+		let shop_id = request.shop_id;
+		let title = request.title;
+		let sub_title = request.sub_title;
+		let price = request.price;
+		let quantity = request.quantity;
+		let category_id = request.category_id;
+		let path = request.path;
+		let thumbnail = request.thumbnail;
+		const addtostock_id = await this.sellerconsoleService.AddToStock(
 			shop_id,
 			title,
 			sub_title,
@@ -83,58 +84,69 @@ export class SellerconsoleController {
 			category_id,
 			path,
 			thumbnail,
-			pictitle,
 		);
-		console.log(a);
-		const b = await this.sellerconsoleService.UpdatetoStockLog(shop_id, a, quantity);
-		console.log(a, b);
-		// res.send(a);
-		res.send(b);
+		const updateTostocklog = await this.sellerconsoleService.UpdatetoStockLog(shop_id, addtostock_id, quantity);
+		res.send(updateTostocklog);
 	}
 
-	// @Get(':id/orderHistory')
-	// async getOrderhistory(@Param('id') id: number) {
-	// 	const res = await this.sellerconsoleService.getOrderHistory(+id);
-	// 	return res;
+	// @Post(':id/addToProductPicture')
+	// @Public()
+	// async AddToStock_Picture(@Body() request,@Res() res) {
+	// 	let product_id = request.product_id;
+	// 	let title = request.title;
+	// 	let path = request.path;
+	// 	let thumbnail = request.thumbnail;
+
+	// 	// product_id: product_id,
+	// 	// title: title,
+	// 	// path: path,
+	// 	// thumbnail: thumbnail,
+	// 	const addtostock_picture = await this.sellerconsoleService.AddToStock_Picture(
+	// 		product_id,
+	// 		title,
+	// 		path,
+	// 		thumbnail
+	// 	);
+	// 	res.send(addtostock_picture)
 	// }
 
-	@Post(':id/acceptOrderStatus')
-	async acceptOrderStatus(@Body() Order, @Res() res) {
-		let order_id = Order.order_id;
-		let product_id = Order.product_id;
-		let shop_id = Order.shop_id;
-		let started_date = Order.started_date;
-		let status = 'Accept';
-		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(
-			order_id,
-			product_id,
-			shop_id,
-			started_date,
-			status,
-		);
-		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id);
-		res.send(addToOrderHistory);
-		res.send(removeOrderFromOrderStatus);
-	}
+	// @Post(':id/acceptOrderStatus')
+	// async acceptOrderStatus(@Body() Order, @Res() res) {
+	// 	let order_id = Order.order_id;
+	// 	let product_id = Order.product_id;
+	// 	let shop_id = Order.shop_id;
+	// 	let started_date = Order.started_date;
+	// 	let status = 'Accept';
+	// 	const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(
+	// 		order_id,
+	// 		product_id,
+	// 		shop_id,
+	// 		started_date,
+	// 		status,
+	// 	);
+	// 	const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id);
+	// 	res.send(addToOrderHistory);
+	// 	res.send(removeOrderFromOrderStatus);
+	// }
 
-	@Post(':id/cancelOrderStatus')
-	async cancelOrderStatus(@Body() Order, @Res() res) {
-		let order_id = Order.order_id;
-		let product_id = Order.product_id;
-		let shop_id = Order.shop_id;
-		let started_date = Order.started_date;
-		let status = 'Cancel';
-		const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(
-			order_id,
-			product_id,
-			shop_id,
-			started_date,
-			status,
-		);
-		const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id);
-		res.send(addToOrderHistory);
-		res.send(removeOrderFromOrderStatus);
-	}
+	// @Post(':id/cancelOrderStatus')
+	// async cancelOrderStatus(@Body() Order, @Res() res) {
+	// 	let order_id = Order.order_id;
+	// 	let product_id = Order.product_id;
+	// 	let shop_id = Order.shop_id;
+	// 	let started_date = Order.started_date;
+	// 	let status = 'Cancel';
+	// 	const addToOrderHistory = await this.sellerconsoleService.addOrderStatusToOrderHistory(
+	// 		order_id,
+	// 		product_id,
+	// 		shop_id,
+	// 		started_date,
+	// 		status,
+	// 	);
+	// 	const removeOrderFromOrderStatus = await this.sellerconsoleService.removeOrderFromOrderStatus(order_id);
+	// 	res.send(addToOrderHistory);
+	// 	res.send(removeOrderFromOrderStatus);
+	// }
 
 	@Post(':id/discount')
 	@Public()
@@ -181,7 +193,18 @@ export class SellerconsoleController {
 		let shopname = request.shop_name;
 		let phonenumber = request.phone_number;
 		let description = request.description;
-		const result = await this.sellerconsoleService.updateShopInfo(shopid, shopname, phonenumber, description);
+		let title = request.title;
+		let path = request.path;
+		let thumbnail = request.thumbnail;
+		const result = await this.sellerconsoleService.updateShopInfo(
+			shopid,
+			shopname,
+			phonenumber,
+			description,
+			title,
+			path,
+			thumbnail,
+		);
 		res.send(result);
 	}
 

@@ -181,16 +181,15 @@ export class SellerconsoleService {
 	}
 
 	async AddToStock(
-		id: number,
 		shopId: number,
 		title: string,
 		sub_title: string,
 		price: number,
 		quantity: number,
 		categoryId: number,
-		path : string,
-		thumbnail : string,
-		pictitle : string
+		path: string,
+		thumbnail: string,
+
 		// sold: number,
 		// suggest_product: number[],
 		// rating: number,
@@ -206,14 +205,13 @@ export class SellerconsoleService {
 				sold: 0,
 				suggest_products: [],
 				rating: 0,
-				product_picture : ({
-					create : {
-						path : path ,
-						thumbnail : thumbnail,
-						title : pictitle,
-						
-					}
-				})
+				product_picture: {
+					create: {
+						path: path,
+						thumbnail: thumbnail,
+						title: title,
+					},
+				},
 			},
 		});
 		return productId.id;
@@ -239,6 +237,18 @@ export class SellerconsoleService {
 			},
 		});
 	}
+
+	// async AddToStock_Picture(product_id: number, title: string, path: string, thumbnail: string) {
+	// 	const product_pic = await this.prisma.product_picture.create({
+	// 		data: {
+	// 			product_id: product_id,
+	// 			title: title,
+	// 			path: path,
+	// 			thumbnail: thumbnail,
+	// 		},
+	// 	});
+	// 	return product_pic;
+	// }
 
 	async CardOfProduct(id: number) {
 		return await this.prisma.product.count({
@@ -386,7 +396,15 @@ export class SellerconsoleService {
 		return shopinfo;
 	}
 
-	async updateShopInfo(shopid: number, shopname: string, phonenumber: string, description: string) {
+	async updateShopInfo(
+		shopid: number,
+		shopname: string,
+		phonenumber: string,
+		description: string,
+		title: string,
+		path: string,
+		thumbnail: string,
+	) {
 		const shopinfo = await this.prisma.shop_info.update({
 			where: {
 				id: shopid,
@@ -395,6 +413,13 @@ export class SellerconsoleService {
 				shop_name: shopname,
 				phone_number: phonenumber,
 				description: description,
+				shop_picture: {
+					update: {
+						title: title,
+						path: path,
+						thumbnail: thumbnail,
+					},
+				},
 			},
 		});
 		return shopinfo;
