@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { ChatModule } from './chat/chat.module';
+import { PromotionModule } from './promotion/promotion.module';
 import { ProfileModule } from './profile/profile.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
 import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcustomization.module';
@@ -14,6 +16,10 @@ import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
 import { CartModule } from './cart/cart.module';
 
+import { ProductModule } from './_product/product/product.module';
+import { ReviewProductModule } from './_product/review-product/review-product.module';
+import { ShortLinkModule } from './_product/short-link/short-link.module';
+import { CommentModule } from './_product/comment/comment.module';
 
 @Module({
 	imports: [
@@ -23,11 +29,21 @@ import { CartModule } from './cart/cart.module';
 		BannerModule,
 		HomeModule,
 		LogSystemModule,
-    SellershopModule,
-    ShopcustomizationModule,
-    ProfileModule,
-	CartModule
+    	SellershopModule,
+    	ShopcustomizationModule,
+    	ProfileModule,
+		CartModule,
+		SellershopModule,
+		ShopcustomizationModule,
+		ProfileModule,
+		ProductModule,
+		ReviewProductModule,
+		ShortLinkModule,
+		CommentModule,
+		ChatModule,
+		PromotionModule
 	],
+
 	controllers: [AppController],
 	providers: [
 		AppService,

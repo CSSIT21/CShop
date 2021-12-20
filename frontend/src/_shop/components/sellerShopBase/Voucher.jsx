@@ -5,42 +5,51 @@ import Typography from "@mui/material/Typography";
 import CarouselButton from "~/common/components/CarouselButton";
 import Carousel from "~/common/components/Carousel";
 import Coupon from "./Coupon";
-import { useParams } from "react-router";
-const couponsMock = [
-  {
-    discount_id: 1,
-    shop_id: 1,
-    quantity: 100,
-    discount_id_from_discount_shop: {
-      id: 1,
-      code: "CSHOP",
-      start_date: "2021-12-13T20:52:35.000Z",
-      end_date: "2022-12-13T20:52:38.000Z",
-      description: "First voucher",
-      class: "ReducePrice",
-      min_price: 100,
-      reduce_price: 20,
-      discount_types: "Shop",
-      added_date: "2021-12-13T20:51:56.000Z",
-    },
-  },
-];
+import axios from "axios";
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const Voucher = ({ shopcoupons }) => {
   const classes = useStyles();
+  const auth = useRecoilValue(authState);
   const [coupons, setcoupons] = useState(shopcoupons);
-  const { id, cateId } = useParams();
   const [page, setPage] = useState(0);
   const couponsPerRow = 2;
   const totalPage = Math.ceil(coupons.length / couponsPerRow);
-  const handleClaim = (idx) => {
-    // macky api claim voucher
-    setcoupons(
-      coupons.filter((coupon, id) => {
-        id != idx;
-      })
-    );
+  const [loading, setloading] = useState(false);
+  const handleClaim = (coupon_id) => {
+    if (auth.isLoggedIn) {
+      setloading(true);
+      axios
+        .post(`${config.SERVER_URL}/promotion/upshop`, {
+          discount_id: coupon_id,
+          userId: auth.user.id,
+        })
+        .then(() => {
+          setcoupons(
+            coupons.filter((coupon) => {
+              return coupon.discount_id != coupon_id;
+            })
+          );
+          setloading(false);
+          Swal.fire({
+            title: "Coupon claimed!",
+            text: "Check it out! On your Voucher & Coupon!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        });
+    } else {
+      Swal.fire({
+        title: "Please login to claim a coupon!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
+  console.log(coupons);
   if (coupons.length > 0) {
     return (
       <Box className={classes.wrapper}>
@@ -66,13 +75,10 @@ const Voucher = ({ shopcoupons }) => {
           >
             {(coupon, idx) => (
               <Coupon
-                key={coupon.id}
+                key={coupon.discount_id}
                 coupon={coupon}
-                claimProps={{
-                  disabled: coupon.claimed,
-                  title: "Claim",
-                }}
-                onClick={() => handleClaim(idx)}
+                loading={loading}
+                onClick={() => handleClaim(coupon.discount_id)}
               />
             )}
           </Carousel>

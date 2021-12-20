@@ -3,11 +3,12 @@ import {
   Divider,
   FormGroup,
   FormControlLabel,
-  Checkbox,
+  Radio,
 } from "@mui/material";
-import { useParams } from "react-router";
-const CateGoryFilter = ({ categories = [] }) => {
-  const { id, cateId } = useParams();
+const CateGoryFilter = ({ categories = [], categoryId, setcategoryId }) => {
+  const handleChange = (event, idx) => {
+    setcategoryId(event.target.value);
+  };
   return (
     <>
       <Box sx={{ padding: "0px 0px 10px" }}>
@@ -19,7 +20,13 @@ const CateGoryFilter = ({ categories = [] }) => {
             return (
               <FormControlLabel
                 key={idx}
-                control={<Checkbox />}
+                control={
+                  <Radio
+                    onChange={(e) => handleChange(e, idx)}
+                    checked={parseInt(categoryId) === category.id}
+                    value={category.id}
+                  />
+                }
                 label={category.title}
               />
             );

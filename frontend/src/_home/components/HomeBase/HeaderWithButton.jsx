@@ -15,14 +15,15 @@ const HeaderWithButton = ({ colors = "black",
 	headerName = "No Header",
 	setPage,
 	page,
-	totalPage
+	totalPage,
+	isShow = false
 }) => {
 	const classes = useStyles();
 
 	return (
 		<Box className={classes.header}>
 			<Typography component="span" color={colors} fontSize="30px" fontWeight={600} >{headerName}</Typography>
-			<CarouselButton pageHandle={setPage} currentPage={page} totalPage={totalPage} />
+			{isShow && <CarouselButton pageHandle={setPage} currentPage={page} totalPage={totalPage} />}
 		</Box >
 	);
 

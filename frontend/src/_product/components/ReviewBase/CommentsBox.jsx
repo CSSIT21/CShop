@@ -98,6 +98,7 @@ function CommentsBox({
             onChange={handleChangeCommentShop}
           />
         </Box>
+        {/* <Typography>Please, check your review before click confirm</Typography> */}
         {/* <Box
           sx={{
             display: "flex",

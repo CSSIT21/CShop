@@ -10,17 +10,20 @@ const actionLists = [
 	{
 		label: "chat",
 		icon: ChatOutlinedIcon,
-		value: 3
+		value: 3,
+		path: '/chat'
 	},
 	{
 		label: "notification",
 		icon: NotificationsNoneIcon,
-		value: 5
+		value: 5,
+		path: '/chat'
 	},
 	{
 		label: "cart",
 		icon: ShoppingCartOutlinedIcon,
-		value: '66+'
+		value: '66+',
+		path: '/chat'
 	}
 ];
 
@@ -31,12 +34,16 @@ const buttonStyle = {
 };
 
 const ActionMenu = () => {
-	const router = useHistory()
+
+	const history = useHistory()
+
 	return (
 		<>
 			<Box display="flex">
-				<For each={actionLists}>{({ label, icon: ActionIcon, value }, index) =>
-					<Fab size="small" sx={buttonStyle} aria-label={label} key={index} onClick={()=> router.push('/'+ label)}>
+				<For each={actionLists}>{({ label, icon: ActionIcon, value, path }, index) =>
+					<Fab size="small" sx={buttonStyle} aria-label={label} key={index} onClick={() => {
+						history.push(path)
+					}}>
 						<Badge badgeContent={value} color="primary">
 							<ActionIcon />
 						</Badge>

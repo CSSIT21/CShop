@@ -19,12 +19,14 @@ import { UpdateSellershopDto } from './dto/update-sellershop.dto';
 import { Prisma } from '.prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import internal from 'stream';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('sellershop')
 export class SellershopController {
 	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
 
 	@Get(':id')
+	@Public()
 	public async findOne(@Param('id', ParseIntPipe) id: number, @Res() res) {
 		const shopinfo = await this.sellershopService.findOne(id);
 		if (shopinfo) {
@@ -37,15 +39,17 @@ export class SellershopController {
 	}
 
 	@Get('/products/:id')
+	@Public()
 	public async findProducts(
 		@Param('id', ParseIntPipe) id: number,
 		@Query('page', ParseIntPipe) page: number,
 		@Query('category', new DefaultValuePipe(0), ParseIntPipe) category_id: number,
 		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
-		@Query('priceHigh', new DefaultValuePipe(0), ParseFloatPipe) priceHigh: number,
+		@Query('priceHigh', new DefaultValuePipe(50000), ParseFloatPipe) priceHigh: number,
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,
+		@Query('customer_id', new DefaultValuePipe(0), ParseIntPipe) customer_id: number,
 		@Res() res,
 	) {
 		const products = await this.sellershopService.getShopProduct(
@@ -57,6 +61,7 @@ export class SellershopController {
 			readyToShip,
 			outOfStock,
 			rating,
+			customer_id,
 		);
 
 		if (products) {
@@ -67,10 +72,45 @@ export class SellershopController {
 			});
 		}
 	}
-  
+
+	@Get('/follow/:id')
+	@Public()
+	public async checkFollowShop(
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Param('id', ParseIntPipe) shop_id: number,
+		@Res() res,
+	) {
+		const result = await this.sellershopService.checkFollow(customer_id, shop_id);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: true, result });
+		}
+	}
+
+	@Post('/follow/:id')
+	@Public()
+	public async followShop(
+		@Body() customer_followed_shopCreateManyInput: Prisma.customer_followed_shopCreateManyInput,
+		@Param('id', ParseIntPipe) id: number,
+		@Res() res,
+	) {
+		const result = await this.sellershopService.followShop(customer_followed_shopCreateManyInput, id);
+		if (result) {
+			res.send({ success: true, result });
+		} else {
+			res.send({ success: false });
+		}
+	}
+
 	@Get('sections/:id')
-	public async findSections(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const sections = await this.sellershopService.getShopSection(id);
+	@Public()
+	public async findSections(
+		@Param('id', ParseIntPipe) id: number,
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Res() res,
+	) {
+		const sections = await this.sellershopService.getShopSection(id, customer_id);
 		if (sections) {
 			res.send({ success: true, sections });
 		} else {
@@ -81,6 +121,7 @@ export class SellershopController {
 	}
 
 	@Get(':id/shopcomments')
+	@Public()
 	public async findShopComments(
 		@Param('id', ParseIntPipe) id: number,
 		@Query('page', ParseIntPipe) page: number,
@@ -97,6 +138,7 @@ export class SellershopController {
 	}
 
 	@Get(':id/shopproductscomments')
+	@Public()
 	public async findShopProductsComments(
 		@Param('id', ParseIntPipe) id: number,
 		@Query('page', ParseIntPipe) page: number,
@@ -113,6 +155,7 @@ export class SellershopController {
 	}
 
 	@Post(':id/shopdiscounts')
+	@Public()
 	public async findShopDiscount(
 		@Param('id', ParseIntPipe) id: number,
 		@Body() discount_user_codeWhereInput: Prisma.discount_user_codeWhereInput,
@@ -129,8 +172,13 @@ export class SellershopController {
 	}
 
 	@Get(':id/flashsale')
-	public async findFlashSales(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const flashsale = await this.sellershopService.getFlashSale(id);
+	@Public()
+	public async findFlashSales(
+		@Param('id', ParseIntPipe) id: number,
+		@Query('customer_id', ParseIntPipe) customer_id: number,
+		@Res() res,
+	) {
+		const flashsale = await this.sellershopService.getFlashSale(id, customer_id);
 		if (flashsale) {
 			res.send({ success: true, flashsale });
 		} else {
@@ -141,7 +189,9 @@ export class SellershopController {
 	}
 
 	@Post()
+	@Public()
 	public async create(
+		@Body() shop_pictureCreateInput: Prisma.shop_pictureCreateInput,
 		@Body() shop_infoCreateInput: Prisma.shop_infoCreateInput,
 		@Body() addressCreateInput: Prisma.addressCreateInput,
 		@Body() payment_shop_bank_accountCreateInput: Prisma.payment_shop_bank_accountCreateInput,
@@ -153,6 +203,7 @@ export class SellershopController {
 			shop_infoCreateInput,
 			addressCreateInput,
 			payment_shop_bank_accountCreateInput,
+			shop_pictureCreateInput,
 		);
 		if (shop) {
 			res.send({ success: true, shop });
@@ -161,19 +212,5 @@ export class SellershopController {
 				success: false,
 			});
 		}
-		// this.prisma.shop_flashsale.create({
-		// 	data: {
-		// 		description: 'Sugoi Dekai',
-		// 		ended_date: new Date(),
-		// 		path: '',
-		// 		products: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
-		// 		shop_id: 1,
-		// 		started_date: '',
-		// 		title: '',
-		// 	},
-		// });
-		// res.send({
-		// 	success: true,
-		// });
 	}
 }

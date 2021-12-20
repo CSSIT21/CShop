@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 
-const ProductDescription = (props) => {
+const ProductDescription = ({ productDetails }) => {
   const [open, setOpen] = React.useState(false);
   const handleClick = () => {
     setOpen(!open);
@@ -54,11 +54,11 @@ const ProductDescription = (props) => {
           </AccordionSummary>
           <AccordionDetails
             sx={{
-              padding: 0,
+              padding: "0 50px 0 30px",
             }}
           >
             <Fade in={open} timeout={500}>
-              <Typography>{description}</Typography>
+              <Typography>{productDetails}</Typography>
             </Fade>
           </AccordionDetails>
         </Accordion>

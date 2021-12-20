@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Carousel from "~/common/components/Carousel";
@@ -11,8 +11,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 const progressBar = () => <LinearProgress />;
 
-const FlashSale = ({ flashSale, onFavourite }) => {
-  const [products, setProducts] = useState(flashSale.products_info);
+const FlashSale = ({ flashSale, flashSaleItems, onFavourite }) => {
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;
@@ -40,6 +39,7 @@ const FlashSale = ({ flashSale, onFavourite }) => {
   const unmountedStyle = {
     transition: "0.4s",
   };
+
   useEffect(() => {
     const timeLeftInterval = setInterval(() => {
       setrotateSecs(true);
@@ -122,7 +122,7 @@ const FlashSale = ({ flashSale, onFavourite }) => {
 
           <Box className={classes.bestsellerCarousel}>
             <Carousel
-              items={flashSale.products_info}
+              items={flashSaleItems}
               pageState={page}
               setPageState={setPage}
               itemsPerRow={productsPerRow}

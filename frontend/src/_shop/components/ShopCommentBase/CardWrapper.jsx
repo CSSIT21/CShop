@@ -6,7 +6,7 @@ import Pagination from "@mui/material/Pagination";
 import DoDisturbAltRoundedIcon from "@mui/icons-material/DoDisturbAltRounded";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import config from "~/common/constants";
 
 const CardWrapper = ({ type }) => {
@@ -59,6 +59,7 @@ const CardWrapper = ({ type }) => {
                 rating={item.rating}
                 comment={item.comment}
                 productDetail={item.productDetail}
+                review_time={item.review_time}
                 key={item.id}
               />
             )}

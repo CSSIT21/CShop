@@ -5,39 +5,51 @@ import Voucher from "../components/sellerShopBase/Voucher";
 import Content from "../components/sellerShopBase/Content";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import CategoryPic1 from "~/common/assets/images/category-1.png";
-import CategoryPic2 from "~/common/assets/images/category-2.png";
-import BannerImage from "~/_home/assets/images/TopBanner.png";
-import fakeProducts from "~/common/faker/fakeProducts";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
 import axios from "axios";
-import { useParams } from "react-router";
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import config from "~/common/constants";
 import Skeleton from "@mui/material/Skeleton";
 import { useRecoilValue } from "recoil";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import authState from "~/common/store/authState";
 
 const SellerShop = () => {
   const auth = useRecoilValue(authState);
   const history = useHistory();
   const classes = useStyles();
-  const { id, cateId } = useParams();
+  const { id } = useParams();
+  console.log(id);
   const [loading, setloading] = useState(true);
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
+  const [follow, setfollow] = useState(false);
   const [menus, setmenus] = useState([]);
   const [flashSale, setflashSale] = useState();
-  const onFavourite = (index) => {
-    // setflashItems((flashItems) => {
-    //   const target = flashItems[index];
-    //   target.favourite = !target.favourite;
-    //   return [...flashItems];
-    // });
+  const [flashSaleItems, setflashSaleItems] = useState([]);
+  const onFavourite = (id) => {
+    setflashSaleItems((items) => {
+      if (auth.isLoggedIn) {
+        const target = items.find((e) => e.id == id);
+        if (target.customer_wishlist.length > 0) {
+          target.customer_wishlist.pop();
+        } else {
+          target.customer_wishlist = [
+            { product_id: target.id, customer_id: auth.user.id },
+          ];
+        }
+      } else {
+        Swal.fire({
+          title: "Please login to add a product to your wishlist!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      return [...items];
+    });
   };
-
   useEffect(() => {
     axios
       .get(`${config.SERVER_URL}/sellershop/${id}`)
@@ -47,29 +59,48 @@ const SellerShop = () => {
       })
       .catch((e) => {
         console.log(e.message);
-        history.push("/*");
+        // history.push("/*");
       })
       .then(() => {
+        let userId = 0;
+        if (auth.isLoggedIn) {
+          console.log("login");
+          userId = auth.user.id;
+        }
         axios
-          .get(`${config.SERVER_URL}/sellershop/${id}/sections`)
+          .get(
+            `${config.SERVER_URL}/sellershop/follow/${id}?customer_id=${userId}`
+          )
+          .then(({ data }) => {
+            setfollow(data.result);
+          });
+
+        axios
+          .get(
+            `${config.SERVER_URL}/sellershop/sections/${id}?customer_id=${userId}`
+          )
           .then(({ data }) => {
             setsections(data.sections);
           });
         axios
           .post(`${config.SERVER_URL}/sellershop/${id}/shopdiscounts`, {
-            customer_id: auth.user.id,
+            customer_id: userId,
           })
           .then(({ data }) => {
             setcoupons(data.shopvouchers);
           });
         axios
-          .get(`${config.SERVER_URL}/sellershop/${id}/flashsale`)
-          .then(({ data }) => {
-            setflashSale(data.flashsale);
-          })
-          .then(() => {
-            setloading(false);
+          .get(
+            `${config.SERVER_URL}/sellershop/${id}/flashsale?customer_id=${userId}`
+          )
+          .then(async ({ data }) => {
+            console.log(data);
+            await setflashSaleItems(data.flashsale.products_info);
+            await setflashSale(data.flashsale);
           });
+      })
+      .then(() => {
+        setloading(false);
       });
   }, []);
 
@@ -87,7 +118,7 @@ const SellerShop = () => {
             {loading ? (
               <Skeleton animation="wave" width="100%" height="200px" />
             ) : (
-              <Header shopInfo={shopInfo} />
+              <Header shopInfo={shopInfo} follow={follow} />
             )}
           </Box>
           <Box
@@ -97,12 +128,17 @@ const SellerShop = () => {
               backgroundColor: "#D9DBE9",
             }}
           />
-
-          <Box className={classes.containerWhite}>
-            <TabsController categories={menus} />
-          </Box>
+          {menus && (
+            <Box className={classes.containerWhite}>
+              <TabsController categories={menus} />
+            </Box>
+          )}
           {flashSale && (
-            <FlashSale flashSale={flashSale} onFavourite={onFavourite} />
+            <FlashSale
+              flashSale={flashSale}
+              flashSaleItems={flashSaleItems}
+              onFavourite={onFavourite}
+            />
           )}
           {coupons && (
             <Box className={classes.containerWhite}>

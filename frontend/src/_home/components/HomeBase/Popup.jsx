@@ -1,42 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Checkbox,
   Box,
   Paper,
   Typography,
 } from "@mui/material";
-import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { makeStyles } from "@mui/styles";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
-
-const popup = {
-  picture:
-    "https://cdn.discordapp.com/attachments/900689889086046218/909339280608989234/png-popup.png",
-  description:
-    "Our websit will be closed for renovation. Sorry for inconvenience",
-  start_date: "2022/02/12",
-  end_date: "2022/02/14",
-};
+import axios from "axios";
+import config from "~/common/constants";
+import dayjs from "dayjs";
 
 const Popup = () => {
   const classes = useStyles();
+  const [popup, setPopup] = useState([]);
   const [open, setOpen] = useState(true);
-  const [checked, setChecked] = useState(false);
   const { isLoggedIn, user } = useRecoilValue(authState);
+
+  const getData = async () => {
+    axios
+      .get(`${config.SERVER_URL}/home/popup`)
+      .then(({ data }) => {
+        if (data.success) {
+          const { description, start_date, end_date, path, thumbnail } = data.popup;
+          return setPopup({
+            description,
+            start_date: dayjs(start_date).format('YYYY/MM/DD'),
+            end_date: dayjs(end_date).format('YYYY/MM/DD'),
+            path,
+            thumbnail,
+          });
+        }
+        else {
+          return console.log(data);
+        }
+      })
+      .catch((err) => {
+        return console.log(err.message);
+      })
+  };
+
+  useEffect(() => {
+    getData();
+  }, [])
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const onCheck = (e) => {
-    setChecked(e.target.checked);
   };
 
   return (
@@ -54,7 +68,7 @@ const Popup = () => {
       />
 
       <Paper className={classes.paperStyle}>
-        <img className={classes.imgStyle} width={75} src={popup.picture} />
+        <img className={classes.imgStyle} width={75} src={popup.path} />
 
         <DialogTitle id="alert-dialog-title">
           {isLoggedIn ? `Hi ${user.customer_info.firstname}!` : `Hi User!`}
@@ -62,7 +76,7 @@ const Popup = () => {
 
         <DialogContent>
           <DialogContentText
-            sx={{ width: 300, textAlign: "center" }}
+            sx={{ width: '100%', textAlign: "center", wordBreak: 'break-word' }}
             id="alert-dialog-description"
           >
             {popup.description}
@@ -79,18 +93,6 @@ const Popup = () => {
           </Typography>
         </DialogContent>
       </Paper>
-
-      <DialogActions sx={{ display: "flex", justifyContent: "flex-start" }}>
-        <Checkbox
-          checked={checked}
-          onChange={onCheck}
-          size="small"
-          sx={{ color: "#FD6637" }}
-        />
-        <Typography fontSize="12px" fontWeight={400} color="#CCCCCC">
-          Not show all day
-        </Typography>
-      </DialogActions>
     </Dialog>
   );
 };
@@ -100,19 +102,21 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    minWidth: "300px",
+    maxWidth: "380px",
   },
 
   imgStyle: {
     marginBottom: "10px",
     display: "block",
-    transform: "translate(0, -70px) scale(4)",
+    transform: "translate(0, -50px) scale(4)",
   },
 
   closeStyle: {
     color: "#ffffff7d",
     position: "absolute",
-    top: "-12%",
-    right: "0%",
+    top: "-14%",
+    right: "-6%",
     cursor: "pointer",
 
     "&:hover": {

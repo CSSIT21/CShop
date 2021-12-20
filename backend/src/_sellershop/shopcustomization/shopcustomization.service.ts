@@ -4,7 +4,6 @@ import { UpdateShopcustomizationDto } from './dto/update-shopcustomization.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '.prisma/client';
 
-
 @Injectable()
 export class ShopcustomizationService {
 	constructor(private readonly prisma: PrismaService) { }
@@ -55,7 +54,7 @@ export class ShopcustomizationService {
 						let section;
 
 						switch (parsedsections[index].type) {
-							case 'Banners':
+							case 'Banner':
 								section = await this.prisma.shop_banner.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -63,7 +62,7 @@ export class ShopcustomizationService {
 								});
 								section = { ...section, type: 1 };
 								break;
-							case 'BannersCarousel':
+							case 'BannerCarousel':
 								section = await this.prisma.shop_banner_carousel.findUnique({
 									where: {
 										id: parsedsections[index].id,
@@ -358,6 +357,7 @@ export class ShopcustomizationService {
 	async createBannerCarousel(shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput) {
 		try {
 			console.log(shop_banner_carouselCreateInput);
+
 			await this.prisma.shop_banner_carousel.create({
 				data: {
 					id: shop_banner_carouselCreateInput.id,
@@ -561,7 +561,9 @@ export class ShopcustomizationService {
 		}
 	}
 
-	async createProductCarouselSelect(shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput) {
+	async createProductCarouselSelect(
+		shop_product_carousel_selectCreateInput: Prisma.shop_product_carousel_selectCreateInput,
+	) {
 		try {
 			await this.prisma.shop_product_carousel_select.create({
 				data: shop_product_carousel_selectCreateInput,

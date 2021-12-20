@@ -1,44 +1,34 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import TopProfile from "../components/TopProfile";
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography, Box, Grid, Avatar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import ShopImg from "../assets/shop.png";
 import { For } from "~/common/utils";
 import Pagination from "@mui/material/Pagination";
 import DoDisturbAltRoundedIcon from "@mui/icons-material/DoDisturbAltRounded";
+import axios from "axios";
+import config from "../../common/constants";
+import authState from "../../common/store/authState";
+import { useRecoilValue } from "recoil";
+import { useHistory } from "react-router-dom";
 
-const shop = [
-  {
-    name: "muumel shop",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-  {
-    name: "SAMSONG",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-];
 const FollowedShop = () => {
   const classes = useStyles();
+  const auth = useRecoilValue(authState);
+  const [shop, setShop] = useState([]);
+  const router = useHistory();
+
   useLayoutEffect(() => {
     document.body.classList.add("gray");
     return () => document.body.classList.remove("gray");
+  }, []);
+  useEffect(() => {
+    axios
+      .post(config.SERVER_URL + "/profile/followingshop", { id: auth.user.id })
+      .then(({ data }) => {
+        setShop(data.followingShop);
+        console.log(data.followingShop);
+      });
   }, []);
   return (
     <>
@@ -89,15 +79,32 @@ const FollowedShop = () => {
                           wordBreak: "break-word",
                         }}
                       >
-                        <img src={item.img} alt="Shop Img" width="125px" />
+                        <Avatar
+                          src={
+                            item.shop_id_from_customer_followed_shop
+                              .shop_picture.path
+                          }
+                          alt="Shop Img"
+                          onClick={() => {
+                            router.push(
+                              `/shop/${item.shop_id_from_customer_followed_shop.id}`
+                            );
+                            window.scrollTo(0, 0);
+                          }}
+                          sx={{
+                            width: "130px",
+                            height: "130px",
+                            cursor: "pointer",
+                          }}
+                        />
                         <Typography
                           sx={{
                             textAlign: "center",
-                            marginTop: "15px",
+                            marginTop: "30px",
                             padding: "0 20px",
                           }}
                         >
-                          {item.name}
+                          {item.shop_id_from_customer_followed_shop.shop_name}
                         </Typography>
                       </Box>
                     </Grid>

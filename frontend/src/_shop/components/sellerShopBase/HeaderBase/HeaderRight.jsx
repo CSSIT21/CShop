@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from "react";
-// import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-// import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import * as relativeTime from "dayjs/plugin/relativeTime";
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: "center",
-//   color: theme.palette.text.secondary,
-// }));
 dayjs.extend(relativeTime);
 
 export default function HeaderRight({ shopInfo = {} }) {
@@ -81,7 +72,9 @@ export default function HeaderRight({ shopInfo = {} }) {
           </Grid>
           <Grid item xs={3}>
             <Link to={`/shop/${id}/comment`}>
-              {shopInfo.rating !== null ? shopInfo.rating : 0}
+              {shopInfo.rating !== null
+                ? parseFloat(shopInfo.rating).toFixed(1)
+                : 0}
             </Link>
           </Grid>
         </Grid>

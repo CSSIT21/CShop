@@ -36,6 +36,7 @@ const Content = () => {
     province: "",
     subDistrict: "",
   });
+
   const savenewInfo = () => {
     if (confirmPassword !== "") {
       setNewUserInfo({
@@ -47,19 +48,21 @@ const Content = () => {
         phoneNumber: editInfo.customer_info.phone_number,
         gender: editInfo.customer_info.gender,
         birthdate: editInfo.customer_info.birthdate,
-        addressId: editInfo.customer_address.address_id,
+        addressId: editInfo.customer_address[0].address_id,
         addressLine:
-          editInfo.customer_address.address_id_from_customer_address
+          editInfo.customer_address[0].address_id_from_customer_address
             .address_line,
         province:
-          editInfo.customer_address.address_id_from_customer_address.province,
+          editInfo.customer_address[0].address_id_from_customer_address
+            .province,
         district:
-          editInfo.customer_address.address_id_from_customer_address.district,
+          editInfo.customer_address[0].address_id_from_customer_address
+            .district,
         subDistrict:
-          editInfo.customer_address.address_id_from_customer_address
+          editInfo.customer_address[0].address_id_from_customer_address
             .sub_district,
         postalCode:
-          editInfo.customer_address.address_id_from_customer_address
+          editInfo.customer_address[0].address_id_from_customer_address
             .postal_code,
       });
       setsave(true);
@@ -84,7 +87,6 @@ const Content = () => {
       axios
         .patch(config.SERVER_URL + "/profile/update", newUserInfo)
         .then(({ data }) => {
-          console.log(data.success);
           if (data.success) {
             Swal.fire({
               title: "Success!",
