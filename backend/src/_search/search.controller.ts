@@ -53,7 +53,6 @@ export class SearchController {
 		for (let k of [...query.trim().split(' '), query]) {
 			keywords.push({ title: { contains: k, mode: 'insensitive' } });
 		}
-		console.log(keywords);
 		const products = await this.prisma.product.findMany({
 			where: {
 				OR: keywords,

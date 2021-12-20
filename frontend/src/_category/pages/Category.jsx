@@ -30,7 +30,7 @@ const CategoryPage = () => {
   // http://localhost:3000/search/category/1 -> id
   const { id } = useParams();
   const q =
-    qs.parse(window.location.search, { ignoreQueryPrefix: true }).q.trim() ||
+    qs.parse(window.location.search, { ignoreQueryPrefix: true }).q||
     '';
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
