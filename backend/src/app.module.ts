@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
+import { ChatModule } from './chat/chat.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { ProfileModule } from './profile/profile.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
@@ -25,6 +26,7 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		ChatModule,
 		PromotionModule
 	],
 
