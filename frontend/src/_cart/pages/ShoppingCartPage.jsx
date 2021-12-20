@@ -8,12 +8,12 @@ import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
 
 
+
 function ShoppingCartPage() {
     const [products, setProducts] = useState([]);
     const [sugproduct, setSugproduct] = useState(fakeProducts);
     const [discounts, setDiscounts] = useState([]);
     const [accountInfo, setAccountInfo] = useState([]);
-
     const auth = useRecoilValue(authState);
     
     useEffect(() => {

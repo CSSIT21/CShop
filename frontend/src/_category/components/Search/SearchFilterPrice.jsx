@@ -1,16 +1,28 @@
 import { Box, Slider, TextField } from '@mui/material';
 import { useState } from 'react';
-const CategoryFilterPrice = ({ MIN_PRICE, MAX_PRICE, setPrice, price }) => {
-  function valuetext(value) {
-    return `${price}°C`;
-  }
+import axios from 'axios';
 
-  // Max cost = value[1]
-  // min cost = value[0]
+const CategoryFilterPrice = () => {
+  // const [value, setValue] = useState([0, 500000]);
+  // function valuetext(value) {
+  //   return `${value}°C`;
+  // }
+  const [min , setMin] = useState(0)
+  const [max , setMax] = useState(500000)
   const handleChange = (event, newValue) => {
-    setPrice(newValue);
-  };
+    setValue(newValue);
+    
+    
+    
 
+  };
+  const valueChange = () =>{
+    
+    console.log('value has changed')
+  }
+  
+  
+   
   return (
     <Box>
       <Box sx={{ padding: '10px 0px 0px' }}>
@@ -21,12 +33,13 @@ const CategoryFilterPrice = ({ MIN_PRICE, MAX_PRICE, setPrice, price }) => {
           <TextField
             variant='outlined'
             placeholder='Min cost'
-            value={price[0]}
-            min={MIN_PRICE}
-            max={MAX_PRICE}
+            value={ min }
+            min={0}
+            max={500000}
             type='number'
             size='small'
-            onChange={(e) => setPrice((value) => [e.target.value, price[1]])}
+            // onChange={(e) => setValue((value) => [e.target.value, value[1]])}
+            onChange = {valueChange}
           />
         </Box>
 
@@ -45,21 +58,21 @@ const CategoryFilterPrice = ({ MIN_PRICE, MAX_PRICE, setPrice, price }) => {
           <TextField
             type='number'
             placeholder='Max cost'
-            min={MIN_PRICE}
-            max={MAX_PRICE}
-            value={price[1]}
+            min={0}
+            max={500000}
+            value={value[1]}
             size='small'
-            onChange={(e) => setPrice((value) => [price[0], e.target.value])}
+            onChange={(e) => setValue((value) => [value[0], e.target.value])}
           />
         </Box>
       </Box>
 
       <Slider
-        getAriaLabel={() => 'Price range'}
-        min={MIN_PRICE}
-        step={MAX_PRICE / 100}
-        max={MAX_PRICE}
-        value={price}
+        getAriaLabel={() => 'Temperature range'}
+        min={0}
+        step={1000}
+        max={500000}
+        value={value}
         onChange={handleChange}
         valueLabelDisplay='auto'
         getAriaValueText={valuetext}
