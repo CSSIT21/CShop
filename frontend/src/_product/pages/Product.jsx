@@ -266,8 +266,8 @@ const ProductPage = (props) => {
     });
     axios
       .post(`${config.SERVER_URL}/cart/addtocart`, {
-        userID: auth.user.customer_info?.customer_id,
-        productId: parseInt(id),
+        userID: auth.user?.id,
+        productID: id,
         amount: count,
         firstchoiceId: options[0] ? options[0] : undefined,
         secondchoiceId: options[1] ? options[1] : undefined,
