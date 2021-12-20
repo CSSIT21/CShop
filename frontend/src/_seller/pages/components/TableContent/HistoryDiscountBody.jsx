@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Avatar, Typography, Modal } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -49,7 +50,7 @@ const HistoryDiscountBody = ({ columns }) => {
       );
 
       const created = res.data.map((el) =>
-        (createData(
+        createData(
           el.discount_id,
           el.discount_id_from_discount_shop.code,
           el.discount_id_from_discount_shop.picture_path,
@@ -59,7 +60,7 @@ const HistoryDiscountBody = ({ columns }) => {
           el.discount_id_from_discount_shop.discount_types,
           el.quantity,
           el.max_quantity
-        ))
+        )
       );
       setRows(created);
       // console.log(rows)
@@ -89,76 +90,97 @@ const HistoryDiscountBody = ({ columns }) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <TableHead sx={{ backgroundColor: "#FDF4DD" }}>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  sx={{ color: "#FD6637" }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.discountID}
+      <Box sx={{ p: 4 }}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+            <TableHead sx={{ backgroundColor: "#FDF4DD" }}>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    sx={{ color: "#FD6637" }}
                   >
-                    {columns.map((column) => {
-                      const value = row[column.id];
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows ? (
+                rows.length == 0 ? (
+                  <TableRow>
+                    <TableCell sx={{ display: "block", textAlign: "center" }}>
+                      <Typography variant="h4" component="div">
+                        No Data （；´д｀）ゞ
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  rows
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
                       return (
-                        <TableCell key={column.id} align={column.align}>
-                          {/* {column.format && typeof value === "number"
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.discountID}
+                        >
+                          {columns.map((column) => {
+                            const value = row[column.id];
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                {/* {column.format && typeof value === "number"
                             ? column.format(value)
                             : value} */}
 
-                          {(() => {
-                            if (column.format && typeof value === "number") {
-                              return column.format(value);
-                            } else if (column.id === "picture_path") {
-                              return (
-                                <Avatar
-                                  src={value}
-                                  variant="rounded"
-                                  sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                  }}
-                                ></Avatar>
-                              );
-                            } else {
-                              return value;
-                            }
-                          })()}
-                        </TableCell>
+                                {(() => {
+                                  if (
+                                    column.format &&
+                                    typeof value === "number"
+                                  ) {
+                                    return column.format(value);
+                                  } else if (column.id === "picture_path") {
+                                    return (
+                                      <Avatar
+                                        src={value}
+                                        variant="rounded"
+                                        sx={{
+                                          display: "flex",
+                                          width: "100%",
+                                        }}
+                                      ></Avatar>
+                                    );
+                                  } else {
+                                    return value;
+                                  }
+                                })()}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
                       );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+                    })
+                )
+              ) : (
+                <TableCell>
+                  <LinearProgress />
+                </TableCell>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
     </>
   );
 };

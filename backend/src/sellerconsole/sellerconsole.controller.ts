@@ -193,37 +193,64 @@ export class SellerconsoleController {
 		res.send(result);
 	}
 
-	@Post(':id/flashShell')
+	@Post(':id/createflashsales')
 	@Public()
-	async  getflashShell (@Param('id', ParseIntPipe) shop_id: number, @Body() flash, @Res() res ) {
+	async createFlashShell(@Param('id', ParseIntPipe) shop_id: number, @Body() flash, @Res() res) {
 		// var shop_id = flash.shop_id;
 		var title = flash.title;
 		var path = flash.path;
 		var thumbnail = flash.thumbnail;
-		var description  = flash.description;
+		var description = flash.description;
 		// var started_date = flash.started_date;
 		// var ended_date = flash.ended_date;
-		const answer = await this.sellerconsoleService.getFlashShell(shop_id,title,path,thumbnail,description)
+		const answer = await this.sellerconsoleService.createFlashShell(shop_id, title, path, thumbnail, description);
 		return answer;
 	}
+
+	@Post(':id/newflashsales')
+	@Public()
+	async newFlashsales(@Param('id', ParseIntPipe) shopid: number, @Body() req, @Res() res) {
+		// shop_id: shopid,
+		// title: title,
+		// path: path,
+		// thumbnail: thumbnail,
+		// description: description,
+		// started_date: started_date,
+		// ended_date: ended_date,
+		// products: [product],
+		let shop_id = req.shopid;
+		let title = req.title;
+		let path = req.path;
+		let thumbnail = req.thumbnail;
+		let description = req.description;
+		let started_date = req.started_date;
+		let ended_date = req.ended_date;
+		const result = await this.sellerconsoleService.newFlashsales(
+			shop_id,
+			title,
+			path,
+			thumbnail,
+			description,
+			started_date,
+			ended_date,
+		);
+		res.send(result);
+	}
+
 	@Get(':id/getFlashsales')
 	@Public()
 	async getFlashsales(@Param('id', ParseIntPipe) shopid: number, @Res() res) {
 		const result = await this.sellerconsoleService.getFlashsales(shopid);
 		res.send(result);
 	}
-	
+
 	@Get(':id/getorderlog')
 	@Public()
 	async getOrderlog(@Param('id', ParseIntPipe) shopid: number, @Res() res) {
 		const result = await this.sellerconsoleService.getOrderLog(shopid);
 		res.send(result);
 	}
-
-	
 }
-
-	
 
 // @Post()
 //   @Public()
