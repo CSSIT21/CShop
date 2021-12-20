@@ -17,6 +17,8 @@ import { Button } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import SupportMedia from "../components/SupportMedia";
 import axios from "axios";
+import authState from '../../common/store/authState';
+import { useRecoilValue } from "recoil";
 
 const cardStyle = {
     width: '100%',
@@ -96,7 +98,7 @@ const ManageSellerAccountPage = () => {
                 "description":desc,
                 "target":target,
                 "admin_id":2,
-                "customer_id":1,
+                "customer_id":auth.user.id,
                 "support_type_id":type,
                 "day": 1,
                 "month": 1,
@@ -117,6 +119,8 @@ const ManageSellerAccountPage = () => {
         setPicture(URL.createObjectURL(event.target.files[0]));
         encodeImageFileAsURL(event.target);
     }
+
+    const auth = useRecoilValue(authState);
 
     function encodeImageFileAsURL(element) {
         var file = element.files[0];
