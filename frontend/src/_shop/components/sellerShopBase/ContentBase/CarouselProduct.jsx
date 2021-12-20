@@ -6,6 +6,8 @@ import { Typography } from "@mui/material";
 import Carousel from "~/common/components/Carousel";
 import ProductCard from "~/common/components/ProductCard";
 import CarouselButton from "~/common/components/CarouselButton";
+import authState from "~/common/store/authState";
+import { useRecoilValue } from "recoil";
 
 const useStyles = makeStyles({
   bestsellerWrapper: {
@@ -29,16 +31,30 @@ const useStyles = makeStyles({
 
 const CarouselProduct = ({ items, filterName }) => {
   const [products, setProducts] = useState(items);
+  const auth = useRecoilValue(authState);
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;
   const totalPage = Math.ceil(products.length / productsPerRow);
   console.log(page);
   const onFavourite = (index) => {
-    setitems((items) => {
-      const target = items[index];
-      target.favourite = !target.favourite;
-
+    setProducts((items) => {
+      if (auth.isLoggedIn) {
+        const target = items.find((e) => e.id == index);
+        if (target.customer_wishlist.length > 0) {
+          target.customer_wishlist.pop();
+        } else {
+          target.customer_wishlist = [
+            { product_id: target.id, customer_id: auth.user.id },
+          ];
+        }
+      } else {
+        Swal.fire({
+          title: "Please login to add a product to your wishlist!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
       return [...items];
     });
   };

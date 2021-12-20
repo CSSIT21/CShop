@@ -159,7 +159,7 @@ export class ShopcustomizationService {
 				include: {
 					product_picture: true,
 				},
-				take: 20,
+				take: 50,
 			});
 			return products;
 		} catch (e) {

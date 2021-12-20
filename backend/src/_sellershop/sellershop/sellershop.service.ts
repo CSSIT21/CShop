@@ -105,9 +105,31 @@ export class SellershopService {
 				take: 16,
 				skip: (page - 1) * 16,
 			});
+			const count = await this.prisma.product.count({
+				where: {
+					...(shop_category && {
+						id: {
+							in: shop_category.products,
+						},
+					}),
+					...(readyToShip && {
+						quantity: {
+							gt: 0,
+						},
+					}),
+					rating: {
+						gte: rating,
+					},
+					price: {
+						gte: priceLow,
+						lte: priceHigh,
+					},
+					shop_id: id,
+				},
+			});
 			const result = {
 				products: products,
-				count: products.length,
+				count: count,
 			};
 
 			return { ...result };
