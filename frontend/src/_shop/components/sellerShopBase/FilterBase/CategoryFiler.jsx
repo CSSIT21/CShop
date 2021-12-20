@@ -5,7 +5,6 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { useParams } from "react-router";
 const CateGoryFilter = ({ categories = [], categoryId, setcategoryId }) => {
   const handleChange = (event, idx) => {
     setcategoryId(event.target.value);

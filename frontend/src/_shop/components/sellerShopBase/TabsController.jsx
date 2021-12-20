@@ -3,12 +3,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import { useParams } from "react-router";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 const StyledTabs = styled((props) => <Tabs {...props} />)({
