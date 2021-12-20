@@ -219,6 +219,28 @@ export class ManageaccountController {
     });
   }
 
+  @Get('users/search')
+  @Public()
+  public getUsersByName(@Query('id') i: string){
+    return this.prisma.customer.findFirst({
+      where:{
+        customer_info:{
+          firstname: i
+        }
+      },
+    });
+  }
+
+  @Get('sellers/search')
+  @Public()
+  public getSellersByName(@Query('id') i: string){
+    return this.prisma.shop_info.findFirst({
+      where:{
+        shop_name: i,
+      },
+    });
+  }
+
   @Get('/address')
   @Public()
   public getAddress(@Query('id') i: number){

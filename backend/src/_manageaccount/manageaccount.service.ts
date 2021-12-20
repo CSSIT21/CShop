@@ -50,6 +50,52 @@ export class ManageaccountService {
             picture_id: ticket.id
           }
         })
+
+      let a = ticket.target.split(" ")[0];
+      let b = ticket.target.split(" ")[1];
+
+      if(ticket.support_type_id == 1){
+        const customer = await this.prisma.customer.findFirst({
+          where:{
+            customer_info:{
+              firstname: a,
+              lastname: b
+            }
+          },
+        });
+
+        if(customer.id > 0){
+        const customerticket = await this.prisma.admin_reported_customer.create({
+          data: {
+            reported_customer_id: customer.id,
+            status: ticket.support_type_id,
+            customer_id: createTicketDto.customer_id,
+            sent_date: new Date(),
+            ended_date: null,
+            picture_id: ticket.id
+          },
+        });}
+      }
+
+      if(ticket.support_type_id == 2){
+        const shop = await this.prisma.shop_info.findFirst({
+          where:{
+            shop_name: ticket.target
+          },
+        });
+
+        if(shop.id > 0){
+        const sellerticket = await this.prisma.admin_reported_shop.create({
+          data: {
+            reported_shop_id: shop.id,
+            status: ticket.support_type_id,
+            customer_id: createTicketDto.customer_id,
+            sent_date: new Date(),
+            ended_date: null,
+            picture_id: ticket.id
+          },
+        });}
+      }
 			return 'Ticket Added!';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
