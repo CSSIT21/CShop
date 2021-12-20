@@ -3,11 +3,13 @@ import { Prisma } from '@prisma/client';
 import Axios from 'axios';
 import { stringify } from 'querystring';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreatePaymentDto } from './dto/create-payment.dto';
 import * as bcrypt from 'bcrypt';
+import * as CryptoJs from 'crypto-js';
+const cardGen = require('card-number-generator')
 
 
-@Injectable()
+
+@Injectable()  
 export class PaymentService {
     constructor(private readonly prisma: PrismaService) { }
 
@@ -147,15 +149,12 @@ export class PaymentService {
 
 
     //Wallet
-    async getWallet() {
-        return await this.prisma.wallet.findMany();
-        // console.log(wallet);
-        
-		// return wallet
-        
-        // where: {
-			// 	customer_id: userId,
-			// },
+    async getWallet(customerId?: number) {
+        return await this.prisma.wallet.findFirst({
+            where: {
+                customer_id: customerId
+            }
+        });
     }
 
     async createWallet(customerId?: number) {
@@ -163,52 +162,14 @@ export class PaymentService {
 				data: {
 					// id: walletId,
 					customer_id: customerId,
-					balance: 0,
+					balance: 10000,
 					updated_time: new Date().toISOString(),
 				}
 			});
     }
 
-    async createAllWallets() {
-        let customerId = await this.prisma.customer.findMany({
-            take: 100,
-            select: {id: true}
-        })
-        return customerId.map(async (e) => await this.prisma.wallet.create({
-            data: 
-            {
-                customer_id: e.id,
-                balance: 0,
-                updated_time: new Date().toISOString(),
-            },
-            }))
-    }
-
-    async searchCustomers() {
-        return await this.prisma.customer.findMany({
-            take: 100,
-            select: {id: true}
-        })
-    }
-
-    // async createPayment(customerId?: number) {
-    //     return
-    // }
-
-    async searhOrder() {
-        return await this.prisma.order.findMany({
-            take: 10,
-        })
-    }
-    
-
-    
     async createPaymentWallet(orderId?: number) {
-        // let orderDetail = await this.prisma.order_detail.findUnique({
-        //     where: {
-        //         order_id: orderId,
-        //     }
-        // })
+        try {
         let order = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
@@ -218,158 +179,203 @@ export class PaymentService {
                 customer_id: true,
             },
         })
-        return await this.prisma.payment.create({
+        
+        let payment = await this.prisma.payment.create({
             data: {
                 order_id: orderId,
                 type: "Wallet",
                 amount: order.total_price,
                 status: "Pending",
                 created_date: new Date(),
-                updated_date: new Date(),
-                home_payment_log: {
-                    create: {
-                        customer_id: order.customer_id,
-                        issue_at: new Date().toISOString(),
-                    },
-                }, 
+                updated_date: null,
             }
         })
-    }
-    
-    async createPaymentWalletTrans(amount?: number, walletId?: number, paymentId?: number) {
-        let createTrans = await this.prisma.payment_transaction.create({
-            data: {
-                amount: amount,
-                time: new Date().toISOString(),
-                desc: "Wow",
-                payment_wallet_transaction: {
-                    create: {
-                        status: "Success",
-                        wallet_id: walletId,
-                        refund_id: 0,
-                        payment_wallet: {
-                            create: {
-                                payment_id: paymentId,
-                                wallet_id: walletId,
-                            },
-                        },
-                    },
-                },
-            },
-        });
-        let oldBalance = await this.prisma.wallet.findFirst({
-            where: {
-                id: walletId,
-            },
-            select: {
-                balance: true,
-            }
-        })
-        let decreaseBalance = await this.prisma.wallet.update({
-            where: {
-                id: walletId,
-            },
-            data: {
-                balance: oldBalance.balance + amount,
-            }
-        })
-        return decreaseBalance;
-    }
-
-    async searchPayment(paymentId?: number) {
-        return await this.prisma.payment.findFirst({
-            where: {
-                id: paymentId
-            }
-        })
-    }
-
-    async searchTrans() {
-        return this.prisma.payment_transaction.findMany();
-    }
-    async searLog(customerId: number) {
-        return await this.prisma.home_payment_log.findFirst({
-            where: {
-                customer_id: customerId
-            }
-        })
+            
+            return payment;
+        } catch (error) {
+            throw(error)
+        }
+        
     }
 
 
-
-    //Credit Card
-    async createCreditCard(cardNo: string, exp: Date, cvc: string, userId: number) {
-        return await this.prisma.payment_credit_card.create({
-            data: {
-                card_number: cardNo,
-                expire_date: exp.toISOString(),
-                cvc: cvc,
-                type: "MasterCard",
-                payment_credit_card_owner: {
-                    create: {
-                        customer_id: userId,
-                    }
-                }
-            }
-        })
-    }
-
-    async createPaymentCard(orderId?: number) {
-        // let orderDetail = await this.prisma.order_detail.findUnique({
-        //     where: {
-        //         order_id: orderId,
-        //     }
-        // })
-        let order = await this.prisma.order.findFirst({
+    async paidByWallet(orderId?: number) {
+        let order = await this.prisma.order.findUnique({
             where: {
                 id: orderId,
-            },
-            select: {
-                total_price: true,
-                customer_id: true,
-            },
-        })
-        return await this.prisma.payment.create({
-            data: {
-                order_id: orderId,
-                type: "Card",
-                amount: order.total_price,
-                status: "Pending",
-                created_date: new Date().toISOString(),
-                updated_date: new Date().toISOString(),
-                home_payment_log: {
-                    create: {
-                        customer_id: order.customer_id,
-                        issue_at: new Date().toISOString(),
-                    },
-                }, 
             }
         })
+        let payment = await this.prisma.payment.findFirst({
+            where: {
+                order_id: orderId,
+            },
+        })
+        let wallet = await this.prisma.wallet.findFirst({
+            where: {
+                customer_id: order.customer_id,
+            },
+        })
+        if (wallet.balance > order.total_price) {
+            await this.prisma.wallet.update({
+                where: {
+                    id: wallet.id,
+                },
+                data: {
+                    balance: wallet.balance - order.total_price,
+                    updated_time: new Date().toISOString(),
+                },
+            })
+            let trans = await this.prisma.payment_transaction.create({
+            data: {
+                amount: order.total_price,
+                time: new Date().toISOString(),
+                desc: ""
+            }
+        })
+            let walletTrans = await this.prisma.payment_wallet_transaction.create({
+                data: {
+                    status: "Success",
+                    wallet_id: wallet.id,
+                    transaction_id: trans.id,
+                    refund_id: null,
+            },
+            })
+
+            let updatePayment = await this.prisma.payment.update({
+                where: {
+                    id: payment.id
+                },
+                data: {
+                    status: "Success"
+                }
+            })
+
+            let paymentWallet = await this.prisma.payment_wallet.create({
+                data: {
+                    payment_id: payment.id,
+                    wallet_id: wallet.id,
+                    wallet_transaction_id: walletTrans.id
+                }
+            })
+
+            let log = await this.prisma.home_payment_log.create({
+                data: {
+                    customer_id: order.customer_id,
+                    payment_id: payment.id,
+                    issue_at: new Date().toISOString()
+                }
+            })
+            return "Success!!"
+        } else {
+            return "your balance not enough!!"
+        }
+        
+        
     }
+
+
     
 
-    async createPaymentCardTrans(amount?: number, cardId?: number, paymentId?: number) {
-        return await this.prisma.payment_transaction.create({
-            data: {
-                amount: amount,
-                time: new Date().toISOString(),
-                desc: "Wow",
-                payment_credit_card_transaction: {
-                    create: {
-                        card_id:cardId,
-                        status: "Success",
-                        refund_id: 0,
-                        payment_card: {
-                            create: {
-                                payment_id: paymentId,
-                                card_id: cardId,
-                            },
-                        },
-                    },
+    //Credit Card
+    
+    async createCard(cardNo?: string, exp?: Date, cvc?: string, type?: string, customerId?: number) {   
+        if (cardNo.charAt[0] = '5') {
+            let creditCard = await this.prisma.payment_credit_card.create({
+                data: {
+                    card_number: CryptoJs.HmacSHA512(cardNo.toString(), process.env.PASSWORD_CREDITCARD).toString(),
+                    expire_date: exp,
+                    cvc: CryptoJs.HmacSHA512(cvc.toString(), process.env.PASSWORD_CVC).toString(),
+                    type: "MasterCard",
+                }
+            });
+            let walletOwner = await this.prisma.payment_credit_card_owner.create({
+                data: {
+                    credit_card_id: creditCard.id,
+                    customer_id: customerId
                 },
-            },
-        });
+            })
+            return creditCard;
+        }
+        else {
+            let creditCard = await this.prisma.payment_credit_card.create({
+                data: {
+                    card_number: CryptoJs.HmacSHA512(cardNo.toString(),process.env.PASSWORD_CREDITCARD).toString(),
+                    expire_date: exp,
+                    cvc: CryptoJs.HmacSHA512(cvc.toString(),process.env.PASSWORD_CVC).toString(),
+                    type: "Visa",
+                }
+            })
+            let walletOwner = await this.prisma.payment_credit_card_owner.create({
+                data: {
+                    credit_card_id: creditCard.id,
+                    customer_id: customerId
+                },
+            })
+            return creditCard;
+        }
     }
+
+    async paidByCreditCard(cardNo?: string, exp?: Date, cvc?: string, type?: string, orderId?: number) {
+        let order = await this.prisma.order.findUnique({
+            where: {
+                id: orderId
+            }
+        })
+
+        let find = await this.prisma.payment_credit_card_owner.findFirst({
+            where: {
+                customer_id: order.customer_id,
+            }
+        })
+        let card = await this.prisma.payment_credit_card.findFirst({
+            where: {
+                card_number: cardNo,
+            }
+        })
+        if (find == null || card == null || card.id != find.credit_card_id) {
+            card = await this.createCard(cardNo, exp, cvc, type, order.customer_id)
+        }
+        let payment = await this.prisma.payment.create({
+                data: {
+                    order_id: orderId,
+                    type: "Card",
+                    amount: order.total_price,
+                    status: "Success",
+                    created_date: new Date(),
+                    updated_date: null,
+                }
+        })
+        let trans = await this.prisma.payment_transaction.create({
+            data: {
+                amount: order.total_price,
+                time: new Date().toISOString(),
+                desc:"",
+            }
+        })
+        let transCard = await this.prisma.payment_credit_card_transaction.create({
+            data: {
+                card_id: find.credit_card_id,
+                status: "Success",
+                transaction_id: trans.id,
+                refund_id: null
+            }
+        })
+        let paymentCard = await this.prisma.payment_card.create({
+            data: {
+                payment_id: transCard.id,
+                card_id: card.id,
+                credit_card_transaction_id: transCard.id,
+            }
+        })            
+        let log = await this.prisma.home_payment_log.create({
+                data: {
+                    customer_id: order.customer_id,
+                    payment_id: payment.id,
+                    issue_at: new Date().toISOString()
+                }
+            })
+    }
+    
 
 
 

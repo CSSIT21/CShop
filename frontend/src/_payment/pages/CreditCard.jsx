@@ -7,6 +7,7 @@ import useState from 'react'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
 import VisaCardIcon from '../assets/images/Visa_2021.svg'
 import CButton from '../../common/components/CButton'
+import axios from 'axios'
 
 const useStyles = makeStyles({
   header: {
@@ -66,7 +67,10 @@ const useStyles = makeStyles({
 
 
 const CreditCard = () => {
-    const classes = useStyles();
+  const classes = useStyles();
+  
+  
+  
     return (
       <Box className={classes.pagestyle}>
         <Box className={classes.header}>Credit card payment</Box>

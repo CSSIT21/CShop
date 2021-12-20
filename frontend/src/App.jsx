@@ -282,14 +282,14 @@ function App() {
                 <Redirect to="stock"/>
               </Route> */}
                 {/* Payment Page */}
-                <Route path="/payment" exact>
+                <Route path="/payment/" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <Payment/>
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/payment/paidbyqr" exact>
+                <Route path="/payment/paidbyqr/" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <PaidByQr/>

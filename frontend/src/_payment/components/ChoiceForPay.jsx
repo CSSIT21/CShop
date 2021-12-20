@@ -6,8 +6,12 @@ import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import LazyImage from '../../common/components/LazyImage/LazyImage'
-import CreditCard from '../assets/images/mc_vrt_pos.svg'
+import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
+import CreditCard from '../pages/CreditCard'
 import VisaCard from '../assets/images/Visa_2021.svg'
+import InternetBanking from '../pages/InternetBanking'
+import Wallet from '../pages/Wallet'
+import PaidByQr from '../pages/PaidByQr'
 
 const useStyles = makeStyles({
 	checkBox: {
@@ -74,7 +78,7 @@ const useStyles = makeStyles({
 
 
 
-const ChoiceForPay = () => {
+const ChoiceForPay = ({ order_id }) => {
 
     const classes = useStyles();
     const [value, setValue] = React.useState('');
@@ -83,20 +87,20 @@ const ChoiceForPay = () => {
         setValue(event.target.value);
     };
 
-    // const handleSubmit = (event) => {
-    //     if (value === 'creditCard') {
-    //         console.log("CreditCard");
-    //     }
-    //     if (value === 'InBanking') {
-    //         console.log("Banking");
-    //     }
-    //     if (value === 'wallet') {
-    //         console.log("wallet");
-    //     }
-    //     if (value === 'qr') {
-    //         console.log("qr");
-    //     }
-    // }
+    const handleSubmit = () => {
+        if (value === 'creditCard') {
+            <CreditCard/>;
+        }
+        if (value === 'InBanking') {
+            <InternetBanking/>
+        }
+        if (value === 'wallet') {
+            <Wallet/>
+        }
+        if (value === 'qr') {
+           <PaidByQr orderId={order_id}/>
+        }
+    }
 
     return (
         <Box>
@@ -111,7 +115,7 @@ const ChoiceForPay = () => {
                                 <Box>
                                     Credit Card
                                     <Box className={classes.creditCard}>
-                                        <LazyImage className={classes.creditCardIcon} src={CreditCard} lazy="https://via.placeholder.com/92x60.png" />
+                                        <LazyImage className={classes.creditCardIcon} src={CreditCardIcon} lazy="https://via.placeholder.com/92x60.png" />
                                         <LazyImage className={classes.creditCardIcon} src={ VisaCard } lazy="https://via.placeholder.com/92x60.png"/>
                                     </Box>
                                 </Box>
@@ -141,8 +145,8 @@ const ChoiceForPay = () => {
                         </Box>
                     </RadioGroup>
                     <Box className={classes.boxButton}>
-                        <Link to={"/payment/"+value}>
-                            <Button className={classes.confirmButton} color="primary">
+                        <Link to={"/payment/" + value}>
+                            <Button className={classes.confirmButton} onClick={handleSubmit()} color="primary">
                                 Confirm
                             </Button>
                         </Link>

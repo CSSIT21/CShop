@@ -7,10 +7,6 @@ import * as bcrypt from 'bcrypt';
 
 
 let request: object;
-let strQr: string;
-let walletId = 0
-let paymentId = 0
-let transacWallet = 546;
 
 async function Hash(){
 	const saltOrRounds = 10;
@@ -35,12 +31,18 @@ export class PaymentController {
 
 	//-----------------QRCODE Payment-----------------------//
 
-	@Get('/qrcode')
+	@Post('/qrcode')
 	@Public()
-	async getQRcode(@Query('userId', ParseIntPipe) userId: number){
+	async getQRcode(
+		//@Param('orderId', ParseIntPipe) orderId?: number
+		@Req() req
+
+	) {
 		try {
+			const request = req.body;
+			let orderId = request.orderId;
 			let rawQr: string;
-			rawQr = await this.paymentService.getQr(userId);
+			rawQr = await this.paymentService.getQr(orderId);
 			return {
 				success: true,
 				 rawQr
@@ -104,17 +106,23 @@ export class PaymentController {
 	@Post('/card')
 	@Public()
 	createCard(
-		@Query() cardNo: string,
-		@Query() exp: Date,
-		@Query() cvc: string,
-		@Query() userId: number
+		// @Query() cardNo: string,
+		// @Query() exp: Date,
+		// @Query() cvc: string,
+		// @Query() userId: number
+		@Req() req
 	) {
 		try {
-			let card = this.paymentService.createCreditCard(cardNo, exp, cvc, userId);
-			return {
-				success: true,
-				card
-			}
+			const request = req.body;
+			const cardNo = request.cardNo;
+			const exp = request.exp;
+			const cvc = request.cvc;
+			const userId = request.userId;
+			// let card = this.paymentService.createCreditCard(cardNo, exp, cvc, userId);
+			// return {
+			// 	success: true,
+			// 	card
+			// }
 		} catch (err) {
 			return this.paymentService.throwError(err);
 		}
@@ -186,9 +194,12 @@ export class PaymentController {
 
 	@Post('/wallet')
 	@Public()
-	createPaymentWallet(@Query('order_id', ParseIntPipe) orderId?: number,) {
-			try {
-				let paymentWallet = this.paymentService.createPaymentWallet(orderId);
+	createPaymentWallet(
+		@Query('orderId', ParseIntPipe) orderId?: number,
+		) {
+		try {
+			
+				let paymentWallet = this.paymentService.paidByWallet(orderId);
 				return {
 					success: true,
 					paymentWallet
@@ -198,23 +209,9 @@ export class PaymentController {
 			}
 	}
 	
-	@Post('/wallettrans')
-	@Public()
-	createTransactionWallet(
-		@Query('amount', ParseIntPipe) amount?: number,
-		@Query('walletId', ParseIntPipe) walletId?: number,
-		@Query('paymentId', ParseIntPipe) paymentId?: number,
-	) {
-		try {
-			let transWallet = this.paymentService.createPaymentWalletTrans(amount, walletId, paymentId);
-			return {
-				success: true,
-				transWallet
-			}
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-	}
+
+
+
 
 	
 
@@ -236,9 +233,15 @@ export class PaymentController {
 	@Get('/test')
 	@Public()
 	showPayWallet() {
+		try {
+			let a = this.paymentService.createCard()
+			return a;
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
 		// return this.prisma.shop_info.findMany();
-		// return this.paymentService.sellerIncomeRecipt(1);
-		return Math.floor(Math.random()*1677721599999999999999).toString(16);
+		//return this.paymentService.createPaymentWalletTrans(300,5);
+		
 	}
 
 	@Get('/testall')

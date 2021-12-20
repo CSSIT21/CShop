@@ -1,11 +1,14 @@
-import React from 'react';
+
 import LazyImage from "../../common/components/LazyImage/LazyImage";
 import { Box } from '@mui/system';
 import { makeStyles } from '@mui/styles';
+import Axios from 'axios';
+import config from "~/common/constants";
 import OrderSummarize from '../components/OrderSummerize';
 import { Button, ButtonBase, ButtonGroup, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CButton from '../../common/components/CButton';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles({
     
@@ -47,19 +50,29 @@ const qrCode = "0002010102123032011563959634889012902091234678325204701153037645
 
 
 
-const PaidByQr = () => {
+const PaidByQr = ({ orderId }) => {
     const classes = useStyles();
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(5);
+    const [display, setDisplay] = useState("none")
+    const [qrCode, setQrCode] = useState("");
+    
+
+    Axios.post(`${config.SERVER_URL}/payment/qrcode`,{orderId}).then(({ data }) => {
+        if (data.success) {
+            setQrCode(data.rawQr)
+        }
+    })
 
     function updateTime() {
-    if (minutes == 0 && seconds == 0) {
+    if (minutes === 0 && seconds === 0) {
         setSeconds(0);
         setMinutes(5);
+        setDisplay("")
         //set time out qr not valid 
         //click to be defualt state
     } else {
-        if (seconds == 0) {
+        if (seconds === 0) {
         setMinutes((minutes) => minutes - 1);
         setSeconds(59);
         } else {
@@ -102,7 +115,7 @@ const PaidByQr = () => {
                 <Box className={classes.boxDetail}>
                     <Typography>QRcode valid until {time} </Typography>
                     <Typography marginBottom={2}>time remaining {minutes} minutes {seconds} seconds</Typography>
-                    <CButton title="generate new qr" height="38px"/>
+                    <CButton sx={{display : display}} title="generate new qr" height="38px"/>
                 </Box>
             </Box>
         </Box> 
