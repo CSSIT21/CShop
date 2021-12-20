@@ -117,80 +117,25 @@ export class PaymentController {
 			const cardNo = request.cardNo;
 			const exp = request.exp;
 			const cvc = request.cvc;
-			const userId = request.userId;
+			const orderId = request.orderId;
 			// let card = this.paymentService.createCreditCard(cardNo, exp, cvc, userId);
 			// return {
 			// 	success: true,
 			// 	card
 			// }
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-	}
-
-	@Post('/paymentcard')
-	@Public()
-	createPaymentCard(@Query('orderId', ParseIntPipe) orderId: number,) {
-		try {
-			let paymentCard = this.paymentService.createPaymentCard(orderId);
+			let card = this.paymentService.paidByCreditCard(cardNo, exp, cvc, orderId);
 			return {
 				success: true,
-				paymentCard
+				card
 			}
 		} catch (err) {
 			return this.paymentService.throwError(err);
 		}
 	}
 
-	@Post('/transcard')
-	@Public()
-	createTransCard(
-		@Query('amount', ParseIntPipe) amount?: number,
-		@Query('cardId', ParseIntPipe) cardId?: number,
-		@Query('paymentId', ParseIntPipe) paymentId?: number,
-	) {
-		try {
-			let trans = this.paymentService.createPaymentCardTrans(amount, cardId, paymentId);
-			return {
-				success: true,
-				trans
-			}
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-	}
+
 
 	//-----------------Wallet Willy---------------//
-	@Get('/createwallet')
-	@Public()
-	getWallet() {
-		try {
-			// const request = req.body;
-			// const userId = request.customerId;
-			let wallet = this.paymentService.getWallet();
-			return {
-				success: true,
-				wallet
-			}
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-	}
-
-	@Post('/createwallet')
-	@Public()
-	createWallet(@Query('customerId', ParseIntPipe) customerId?: number,) {
-		try {
-			let wallet = this.paymentService.createWallet(customerId);
-			return {
-				success: true,
-				wallet
-			}
-			
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-	}
 
 	@Post('/wallet')
 	@Public()
@@ -209,6 +154,7 @@ export class PaymentController {
 			}
 	}
 	
+	//-----------------Coin---------------//
 
 
 
@@ -228,31 +174,6 @@ export class PaymentController {
 
 
 
-
-
-	@Get('/test')
-	@Public()
-	showPayWallet() {
-		try {
-			let a = this.paymentService.createCard()
-			return a;
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-		// return this.prisma.shop_info.findMany();
-		//return this.paymentService.createPaymentWalletTrans(300,5);
-		
-	}
-
-	@Get('/testall')
-	@Public()
-	createWallets() {
-		try {
-			return this.paymentService.createAllWallets();
-		} catch (err) {
-			return this.paymentService.throwError(err);
-		}
-	}
 
 
 }

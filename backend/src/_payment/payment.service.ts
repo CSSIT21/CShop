@@ -22,20 +22,21 @@ export class PaymentService {
     
     //OR code
     async getQr(orderId?: number) {
-        const amount = await this.prisma.order.findUnique({
+        const order = await this.prisma.order.findUnique({
             where: {
                 id: orderId,
             },
             select: {
-              total_price: true,  
-            },
+                customer_id: true,
+                total_price: true,
+            }
         })
         const ref1 = Math.floor(100000 + Math.random() * 900000).toString();
         const data = {
             qrType: 'PP',
             ppType: 'BILLERID',
             ppId: process.env.ppId,
-            amount: (await amount).total_price.toString(),
+            amount: order.total_price.toString(),
             ref1: ref1,
             ref3: process.env.ref3,
         };
@@ -83,8 +84,35 @@ export class PaymentService {
             .catch((error) => {
                 console.error(error);
             });
-        let createPayment = this.createPaymentQr(orderId);
-        let createTrans = this.createPaymentQrTrans((await amount).total_price, ref1, (await createPayment).id, str);
+        let createPayment = await this.createPaymentQr(orderId);
+        let createTrans = await this.createPaymentQrTrans(order.total_price, ref1, createPayment.id, str);
+        if (order.total_price > 1000) {
+            
+            let coinId = await this.prisma.discount_coin_information.findFirst({
+                where: {
+                    customer_id: order.customer_id,
+                },
+                select: {
+                    id: true,
+                    amount: true,
+                }
+            })
+            let coin = await this.prisma.discount_coin_information.upsert({
+                where: {
+                        id: coinId.id,
+                },
+                update: {
+                    amount: coinId.amount + order.total_price/1000
+                },
+                    create: {
+                        customer_id: order.customer_id,
+                        amount: order.total_price / 1000,
+                        got_date: new Date().toISOString(),
+                        expire_date: null,
+                        get_from: "Payment"
+                    }
+                })
+            }
         return str;
     }
 
@@ -265,6 +293,34 @@ export class PaymentService {
                     issue_at: new Date().toISOString()
                 }
             })
+
+            if (order.total_price > 1000) {
+            
+            let coinId = await this.prisma.discount_coin_information.findFirst({
+                where: {
+                    customer_id: order.customer_id,
+                },
+                select: {
+                    id: true,
+                    amount: true,
+                }
+            })
+            let coin = await this.prisma.discount_coin_information.upsert({
+                where: {
+                        id: coinId.id,
+                },
+                update: {
+                    amount: coinId.amount + order.total_price/1000
+                },
+                    create: {
+                        customer_id: order.customer_id,
+                        amount: order.total_price / 1000,
+                        got_date: new Date().toISOString(),
+                        expire_date: null,
+                        get_from: "Payment"
+                    }
+                })
+            }
             return "Success!!"
         } else {
             return "your balance not enough!!"
@@ -278,7 +334,7 @@ export class PaymentService {
 
     //Credit Card
     
-    async createCard(cardNo?: string, exp?: Date, cvc?: string, type?: string, customerId?: number) {   
+    async createCard(cardNo?: string, exp?: Date, cvc?: string, customerId?: number) {   
         if (cardNo.charAt[0] = '5') {
             let creditCard = await this.prisma.payment_credit_card.create({
                 data: {
@@ -315,7 +371,7 @@ export class PaymentService {
         }
     }
 
-    async paidByCreditCard(cardNo?: string, exp?: Date, cvc?: string, type?: string, orderId?: number) {
+    async paidByCreditCard(cardNo?: string, exp?: Date, cvc?: string, orderId?: number) {
         let order = await this.prisma.order.findUnique({
             where: {
                 id: orderId
@@ -333,7 +389,7 @@ export class PaymentService {
             }
         })
         if (find == null || card == null || card.id != find.credit_card_id) {
-            card = await this.createCard(cardNo, exp, cvc, type, order.customer_id)
+            card = await this.createCard(cardNo, exp, cvc, order.customer_id)
         }
         let payment = await this.prisma.payment.create({
                 data: {
@@ -373,7 +429,37 @@ export class PaymentService {
                     payment_id: payment.id,
                     issue_at: new Date().toISOString()
                 }
+        })
+
+        if (order.total_price > 1000) {
+            
+            let coinId = await this.prisma.discount_coin_information.findFirst({
+                where: {
+                    customer_id: order.customer_id,
+                },
+                select: {
+                    id: true,
+                    amount: true,
+                }
             })
+            let coin = await this.prisma.discount_coin_information.upsert({
+                where: {
+                        id: coinId.id,
+                },
+                update: {
+                    amount: coinId.amount + order.total_price/1000
+                },
+                    create: {
+                        customer_id: order.customer_id,
+                        amount: order.total_price / 1000,
+                        got_date: new Date().toISOString(),
+                        expire_date: null,
+                        get_from: "Payment"
+                    }
+                })
+            }
+        
+        return "Success"
     }
     
 
