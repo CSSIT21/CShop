@@ -22,6 +22,10 @@ const Popup = () => {
   const [open, setOpen] = useState(true);
   const { isLoggedIn, user } = useRecoilValue(authState);
 
+  useEffect(() => {
+    getData();
+  }, [])
+
   const getData = async () => {
     axios
       .get(`${config.SERVER_URL}/home/popup`)
@@ -45,10 +49,6 @@ const Popup = () => {
       })
   };
 
-  useEffect(() => {
-    getData();
-  }, [])
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -68,9 +68,7 @@ const Popup = () => {
       />
 
       <Paper className={classes.paperStyle}>
-        <img className={classes.imgStyle} width={75} src={popup.path} />
-
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ fontSize: "22px" }}>
           {isLoggedIn ? `Hi ${user.customer_info.firstname}!` : `Hi User!`}
         </DialogTitle>
 
@@ -82,12 +80,12 @@ const Popup = () => {
             {popup.description}
           </DialogContentText>
 
+          <img className={classes.imgStyle} width={75} src={popup.path} />
           <Typography
             fontSize="12px"
             fontWeight={400}
             color="#A0A3BD"
-            mt={4}
-            sx={{ textAlign: "center" }}
+            sx={{ textAlign: "center", marginTop: '20px' }}
           >
             During {popup.start_date} - {popup.end_date}
           </Typography>
@@ -103,20 +101,22 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     minWidth: "300px",
-    maxWidth: "380px",
+    maxWidth: "360px",
   },
 
   imgStyle: {
-    marginBottom: "10px",
     display: "block",
-    transform: "translate(0, -50px) scale(4)",
+    top: "0%",
+    right: '0%',
+    margin: '20px auto 0 auto',
+    width: '40%',
   },
 
   closeStyle: {
     color: "#ffffff7d",
     position: "absolute",
-    top: "-14%",
-    right: "-6%",
+    top: "-10%",
+    right: "-2%",
     cursor: "pointer",
 
     "&:hover": {
