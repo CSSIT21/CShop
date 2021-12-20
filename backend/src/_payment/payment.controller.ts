@@ -76,26 +76,30 @@ export class PaymentController {
 
 	//------------------------Internet Banking Pin------------------------//
 
-	// @Post('/Krungsri')
-	// @Public()
-	// async getKrungsri(@Req() req, @Res() res): Promise<void> {
-	//   let source: String;
-	//   const data = {
-	//     'amount': '250.00',
-	//     'currency': 'THB',
-	//     'type': 'internet_banking_bay',
-	//     }
-	//     await Axios({
-	//       method: 'post',
-	//       url: 'https://api.omise.co/sources',
-	//       data: JSON.stringify(data),
-	//     })
-	//       .then((response) => {
-	//         source = response.data.id;
-	//       })
-	//       .catch((error) => {
-	//         console.error(error);
-	//       });
+	@Post('/krungsri')
+	@Public()
+	async getKrungsri(@Req() req, @Res() res): Promise<void> {
+		const checkoutInternetBanking = async (req, res, next) => {
+			const { id, total_price, token } = req.body;
+		  
+			try {
+			  const charge = await omise.charges.create({
+				total_price,
+				source: token,
+				currency: "THB",
+				return_uri: "http://localhost:3000/success"
+			  });
+		  
+			  res.send({
+				authorizeUri: charge.authorize_uri
+			  });
+			} catch (error) {
+			  console.log(error);
+			}
+		  
+			next();
+		  };
+	}
 
 	//-----------------Credit Card Spy---------------//
 	// var omise = require('omise')({
