@@ -31,6 +31,7 @@ const ProductDetails = ({
   setSelected,
   open,
   setOpen,
+  setProductDetails,
 }) => {
   const handleClickClose = () => {
     setOpen(false);
@@ -41,11 +42,30 @@ const ProductDetails = ({
     } else location.href = "http://localhost:3000/register";
   };
 
-  const onFavourite = () => {
-    if (auth.isLoggedIn) {
-      // axios from JIW
-      setProduct({ ...product, favourite: !product.favourite });
-    } else location.href = "http://localhost:3000/register";
+  const onFavourite = (index) => {
+    setProductDetails((items) => {
+      if (auth.isLoggedIn) {
+        const target = items.find((e) => e.id == index);
+        if (target.customer_wishlist.length > 0) {
+          target.customer_wishlist.pop();
+        } else {
+          target.customer_wishlist = [
+            { product_id: target.id, customer_id: auth.user.id },
+          ];
+        }
+      } else {
+        Swal.fire({
+          title: "Please login to add a product to your wishlist!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      return [...items];
+    });
+    // if (auth.isLoggedIn) {
+    //   // axios from JIW
+    //   setProduct({ ...product, favourite: !product.favourite });
+    // } else location.href = "http://localhost:3000/register";
   };
 
   const handleClickChoice = (e) => {
@@ -109,18 +129,13 @@ const ProductDetails = ({
               <ShareIcon sx={{ color: "#A0A3BD", fontSize: "22px" }} />
             </IconButton>
             <IconButton
-              onClick={(e) => {
-                setFavorite(!favorite);
-                console.log(favorite);
-                // e.preventDefault();
-                // onFavourite(productDetails?);
-              }}
+              onClick={onFavourite(productDetails)}
               sx={{
                 fontWeight: "bold",
                 fontSize: "22px",
               }}
             >
-              {favorite ? (
+              {productDetails.customer_wishlist ? (
                 <FavoriteRoundedIcon
                   sx={{ color: "#A0A3BD" }}
                   fontSize="inherit"

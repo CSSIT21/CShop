@@ -47,7 +47,7 @@ const ProductSuggestion = ({ suggestionItems, onFavourite }) => {
               {(item, idx) => (
                 <ProductCard
                   product={item}
-                  onFavourite={() => onFavourite(item)}
+                  onFavourite={onFavourite}
                   to={() => productPage(item.id)}
                   key={item.id}
                 />

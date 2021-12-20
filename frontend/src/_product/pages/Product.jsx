@@ -32,13 +32,34 @@ const ProductPage = (props) => {
   const { id } = useParams();
 
   const onFavouriteSuggestion = (index) => {
-    setProductsSuggestion((products) => {
-      console.log(products);
-      const target = products[index];
-      target.favourite = !target.favourite;
-
-      return [...products];
+    console.log(productsSuggestion);
+    setProductsSuggestion((items) => {
+      if (auth.isLoggedIn) {
+        const target = items?.find((e) => e.id == index);
+        if (target.customer_wishlist.length > 0) {
+          target.customer_wishlist.pop();
+        } else {
+          target.customer_wishlist = [
+            { product_id: target.id, customer_id: auth.user.id },
+          ];
+        }
+      } else {
+        Swal.fire({
+          title: "Please login to add a product to your wishlist!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      return [...items];
     });
+
+    // setProductsSuggestion((products) => {
+    //   console.log(products);
+    //   const target = products[index];
+    //   target.favourite = !target.favourite;
+
+    //   return [...products];
+    // });
   };
 
   const avgRatingFormat = () => {
@@ -299,6 +320,7 @@ const ProductPage = (props) => {
           setCount={setCount}
           open={open}
           setOpen={setOpen}
+          setProductDetails={setProductDetails}
         />
         <ShopDetails
           shopId={shopId}

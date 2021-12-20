@@ -16,7 +16,14 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
 
   const handleGoToChat = () => {
     if (auth.isLoggedIn) location.href = "http://localhost:3000/chat";
-    else location.href = "http://localhost:3000/register";
+    else {
+      Swal.fire({
+        title: "Please login to chat with shop!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    // else location.href = "http://localhost:3000/register";
   };
 
   const activeTimeFormat = () => {
