@@ -51,17 +51,18 @@ const FollowedShop = () => {
               fontSize: "32px",
               fontWeight: "600",
               margin: "60px auto",
+              marginBottom: "100px",
             }}
           >
             Following Shop
           </Typography>
-          <Box className={classes.searchBox}>
+          {/* <Box className={classes.searchBox}>
             <SearchIcon className={classes.searchIcon} />
             <input
               className={classes.searchInput}
               placeholder="Search for shop"
             />
-          </Box>
+          </Box> */}
           {shop.length === 0 ? (
             <Box className={classes.noShopFollow}>
               <DoDisturbAltRoundedIcon

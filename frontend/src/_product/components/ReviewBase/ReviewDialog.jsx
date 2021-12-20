@@ -9,6 +9,7 @@ import Slide from "@mui/material/Slide";
 import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
+import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 
 function ReviewDialog({
   // img = "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg",
@@ -102,6 +103,13 @@ function ReviewDialog({
         variant="outlined"
         onClick={handleClickOpen}
         disabled={!statusOrder}
+        startIcon={<CreateRoundedIcon />}
+        sx={{
+          height: "40px",
+          width: "130px",
+          textTransform: "capitalize",
+          fontSize: "14px",
+        }}
       >
         Review
       </Button>

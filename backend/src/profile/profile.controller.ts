@@ -4,6 +4,7 @@ import { User } from './dto/user.dto';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { FavouriteProduct } from './dto/favourite.dto';
+import { Order } from './dto/order.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -60,5 +61,17 @@ export class ProfileController {
 	@Public()
 	public async favourite(@Body() data: FavouriteProduct) {
 		return await this.profileService.favourite(data);
+	}
+
+	@Post('/order')
+	@Public()
+	public async getOrders(@Body() data: Order) {
+		return await this.profileService.getOrders(data);
+	}
+
+	@Post('/order/detail')
+	@Public()
+	public async getOrderDetail(@Body() data: Order) {
+		return await this.profileService.getOrderDetail(data);
 	}
 }

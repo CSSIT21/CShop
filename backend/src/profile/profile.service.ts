@@ -1,9 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Gender } from '@prisma/client';
+import { Gender, OrderStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './dto/user.dto';
 import * as CryptoJs from 'crypto-js';
 import { FavouriteProduct } from './dto/favourite.dto';
+import { Order } from './dto/order.dto';
 
 @Injectable()
 export class ProfileService {
@@ -316,6 +317,85 @@ export class ProfileService {
 				},
 			});
 			return 'You add this product to your wishlist';
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async getOrders(data: Order) {
+		const { customer_id } = data;
+		try {
+			const order = await this.prisma.order.findMany({
+				where: {
+					customer_id: customer_id,
+				},
+				include: {
+					order_detail: true,
+					order_item: {
+						select: {
+							product_id: true,
+							product_id_from_order_item: {
+								select: {
+									title: true,
+									sub_title: true,
+									price: true,
+									product_picture: {
+										take: 1,
+									},
+								},
+							},
+						},
+					},
+				},
+			});
+			if (order) {
+				return order;
+			} else {
+				return 'This user has no order';
+			}
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+
+	public async getOrderDetail(data: Order) {
+		const { customer_id, order_id } = data;
+		try {
+			const orderDetail = await this.prisma.order.findFirst({
+				where: {
+					customer_id: customer_id,
+					id: order_id,
+				},
+				include: {
+					order_detail: true,
+					order_item: {
+						select: {
+							product_id: true,
+							quantity: true,
+							product_id_from_order_item: {
+								select: {
+									title: true,
+									sub_title: true,
+									price: true,
+									product_picture: {
+										take: 1,
+									},
+									shop_id: true,
+								},
+							},
+						},
+					},
+				},
+			});
+
+			return orderDetail;
 		} catch (e) {
 			console.log(e.message);
 			return {

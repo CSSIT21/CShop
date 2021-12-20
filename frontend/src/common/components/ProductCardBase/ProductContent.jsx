@@ -11,6 +11,10 @@ import {
 } from "@mui/material";
 import { isFunc, isUndef } from "./../../utils/index";
 import CButton from "~/common/components/CButton";
+import axios from "axios";
+import authState from "../../store/authState";
+import { useRecoilValue } from "recoil";
+import config from "../../constants";
 
 const ProductContent = ({
   product,
@@ -19,6 +23,7 @@ const ProductContent = ({
   statusProps = {},
   addToCart,
 }) => {
+  const auth = useRecoilValue(authState);
   return (
     <>
       <CardContent sx={contentStyle}>
@@ -45,7 +50,16 @@ const ProductContent = ({
           onClick={(e) => {
             e.preventDefault();
             onFavourite(product.id);
-            //api fav
+            if (auth.isLoggedIn) {
+              axios
+                .post(`${config.SERVER_URL}/profile/favourite`, {
+                  customer_id: auth.user.id,
+                  product_id: product.id,
+                })
+                .then(({ data }) => {
+                  console.log(data);
+                });
+            }
           }}
           sx={{ fontWeight: "bold", fontSize: "22px" }}
         >
