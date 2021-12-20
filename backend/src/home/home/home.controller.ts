@@ -21,7 +21,7 @@ export class HomeController {
     }
   }
 
- /* @Get("bestsellers/:id")
+  @Get("bestsellers/:id")
   @Public()
   async findAllSeller(@Param('id', ParseIntPipe) customer_id: number) {
     try {
@@ -33,7 +33,7 @@ export class HomeController {
     } catch (err) {
       this.homeService.throwError(err);
     }
-  }*/
+  }
 
   @Get("partners")
   @Public()
@@ -85,7 +85,7 @@ export class HomeController {
     }
   }
 
-  /*@Get("favorites/:id")
+  @Get("favorites/:id")
   @Public()
   async findFavorite(@Param('id', ParseIntPipe) customer_id: number,
     @Query('take', ParseIntPipe) take?: number,
@@ -119,7 +119,7 @@ export class HomeController {
     } catch (err) {
       this.homeService.throwError(err);
     }
-  }*/
+  }
 
 
 

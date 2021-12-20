@@ -43,7 +43,7 @@ export class ProductCard extends React.Component {
 
   if(this.props.product.product_reviews.length > 0){
     this.props.product.product_reviews.forEach((re) => {
-      a = +a + re.rating;
+      a = +a + +re.rating;
     })
     this.rating = (a / this.props.product.product_reviews.length).toFixed(2);
     }
