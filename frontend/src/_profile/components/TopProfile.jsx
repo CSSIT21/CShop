@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { Avatar, Typography, Button } from "@mui/material";
 import { useRecoilState } from "recoil";
 import authState from "../../common/store/authState";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import StoreIcon from "@mui/icons-material/Store";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
