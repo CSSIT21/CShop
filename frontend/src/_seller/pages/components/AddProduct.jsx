@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Typography, Modal } from "@mui/material";
+import { Button, Typography, Modal,Avatar } from "@mui/material";
 import { Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -17,6 +17,7 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
 import CropOriginalIcon from "@mui/icons-material/CropOriginal";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import FolderIcon from '@mui/icons-material/Folder';
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -357,6 +358,24 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                 </MenuItem>
               ))}
             </TextField>
+            <label htmlFor={`outlined-button-file-`}>
+                  <Button
+                    component="span"
+                    variant="outlined"
+                    sx={{ height: "42px", borderWidth: "2px",mt:1 }}
+                  >
+                    <input
+                      accept="image/*"
+                      type="file"
+                      style={{ display: "none" }}
+                      id={`outlined-button-file-`}
+                      onChange={(e) => {
+                        uploadFile(e);
+                      }}
+                    />
+                    Upload file
+                  </Button>
+                </label>
           </Box>
         </Box>
       </DialogContent>
