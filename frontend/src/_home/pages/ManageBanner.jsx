@@ -25,7 +25,6 @@ const ManageBanner = () => {
 			.get(`${config.SERVER_URL}/home/banner/manage`)
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.banners);
 					setItems(data.banners.map(item => ({ ...item, height: 100 })));
 				}
 			})
@@ -36,6 +35,7 @@ const ManageBanner = () => {
 	};
 
 	const handleSave = async () => {
+		setLoading(true);
 		items.forEach((item, index) => {
 			axios
 				.patch(`${config.SERVER_URL}/home/banner/${item.id}`, {
@@ -43,15 +43,17 @@ const ManageBanner = () => {
 				})
 				.then(({ data }) => {
 					if (data.success) {
-						console.log(data.bannerInfo, item.id);
+						console.log("success");
 					}
 				})
 				.catch((err) => {
 					console.log(err.message, item.id);
+					setLoading(false);
 					return Swal.fire('Something went wrong', "Sorry, we cannot save the change of banners, please try again", 'error');
 				})
 		});
 
+		setLoading(false);
 		return Swal.fire('Done', "Updated the change of banners successfully", 'success');
 	};
 
@@ -112,7 +114,7 @@ const ManageBanner = () => {
 			</Box>
 
 			{items.length === 0
-				? (<Typography textAlign="center" fontSize={36} fontWeight={500} color="lightgray" mt={5}>No banner to show</Typography>)
+				? (<Typography textAlign="center" fontSize={36} fontWeight={500} color="gray" mt={5}>No banner to show</Typography>)
 				: (<BannerList items={items} setItems={setItems} getData={getData} />)}
 		</Box>
 	);

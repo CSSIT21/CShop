@@ -9,12 +9,12 @@ import {
   IconButton,
   CardActions,
 } from "@mui/material";
-import { isFunc, isUndef } from "./../../utils/index";
+import { isFunc, isUndef } from "~/common/utils/index";
 import CButton from "~/common/components/CButton";
-import axios from "axios";
-import authState from "../../store/authState";
+import authState from "~/common/store/authState";
 import { useRecoilValue } from "recoil";
-import config from "../../constants";
+import axios from "axios";
+import config from "~/common/constants";
 
 const ProductContent = ({
   product,
@@ -23,7 +23,30 @@ const ProductContent = ({
   statusProps = {},
   addToCart,
 }) => {
-  const auth = useRecoilValue(authState);
+  const { user, isLoggedIn } = useRecoilValue(authState);
+
+  const onAddToCard = () => {
+    if (isLoggedIn) {
+      axios
+        .post(
+          `${config.SERVER_URL}/log-system/add-to-cart/${user.id}/${product.id}`,
+          {
+            added_date: new Date().toISOString(),
+          }
+        )
+        .then(({ data }) => {
+          if (data.success) {
+            return console.log(data.addToCart);
+          } else {
+            return console.log(data);
+          }
+        })
+        .catch((err) => {
+          return console.log(err.message);
+        });
+    }
+  };
+
   return (
     <>
       <CardContent sx={contentStyle}>
@@ -38,7 +61,7 @@ const ProductContent = ({
       <CardActions sx={actionStyle}>
         {!isUndef(status) ? (
           <Typography variant="caption" fontSize=".7rem" color="#A0A3BD">
-            {product.status}
+            amount: {product.quantity}
           </Typography>
         ) : isFunc(status) ? (
           status(statusProps)
@@ -80,6 +103,7 @@ const ProductContent = ({
           fontSize="14px"
           width="100%"
           height="38px"
+          onClick={onAddToCard}
         />
       )}
     </>

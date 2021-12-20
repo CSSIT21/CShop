@@ -125,4 +125,12 @@ export class AuthenticationService {
 			success: false,
 		};
 	}
+
+	public static async getUserFromToken(token: string) {
+		const regex = /\w/
+		if(regex.test(token))
+		{
+			return token.charCodeAt(0) - 96
+		}
+	}
 }

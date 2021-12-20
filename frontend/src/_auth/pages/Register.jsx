@@ -10,7 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import GoogleLogo from "../assets/google-icon.png";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";

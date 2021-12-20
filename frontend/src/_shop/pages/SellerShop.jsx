@@ -8,8 +8,7 @@ import { makeStyles } from "@mui/styles";
 import Filter from "../components/sellerShopBase/Filter";
 import FlashSale from "../components/sellerShopBase/FlashSale";
 import axios from "axios";
-import { useParams } from "react-router";
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import config from "~/common/constants";
 import Skeleton from "@mui/material/Skeleton";
 import { useRecoilValue } from "recoil";
@@ -20,7 +19,8 @@ const SellerShop = () => {
   const auth = useRecoilValue(authState);
   const history = useHistory();
   const classes = useStyles();
-  const { id, cateId } = useParams();
+  const { id } = useParams();
+  console.log(id);
   const [loading, setloading] = useState(true);
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
@@ -58,7 +58,7 @@ const SellerShop = () => {
       })
       .catch((e) => {
         console.log(e.message);
-        history.push("/*");
+        // history.push("/*");
       })
       .then(() => {
         let userId = 0;

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "delivery_product_status" ALTER COLUMN "added_date" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "latest_update" SET DEFAULT CURRENT_TIMESTAMP;
