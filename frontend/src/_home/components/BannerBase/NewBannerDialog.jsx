@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants";
 import {
 	Button,
 	Dialog,
@@ -13,6 +16,7 @@ import {
 	Chip,
 	FormControlLabel,
 	Grid,
+	CircularProgress,
 } from '@mui/material';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -21,27 +25,97 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
 import MainImage from './MainImage';
 import UploadButton from './UploadButton';
-import { noop, convertFileBase64 } from '~/common/utils';
+import { noop, getUrl } from '~/common/utils';
 
 const NewBannerDialog = ({
+	setItems = noop,
+	itemCount = 0,
 	open = false,
-	onClose = noop,
+	handleDialog = noop,
 }) => {
-	const [file, setFile] = useState({ path: "", title: "", fileBase64: "" });
 	const [description, setDescription] = useState("");
-	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
+	const [start_date, setStart_date] = useState(new Date);
+	const [end_date, setEnd_date] = useState(new Date);
 	const [visible, setVisible] = useState(true);
 	const [keywords, setKeywords] = useState([]);
-	const [tempKeyword, setTempKeyword] = useState("");
+	const [tempKeywords, setTempKeywords] = useState("");
+	const [tempPicture, setTempPicture] = useState("");
+	const [file, setFile] = useState({});
+	const [loading, setLoading] = useState(false);
+
+	const handleAddBanner = async () => {
+		if (!tempPicture || !description || !keywords) {
+			handleDialog();
+			return Swal.fire('Sorry', 'Please fill up all field before add new banner', 'warning');
+		}
+
+		let bannerImage = {};
+		try {
+			setLoading(true);
+			const { success, original_link } = await getUrl(file);
+
+			if (success) {
+				bannerImage = {
+					title: file.name,
+					position: "Main",
+					path: original_link,
+					thumbnail: original_link,
+				};
+			}
+			else {
+				console.log(data.error);
+				handleDialog();
+				setLoading(false);
+				return Swal.fire('Oop!', 'Cannot upload image', 'error');
+			}
+		}
+		catch (err) {
+			console.log(err.message);
+			handleDialog();
+			setLoading(false);
+			return Swal.fire('Oop!', 'Cannot upload image', 'error');
+		}
+
+		axios
+			.post(`${config.SERVER_URL}/home/banner`, {
+				bannerInfo: {
+					description,
+					start_date,
+					end_date,
+					order: itemCount + 1,
+					keywords,
+					visible,
+				},
+				bannerImage,
+			})
+			.then(({ data }) => {
+				if (data.success) {
+					console.log(data.banner);
+
+					setItems(items => {
+						return [...items, data.banner];
+					});
+					setLoading(false);
+
+					handleDialog();
+					onClearChange();
+					return Swal.fire('Done', "Already added a new banner", 'success');
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				setLoading(false);
+				handleDialog();
+				return Swal.fire('Oop!', 'Cannot create a new banner', 'error');
+			})
+	};
 
 	const onUploadMainImg = async (e) => {
-		if (e.target.files.length) {
-			setFile({
-				path: URL.createObjectURL(e.target.files[0]),
-				title: e.target.files[0].name,
-				fileBase64: await convertFileBase64(e.target.files[0])
-			});
+		const files = e.target.files;
+
+		if (files.length) {
+			setFile(files[0]);
+			setTempPicture(URL.createObjectURL(files[0]));
 			e.target.value = null;
 		}
 	};
@@ -61,12 +135,13 @@ const NewBannerDialog = ({
 	};
 
 	const onClearChange = () => {
-		setFile({ path: "", title: "", fileBase64: "" });
+		setTempPicture("");
 		setDescription("");
-		setStartDate("");
-		setEndDate("");
+		setStart_date(new Date);
+		setEnd_date(new Date);
 		setVisible(true);
 		setKeywords([]);
+		setTempKeywords("");
 	};
 
 	return (
@@ -77,8 +152,8 @@ const NewBannerDialog = ({
 				<Grid container spacing={4}>
 					<Grid item md={12}>
 						<Typography fontSize={18} fontWeight={500} mb={2}>Main Picture</Typography>
-						{file.path
-							? <MainImage path={file.path} upload onUploadImg={onUploadMainImg} />
+						{tempPicture
+							? <MainImage path={tempPicture} upload onUploadImg={onUploadMainImg} />
 							: <UploadButton
 								onUploadImg={onUploadMainImg}
 								Icon={<AddAPhotoRoundedIcon />}
@@ -104,9 +179,9 @@ const NewBannerDialog = ({
 						<Typography fontSize={18} fontWeight={500} mb={2}>Start Date</Typography>
 						<LocalizationProvider dateAdapter={DateAdapter}>
 							<DatePicker
-								value={startDate}
+								value={start_date}
 								renderInput={(params) => <TextField {...params} />}
-								onChange={(e) => setStartDate(e)}
+								onChange={(e) => setStart_date(e.toISOString())}
 							/>
 						</LocalizationProvider>
 					</Grid>
@@ -115,9 +190,9 @@ const NewBannerDialog = ({
 						<Typography fontSize={18} fontWeight={500} mb={2}>End Date</Typography>
 						<LocalizationProvider dateAdapter={DateAdapter}>
 							<DatePicker
-								value={endDate}
+								value={end_date}
 								renderInput={(params) => <TextField {...params} />}
-								onChange={(e) => setEndDate(e)}
+								onChange={(e) => setEnd_date(e.toISOString())}
 							/>
 						</LocalizationProvider>
 					</Grid>
@@ -128,10 +203,10 @@ const NewBannerDialog = ({
 							aria-label="status"
 							name="controlled-radio-buttons-group"
 							value={visible}
-							onChange={(e) => setVisible(e.target.value)}
+							onChange={(e) => setVisible(e.target.value === 'true')}
 						>
-							<FormControlLabel label="Visible" value="true" control={<Radio />} />
-							<FormControlLabel label="Invisible" value="false" control={<Radio />} />
+							<FormControlLabel label="Visible" value={true} control={<Radio />} />
+							<FormControlLabel label="Invisible" value={false} control={<Radio />} />
 						</RadioGroup>
 					</Grid>
 
@@ -161,13 +236,13 @@ const NewBannerDialog = ({
 								label="Keyword"
 								id="outlined-size-small"
 								size="small"
-								value={tempKeyword}
+								value={tempKeywords}
 								disabled={keywords.length === 6}
-								onChange={(e) => setTempKeyword(e.target.value)}
+								onChange={(e) => setTempKeywords(e.target.value)}
 								onKeyPress={(e) => {
 									if (e.key === 'Enter') {
-										onChipAdd(tempKeyword);
-										setTempKeyword("");
+										onChipAdd(tempKeywords);
+										setTempKeywords("");
 									}
 								}}
 							/>
@@ -181,11 +256,15 @@ const NewBannerDialog = ({
 			</DialogContent>
 
 			<DialogActions>
-				<Button onClick={() => {
-					onClearChange();
-					onClose();
-				}}>Cancel</Button>
-				<Button onClick={onClose}>Add Banner</Button>
+				{loading
+					? (<Button><CircularProgress /></Button>)
+					: (<>
+						<Button onClick={() => {
+							onClearChange();
+							handleDialog();
+						}}>Cancel</Button>
+						<Button onClick={handleAddBanner}>Add Banner</Button>
+					</>)}
 			</DialogActions>
 		</Dialog>
 	);

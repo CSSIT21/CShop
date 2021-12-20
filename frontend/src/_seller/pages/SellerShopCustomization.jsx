@@ -16,7 +16,6 @@ import CarouselBannerIcon from "./components/CustomizationBase/DragableIcon/Caro
 import YoutubeEmbedIcon from "./components/CustomizationBase/DragableIcon/YoutubeEmbedIcon";
 import ProductCarouselIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselIcon";
 import ProductCarouselSelectIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselSelectIcon";
-import Button from "@mui/material/Button";
 import { getUrl } from "~/common/utils";
 import axios from "axios";
 import config from "~/common/constants";
@@ -24,6 +23,8 @@ import Swal from "sweetalert2";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Dialog from "@mui/material/Dialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -143,6 +144,7 @@ const SellerShopCustomization = () => {
   const auth = useRecoilValue(authState);
   const shopName = "Shop name";
   const dropArea = "area";
+  const [onLoad, setonLoad] = useState(false);
   const [loading, setloading] = useState(false);
   const [state, setState] = useState({
     [dropArea]: [],
@@ -158,12 +160,27 @@ const SellerShopCustomization = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return "tablet";
+    }
+    if (
+      /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua
+      )
+    ) {
+      return "mobile";
+    }
+    return "desktop";
+  };
   console.log("sectionInfos", sectionInfos);
   console.log("sectionInfosHistory", sectionInfosHistory);
   console.log("state", state);
 
   useEffect(() => {
     (async () => {
+      setonLoad(true);
       await axios
         .get(
           `${config.SERVER_URL}/shopcustomization/category/${auth.user.shop_info[0].id}`
@@ -190,6 +207,7 @@ const SellerShopCustomization = () => {
           `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
         )
         .then(({ data }) => setState({ area: data.sections }));
+      setonLoad(false);
     })();
   }, []);
   console.log(Object.entries(sectionInfos));
@@ -198,7 +216,7 @@ const SellerShopCustomization = () => {
     await axios
       .patch(
         `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`,
-        { sections: state.area }
+        { sections: state.area, device: getDeviceType() }
       )
       .then(async () => {
         await Object.entries(sectionInfos).forEach(async (e) => {
@@ -532,6 +550,28 @@ const SellerShopCustomization = () => {
           </Content>
         </DragDropContext>
       </Box>
+      <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </>
   );
 };

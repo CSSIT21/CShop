@@ -48,11 +48,11 @@ const TabsController = ({ categories = [], ...rest }) => {
         <Link to={`/shop/${id}`}>
           <Tab className={classes.tabStyle} label="Store" />
         </Link>
-        <Link to={`/shop/${id}/allproduct`}>
+        <Link to={`/shop/${id}/0`}>
           <Tab className={classes.tabStyle} label="All Products" />
         </Link>
         {filterMenus.map((menu, idx) => (
-          <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
+          <Link key={idx} to={`/shop/${id}/${menu.id}`}>
             <Tab className={classes.tabStyle} label={menu.title} />
           </Link>
         ))}

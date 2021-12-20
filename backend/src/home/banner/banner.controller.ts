@@ -1,8 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { BannerService } from './banner.service';
 import { CreateBannerInfoDto } from './dto/create-banner-info.dto';
-import { UpdateBannerDto } from './dto/update-banner.dto';
+import { UpdateBannerInfoDto } from './dto/update-banner-info.dto';
 import { CreateBannerImageDto } from './dto/create-banner-image.dto';
+import { home_banner, home_banner_picture } from '@prisma/client';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('home/banner')
 export class BannerController {
@@ -10,10 +12,11 @@ export class BannerController {
 
   // Create new banner with information and main image
   @Post()
+  @Public()
   async createBanner(@Body() bannerData: { bannerInfo: CreateBannerInfoDto; bannerImage: CreateBannerImageDto }) {
     const { bannerInfo, bannerImage } = bannerData;
     const { description, start_date, end_date, order, keywords, visible, } = bannerInfo;
-    let picture, info;
+    let picture: home_banner_picture, info: home_banner;
 
     try {
       picture = await this.bannerService.createImage(bannerImage);
@@ -30,8 +33,8 @@ export class BannerController {
         });
       }
       catch (err) {
-        this.bannerService.deleteImage({ id: picture.id });
-        this.bannerService.throwError(err);
+        this.bannerService.deleteImageById({ id: picture.id });
+        this.bannerService.throwError(err); // outside catch will catch this and send response with error
       }
 
       return {
@@ -52,11 +55,12 @@ export class BannerController {
 
   // Create a sub image for banner with specific id
   @Post(':id/sub')
+  @Public()
   async createSubImage(@Param('id', ParseIntPipe) id: number, @Body() imageDto: CreateBannerImageDto) {
     try {
       const bannerPic = await this.bannerService.createImage(imageDto);
 
-      await this.bannerService.updateInfo({
+      await this.bannerService.updateInfoById({
         where: { id },
         data: {
           picture_id: {
@@ -75,7 +79,9 @@ export class BannerController {
     }
   }
 
+  // Get all visible banners for homepage
   @Get('homepage')
+  @Public()
   async getHomepageBanners() {
     try {
       const banners = await this.bannerService.getBanners(true);
@@ -90,7 +96,9 @@ export class BannerController {
     }
   }
 
+  // Get all banners for management page
   @Get('manage')
+  @Public()
   async getAllBanners() {
     try {
       const banners = await this.bannerService.getBanners(false);
@@ -105,33 +113,54 @@ export class BannerController {
     }
   }
 
+  // Update a banner information by Id
   @Patch(':id')
-  async updateInfo(@Param('id', ParseIntPipe) id: number, @Body() bannerDto: UpdateBannerDto) {
+  @Public()
+  async updateInfo(@Param('id', ParseIntPipe) id: number, @Body() bannerDto: UpdateBannerInfoDto) {
     try {
-      return this.bannerService.updateInfo({
+      const bannerInfo = await this.bannerService.updateInfoById({
         data: bannerDto,
         where: { id },
       });
+
+      return {
+        success: true,
+        bannerInfo,
+      };
     }
     catch (err) {
       this.bannerService.throwError(err);
     }
   }
 
+  // Delete a banner
   @Delete(':id')
+  @Public()
   async deleteBanner(@Param('id', ParseIntPipe) id: number) {
     try {
-      return this.bannerService.deleteBanner({ id });
+      const bannerInfo = await this.bannerService.deleteBannerById({ id });
+
+      return {
+        success: true,
+        bannerInfo,
+      };
     }
     catch (err) {
       this.bannerService.throwError(err);
     }
   }
 
+  // Delete sub image from specific banner
   @Delete(':id/sub/:subId')
+  @Public()
   async deleteSubImage(@Param('id', ParseIntPipe) bannerId: number, @Param('subId', ParseIntPipe) subId: number) {
     try {
-      return this.bannerService.deleteSubImage(bannerId, subId);
+      const deletedImage = await this.bannerService.deleteSubImage(bannerId, subId);
+
+      return {
+        success: true,
+        deletedImage,
+      };
     }
     catch (err) {
       this.bannerService.throwError(err);

@@ -14,4 +14,7 @@ export class User {
 	district: string;
 	province: string;
 	postalCode: number;
+	url: string;
+	title: string;
+	recipient: string;
 }
