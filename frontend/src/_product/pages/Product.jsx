@@ -7,7 +7,7 @@ import ProductSuggestion from "../sections/ProductSuggestion";
 import fakeProducts from "~/common/faker/fakeProducts";
 import { Box } from "@mui/material";
 import ReviewsFromCustomer from "../sections/ReviewsFromCustomer";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import config from "../../common/constants";
 import { useRecoilValue } from "recoil";

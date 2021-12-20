@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
 import { Typography } from "@mui/material";
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import ReviewCarousel from './ReviewCarousel';
+import axios from "axios";
+import config from "~/common/constants";
 
 const reviewItems = [
     {
@@ -33,12 +35,31 @@ const reviewItems = [
 ];
 
 const AppReviewSection = () => {
-
     const classes = useStyles();
-    const [items] = useState(reviewItems);
+    const [reviews, setReviews] = useState([]);
     const [page, setPage] = useState(0);
     const itemsPerRow = 2;
-    const totalPage = Math.ceil(items.length / itemsPerRow);
+    const totalPage = Math.ceil(reviews.length / itemsPerRow);
+
+    const getData = () => {
+        axios
+            .get(`${config.SERVER_URL}/home/reviews`)
+            .then(({ data }) => {
+                if (data.success) {
+                    return setReviews(data.reviews);
+                }
+                else {
+                    return console.log(data);
+                }
+            })
+            .catch((err) => {
+                return console.log(err.message);
+            })
+    };
+
+    useEffect(() => {
+        getData();
+    }, [])
 
     return (
         <Box className={classes.AppReviewWrapper}>
@@ -62,7 +83,7 @@ const AppReviewSection = () => {
 
             <Box className={classes.reviewSection}>
                 <ReviewCarousel
-                    items={items}
+                    reviews={reviews}
                     currentPage={page}
                     totalPage={totalPage}
                     pageHandle={setPage}

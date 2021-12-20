@@ -7,7 +7,7 @@ import CardWrapper from "./CardWrapper";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import { StarOutlineRounded, StarRateRounded } from "@mui/icons-material";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
 import config from "~/common/constants";
