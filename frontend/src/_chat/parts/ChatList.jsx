@@ -117,15 +117,11 @@ const ChatList = (props) => {
                             <ChatBox
                                 key={i}
                                 displayName={message.shop_name}
-                                lastMessage={
-                                    message.content_type === 'Text'
-                                        ? message.latest_text
-                                        : message.content_type
-                                }
+                                contentType={message.content_type}
+                                fromCustomer={message.from_customer}
+                                latestText={message.latest_text}
                                 pic={message.shop_pic}
-                                isFilled={
-                                    props.currentConversation === message.id
-                                }
+                                isFilled={props.currentConversation === message.id}
                                 setCurrent={() => {
                                     props.setCurrent(message.id)
                                     console.log(

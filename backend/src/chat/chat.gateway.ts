@@ -12,7 +12,7 @@ import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
 import { ConversationDto } from './dto/conversation.dto';
 
-const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1
+const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;
 
 @WebSocketGateway(SOCKET_PORT, { cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -29,13 +29,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	async handleDisconnect(client: any) {
 		for (let [conversation, token] of this.connectionMap.entries()) {
-			if (token.customer === client.id || token.shop === client.id) {
-				this.connectionMap.delete(conversation);
-				const isCustomer = token.customer === client.id;
+			if (token.customer === client.id) {
+				this.connectionMap.get(conversation).customer = null;
 				this.server.to(conversation.toString()).emit('status', {
 					event: 'left',
-					peer: isCustomer ? 'customer' : 'shop',
+					peer: 'customer',
+					conversation_id: conversation,
 				});
+			} else if (token.shop === client.id) {
+				this.connectionMap.get(conversation).shop = null;
+				this.server.to(conversation.toString()).emit('status', {
+					event: 'left',
+					peer: 'shop',
+					conversation_id: conversation,
+				});
+			}
+
+			if (
+				this.connectionMap.get(conversation) &&
+				Object.values(this.connectionMap.get(conversation)).every((t) => t === null)
+			) {
+				this.connectionMap.delete(conversation);
 			}
 		}
 	}
@@ -49,32 +63,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	@SubscribeMessage('get')
-	async get(@MessageBody() data: { item: string, as: number, with?: any }, @ConnectedSocket() client: Socket) {
-		console.log('get')
-		console.log(data)
+	async get(@MessageBody() data: { item: string; as: number; with?: any }, @ConnectedSocket() client: Socket) {
+		console.log('/chat get', data);
 		// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-		// return wait(2000).then(async () => {
-		// 	switch (data.item) {
-		// 		case 'conversation': {
-		// 			/** should not send shop-side info to customer but, well, not really our concern here **/
-		// 			if (data.with) {
-		// 				return await this.getConversation(client, data.with.conversation_id);
-		// 			} else {
-		// 				return await this.getAllConversation(client, data.as);
-		// 			}
-		// 			break;
-		// 		}
-
-		// 		case 'message': {
-		// 			if (data.with) {
-		// 				return await this.getAllMessage(client, data.with.conversation_id);
-		// 			} else {
-		// 				//
-		// 			}
-		// 			break;
-		// 		}
-		// 	}
-		// })
 		switch (data.item) {
 			case 'conversation': {
 				/** should not send shop-side info to customer but, well, not really our concern here **/
@@ -92,6 +83,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				} else {
 					//
 				}
+				break;
+			}
+
+			case 'latestMessageId': {
+				return await this.getLatestMessageId(client, data.as);
 				break;
 			}
 		}
@@ -133,7 +129,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				item: 'message',
 				data: {
 					conversation_id: conversation_id,
-					messages: message
+					messages: message,
+				},
+			},
+		};
+	}
+
+	async getLatestMessageId(@ConnectedSocket() client: Socket, uid: number) {
+		const message_id = await this.chatService.findLatestMessageId(uid);
+		return {
+			event: 'get',
+			data: {
+				item: 'latestMessageId',
+				data: {
+					id: message_id,
 				},
 			},
 		};
@@ -166,33 +175,34 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		// 		conn.shop = client.id;
 		// 	}
 		// }
-		if(!this.connectionMap.has(data.conversation_id))
-		{
+		if (!this.connectionMap.has(data.conversation_id)) {
 			const token = {
-				customer: data.from_customer  ? client.id : null,
+				customer: data.from_customer ? client.id : null,
 				shop: !data.from_customer ? client.id : null,
 			};
 			this.connectionMap.set(data.conversation_id, token);
-		}
-		else
-		{
+		} else {
 			const conn = this.connectionMap.get(data.conversation_id);
-			if(data.from_customer)
-			{
+			if (data.from_customer) {
 				conn.customer = client.id;
-			}
-			else
-			{
+			} else {
 				conn.shop = client.id;
 			}
 		}
 		const isCustomer = this.connectionMap.get(data.conversation_id).customer === client.id;
-		this.server
-			.to(data.conversation_id.toString())
-			.emit('status', {
+		this.server.to(data.conversation_id.toString()).emit('status', {
+			event: 'join',
+			peer: isCustomer ? 'customer' : 'shop',
+			conversation_id: data.conversation_id,
+		});
+		console.log(this.connectionMap.get(data.conversation_id));
+		if (Object.values(this.connectionMap.get(data.conversation_id)).every((t) => t !== null)) {
+			this.server.to(data.conversation_id.toString()).emit('status', {
 				event: 'join',
-				peer: isCustomer ? 'customer' : 'shop'
+				peer: isCustomer ? 'shop' : 'customer',
+				conversation_id: data.conversation_id,
 			});
+		}
 	}
 
 	@SubscribeMessage('new-conversation')
@@ -215,11 +225,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		// }
 	}
 
-  @SubscribeMessage('read')
-  async read(@MessageBody() data: { conversation_id: number, message_id: number }) {
-    await this.chatService.updateMessageToSeen(data.message_id)
-    this.server.to(data.conversation_id.toString()).emit('read', data)
-  }
+	@SubscribeMessage('read')
+	async read(@MessageBody() data: { conversation_id: number; message_id: number }) {
+		await this.chatService.updateMessageToSeen(data.message_id);
+		this.server.to(data.conversation_id.toString()).emit('read', data);
+	}
 
 	// @SubscribeMessage('createChat')
 	// create(@MessageBody() createChatDto: CreateChatDto) {

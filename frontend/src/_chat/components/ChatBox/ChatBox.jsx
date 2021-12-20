@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useStyles from './ChatBox.styles'
 import CircleIcon from '@mui/icons-material/Circle'
 import {
@@ -55,8 +55,27 @@ const ChatBox = React.forwardRef((props, ref) => {
             color: '#FD6637',
             width: 12,
             marginRight: '15px'
+        },
+        circleRead: {
+            color: 'transparent',
+            width: 12,
+            marginRight: '15px'
         }
     }
+
+    let lastMessage = ''
+    // if (props.fromCustomer) lastMessage += 'You: '
+    if (props.contentType === 'Text') {
+        lastMessage += props.latestText
+    } else {
+        lastMessage += props.contentType
+    }
+    // console.log(props.contentType, props.fromCustomer, props.latestText)
+
+    useEffect(() => {
+        console.log(props.displayName, props.read, props.fromCustomer)
+    }, [props.latestText])
+    
 
     return (
         <Card sx={classes.card} variant="outlined" onClick={props.setCurrent}>
@@ -67,11 +86,11 @@ const ChatBox = React.forwardRef((props, ref) => {
                         {props.displayName}
                     </Typography>
                     <Typography variant="body2" sx={classes.typography}>
-                        {props.lastMessage}
+                        {lastMessage}
                     </Typography>
                 </Box>
 
-                {!props.read && <CircleIcon sx={classes.circle} />}
+                <CircleIcon sx={(props.fromCustomer || props.read) ? classes.circleRead : classes.circle} />
             </CardActionArea>
         </Card>
     )

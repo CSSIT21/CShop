@@ -68,7 +68,7 @@ const useStyles = makeStyles({
 
 const TimeLabel = (props) => {
     const classes = useStyles()
-    return <Box sx={{color: 'rgba(0,0,0,0.38)'}}>{props.text}</Box>
+    return <Box sx={{ color: 'rgba(0,0,0,0.38)' }}>{props.text}</Box>
 }
 
 const ChatFeed = (props) => {
@@ -90,7 +90,7 @@ const ChatFeed = (props) => {
                 <Box className={classes.chatFeedTitle}>
                     <ProfileBar
                         displayName={messages.shop_name}
-                        status={true}
+                        status={false}
                         pic={messages.shop_pic}
                         url={'/shop/' + messages.shop_id}
                         notification={messages.is_muted}
@@ -109,56 +109,62 @@ const ChatFeed = (props) => {
             </Box>
         )
     }
-        // if(messages.latest_id === )
-        // console.log(messages)
-        // console.log('render for #' + messages.messages[messages.messages.length - 1].id)
 
-        // console.log(
-        //     `%c ChatFeed.jsx %c rendered user#${props.currentConversation} (${
-        //         'currentUser.displayname'
-        //     })`,
-        //     'color:#004254;background:#5ce1ff',
-        //     ''
-        // )
-        return (
-            <Box className={classes.chatFeedContainer}>
-                {/* ChatFeed on the right shows all messages between two users */}
-                <Box className={classes.chatFeedTitle}>
-                    <ProfileBar
-                        displayName={messages.shop_name}
-                        status={true}
-                        pic={messages.shop_pic}
-                        url={'/shop/' + messages.shop_id}
-                        notification={messages.is_muted}
-                    />
-                </Box>
-                <Box className={classes.chatFeed}>
-                    {messages.messages &&
-                        messages.messages.map((m, i) => (
-                            <ChatBubble
-                                key={i}
-                                variant={m.from_customer ? 'right' : 'left'}
-                                read={m.seen}
-                                time={m.message_time}
-                                messageId={m.id}
-                                contentType={m.content_type}
-                                content={m.content}
-                                contentExtra={m.content_extra}
-                                forwardedRef={props.forwardedRef}
-                                openModal={props.openModal}
-                                shouldScroll={props.shouldScroll}
-                            />
-                        ))}
-                </Box>
-                <Box className={classes.chatFeedButtom}>
-                    <MessageBar
-                        currentConversation={props.currentConversation}
-                        handleSubmitMessage={props.handleSubmitMessage}
-                        handleUpload={props.handleUpload}
-                    />
-                </Box>
+    function handleRead(message_id) {
+        props.ChatService.read(props.currentConversation, message_id)
+    }
+    // if(messages.latest_id === )
+    // console.log(messages)
+    // console.log('render for #' + messages.messages[messages.messages.length - 1].id)
+
+    // console.log(
+    //     `%c ChatFeed.jsx %c rendered user#${props.currentConversation} (${
+    //         'currentUser.displayname'
+    //     })`,
+    //     'color:#004254;background:#5ce1ff',
+    //     ''
+    // )
+    return (
+        <Box className={classes.chatFeedContainer}>
+            {/* ChatFeed on the right shows all messages between two users */}
+            <Box className={classes.chatFeedTitle}>
+                <ProfileBar
+                    displayName={messages.shop_name}
+                    status={messages.active}
+                    pic={messages.shop_pic}
+                    url={'/shop/' + messages.shop_id}
+                    notification={messages.is_muted}
+                />
             </Box>
-        )
+            <Box className={classes.chatFeed}>
+                {messages.messages &&
+                    messages.messages.map((m, i) => (
+                        <ChatBubble
+                            key={i}
+                            variant={m.from_customer ? 'right' : 'left'}
+                            read={m.seen}
+                            fromCustomer={m.from_customer}
+                            time={m.message_time}
+                            messageId={m.id}
+                            contentType={m.content_type}
+                            content={m.content}
+                            contentExtra={m.content_extra}
+                            forwardedRef={props.forwardedRef}
+                            openModal={props.openModal}
+                            shouldScroll={props.shouldScroll}
+                            onRead={handleRead}
+                        />
+                    ))}
+            </Box>
+            <Box className={classes.chatFeedButtom}>
+                <MessageBar
+                    currentConversation={props.currentConversation}
+                    handleSubmitMessage={props.handleSubmitMessage}
+                    handleUpload={props.handleUpload}
+                />
+            </Box>
+        </Box>
+    )
 }
 
 export default ChatFeed

@@ -25,9 +25,7 @@ const useStyles = makeStyles({
 const ChatPage = (props) => {
     const [auth] = useRecoilState(authState)
     const user_id = auth.user.id
-    const user_role = auth.user.role
     const [ChatService] = useState(() => new _ChatService(auth.user, handleGetConversation, handleIncomingMessage))
-    const self = ChatService.self
     const { id: router_id } = useParams()
 
     const [currentConversation, setCurrentConversation] = useState(0)
@@ -44,11 +42,11 @@ const ChatPage = (props) => {
     // console.log('rendering with messages: ', messages)
 
     function handleGetConversation() {
-        console.log(
-            `%c Chat.jsx %c updated conversations`,
-            'background:#40ffbf;color:#032e20',
-            ''
-        )
+        // console.log(
+        //     `%c Chat.jsx %c updated conversations`,
+        //     'background:#40ffbf;color:#032e20',
+        //     ''
+        // )
         setShouldScroll(true)
         // console.log(messages)
     }
@@ -61,7 +59,7 @@ const ChatPage = (props) => {
         setShouldScroll(true)
         // if(message.conversation_id === currentConversation)
         // {
-        changeChat(message.conversation_id)
+        // changeChat(message.conversation_id)
         // }
         //setLastUpdate(Math.random())
         // setMessages(newMessages)
@@ -177,11 +175,11 @@ const ChatPage = (props) => {
         if (router_id) {
             alert('opening chat page for id#' + router_id)
         }
-        console.log(
-            `%c Chat.jsx %c initiated for user#${user_id}`,
-            'background:#40ffbf;color:#032e20',
-            ''
-        )
+        // console.log(
+        //     `%c Chat.jsx %c initiated for user#${user_id}`,
+        //     'background:#40ffbf;color:#032e20',
+        //     ''
+        // )
     }, [router_id])
 
     useEffect(() => {
@@ -209,7 +207,7 @@ const ChatPage = (props) => {
     }, [lastUpdate])
 
     useEffect(() => {
-        console.log('conv ', currentConversation)
+        // console.log('conv ', currentConversation)
     }, [currentConversation])
 
     return (

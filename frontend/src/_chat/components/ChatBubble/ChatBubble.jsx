@@ -49,6 +49,10 @@ const ChatBubble = (props) => {
         if(props.shouldScroll) props.forwardedRef.current.scrollIntoView({ behavior: 'smooth' })
     }, [props.shouldScroll])
 
+    useEffect(() => {
+        if(!props.read) props.onRead(props.messageId)
+    }, [props.read])
+
     return (
         <Box
             className={[classes.chatBubble, classes[props.variant]].join(' ')}
@@ -57,7 +61,7 @@ const ChatBubble = (props) => {
             {bubble}
             <Box className={classes.statusText}>
                 <Typography variant="caption" component="span">
-                    {props.read ? 'Read' : ''}
+                    {(props.fromCustomer && props.read) ? 'Read' : ''}
                 </Typography>
                 <Typography variant="caption" component="span">
                     {formatTime(props.time)}

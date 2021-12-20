@@ -22,7 +22,7 @@ export class ChatService {
 			},
 		});
 
-		console.log(conv);
+		// console.log(conv);
 
 		return conv.id;
 	}
@@ -33,14 +33,14 @@ export class ChatService {
 				id: conversation_id,
 			},
 		});
-		console.log(conv);
+		// console.log(conv);
 		return conv;
 	}
 
 	async findAllConversation(uid: number) {
 		const conv = await this.prisma
 			.$queryRaw`WITH cmax(id, time) AS (SELECT conversation_id, max(message_time) FROM chat_message GROUP BY conversation_id)
-SELECT chat_conversation.id AS id, chat_conversation.customer_id AS customer_id, chat_conversation.shop_id AS shop_id, marked_as, note, is_muted, is_blocked, firstname, lastname, cpf.path AS customer_pic, shop_name, sp.path AS shop_pic, content_type, seen, COALESCE(text) AS latest_text
+SELECT chat_conversation.id AS id, chat_conversation.customer_id AS customer_id, chat_conversation.shop_id AS shop_id, marked_as, note, is_muted, is_blocked, firstname, lastname, cpf.path AS customer_pic, shop_name, sp.path AS shop_pic, content_type, seen, COALESCE(text) AS latest_text, chat_message.id AS latest_id, from_customer
 FROM cmax
     JOIN chat_message ON cmax.time = chat_message.message_time
     JOIN chat_conversation ON chat_message.conversation_id = chat_conversation.id
@@ -54,7 +54,7 @@ WHERE chat_conversation.customer_id = ${uid}
    OR si.customer_id = ${uid}
 ORDER BY message_time DESC;`;
 
-		console.log(conv);
+		// console.log(conv);
 
 		return conv;
 	}
@@ -110,9 +110,20 @@ FROM msg
 WHERE conversation_id = ${conversation_id}
 ORDER BY message_time;`;
 
-		console.log(message);
+		// console.log(message);
 
 		return message;
+	}
+
+	async findLatestMessageId(uid: number) {
+		const message: {id: number}[] = await this.prisma.$queryRaw`SELECT chat_message.id
+FROM chat_message
+    JOIN chat_conversation cc on chat_message.conversation_id = cc.id
+    JOIN shop_info si on cc.shop_id = si.id
+WHERE cc.customer_id = ${uid} OR si.customer_id = ${uid}
+ORDER BY message_time DESC LIMIT 1;`;
+
+		return message.length === 1 ? message[0].id : 0
 	}
 
 	async createMessage(message: MessageDto) {
@@ -137,7 +148,7 @@ ORDER BY message_time;`;
 				break;
 		}
 
-		console.log(msg);
+		// console.log(msg);
 
 		delete msgContent.message_id;
 

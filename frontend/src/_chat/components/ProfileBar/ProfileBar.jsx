@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Box } from '@mui/system'
 import { Button, Typography, Avatar } from '@mui/material'
 import { IconButton } from '@mui/material'
@@ -10,6 +11,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 const ProfileBar = (props) => {
     const classes = useStyles()
     const [noti, setNoti] = useState(props.notification)
+    const history = useHistory()
 
     return (
         <Box className={classes.profileBarContainer}>
@@ -45,7 +47,9 @@ const ProfileBar = (props) => {
                         marginRight: '20px',
                         marginLeft: '15px'
                     }}
-                    href={props.url} /* consider changing this to use react-router */
+                    onClick={() => {
+                        history.push(props.url)
+                    }}
                 >
                     Go to shop
                 </Button>
