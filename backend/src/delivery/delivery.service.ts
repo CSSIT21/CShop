@@ -167,8 +167,14 @@ export class DeliveryService {
 						}
 					}
 				})
+				const updateAdmin = await this.prisma.delivery_admin_log.create({
+					data: {
+						admin_id: checkAdmin.id,
+						delivery_id: updateDetail.id
+					}
+				})
 
-				if (updateDetail) {
+				if (updateAdmin) {
 					return {
 						success: true
 					}
