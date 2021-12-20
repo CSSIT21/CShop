@@ -1628,6 +1628,7 @@ enum ChatMessageTypes {
   Text
   Image
   Video
+  Noti
 }
 
 enum ChatConversationMark {
