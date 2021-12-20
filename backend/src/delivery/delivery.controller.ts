@@ -35,24 +35,9 @@ export class DeliveryController {
 		return this.deliveryService.generateTrackingNumber(address)
 	}
 
-	@Get('requests')
-	getAllRequests() {
-		return this.deliveryService.getAllRequests();
-	}
-
-	@Get('packages')
-	getAllpackages() {
-		return this.deliveryService.getAllpackages();
-	}
-
-	@Get('delivering')
-	getAllDelivering() {
-		return this.deliveryService.getAllDelivering();
-	}
-
-	@Get('success')
-	getAllSuccess() {
-		return this.deliveryService.getAllSuccess();
+	@Get('admin')
+	getAllRequests(@Query('status') status: string) {
+		return this.deliveryService.getAdminCheckStatus(status);
 	}
 
 	@Post('change-status')
@@ -68,20 +53,5 @@ export class DeliveryController {
 	@Get('search')
 	getDetail(@Query('tracking') trackingNumber: string) {
 		return this.deliveryService.getDetail(trackingNumber)
-	}
-
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.deliveryService.findOne(+id);
-	}
-
-	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateDeliveryDto: UpdateDeliveryDto) {
-		return this.deliveryService.update(+id, updateDeliveryDto);
-	}
-
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.deliveryService.remove(+id);
 	}
 }
