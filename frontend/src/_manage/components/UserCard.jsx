@@ -45,18 +45,23 @@ export class UserCard extends React.Component {
   }
 
   async componentDidMount(){
+    let fetchedData3 = {}
     const fetchedData = await axios.get(
       "http://localhost:8080/manageaccount/address?id=" + this.props.user.id
     );
     const fetchedData2 = await axios.get(
       "http://localhost:8080/manageaccount/suspension/types"
     );
-    const fetchedData3 = await axios.get(
+    if(this.props.user.customer_picture != null){
+    fetchedData3 = await axios.get(
       "http://localhost:8080/manageaccount/users/picture?id=" + this.props.user.customer_picture.customer_id
     );
+    }
     this.address = fetchedData.data;
     this.types = fetchedData2.data;
+    if(fetchedData3 != null){
     this.path = fetchedData3.data.path;
+    }
     this.forceUpdate();
   }
 

@@ -74,12 +74,14 @@ const ManageAccountPage = () => {
         const fetchedData = await axios.get(
           "http://localhost:8080/manageaccount/users"
         );
+        fetchedData.data.forEach((u) => {u["name"] = u.customer_info.firstname + " " + u.customer_info.lastname; u["gender"] = u.customer_info.gender; u["birthdate"] = u.customer_info.birthdate})
         setUsersList(fetchedData.data);
       };
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
+        console.log(sortBy);
       };
 
     const [sortOrder, setSortOrder] = React.useState(false);
@@ -158,12 +160,9 @@ const ManageAccountPage = () => {
                             >
                               <MenuItem value={'name'}>Name</MenuItem>
                               <MenuItem value={'id'}>User ID</MenuItem>
-                              <MenuItem value={'address_line'}>Address</MenuItem>
                               <MenuItem value={'gender'}>Gender</MenuItem>
-                              <MenuItem value={'postal_code'}>Postal Code</MenuItem>
                               <MenuItem value={'date'}>Join Date</MenuItem>
                               <MenuItem value={'birthdate'}>Birthday</MenuItem>
-                              <MenuItem value={'status'}>Status</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -206,7 +205,7 @@ const ManageAccountPage = () => {
                     <CardContent>
                         {
                         (showRestricted ? 
-                            (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => {return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
                                 return obj.admin_customer_suspensions != null;
                             })

@@ -194,7 +194,9 @@ export class ManageaccountController {
   @Public()
   public getUsers(){
     return this.prisma.customer.findMany({
-      take: 2,
+      where:{
+        customer_info: { isNot: null}
+      },
       include:{
         customer_picture: true,
         customer_info: true,
@@ -282,17 +284,5 @@ export class ManageaccountController {
         id: +i
       }
     });
-  }
-
-  @Get(':id')
-  @Public()
-  public findOne(@Param('id') id: string) {
-    return this.manageaccountService.findOne(+id);
-  }
-
-  @Delete(':id')
-  @Public()
-  public remove(@Param('id') id: string) {
-    return this.manageaccountService.remove(+id);
   }
 }
