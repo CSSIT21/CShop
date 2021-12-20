@@ -4,6 +4,9 @@ import ProductSuggestion from "../components/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
 import CartSection from '../components/CartSection';
 import axios from 'axios';
+import authState from "../../common/store/authState";
+import { useRecoilValue } from "recoil";
+
 
 
 function ShoppingCartPage() {
@@ -11,9 +14,10 @@ function ShoppingCartPage() {
     const [sugproduct, setSugproduct] = useState(fakeProducts);
     const [discounts, setDiscounts] = useState([]);
     const [accountInfo, setAccountInfo] = useState([]);
+    const auth = useRecoilValue(authState);
     
     useEffect(() => {
-        axios.get('http://localhost:8080/cart/1').then(item => {
+        axios.get(`http://localhost:8080/cart/${auth.user.id}`).then(item => {
             setProducts(item.data.newD.map(item => {
                 return ({...{
                 orderID: item.id,

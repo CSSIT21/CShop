@@ -17,13 +17,13 @@ const actionLists = [
 		label: "notification",
 		icon: NotificationsNoneIcon,
 		value: 5,
-		path: '/chat'
+		path: '/notification'
 	},
 	{
 		label: "cart",
 		icon: ShoppingCartOutlinedIcon,
 		value: '66+',
-		path: '/chat'
+		path: '/cart'
 	}
 ];
 
