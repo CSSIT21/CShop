@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { makeStyles } from '@mui/styles';
 import { Box } from "@mui/system";
 import { useState } from "react";
@@ -6,6 +7,79 @@ import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import { Typography } from '@mui/material';
 import HeaderWithButton from './HeaderWithButton';
 import { Link } from 'react-router-dom';
+import axios from "axios";
+import config from "~/common/constants";
+
+const CategoriesSection = () => {
+	const [categories, setCategories] = useState([]);
+	const [page, setPage] = useState(0);
+	const classes = useStyles();
+	const itemsPerRow = 6;
+	const totalPage = Math.ceil(categories.length / itemsPerRow);
+
+	const getData = () => {
+		axios
+			.get(`${config.SERVER_URL}/home/categories`)
+			.then(({ data }) => {
+				if (data.success) {
+					return setCategories(data.categories);
+				}
+				else {
+					return console.log(data);
+				}
+			})
+			.catch((err) => {
+				return console.log(err.message);
+			})
+	};
+
+	useEffect(() => {
+		getData();
+	}, [])
+
+	return (
+		<Box className={classes.categoriesWrapper}>
+			<HeaderWithButton
+				colors="black"
+				headerName="Categories"
+				page={page}
+				totalPage={totalPage}
+				setPage={setPage}
+				isShow={categories.length > 0}
+			/>
+
+			{categories.length > 0
+				? <>
+					<Box className={classes.categoriesContent}>
+						<Carousel
+							items={categories}
+							pageState={page}
+							setPageState={setPage}
+							itemsPerRow={itemsPerRow}
+						>
+							{({ id, name, icon_id_from_category }) => (
+								<Link to={`/search/category/${id}`}>
+									<Box className={classes.categoriesItem} key={id}>
+										<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
+										<img src={icon_id_from_category.path} alt={icon_id_from_category.title} />
+									</Box>
+								</Link>
+							)}
+						</Carousel>
+					</Box>
+					<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
+				</>
+				: <Typography
+					textAlign="center"
+					fontSize={16}
+					fontWeight={400}
+					color="gray">
+					No categories to show
+				</Typography>}
+		</Box >
+
+	);
+};
 
 const useStyles = makeStyles({
 	categoriesWrapper: {
@@ -36,106 +110,5 @@ const useStyles = makeStyles({
 		marginBottom: '35px',
 	},
 });
-
-const categoriesItems = [
-	{
-		id: 0,
-		title: "Free Shipping",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 1,
-		title: "Electonics",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 2,
-		title: "Education",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 3,
-		title: "Fashion",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 4,
-		title: "Kids",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 5,
-		title: "Beauty",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 6,
-		title: "Furniture",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 7,
-		title: "Accessories",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 8,
-		title: "Food",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 9,
-		title: "Sport",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-	{
-		id: 10,
-		title: "Plants",
-		url: "https://www.pngall.com/wp-content/uploads/5/LED-TV-PNG-Image.png",
-	},
-];
-
-const CategoriesSection = () => {
-
-	const [items, setItems] = useState(categoriesItems);
-	const [page, setPage] = useState(0);
-	const classes = useStyles();
-	const itemsPerRow = 6;
-	const totalPage = Math.ceil(items.length / itemsPerRow);
-
-	return (
-		<Box className={classes.categoriesWrapper}>
-
-			<Box className={classes.categoriesContent}>
-				<HeaderWithButton
-					colors="black"
-					headerName="Categories"
-					page={page}
-					totalPage={totalPage}
-					setPage={setPage}
-				/>
-
-				<Carousel
-					items={items}
-					pageState={page}
-					setPageState={setPage}
-					itemsPerRow={itemsPerRow}
-				>
-					{(item) => (
-						<Link to={`/search/category/${item.id}`}>
-							<Box className={classes.categoriesItem} key={item.id}>
-								<Typography component="h3" color="black" fontWeight={600} mb={2} >{item.title}</Typography>
-								<img src={item.url} alt={item.title} />
-							</Box>
-						</Link>
-					)}
-				</Carousel>
-			</Box >
-
-			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
-		</Box >
-
-	);
-};
 
 export default CategoriesSection;

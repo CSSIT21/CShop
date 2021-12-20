@@ -23,7 +23,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('sellershop')
 export class SellershopController {
-	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) {}
+	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
 
 	@Get(':id')
 	@Public()

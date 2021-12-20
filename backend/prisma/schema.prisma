@@ -22,7 +22,7 @@ model customer {
   chat_preference               chat_preference?
   chat_reported_message         chat_reported_message[]
   customer_address              customer_address[]
-  followed_shop                 customer_followed_shop[]
+  customer_followed_shop        customer_followed_shop[]
   customer_info                 customer_info?
   old_password                  customer_old_password?
   customer_picture              customer_picture?
@@ -45,10 +45,10 @@ model customer {
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
   product_reviews               product_reviews[]
-  rem_number_interaction_user   rem_number_interaction_user?
-  rem_number_payment_product    rem_number_payment_product?
-  rem_number_product_in_cart    rem_number_product_in_cart?
-  rem_number_view_product       rem_number_view_product?
+  rem_number_interaction_user   rem_number_interaction_user[]
+  rem_number_payment_product    rem_number_payment_product[]
+  rem_number_product_in_cart    rem_number_product_in_cart[]
+  rem_number_view_product       rem_number_view_product[]
   rem_suggestion_homepage       rem_suggestion_homepage?
   sconsole_discount_log         sconsole_discount_log[]
   sconsole_refund               sconsole_refund[]
@@ -123,16 +123,16 @@ model customer_wishlist {
   added_date                         DateTime @default(now())
   id                                 Int      @id @default(autoincrement())
   customer_id_from_customer_wishlist customer @relation(fields: [customer_id], references: [id])
-  product                            product  @relation(fields: [product_id], references: [id])
+  product_id_from_wishlist           product  @relation(fields: [product_id], references: [id])
 }
 
 model customer_followed_shop {
-  customer_id                             Int
-  shop_id                                 Int
-  added_date                              DateTime  @default(now())
-  id                                      Int       @id @default(autoincrement())
-  customer_id_from_customer_followed_shop customer  @relation(fields: [customer_id], references: [id])
-  shop_id_from_customer_followed_shop     shop_info @relation(fields: [shop_id], references: [id])
+  customer_id                         Int
+  shop_id                             Int
+  added_date                          DateTime  @default(now())
+  id                                  Int       @id @default(autoincrement())
+  customer_id_from_followed_shop      customer  @relation(fields: [customer_id], references: [id])
+  shop_id_from_customer_followed_shop shop_info @relation(fields: [shop_id], references: [id])
 }
 
 model customer_email_verification {
@@ -233,14 +233,14 @@ model shop_flashsale {
 }
 
 model shop_flashsale_history {
-  flashsale_id                        Int            @id
-  shop_id                             Int
-  started_date                        DateTime       @default(now())
-  ended_date                          DateTime       @default(now())
-  products                            Json[]
-  quantity                            Json
-  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_shop_flashsale_history shop_info      @relation(fields: [shop_id], references: [id])
+  flashsale_id                             Int            @id
+  shop_id                                  Int
+  started_date                             DateTime       @default(now())
+  ended_date                               DateTime       @default(now())
+  products                                 Json[]
+  quantity                                 Json
+  flashsale_id_from_shop_flashsale_history shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_shop_flashsale_history      shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model shop_banner {
@@ -253,6 +253,12 @@ model shop_banner {
 model shop_banner_carousel {
   id      String @id
   banners Json[]
+}
+
+model shop_product_carousel_select {
+  id          String @id @unique
+  filter_name String
+  products    Int[]
 }
 
 model shop_product_carousel {
@@ -346,6 +352,15 @@ model product {
   sconsole_refund_history         sconsole_refund_history[]
   sconsole_set_lanch_product      sconsole_set_lanch_product?
   sconsole_stock_history          sconsole_stock_history[]
+}
+
+model product_picture {
+  id                              Int     @id @default(autoincrement())
+  product_id                      Int
+  title                           String  @db.VarChar(50)
+  path                            String
+  thumbnail                       String
+  product_id_from_product_picture product @relation(fields: [product_id], references: [id])
 }
 
 model product_detail {
@@ -719,27 +734,28 @@ model order {
   order_billing          order_billing?
   order_cancel_refund    order_cancel_refund[]
   order_detail           order_detail?
-  order_item             order_item?
+  order_item             order_item[]
   order_refund_item      order_refund_item[]
   sconsole_order_history sconsole_order_history[]
   sconsole_order_status  sconsole_order_status[]
 }
 
 model order_status {
-  id                      Int                     @id @default(autoincrement())
-  delivery_by             String                  @default("CShop Delivery")
-  status_id               Int
-  delivery_product_status delivery_product_status @relation(fields: [status_id], references: [id])
-  order_item              order_item[]
+  id                          Int                     @id @default(autoincrement())
+  delivery_by                 String                  @default("CShop Delivery")
+  status_id                   Int
+  status_id_from_order_detail delivery_product_status @relation(fields: [status_id], references: [id])
+  order_item                  order_item[]
 }
 
 model order_item {
-  order_id                   Int          @id
+  order_id                   Int
   product_id                 Int
   product_options            Int[]
   quantity                   Int
   price                      Int
   status_id                  Int
+  id                         Int          @id @default(autoincrement())
   order_id_from_order_item   order        @relation(fields: [order_id], references: [id])
   product_id_from_order_item product      @relation(fields: [product_id], references: [id])
   status_id_from_order_item  order_status @relation(fields: [status_id], references: [id])
@@ -931,43 +947,47 @@ model chat_deleted_message {
 }
 
 model rem_number_view_product {
-  customer_id                              Int      @id
+  customer_id                              Int
   product_id                               Int
   total_view                               Int
   event_id                                 Int
   added_time                               DateTime @db.Timestamp(6)
+  id                                       Int      @id @default(autoincrement())
   customer_id_from_rem_number_view_product customer @relation(fields: [customer_id], references: [id])
   event_id_from_rem_number_view_product    event    @relation(fields: [event_id], references: [id])
   product_id_from_rem_number_view_product  product  @relation(fields: [product_id], references: [id])
 }
 
 model rem_number_product_in_cart {
-  customer_id                                 Int      @id
+  customer_id                                 Int
   product_id                                  Int
   sum_in_cart                                 Int
   added_time                                  DateTime @default(now()) @db.Timestamp(6)
   event_id                                    Int
+  id                                          Int      @id @default(autoincrement())
   customer_id_from_rem_number_product_in_cart customer @relation(fields: [customer_id], references: [id])
   event_id_from_rem_number_product_in_cart    event    @relation(fields: [event_id], references: [id])
   product_id_from_rem_number_product_in_cart  product  @relation(fields: [product_id], references: [id])
 }
 
 model rem_number_payment_product {
-  customer_id                                 Int      @id
+  customer_id                                 Int
   product_id                                  Int
   sum_buy                                     Int
   added_time                                  DateTime @default(now()) @db.Timestamp(6)
   event_id                                    Int
+  id                                          Int      @id @default(autoincrement())
   customer_id_from_rem_number_payment_product customer @relation(fields: [customer_id], references: [id])
   event_id_from_rem_number_payment_product    event    @relation(fields: [event_id], references: [id])
   product_id_from_rem_number_payment_product  product  @relation(fields: [product_id], references: [id])
 }
 
 model rem_number_interaction_user {
-  customer_id                                  Int      @id
+  customer_id                                  Int
   product_id                                   Int
   interaction_score                            Int
   added_time                                   DateTime @default(now()) @db.Timestamp(6)
+  id                                           Int      @id @default(autoincrement())
   customer_id_from_rem_number_interaction_user customer @relation(fields: [customer_id], references: [id])
   product_id_from_rem_number_interaction_user  product  @relation(fields: [product_id], references: [id])
 }
@@ -1049,13 +1069,13 @@ model sconsole_discount_log {
 }
 
 model sconsole_flashsale_log {
-  id                                  Int            @id @default(autoincrement())
-  shop_id                             Int
-  flashsale_id                        Int
-  added_date                          DateTime       @default(now()) @db.Timestamp(6)
-  ended_date                          DateTime?      @db.Timestamp(6)
-  shop_flashsale                      shop_flashsale @relation(fields: [flashsale_id], references: [id])
-  shop_id_from_sconsole_flashsale_log shop_info      @relation(fields: [shop_id], references: [id])
+  id                                       Int            @id @default(autoincrement())
+  shop_id                                  Int
+  flashsale_id                             Int
+  added_date                               DateTime       @default(now()) @db.Timestamp(6)
+  ended_date                               DateTime?      @db.Timestamp(6)
+  flashsale_id_from_sconsole_flashsale_log shop_flashsale @relation(fields: [flashsale_id], references: [id])
+  shop_id_from_sconsole_flashsale_log      shop_info      @relation(fields: [shop_id], references: [id])
 }
 
 model sconsole_order_history {
@@ -1310,6 +1330,7 @@ model home_shop_log {
   customer_id                    Int
   shop_id                        Int
   id                             Int       @id @default(autoincrement())
+  view_date                      DateTime  @db.Timestamp(6)
   customer_id_from_home_shop_log customer  @relation(fields: [customer_id], references: [id])
   shop_id_from_home_shop_log     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -1482,6 +1503,20 @@ model business_interaction_weight {
   date   DateTime @db.Date
 }
 
+model delivery_product_status {
+  id                 Int                  @id @default(autoincrement())
+  added_date         DateTime             @default(now()) @db.Timestamp(6)
+  latest_update      DateTime             @default(now()) @db.Timestamp(6)
+  complete_date      DateTime?            @db.Timestamp(6)
+  recipient_name     String?              @db.VarChar(60)
+  status             String               @default("Received a request")
+  province           String               @db.VarChar(2)
+  tracking_number    String?              @db.VarChar(10)
+  delivery_detail    Json[]
+  delivery_admin_log delivery_admin_log[]
+  order_status       order_status[]
+}
+
 model delivery_admin {
   id       Int    @id @default(autoincrement())
   username String @db.VarChar(20)
@@ -1490,40 +1525,11 @@ model delivery_admin {
 }
 
 model delivery_admin_log {
-  admin_id                Int
-  delivery_id             Int
-  updated_time            DateTime                @db.Timestamp(6)
-  id                      Int                     @id @default(autoincrement())
-  delivery_product_status delivery_product_status @relation(fields: [delivery_id], references: [id])
-}
-
-model delivery_product_status {
-  id                 Int                  @id @default(autoincrement())
-  added_date         DateTime             @default(now()) @db.Timestamp(6)
-  latest_update      DateTime             @default(now()) @db.Timestamp(6)
-  complete_date      DateTime?            @db.Timestamp(6)
-  recipient_name     String?              @db.VarChar(60)
-  status             String               @default("Received a request")
-  delivery_detail    Json
-  province           String               @db.VarChar(2)
-  tracking_number    String?              @db.VarChar(10)
-  delivery_admin_log delivery_admin_log[]
-  order_status       order_status[]
-}
-
-model product_picture {
-  id         Int     @id @default(autoincrement())
-  product_id Int
-  title      String  @db.VarChar(50)
-  path       String
-  thumbnail  String
-  product    product @relation(fields: [product_id], references: [id])
-}
-
-model shop_product_carousel_select {
-  id          String @id @unique
-  filter_name String
-  products    Int[]
+  admin_id                            Int
+  delivery_id                         Int
+  updated_time                        DateTime                @default(now()) @db.Timestamp(6)
+  id                                  Int                     @id @default(autoincrement())
+  delivery_id_from_delivery_admin_log delivery_product_status @relation(fields: [delivery_id], references: [id])
 }
 
 enum homeBannerPicturePosition {
@@ -1622,6 +1628,7 @@ enum ChatMessageTypes {
   Text
   Image
   Video
+  Noti
 }
 
 enum ChatConversationMark {

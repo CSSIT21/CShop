@@ -23,7 +23,6 @@ const BannerItem = ({
 	setItems = noop,
 	onNext = noop,
 	onPrev = noop,
-	getData = noop,
 	handleDeleteBanner = noop,
 	mainLoading = false,
 }) => {
@@ -85,11 +84,13 @@ const BannerItem = ({
 				.post(`${config.SERVER_URL}/home/banner/${item.id}/sub`, { ...bannerImage })
 				.then(({ data }) => {
 					if (data.success) {
-						console.log(data.bannerPic);
-						getData();
-						setAddLoading(false);
+						let array = items;
+						array[index].pictures.children = [...array[index].pictures.children, data.bannerPic];
+						setItems(array);
 
-						Swal.fire('Done', "Already uploaded new sub image", 'success');
+						setAddLoading(false);
+						onSetItem();
+						return Swal.fire('Done', "Already uploaded new sub image", 'success');
 					}
 				})
 				.catch((err) => {
@@ -109,9 +110,14 @@ const BannerItem = ({
 			.delete(`${config.SERVER_URL}/home/banner/${item.id}/sub/${id}`)
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.deletedImage);
-					getData();
+					let array = items;
+					array[index].pictures.children = array[index].pictures.children.filter((e) => {
+						return e.id != id
+					})
+					setItems(array);
+
 					setDeleteLoading(false);
+					onSetItem();
 					return Swal.fire('Done', "Already deleted sub image of this banner", 'success');
 				}
 			})
@@ -188,9 +194,9 @@ const BannerItem = ({
 					{/* Input form */}
 					<BannerInfo
 						setItems={setItems}
-						item={item}
+						items={items}
+						index={index}
 						open={open}
-						getData={getData}
 						handleDialog={onClickDialog}
 					/>
 				</Stack>
@@ -201,10 +207,9 @@ const BannerItem = ({
 						{children.map((item) => (
 							< SubImage
 								key={item.id}
-								id={item.id}
 								path={item.path}
 								title={item.title}
-								onDelete={onDeleteSubImg}
+								onDelete={() => onDeleteSubImg(item.id)}
 								loading={deleteLoading}
 							/>
 						))}

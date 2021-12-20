@@ -52,13 +52,6 @@ const AddressInfo = ({ address, setAddress = () => {} }) => {
         setOpen(false);
       });
   };
-  useEffect(() => {
-    axios
-      .post(config.SERVER_URL + "/profile/address/get", { id: auth.user.id })
-      .then(({ data }) => {
-        setAddress(data.address);
-      });
-  }, []);
 
   return (
     <Box sx={{ width: "100%", marginTop: "50px", paddingBottom: "170px" }}>

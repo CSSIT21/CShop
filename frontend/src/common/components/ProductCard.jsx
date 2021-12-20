@@ -2,7 +2,10 @@ import Card from "@mui/material/Card";
 import ProductMedia from "./ProductCardBase/ProductMedia";
 import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
-import { useHistory } from "react-router";
+import authState from "~/common/store/authState";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
+import config from "~/common/constants";
 import { Link } from "react-router-dom";
 
 const cardStyle = {
@@ -27,6 +30,7 @@ const productTemplate = {
 };
 
 const ProductCard = (props) => {
+  const { user, isLoggedIn } = useRecoilValue(authState);
   const {
     product = productTemplate,
     to = "/product/1",
@@ -34,9 +38,32 @@ const ProductCard = (props) => {
     status = undefined,
     addToCart = false,
   } = props;
-  const handleClick = () => {
-    //axios get log
+
+  const postData = () => {
+    if (isLoggedIn) {
+      axios
+        .post(`${config.SERVER_URL}/log-system/product/${user.id}/${product.id}`, {
+          view_date: new Date().toISOString(),
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            return console.log(data.product);
+          }
+          else {
+            return console.log(data);
+          }
+        })
+        .catch((err) => {
+          return console.log(err.message);
+        })
+    }
   };
+
+  const handleClick = () => {
+    // api product log
+    postData();
+  };
+
   return (
     <Link to={"/product/" + product.id}>
       <Card variant="outlined" sx={cardStyle} onClick={handleClick}>

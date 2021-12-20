@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-const HeaderLeft = ({ shopInfo = {}, follow = false }) => {
+const HeaderLeft = ({ shopInfo = {} }) => {
   const classes = useStyles();
   const auth = useRecoilValue(authState);
   const { id, cateId } = useParams();
@@ -40,7 +40,6 @@ const HeaderLeft = ({ shopInfo = {}, follow = false }) => {
       setshopimage(shopInfo.shop_picture.path);
     }
   }, [shopInfo]);
-  console.log("follow", follow);
   useEffect(() => {
     const joinDate = shopInfo.last_active;
     setdate(dayjs(joinDate).fromNow());
@@ -76,7 +75,6 @@ const HeaderLeft = ({ shopInfo = {}, follow = false }) => {
                 height="45px"
                 fontSize="14px"
                 fontWeight="500"
-                follow={follow}
                 shop_id={id}
                 customer_id={auth.user.id}
               />
