@@ -81,7 +81,7 @@ export class SellerCard extends React.Component {
         let b = 0;
         if(item.product_reviews.length > 0){
         item.product_reviews.forEach((re) => {
-          b = +b + +re.rating
+          b = +b + re.rating
         })
         a = +a + (b / item.product_reviews.length)
         }
