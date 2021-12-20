@@ -4,7 +4,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Badge, Fab } from '@mui/material';
 import { Box } from '@mui/system';
 import { For } from '~/common/utils';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 const actionLists = [
 	{
