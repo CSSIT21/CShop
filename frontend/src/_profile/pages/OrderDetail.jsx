@@ -17,15 +17,29 @@ import config from "~/common/constants";
 import Dialog from "@mui/material/Dialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import ProductDetailHeader from "../components/HistoryBase/ProductDetailHeader";
+import Swal from "sweetalert2";
 
 const OrderDetail = () => {
   const classes = useStyles();
   const orderId = useParams();
   const auth = useRecoilValue(authState);
-  const [reviewable, setreviewable] = useState(true);
+  // const [reviewable, setreviewable] = useState(true);
   const [onLoad, setonLoad] = useState(false);
   const [orderDetail, setorderDetail] = useState({});
   const [products, setProducts] = useState([]);
+  const [cartitems, setcartitems] = useState([]);
+
+  const onHandleReOrder = () => {
+    axios
+      .post(`${config.SERVER_URL}/cart/rebuy`, {
+        userID: auth.user.id,
+        cartitems: cartitems,
+      })
+      .then(({ data }) => {
+        console.log(data);
+      });
+    // console.log(auth.user.id, cartitems);
+  };
   useEffect(() => {
     setonLoad(true);
     axios
@@ -40,9 +54,21 @@ const OrderDetail = () => {
       });
   }, []);
   useLayoutEffect(() => {
+    setcartitems(
+      products.map((product) => ({
+        productID: product.product_id,
+        amount: product.quantity,
+        firstchoiceID: product.product_options[0],
+        seconedchoiceID: product.product_options[1],
+        price: product.product_id_from_order_item.price,
+      }))
+    );
+  }, [products]);
+  useLayoutEffect(() => {
     document.body.classList.add("gray");
     return () => document.body.classList.remove("gray");
   }, []);
+
   return (
     <>
       <TopProfile />
@@ -94,7 +120,7 @@ const OrderDetail = () => {
                   variant="contained"
                   sx={buttonStyle}
                   startIcon={<ShoppingCartRoundedIcon />}
-                  onClick={() => setOpen(true)}
+                  onClick={onHandleReOrder}
                 >
                   Buy Again
                 </Button>
