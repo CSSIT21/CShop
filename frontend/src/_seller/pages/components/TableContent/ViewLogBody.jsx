@@ -35,7 +35,7 @@ const ViewLogBody = ({ columns }) => {
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/getcustomerviews`
       );
 
-      console.log(res.data);
+      // console.log(res.data);
       const created = res.data.map((el) =>
         createData(
           el.id,

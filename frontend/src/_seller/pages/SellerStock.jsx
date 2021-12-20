@@ -17,6 +17,7 @@ import Avatar from "@mui/material/Avatar";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
 import PageHeader from "./components/PageHeader";
+import AllInboxIcon from "@mui/icons-material/AllInbox";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -54,7 +55,6 @@ const SellerStock = () => {
 
   const [product, setProduct] = useState(false);
 
-
   return (
     <>
       <Box>
@@ -79,7 +79,12 @@ const SellerStock = () => {
         <PageHeader Pagename={Pagename} />
         {/* <SellerSearch Pagename={Pagename} /> */}
         <Button variant="contained" size="large" onClick={setProduct}>
-          {<AddIcon fontSize="24" />}&nbsp;New Product
+          Product&nbsp;
+          <AllInboxIcon
+            sx={{
+              fontSize: "30px",
+            }}
+          />
         </Button>
       </Box>
       <Box sx={{ mt: "4rem" }} />

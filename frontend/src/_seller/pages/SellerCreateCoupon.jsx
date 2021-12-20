@@ -11,6 +11,11 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import UploadComponent from "./components/UploadComponent";
+import { getUrl } from "~/common/utils";
+import LoadingButton from "@mui/lab/LoadingButton";
+import ImageIcon from "@mui/icons-material/Image";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -57,6 +62,7 @@ const SellerCreateCoupon = (props) => {
   const [picPath, setPicpath] = useState("");
   const [picThumnail, setPicthumnai] = useState("");
   const [picTitle, setPictitle] = useState("");
+  const [picFile, setFile] = useState("");
   const [discountType, setdiscountType] = useState("Shop");
   const [discountClass, setdiscountClass] = useState("");
   const [startdate, setStartdate] = useState("");
@@ -88,9 +94,9 @@ const SellerCreateCoupon = (props) => {
     if (minprice == "") {
       setMinpriceError("This field is required");
     }
-    if (reduceprice == "") {
-      setReducepriceError("This field is required");
-    }
+    // if (reduceprice == "") {
+    //   setReducepriceError("This field is required");
+    // }
     if (picPath == "") {
       setPicpathError("This field is required");
     }
@@ -117,29 +123,50 @@ const SellerCreateCoupon = (props) => {
       descpt != "" &&
       minprice != "" &&
       discountClass != "" &&
-      reduceprice != "" &&
+      // reduceprice != "" &&
       picPath != "" &&
-      picThumnail != "" &&
+      // picThumnail != "" &&
       picTitle != "" &&
       startdate != "" &&
       endate != "" &&
       max_quantity != ""
     ) {
       createCoupon();
-    } else {
-      e.preventDefault();
     }
   };
 
-  const handleSubmit = () => {
-    // console.log(
-    //   `${code},${descpt},${minprice},${reduceprice},${startdate},${endate},${discountType},${discountClass},${max_quantity}
-    //   ${picPath},${picThumnail},${picTitle}`
-    // );
-    // console.log(tempShopid);
-
+  const handleSubmit = async () => {
     checkValidation();
-    // console.log(minprice, reduceprice);
+  };
+
+  const [loading, setLoading] = React.useState(false);
+  function handleClick() {
+    if (
+      code != "" &&
+      descpt != "" &&
+      minprice != "" &&
+      discountClass != "" &&
+      // reduceprice != "" &&
+      picPath != "" &&
+      // picThumnail != "" &&
+      picTitle != "" &&
+      startdate != "" &&
+      endate != "" &&
+      max_quantity != ""
+    ) {
+      setLoading(true);
+    }
+    handleSubmit();
+  }
+
+  const uploadFile = async (e) => {
+    if (e.target.files.length) {
+      const path = URL.createObjectURL(e.target.files[0]);
+      console.log(e.target.files[0].name);
+      setPicpath(path);
+      setPictitle(e.target.files[0].name);
+      setFile(e.target.files[0]);
+    }
   };
 
   const shopid = useParams();
@@ -148,28 +175,45 @@ const SellerCreateCoupon = (props) => {
 
   const createCoupon = async () => {
     try {
-      await axios.post(
-        `${config.SERVER_URL}/sellerconsole/${shopid}/discount`,
-        {
-          id: parseInt(tempShopid),
-          code: code,
-          start_date: startdate.toLocaleString(),
-          end_date: endate.toLocaleString(),
-          description: descpt,
-          class_types: discountClass,
-          min_price: parseInt(minprice),
-          reduce_price: parseInt(reduceprice),
-          picture_path: picPath,
-          picture_thumbnail: picThumnail,
-          picture_title: picTitle,
-          quantity: parseInt(quantity),
-          max_quantity: parseInt(max_quantity),
-        }
-      );
+      let url = {
+        success: true,
+        original_link:
+          "https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-store.png",
+      };
+      if (picFile) {
+        url = await getUrl(picFile);
+        // setPicpath(url.original_link);
+        // setPicthumnai(url.original_link);
+      }
+      // console.log(
+      //   `${code},${descpt},${minprice},${reduceprice},${startdate},${endate},${discountType},${discountClass},${max_quantity}
+      //   ${picPath},${picThumnail},${picTitle}`
+      // );
 
-      if (createCoupon) {
-        window.alert("Create Success");
-        window.location.reload(false);
+      if (url.success) {
+        await axios.post(
+          `${config.SERVER_URL}/sellerconsole/${shopid}/discount`,
+          {
+            id: parseInt(tempShopid),
+            code: code,
+            start_date: startdate.toLocaleString(),
+            end_date: endate.toLocaleString(),
+            description: descpt,
+            class_types: discountClass,
+            min_price: parseInt(minprice),
+            reduce_price: parseInt(reduceprice),
+            picture_path: url.original_link,
+            picture_thumbnail: url.original_link,
+            picture_title: picTitle,
+            quantity: parseInt(quantity),
+            max_quantity: parseInt(max_quantity),
+          }
+        );
+
+        if (createCoupon) {
+          window.alert("Create Success");
+          window.location.reload(false);
+        }
       }
     } catch (e) {
       console.log(e);
@@ -194,6 +238,9 @@ const SellerCreateCoupon = (props) => {
         <Box className={classes.center}>
           <FormControl>
             <Box sx={{ m: 6 }} Validate autoComplete="off" component="form">
+              <Typography sx={{ fontSize: "1.52em", fontWeight: 600, mb: 1 }}>
+                Coupon Information
+              </Typography>
               <TextField
                 required
                 error={codeError.length === codeErrorText.length ? false : true}
@@ -256,7 +303,8 @@ const SellerCreateCoupon = (props) => {
                 onChange={(e) => {
                   setReduceprice(e.target.value);
                 }}
-                required
+                disabled={discountClass == "FreeShipping" ? true : false}
+                
                 id="standard-required"
                 label="Reduce price"
                 variant="outlined"
@@ -333,7 +381,47 @@ const SellerCreateCoupon = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <TextField
+                error={startdateError.length === 0 ? false : true}
+                value={startdate}
+                helperText={startdateError}
+                onChange={(e) => {
+                  setStartdate(e.target.value);
+                }}
+                required
+                id="datetime-local"
+                label="start date"
+                type="datetime-local"
+                // defaultValue="2017-05-24T10:30"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                sx={{ width: "50%", mb: 3 }}
+              />
+              <TextField
+                error={endateError.length === 0 ? false : true}
+                value={endate}
+                helperText={endateError}
+                onChange={(e) => {
+                  setEndate(e.target.value);
+                }}
+                required
+                id="datetime-local"
+                label="end date"
+                type="datetime-local"
+                // defaultValue="2017-05-24T10:30"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                sx={{ width: "50%", mb: 3 }}
+              />
+              <Divider sx={{ m: 2 }} />
               <Box>
+                <Typography sx={{ fontSize: "1.52em", fontWeight: 600, mb: 1 }}>
+                  Picture
+                </Typography>
                 <TextField
                   error={picTitleError.length === 0 ? false : true}
                   value={picTitle}
@@ -349,7 +437,7 @@ const SellerCreateCoupon = (props) => {
                   fullWidth
                   sx={{ width: "100%", mb: 3 }}
                 />
-                <TextField
+                {/* <TextField
                   onChange={(e) => {
                     setPicpath(e.target.value);
                   }}
@@ -378,46 +466,46 @@ const SellerCreateCoupon = (props) => {
                   variant="outlined"
                   fullWidth
                   sx={{ width: "50%", mb: 3 }}
-                />
-                <TextField
-                  error={startdateError.length === 0 ? false : true}
-                  value={startdate}
-                  helperText={startdateError}
-                  onChange={(e) => {
-                    setStartdate(e.target.value);
+                /> */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    alignItems: "center",
                   }}
-                  required
-                  id="datetime-local"
-                  label="start date"
-                  type="datetime-local"
-                  // defaultValue="2017-05-24T10:30"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  sx={{ width: "50%", mb: 3 }}
-                />
-                <TextField
-                  error={endateError.length === 0 ? false : true}
-                  value={endate}
-                  helperText={endateError}
-                  onChange={(e) => {
-                    setEndate(e.target.value);
-                  }}
-                  required
-                  id="datetime-local"
-                  label="end date"
-                  type="datetime-local"
-                  // defaultValue="2017-05-24T10:30"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  sx={{ width: "50%", mb: 3 }}
-                />
+                >
+                  <Avatar
+                    src={picPath}
+                    alt="avatar"
+                    variant="square"
+                    sx={{
+                      width: "150px",
+                      height: "150px",
+                      marginRight: "30px",
+                    }}
+                  >{picPath ? "" : <ImageIcon sx={{ fontSize: "4em" }} />}</Avatar>
+                  <label htmlFor={`outlined-button-file-`}>
+                    <Button
+                      component="span"
+                      variant="outlined"
+                      sx={{ height: "42px", borderWidth: "2px" }}
+                    >
+                      <input
+                        accept="image/*"
+                        type="file"
+                        style={{ display: "none" }}
+                        id={`outlined-button-file-`}
+                        onChange={(e) => {
+                          uploadFile(e);
+                        }}
+                      />
+                      Upload file
+                    </Button>
+                  </label>
+                </Box>
               </Box>
               <Box sx={{ justifyContent: "flex-end", display: "flex" }}>
-                <Button
+                {/* <Button
                   onClick={handleSubmit}
                   variant="contained"
                   startIcon={
@@ -434,10 +522,31 @@ const SellerCreateCoupon = (props) => {
                   }}
                 >
                   <Typography sx={{ fontSize: "1.52em" }}>Create</Typography>
-                </Button>
+                </Button> */}
+                <LoadingButton
+                  onClick={handleClick}
+                  endIcon={
+                    <ConfirmationNumberOutlinedIcon
+                      sx={{ fontSize: "1.52em" }}
+                    />
+                  }
+                  loading={loading}
+                  loadingPosition="end"
+                  variant="contained"
+                  sx={{
+                    textTransform: "capitalize",
+                    height: "5vh",
+                    display: "flex",
+                    pl: 8,
+                    pr: 8,
+                  }}
+                >
+                  Confirm
+                </LoadingButton>
               </Box>
             </Box>
           </FormControl>
+          {/* <UploadComponent /> */}
         </Box>
       </Box>
     </>
