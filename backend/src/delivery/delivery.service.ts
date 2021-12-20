@@ -114,7 +114,7 @@ export class DeliveryService {
 		try {
 			const checkStatus = (v): string => {
 				switch (v) {
-					case 'request':
+					case 'requests':
 						return "Received a request";
 					case 'packages':
 						return 'Received a package';
