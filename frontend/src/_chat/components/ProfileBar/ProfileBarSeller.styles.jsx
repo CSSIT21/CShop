@@ -24,7 +24,7 @@ const useStyles = makeStyles({
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: '20px',
-        overflow:'hidden',
+        overflow: 'hidden',
         width: '600px'
     },
     profileBarDisplayName: {
@@ -50,53 +50,46 @@ const useStyles = makeStyles({
         }
     },
 
+    grayButton: {
+        backgroundColor: '#ECECEEB2',
+        color: '#323232 ',
+        width: '48.57px !important',
+        height: '34.29px !important',
+        borderRadius: '7.14286px',
+        padding: '7.14286px 14.2857px'
+    },
+    orangeButton: {
+        backgroundColor: '#FD6637',
+        color: '#FFFFFF',
+        width: '48.57px !important',
+        height: '34.29px !important',
+        borderRadius: '7.14286px',
+        padding: '7.14286px 14.2857px'
+    },
+    blackButton: {
+        backgroundColor: '#FFFFFF',
+        color: '#323232 ',
+        width: '48.57px !important',
+        height: '34.29px !important',
+        borderRadius: '7.14286px',
+        padding: '7.14286px 14.2857px'
+    },
     userStatus: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'
     },
-
-    grayButton: {
-        backgroundColor: '#ECECEEB2',
-        color:'#323232 ',
-        width:'48.57px !important',
-        height:'34.29px !important',
-        borderRadius:'7.14286px',
-        padding:'7.14286px 14.2857px'
-    },
-    orangeButton: {
-        backgroundColor: '#FD6637',
-        color: '#FFFFFF',
-        width:'48.57px !important',
-        height:'34.29px !important',
-        borderRadius:'7.14286px',
-        padding:'7.14286px 14.2857px'
-    },
-    blackButton:{
-        backgroundColor: '#FFFFFF',
-        color: '#323232 ',
-        width:'48.57px !important',
-        height:'34.29px !important',
-        borderRadius:'7.14286px',
-        padding:'7.14286px 14.2857px'
-    }
-    ,
-    userStatus:{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    activeButton:{
+    activeButton: {
         color: '#00BF9D',
         width: '12px !important',
-        height:'12px !important',
-        marginRight:'7px !important'
+        height: '12px !important',
+        marginRight: '7px !important'
     },
-    offlineButton:{
+    offlineButton: {
         color: '#C0C0C0	',
         width: '12px !important',
-        height:'12px !important',
-        marginRight:'7px !important'
+        height: '12px !important',
+        marginRight: '7px !important'
     }
 })
 
