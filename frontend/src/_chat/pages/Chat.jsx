@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
@@ -24,6 +24,8 @@ const useStyles = makeStyles({
 
 const ChatPage = (props) => {
     const [auth] = useRecoilState(authState)
+    const history = useHistory()
+    if(!auth.isLoggedIn) history.push('/login')
     const user_id = auth.user.id
     const [ChatService] = useState(() => new _ChatService(auth.user, handleGetConversation, handleIncomingMessage))
     const { id: router_id } = useParams()
