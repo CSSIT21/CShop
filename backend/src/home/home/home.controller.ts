@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseArrayPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { Public } from 'src/common/decorators/public.decorator';
 
@@ -65,20 +65,28 @@ export class HomeController {
 
   @Get("suggestions/:id")
   @Public()
-  async findSuggestion(@Param('id', ParseIntPipe) customer_id: number,
-    @Query('take', ParseIntPipe) take?: number,
-    @Query('skip', ParseIntPipe) skip?: number
+  async findSuggestion(
+    @Param('id', ParseIntPipe) customer_id: number,
+    @Query('product_ids', ParseArrayPipe) product_ids: number[],
+    @Query('take', ParseIntPipe) take: number,
+    @Query('skip', ParseIntPipe) skip: number,
   ) {
     try {
-      const suggestions = await this.homeService.findSuggestion({
-        where: { customer_id },
+      product_ids = product_ids.map(id => +id);
+
+      const suggestions = await this.homeService.findProductsById({
+        customer_id,
+        product_ids,
         take,
         skip,
       });
 
+      const count = suggestions.length;
+
       return {
         success: true,
-        suggestions
+        suggestions,
+        count,
       };
     } catch (err) {
       this.homeService.throwError(err);
@@ -89,9 +97,11 @@ export class HomeController {
   @Public()
   async findFavorite(@Param('id', ParseIntPipe) customer_id: number,
     @Query('take', ParseIntPipe) take?: number,
-    @Query('skip', ParseIntPipe) skip?: number) {
+    @Query('skip', ParseIntPipe) skip?: number,
+  ) {
     try {
       const favorites = await this.homeService.findFavorite({
+        customer_id,
         where: { customer_id },
         take,
         skip,

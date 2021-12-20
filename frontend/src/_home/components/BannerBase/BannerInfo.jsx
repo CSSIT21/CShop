@@ -52,8 +52,6 @@ const BannerInfo = ({
             })
             .then(({ data }) => {
                 if (data.success) {
-                    console.log(data.bannerInfo);
-
                     let array = items;
                     array[index] = {
                         ...data.bannerInfo,

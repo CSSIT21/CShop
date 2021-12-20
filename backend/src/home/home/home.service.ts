@@ -28,6 +28,9 @@ export class HomeService {
           gte: new Date().toISOString(),
         },
       },
+      orderBy: {
+        start_date: 'asc'
+      },
       select: {
         id: true,
         name: true,
@@ -75,11 +78,12 @@ export class HomeService {
   }
 
   async findFavorite(params: {
+    customer_id: number;
     where?: Prisma.customer_wishlistWhereInput;
     take?: number;
     skip?: number;
   }) {
-    const { where, take, skip } = params;
+    const { customer_id, where, take, skip } = params;
     const products = await this.prisma.customer_wishlist.findMany({
       where,
       take,
@@ -88,6 +92,9 @@ export class HomeService {
         product_id_from_wishlist: {
           include: {
             product_picture: true,
+            customer_wishlist: {
+              where: { customer_id }
+            }
           }
         }
       },
@@ -100,35 +107,29 @@ export class HomeService {
     };
   }
 
-  async findSuggestion(params: {
-    where?: Prisma.rem_suggestion_homepageWhereUniqueInput;
+  async findProductsById(params: {
+    customer_id: number;
+    product_ids: number[];
     take?: number;
     skip?: number;
   }) {
-    const { where, take, skip } = params;
+    const { customer_id, product_ids, take, skip } = params;
 
-    const { product_id } = await this.prisma.rem_suggestion_homepage.findUnique({
-      where,
-      select: {
-        product_id: true,
+    return this.prisma.product.findMany({
+      where: {
+        id: {
+          in: product_ids
+        }
       },
+      include: {
+        product_picture: true,
+        customer_wishlist: {
+          where: { customer_id },
+        },
+      },
+      take,
+      skip,
     });
-
-    const products = [];
-    for (let id of product_id) {
-      let product = await this.prisma.product.findUnique({
-        where: {
-          id,
-        },
-        include: {
-          product_picture: true,
-        },
-      });
-
-      products.push(product);
-    }
-
-    return products;
   }
 
   async findCategory() {

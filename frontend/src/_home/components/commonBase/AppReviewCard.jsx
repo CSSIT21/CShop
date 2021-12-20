@@ -1,6 +1,7 @@
 import { Avatar, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
+import dayjs from "dayjs";
 
 const AppReviewCard = ({ review }) => {
 
@@ -29,7 +30,7 @@ const AppReviewCard = ({ review }) => {
                 </Typography>
 
                 <Typography color="#A0A3BD" fontSize="12px" fontWeight={400}>
-                    reviewed on {review.review_date.split('T')[0]}
+                    reviewed on {dayjs(review.review_date).format('YYYY/MM/DD')}
                 </Typography>
             </Box>
         </Box >

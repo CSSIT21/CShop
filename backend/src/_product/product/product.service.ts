@@ -34,7 +34,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-
+	
 	public async updateSuggestionProducts(id: number, suggestionProductDto: SuggestionProductDto) {
 		try {
 			const update = await this.prisma.product.update({

@@ -85,6 +85,14 @@ const ProductPage = (props) => {
         });
       return productDetails;
     });
+
+    // setProductsSuggestion((products) => {
+    //   console.log(products);
+    //   const target = products[index];
+    //   target.favourite = !target.favourite;
+
+    //   return [...products];
+    // });
   };
 
   const avgRatingFormat = () => {
@@ -169,7 +177,6 @@ const ProductPage = (props) => {
         if (data.success) {
           setComments(data.comments.comment_list);
           setAvgRating(data.comments.avg_product_rating);
-          console.log(data.comments);
         }
       })
       .catch((e) => {
