@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import ProductMedia from "./ProductCardBase/ProductMedia";
 import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const cardStyle = {
   width: "100%",

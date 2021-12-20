@@ -1,10 +1,9 @@
 import React from 'react'
-import { Box } from '@mui/system'
 import { Card, CardMedia, IconButton } from '@mui/material'
 import useStyles from './VideoModal.styles'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
-const VideoModal = (props) => {
+const VideoModal = React.forwardRef((props, ref) => {
     const classes = useStyles()
 
     return (
@@ -19,6 +18,6 @@ const VideoModal = (props) => {
             </IconButton>
         </Card>
     )
-}
+})
 
 export default VideoModal

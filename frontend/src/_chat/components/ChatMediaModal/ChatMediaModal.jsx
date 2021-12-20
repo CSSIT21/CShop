@@ -8,8 +8,6 @@ import VideoModal from '../VideoModal/VideoModal'
 const ChatMediaModal = (props) => {
     const classes = useStyles()
 
-    const message = props.ChatService.messageWithId(props.message_id)
-
     return (
         <Modal
             aria-labelledby="modal-modal-title"
@@ -18,10 +16,10 @@ const ChatMediaModal = (props) => {
             className={classes.modalStyle}
             onClose={props.onClose}
         >
-            {message.content_type === 'Image' ? (
-                <ImageModal src={message.content} onClose={props.onClose} />
+            {props.message.content_type === 'Image' ? (
+                <ImageModal src={props.message.content} onClose={props.onClose} />
             ) : (
-                <VideoModal src={message.content} onClose={props.onClose} />
+                <VideoModal src={props.message.content} onClose={props.onClose} />
             )}
         </Modal>
     )

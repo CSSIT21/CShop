@@ -1,181 +1,181 @@
-import messages from './dummy/messages.json'
-import users from './dummy/users.json'
-import self from './dummy/self.json'
+import { io } from 'socket.io-client'
+import { nanoid } from 'nanoid'
+import config from '../../common/constants/index'
 
 class ChatService {
     _uid = -1
-    _messages = messages
+    _isCustomer = null
     _users = null
     _self = null
 
-    constructor(user_id) {
-        this._uid = user_id
-        this._messages = messages
-        this._users = users
-        this._self = self
+    constructor(user, onGetComplete, onReceive) {
+        console.log('init')
+        this._uid = user.id
+        this._isCustomer = user.role === 'CUSTOMER'
+        this._self = user
+        this.socket = io(config.SOCKET_URL)
+        this.onGetComplete = onGetComplete
+        this.onReceive = onReceive
+        this.init()
+    }
+
+    init() {
+        if(!sessionStorage.getItem('temp'))
+        {
+            sessionStorage.setItem('temp', '{}')
+        }
+        this.socket.on('get', (response) => {
+            this.handleGet(response)
+        })
+
+        this.socket.on('send', (response) => {
+            console.log('send')
+            let messages = JSON.parse(sessionStorage.getItem('messages'))
+            let index = messages.findIndex((m) => m.id === response.conversation_id)
+            let conversation = messages[index]
+            if(!conversation.messages.find(m => m.id === response.id))
+            {
+                let temp = JSON.parse(sessionStorage.getItem('temp'))
+                if (temp[response.temp_id]) {
+                    console.log(
+                        'removing dummy ' +
+                            response.temp_id +
+                            ' ' +
+                            temp[response.temp_id]
+                    )
+                    conversation.messages.splice(temp[response.temp_id], 1)
+                    delete temp[response.temp_id]
+                    sessionStorage.setItem('temp', JSON.stringify(temp))
+                }
+                if(conversation.messages.length > 0)
+                {
+                    conversation.messages.push(response)
+                }
+                else
+                {
+                    // ?
+                }
+                
+                conversation.content_type = response.content_type
+                conversation.latest_text = response.content_type === 'Text' ? response.content : ''
+                conversation.latest_id = response.id
+                messages.unshift(messages.splice(index, 1)[0])
+                sessionStorage.setItem('messages', JSON.stringify(messages))
+                // console.log(this._temp, response.temp_id)
+                
+                this.onReceive(response)
+            }
+        })
+
+        if (!sessionStorage.getItem('messages')) {
+            this.socket.emit('get', {
+                item: 'conversation',
+                as: this._uid
+            })
+            sessionStorage.setItem('isGetting', 'true')
+        }
+    }
+
+    handleGet(response) {
+        let messages = []
+        switch(response.item)
+        {
+            case 'conversation':
+                for(const conv of response.data)
+                {
+                    console.log('joining ' + conv.id)
+                    this.socket.emit('join', {
+                        conversation_id: conv.id,
+                        from_customer: this._isCustomer
+                    })
+                    messages.push({ ...conv, messages: [] })
+                }
+                console.log('get', messages)
+                sessionStorage.setItem('messages', JSON.stringify(messages))
+                this.onGetComplete()
+                break;
+
+            case 'message':
+                console.log('got message')
+                messages = JSON.parse(sessionStorage.getItem('messages'))
+                messages.find(m => m.id === response.data.conversation_id).messages = response.data.messages
+                sessionStorage.setItem('messages', JSON.stringify(messages))
+                this.onGetConversationComplete()
+                break;
+        }
+
+        sessionStorage.setItem('isGetting', 'false')
     }
 
     get messages() {
-        return messages
-
-        /***
-         *
-         * FYI, this is equivalent to:
-         *
-         * SELECT *
-         * FROM (
-         *         SELECT message.message_id,
-         *                 message_datetime,
-         *                 sender,
-         *                 recipient,
-         *                 seen,
-         *                 content_type,
-         *                 video_url       AS content,
-         *                 video_thumbnail AS content_extra
-         *         FROM message
-         *                 JOIN chat_video ON message.message_id = chat_video.message_id
-         *                 JOIN video ON chat_video.video_id = video.video_id
-         *         UNION
-         *         SELECT message.message_id,
-         *                 message_datetime,
-         *                 sender,
-         *                 recipient,
-         *                 seen,
-         *                 content_type,
-         *                 chat_text.text AS content,
-         *                 NULL
-         *         FROM message
-         *                 JOIN chat_text ON message.message_id = chat_text.message_id
-         *         UNION
-         *         SELECT message.message_id,
-         *                 message_datetime,
-         *                 sender,
-         *                 recipient,
-         *                 seen,
-         *                 content_type,
-         *                 image_url,
-         *                 NULL
-         *         FROM message
-         *                 JOIN chat_image ON message.message_id = chat_image.message_id
-         *                 JOIN image ON chat_image.image_id = image.image_id
-         *         UNION
-         *         SELECT message.message_id,
-         *                 message_datetime,
-         *                 sender,
-         *                 recipient,
-         *                 seen,
-         *                 content_type,
-         *                 notification.text,
-         *                 decode(notification.action_url, 'escape')
-         *         FROM message
-         *                 JOIN notification ON message.message_id = notification.message_id
-         *     ) AS U
-         * WHERE U.sender = _uid OR U.recipient = _uid
-         * ORDER BY U.message_datetime;
-         *
-         */
-    }
-
-    get latestMessages() {
-        let keys = []
-        let latest = []
-        this._messages.forEach((m) => {
-            let uid = m.sender === this._uid ? m.recipient : m.sender
-            let i = keys.findIndex((k) => k === uid)
-            if (i === -1) {
-                latest.push(JSON.parse(JSON.stringify(m)))
-                keys.push(uid)
-            } else {
-                latest[i] = JSON.parse(JSON.stringify(m))
-            }
-        })
-        return latest.reverse() || []
-    }
-
-    messagesBetween(user_id) {
-        return this._messages.filter(
-            (m) => m.sender === user_id || m.recipient === user_id
-        ) || []
-    }
-
-    latestMessageBetween(user_id) {
-        const messagesBetweenReverse = [
-            ...this.messagesBetween(user_id)
-        ].reverse()
-        return messagesBetweenReverse[0] || {}
-    }
-
-    messageWithId(message_id) {
-        return this._messages.find((m) => m.message_id === message_id) || {}
+        return JSON.parse(sessionStorage.getItem('messages')) || []
     }
 
     get users() {
         return this._users
-
-        /***
-         *
-         * FYI, this is equivalent to
-         *
-         * SELECT user_info.user_id, user_info.email, user_info.pic, user_detail.displayname, user_detail.shop_url
-         * FROM user_info
-         *          JOIN (
-         *     SELECT user_id, TRIM(CONCAT(firstname, ' ', lastname)) AS displayname, NULL AS shop_url
-         *     FROM customer
-         *     UNION
-         *     SELECT *
-         *     FROM vendor
-         *     UNION
-         *     SELECT *, NULL
-         *     FROM administrator
-         * ) AS user_detail ON user_info.user_id = user_detail.user_id
-         * WHERE EXISTS(
-         *     SELECT message_id
-         *     FROM message
-         *     WHERE (sender = user_info.user_id AND recipient = _uid) OR (sender = _uid AND recipient = user_info.user_id)
-         * )
-         * ORDER BY user_id;
-         *
-         */
-    }
-
-    userWithId(user_id) {
-        // console.log(users)
-        return this._users.find((u) => u.user_id === user_id) || {}
     }
 
     get self() {
         return this._self
-        /***
-         *
-         * FYI, this is equivalent to
-         *
-         * SELECT user_info.user_id, email, pic, TRIM(CONCAT(firstname, ' ', lastname)) AS displayname
-         * FROM user_info JOIN customer ON user_info.user_id = customer.user_id
-         * WHERE user_info.user_id = _uid;
-         *
-         */
     }
 
-    sendText(text, recipient) {
-        this._messages.push({
-            message_id:
-                this._messages[this._messages.length - 1].message_id + 1,
-            message_datetime: new Date()
-                .toISOString()
-                .replace('T', ' ')
-                .replace('Z', ''),
-            sender: this._uid,
-            recipient: recipient,
-            seen: false,
+    get isGetting() {
+        return sessionStorage.getItem('isGetting') === 'true'
+    }
+
+    get latestMessageId() {
+        return sessionStorage.getItem('latestMessageId') || 0
+    }
+
+    set latestMessageId(id) {
+        sessionStorage.setItem('latestMessageId', id)
+    }
+
+    conversation(conversation_id) {
+        const messages = sessionStorage.getItem('messages')
+        return messages ? JSON.parse(messages).find(m => m.id === conversation_id) : undefined
+    }
+
+    getConversation(conversation_id, callback) {
+        console.log('get', conversation_id)
+        this.socket.emit('get', {
+            item: 'message',
+            with: {
+                conversation_id: conversation_id
+            }
+        })
+        sessionStorage.setItem('isGetting', 'true')
+        this.onGetConversationComplete = callback
+    }
+
+    sendText(text, conversation_id) {
+        const temp_id = nanoid()
+        const message = {
+            temp_id: temp_id,
+            conversation_id: conversation_id,
             content_type: 'Text',
             content: text,
-            content_extra: null
-        })
+            from_customer: this._isCustomer
+        }
         console.log(
-            `%c ChatService.js %c '${text}' sent to user #${recipient}`,
+            `%c ChatService.js %c '${text}' sent to conv #${conversation_id}`,
             'color:white;background:green',
             ''
         )
+        this.socket.emit('send', message)
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
+        conversation.messages.push({
+            ...message,
+            temp_id: temp_id,
+            message_time: '',
+            seen: false,
+            content_extra: null
+        })
+        sessionStorage.setItem('messages', JSON.stringify(messages))
+        let temp = JSON.parse(sessionStorage.getItem('temp'))
+        temp[temp_id] = conversation.messages.length - 1
+        sessionStorage.setItem('temp', JSON.stringify(temp))
         return new Promise((resolve, reject) => {
             resolve()
         })
@@ -243,13 +243,13 @@ class ChatService {
         })
     }
 
-    send(contentType, content, recipient) {
+    send(contentType, content, conversation_id) {
         if (contentType === 'text') {
-            return this.sendText(content, recipient)
+            return this.sendText(content, conversation_id)
         } else if (contentType === 'image') {
-            return this.sendImage(content, recipient)
+            return this.sendImage(content, conversation_id)
         } else if (contentType === 'video') {
-            return this.sendVideo(content, recipient)
+            return this.sendVideo(content, conversation_id)
         }
     }
 }

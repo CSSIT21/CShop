@@ -9,7 +9,8 @@ const useStyles = makeStyles({
         justifyContent: 'space-between',
         alignItems: 'center',
         boxSizing: 'border-box',
-        padding: '0px 16px'
+        padding: '0px 16px',
+        background: 'white'
     }
 })
 

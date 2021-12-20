@@ -11,9 +11,10 @@ import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
 import { ConversationDto } from './dto/conversation.dto';
-import { AuthenticationService } from '../authentication/auth.service';
 
-@WebSocketGateway(8081)
+const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1
+
+@WebSocketGateway(SOCKET_PORT, { cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	private connectionMap: Map<number, { customer: string; shop: string }>;
 
@@ -48,14 +49,39 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	@SubscribeMessage('get')
-	async get(@MessageBody() data: { item: string; with?: any }, @ConnectedSocket() client: Socket) {
+	async get(@MessageBody() data: { item: string, as: number, with?: any }, @ConnectedSocket() client: Socket) {
+		console.log('get')
+		console.log(data)
+		// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+		// return wait(2000).then(async () => {
+		// 	switch (data.item) {
+		// 		case 'conversation': {
+		// 			/** should not send shop-side info to customer but, well, not really our concern here **/
+		// 			if (data.with) {
+		// 				return await this.getConversation(client, data.with.conversation_id);
+		// 			} else {
+		// 				return await this.getAllConversation(client, data.as);
+		// 			}
+		// 			break;
+		// 		}
+
+		// 		case 'message': {
+		// 			if (data.with) {
+		// 				return await this.getAllMessage(client, data.with.conversation_id);
+		// 			} else {
+		// 				//
+		// 			}
+		// 			break;
+		// 		}
+		// 	}
+		// })
 		switch (data.item) {
 			case 'conversation': {
 				/** should not send shop-side info to customer but, well, not really our concern here **/
 				if (data.with) {
 					return await this.getConversation(client, data.with.conversation_id);
 				} else {
-					return await this.getAllConversation(client);
+					return await this.getAllConversation(client, data.as);
 				}
 				break;
 			}
@@ -83,9 +109,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		};
 	}
 
-	async getAllConversation(@ConnectedSocket() client: Socket) {
-		const uid = await AuthenticationService.getUserFromToken(client.handshake.headers.cookie);
-		console.log(uid);
+	async getAllConversation(@ConnectedSocket() client: Socket, uid: number) {
+		/** uid should come from server-side state management, but let's make it simple  **/
+
+		// const uid = await AuthenticationService.getUserFromToken(client.handshake.headers.cookie);
+		// console.log(uid);
 		const conv = await this.chatService.findAllConversation(uid);
 		return {
 			event: 'get',
@@ -103,7 +131,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			event: 'get',
 			data: {
 				item: 'message',
-				data: message,
+				data: {
+					conversation_id: conversation_id,
+					messages: message
+				},
 			},
 		};
 	}
@@ -112,22 +143,46 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	async join(@MessageBody() data: ConversationDto, @ConnectedSocket() client: Socket) {
 		/** should first check if the user is authorized for that conversation **/
 		client.join(data.conversation_id.toString());
-		/***
-		 * Query DB to find out whether this client is customer or shop, then save in connectionMap
-		 */
-		if (!this.connectionMap.has(data.conversation_id)) {
-			const uid = await AuthenticationService.getUserFromToken(client.handshake.headers.cookie);
-			const conv = await this.chatService.findUniqueConversation(data.conversation_id);
+
+		/** Damn, let's make it simple by trusting the client **/
+
+		// /***
+		//  * Query DB to find out whether this client is customer or shop, then save in connectionMap
+		//  */
+		// if (!this.connectionMap.has(data.conversation_id)) {
+		// 	/** uid should come from server-side state management, but let's make it simple  **/
+		// 	// const uid = await AuthenticationService.getUserFromToken(client.handshake.headers.cookie);
+		// 	const conv = await this.chatService.findUniqueConversation(data.conversation_id);
+		// 	const token = {
+		// 		customer: conv.customer_id === uid ? client.id : null,
+		// 		shop: conv.shop_id === uid ? client.id : null,
+		// 	};
+		// 	this.connectionMap.set(data.conversation_id, token);
+		// } else {
+		// 	const conn = this.connectionMap.get(data.conversation_id);
+		// 	if (conn.customer === null) {
+		// 		conn.customer = client.id;
+		// 	} else if (conn.shop === null) {
+		// 		conn.shop = client.id;
+		// 	}
+		// }
+		if(!this.connectionMap.has(data.conversation_id))
+		{
 			const token = {
-				customer: conv.customer_id === uid ? client.id : null,
-				shop: conv.shop_id === uid ? client.id : null,
+				customer: data.from_customer  ? client.id : null,
+				shop: !data.from_customer ? client.id : null,
 			};
 			this.connectionMap.set(data.conversation_id, token);
-		} else {
+		}
+		else
+		{
 			const conn = this.connectionMap.get(data.conversation_id);
-			if (conn.customer === null) {
+			if(data.from_customer)
+			{
 				conn.customer = client.id;
-			} else if (conn.shop === null) {
+			}
+			else
+			{
 				conn.shop = client.id;
 			}
 		}
@@ -135,15 +190,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		this.server
 			.to(data.conversation_id.toString())
 			.emit('status', {
-        event: 'join',
-        peer: isCustomer ? 'customer' : 'shop'
-      });
+				event: 'join',
+				peer: isCustomer ? 'customer' : 'shop'
+			});
 	}
 
 	@SubscribeMessage('new-conversation')
 	async newConversation(@MessageBody() data: ConversationDto, @ConnectedSocket() client: Socket) {
-		const uid = await AuthenticationService.getUserFromToken(client.handshake.headers.cookie);
-		const conv_id = await this.chatService.createConversation(uid, data.shop_id);
+		const conv_id = await this.chatService.createConversation(data.uid, data.shop_id);
 
 		return {
 			event: 'new-conversation',

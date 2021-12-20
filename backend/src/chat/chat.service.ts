@@ -39,18 +39,20 @@ export class ChatService {
 
 	async findAllConversation(uid: number) {
 		const conv = await this.prisma
-			.$queryRaw`SELECT chat_conversation.id AS id, chat_conversation.customer_id AS customer_id, chat_conversation.shop_id AS shop_id, marked_as, note, is_muted, is_blocked, firstname, lastname, cpf.path AS customer_pic, shop_name, sp.path AS shop_pic, content_type, seen, COALESCE(text) AS text
-FROM chat_conversation
-    JOIN customer_info ci on chat_conversation.customer_id = ci.customer_id
+			.$queryRaw`WITH cmax(id, time) AS (SELECT conversation_id, max(message_time) FROM chat_message GROUP BY conversation_id)
+SELECT chat_conversation.id AS id, chat_conversation.customer_id AS customer_id, chat_conversation.shop_id AS shop_id, marked_as, note, is_muted, is_blocked, firstname, lastname, cpf.path AS customer_pic, shop_name, sp.path AS shop_pic, content_type, seen, COALESCE(text) AS latest_text
+FROM cmax
+    JOIN chat_message ON cmax.time = chat_message.message_time
+    JOIN chat_conversation ON chat_message.conversation_id = chat_conversation.id
+    LEFT JOIN customer_info ci on chat_conversation.customer_id = ci.customer_id
     LEFT JOIN customer_picture cp on ci.customer_id = cp.customer_id
-    JOIN customer_picture_file cpf on cp.picture_id = cpf.id
-    JOIN shop_info si on chat_conversation.shop_id = si.id
+    LEFT JOIN customer_picture_file cpf on cp.picture_id = cpf.id
+    LEFT JOIN shop_info si on chat_conversation.shop_id = si.id
     LEFT JOIN shop_picture sp on si.id = sp.shop_id
-    JOIN chat_message cm on chat_conversation.id = cm.conversation_id
-    LEFT JOIN chat_text on cm.id = chat_text.message_id
-WHERE chat_conversation.customer_id = 2
-   OR si.customer_id = 2
-ORDER BY message_time DESC LIMIT 1;`;
+    LEFT JOIN chat_text ct on chat_message.id = ct.message_id
+WHERE chat_conversation.customer_id = ${uid}
+   OR si.customer_id = ${uid}
+ORDER BY message_time DESC;`;
 
 		console.log(conv);
 
@@ -59,7 +61,54 @@ ORDER BY message_time DESC LIMIT 1;`;
 
 	async findAllMessage(conversation_id: number) {
 		const message = await this.prisma
-			.$queryRaw`SELECT * FROM chat_message JOIN chat_text ON chat_message.id = chat_text.message_id WHERE chat_message.conversation_id = ${conversation_id}`;
+			.$queryRaw`WITH msg(id, conversation_id, from_customer, message_time, content_type, seen, content, content_extra) AS
+         (SELECT id,
+                 conversation_id,
+                 from_customer,
+                 message_time,
+                 content_type,
+                 seen,
+                 path      as content,
+                 thumbnail as content_extra
+          FROM chat_message
+                   JOIN chat_video ON chat_message.id = chat_video.message_id
+          UNION
+          SELECT id,
+                 conversation_id,
+                 from_customer,
+                 message_time,
+                 content_type,
+                 seen,
+                 text as content,
+                 NULL
+          FROM chat_message
+                   JOIN chat_text ON chat_message.id = chat_text.message_id
+          UNION
+          SELECT id,
+                 conversation_id,
+                 from_customer,
+                 message_time,
+                 content_type,
+                 seen,
+                 path as content,
+                 NULL
+          FROM chat_message
+                   JOIN chat_image ON chat_message.id = chat_image.message_id
+          UNION
+          SELECT id,
+                 conversation_id,
+                 from_customer,
+                 message_time,
+                 content_type,
+                 seen,
+                 notification_text as content,
+                 action_url        as content_extra
+          FROM chat_message
+                   JOIN chat_notification cn on chat_message.id = cn.message_id)
+SELECT *
+FROM msg
+WHERE conversation_id = ${conversation_id}
+ORDER BY message_time;`;
 
 		console.log(message);
 
@@ -70,7 +119,7 @@ ORDER BY message_time DESC LIMIT 1;`;
 		const msg = await this.prisma.chat_message.create({
 			data: {
 				conversation_id: message.conversation_id,
-				from_customer: message.from_customer /** this one should  */,
+				from_customer: message.from_customer /** this one should come from server-side */,
 				content_type: message.content_type,
 				seen: false,
 			},
@@ -89,13 +138,14 @@ ORDER BY message_time DESC LIMIT 1;`;
 		}
 
 		console.log(msg);
-		console.log(msgContent);
 
-		delete msg.id;
+		delete msgContent.message_id;
 
 		return {
 			...msg,
-			...msgContent,
+			content: msgContent.text,
+			content_extra: null,
+			temp_id: message.temp_id
 		};
 	}
 

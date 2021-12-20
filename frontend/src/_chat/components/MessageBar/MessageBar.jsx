@@ -17,19 +17,19 @@ const MessageBar = (props) => {
 
     useEffect(() => {
         window.addEventListener('keydown', handleEnterKey)
-        console.log(
-            '%c MessageBar.jsx %c listening for keydown...',
-            'color:#e0c7ff;background:#590db5',
-            ''
-        )
+        // console.log(
+        //     '%c MessageBar.jsx %c listening for keydown...',
+        //     'color:#e0c7ff;background:#590db5',
+        //     ''
+        // )
 
         return () => {
             window.removeEventListener('keydown', handleEnterKey)
-            console.log(
-                '%c MessageBar.jsx %c removed keydown listener',
-                'color:#e0c7ff;background:#590db5',
-                ''
-            )
+            // console.log(
+            //     '%c MessageBar.jsx %c removed keydown listener',
+            //     'color:#e0c7ff;background:#590db5',
+            //     ''
+            // )
         }
     })
 
@@ -40,24 +40,24 @@ const MessageBar = (props) => {
             inputSubmitted = true
         } else {
             if (inputSubmitted) {
-                console.groupCollapsed(
-                    '%c MessageBar.jsx %c keydown rejected',
-                    'color:#e0c7ff;background:#590db5',
-                    ''
-                )
+                // console.groupCollapsed(
+                //     '%c MessageBar.jsx %c keydown rejected',
+                //     'color:#e0c7ff;background:#590db5',
+                //     ''
+                // )
             }
-            console.log(e.key)
+            // console.log(e.key)
             inputSubmitted = false
         }
     }
 
     function submitText(e) {
         if (inputRef.current.childNodes[0].value === '') return
-        console.log(
-            `%c MessageBar.jsx %c submitted '${inputRef.current.childNodes[0].value}' to user#${props.currentChatUserId}`,
-            'color:#e0c7ff;background:#590db5',
-            ''
-        )
+        // console.log(
+        //     `%c MessageBar.jsx %c submitted '${inputRef.current.childNodes[0].value}' to conv#${props.currentConversation}`,
+        //     'color:#e0c7ff;background:#590db5',
+        //     ''
+        // )
         props.handleSubmitMessage(inputRef.current.childNodes[0].value)
         inputRef.current.childNodes[0].value = ''
         inputRef.current.childNodes[0].focus()
@@ -65,21 +65,21 @@ const MessageBar = (props) => {
 
     function submitVideo(e) {
         if (e.target.files.length < 1) return
-        console.log(
-            `%c MessageBar.jsx %c submitted video '${e.target.files[0].name}' to user#${props.currentChatUserId}`,
-            'color:#e0c7ff;background:#590db5',
-            ''
-        )
+        // console.log(
+        //     `%c MessageBar.jsx %c submitted video '${e.target.files[0].name}' to conv#${props.currentConversation}`,
+        //     'color:#e0c7ff;background:#590db5',
+        //     ''
+        // )
         props.handleUpload('video', e.target.files[0])
     }
 
     function submitImage(e) {
         if (e.target.files.length < 1) return
-        console.log(
-            `%c MessageBar.jsx %c submitted image '${e.target.files[0].name}' to user#${props.currentChatUserId}`,
-            'color:#e0c7ff;background:#590db5',
-            ''
-        )
+        // console.log(
+        //     `%c MessageBar.jsx %c submitted image '${e.target.files[0].name}' to conv#${props.currentConversation}`,
+        //     'color:#e0c7ff;background:#590db5',
+        //     ''
+        // )
         props.handleUpload('image', e.target.files[0])
     }
 

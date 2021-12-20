@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box } from '@mui/system'
 import { Typography } from '@mui/material'
 
@@ -9,8 +9,8 @@ import ImageBubble from '../ImageBubble/ImageBubble'
 import VideoBubble from '../VideoBubble/VideoBubble'
 
 function formatTime(time) {
-    /* Format 2021-11-03 13:23:53.320758 into 13:23 */
-    return time.split(' ')[1].split(':').slice(0, 2).join(':')
+    /* Format 2021-12-18T13:56:58.715+00:00 into 13:56 */
+    return time === '' ? time : time.split('T')[1].split(':').slice(0, 2).join(':')
 }
 
 const ChatBubble = (props) => {
@@ -44,6 +44,10 @@ const ChatBubble = (props) => {
             />
         )
     }
+    
+    useEffect(() => {
+        if(props.shouldScroll) props.forwardedRef.current.scrollIntoView({ behavior: 'smooth' })
+    }, [props.shouldScroll])
 
     return (
         <Box

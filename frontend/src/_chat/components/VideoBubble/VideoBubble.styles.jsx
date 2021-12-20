@@ -24,12 +24,13 @@ const useStyles = makeStyles({
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
-        '& button': {
-            color: 'white !important',
-            fontSize: '72px',
-            zIndex: 999
-        }
+        alignItems: 'center'
+    },
+    videoThumbnailPlayIcon: {
+        width: '5rem !important',
+        height: '5rem !important',
+        color: 'white !important',
+        zIndex: 999
     }
 })
 

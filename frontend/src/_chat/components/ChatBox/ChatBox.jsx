@@ -10,7 +10,7 @@ import {
     Typography
 } from '@mui/material'
 
-const ChatBox = (props) => {
+const ChatBox = React.forwardRef((props, ref) => {
     // const classes = useStyles() -> somehow useStyles does not work with sx, will fix later
     const background = props.isFilled ? '#FD6637' : '#FFFFFF'
     const foreground = props.isFilled ? '#FFFFFF' : '#000000'
@@ -22,7 +22,7 @@ const ChatBox = (props) => {
             border: 'none',
             borderRadius: '10px',
             backgroundColor: background,
-            transition: 'all 300ms ease'
+            // transition: 'all 300ms ease'
         },
         cardAction: {
             display: 'flex',
@@ -38,27 +38,18 @@ const ChatBox = (props) => {
             marginLeft: '12px'
         },
         cardText: {
-            width: '100%',
+            width: 'calc(100% - 110px)',
             height: 'calc(100% - 24px)',
-            margin: '0px 12px'
+            margin: '0px 12px',
         },
         typography: {
             height: '50%',
             width: 'calc(30vw - 100px)',
             lineHeight: '24px',
-            '&:first-child': {
-                color: props.isFilled ? 'white' : 'black',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-            },
-            '&:last-child': {
-                color: props.isFilled ? 'white' : '#A0A3BD',
-                whiteSpace: 'nowrap',
-
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-            }
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            color: props.isFilled ? 'white' : 'black !important'
         },
         circle: {
             color: '#FD6637',
@@ -80,10 +71,10 @@ const ChatBox = (props) => {
                     </Typography>
                 </Box>
 
-                {props.read && <CircleIcon sx={classes.circle} />}
+                {!props.read && <CircleIcon sx={classes.circle} />}
             </CardActionArea>
         </Card>
     )
-}
+})
 
 export default ChatBox

@@ -47,9 +47,7 @@ const VideoBubble = (props) => {
         >
             <CardActionArea>
                 <CardContent className={classes.videoThumbnailPlay}>
-                    <IconButton size="large">
-                        <PlayCircleOutlineRoundedIcon fontSize="inherit" />
-                    </IconButton>
+                    <PlayCircleOutlineRoundedIcon className={classes.videoThumbnailPlayIcon} />
                 </CardContent>
                 <CardMedia
                     component="img"

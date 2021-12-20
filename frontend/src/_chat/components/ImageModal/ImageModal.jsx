@@ -3,7 +3,7 @@ import { Card, CardMedia, IconButton } from '@mui/material'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import useStyles from './ImageModal.styles'
 
-const ImageModal = (props) => {
+const ImageModal = React.forwardRef((props, ref) => {
     const classes = useStyles()
 
     return (
@@ -18,6 +18,6 @@ const ImageModal = (props) => {
             </IconButton>
         </Card>
     )
-}
+})
 
 export default ImageModal

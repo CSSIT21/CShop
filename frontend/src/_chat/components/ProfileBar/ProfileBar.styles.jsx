@@ -11,7 +11,8 @@ const useStyles = makeStyles({
         width: '100%',
         height: '100%',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        background: 'white'
     },
     avatar: {
         width: '48px',

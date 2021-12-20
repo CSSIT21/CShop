@@ -13,7 +13,7 @@ const ProfileBar = (props) => {
     return (
         <Box className={classes.profileBarContainer}>
             <Box className={classes.textZone}>
-                <Avatar alt="User Pic" src={props.pic} sx={classes.avatar} />
+                <Avatar alt="User Pic" src={props.pic} className={classes.avatar} />
 
                 <Box className={classes.profileBarDisplayName}>
                     <Typography variant="h6">{props.displayName}</Typography>
@@ -41,7 +41,7 @@ const ProfileBar = (props) => {
                         marginRight: '20px',
                         marginLeft: '15px'
                     }}
-                    href={'/shop/' + props.currentChatUserId}
+                    href={props.url} /* consider changing this to use react-router */
                 >
                     Go to shop
                 </Button>

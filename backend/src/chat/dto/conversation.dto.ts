@@ -6,4 +6,10 @@ export class ConversationDto {
 	note?: string;
 	is_muted?: boolean;
 	is_blocked?: boolean;
+
+	/***
+	 * Extension for server-side processing
+	 */
+	from_customer?: boolean;
+	uid?: number;
 }
