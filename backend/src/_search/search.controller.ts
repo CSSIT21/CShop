@@ -39,7 +39,7 @@ export class SearchController {
 	async findAll(
 		@Query('q', new DefaultValuePipe('')) query: string,
 		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
-		@Query('priceHigh', new DefaultValuePipe(5000000), ParseFloatPipe) priceHigh: number,
+		@Query('priceHigh', new DefaultValuePipe(1500), ParseFloatPipe) priceHigh: number,
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,
@@ -53,9 +53,31 @@ export class SearchController {
 		for (let k of [...query.trim().split(' '), query]) {
 			keywords.push({ title: { contains: k, mode: 'insensitive' } });
 		}
+
+		let data;
+		if (category === 0) {
+			let response = ((await axios.get(`https://ml-1.cshop.cscms.ml/search?q=${query}`)) as { data: any }) || {
+				data: [],
+			};
+			data = response.data;
+			if (!Array.isArray(data.products)) {
+				return {
+					success: false,
+					message: data.products,
+					products: [],
+					total: 0,
+					page: 1,
+					itemPerPage: itemPerPage,
+					pageCount: 0,
+					q: query,
+				};
+			}
+			console.log('this is ML Searching!');
+		}
+
 		const products = await this.prisma.product.findMany({
 			where: {
-				OR: keywords,
+				...(category === 0 ? { id: { in: [...data?.products] } } : { OR: keywords }),
 				...(category !== 0 && { category_id: category }),
 				...(readyToShip && {
 					quantity: {
@@ -77,11 +99,13 @@ export class SearchController {
 
 		return {
 			success: true,
+			message: 'Successfully found products',
 			products: products.slice((page - 1) * itemPerPage, page * itemPerPage),
 			total: products.length,
 			page: page,
 			itemPerPage: itemPerPage,
 			pageCount: Math.ceil(products.length / itemPerPage),
+			q: query,
 		};
 	}
 

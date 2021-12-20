@@ -9,6 +9,7 @@ import {
   CircularProgress,
   Backdrop,
   Alert,
+  LinearProgress,
 } from '@mui/material';
 import { FilterAltOutlined } from '@mui/icons-material';
 import CategoryHeader from '../components/CategoryHeader';
@@ -30,13 +31,14 @@ const CategoryPage = () => {
   // http://localhost:3000/search/category/1 -> id
   const { id } = useParams();
   const q =
-    qs.parse(window.location.search, { ignoreQueryPrefix: true }).q||
-    '';
+    qs.parse(window.location.search, { ignoreQueryPrefix: true }).q || '';
+  const [success, setSuccess] = useState(true);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(12);
   const [totalPage, setTotalPage] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState(q);
 
   /** filter */
   const [readyToShip, setReadyToShip] = useState(false);
@@ -70,10 +72,14 @@ const CategoryPage = () => {
         setItems(response.data.products);
         setTotalPage(response.data.pageCount);
         setLoading(false);
+        setSuccess(response.data.success);
+        setSearchKeyword(response.data.q);
       })
       .catch((err) => {
         console.error(err.message);
         setLoading(false);
+        setSuccess(false);
+        setSearchKeyword(q);
       });
   };
 
@@ -151,15 +157,29 @@ const CategoryPage = () => {
         </Box>
 
         <Box sx={{ width: '80%' }}>
-          {items.length <= 0 && (
-            <Grid container spacing={2}>
+          {(!success || items.length <= 0) && (
+            <Grid
+              container
+              spacing={2}
+              sx={{ paddingLeft: '30px', paddingTop: '30px' }}
+            >
               <Alert
                 icon={false}
-                severity='warning'
+                severity='error'
                 sx={{ width: '100%', justifyContent: 'center' }}
               >
-                Sorry, no results found with this keyword <b>{q}</b>.
+                Sorry, no results found with this keyword <b>{searchKeyword}</b>
+                .
               </Alert>
+            </Grid>
+          )}
+          {loading && (
+            <Grid
+              container
+              spacing={2}
+              sx={{ paddingLeft: '30px', paddingTop: '30px' }}
+            >
+              <LinearProgress sx={{ width: '100%' }} />
             </Grid>
           )}
           <Grid
@@ -180,20 +200,22 @@ const CategoryPage = () => {
               )}
             />
           </Grid>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '20px 0px',
-            }}
-          >
-            <Pagination
-              count={totalPage}
-              onChange={onChangePage}
-              shape='rounded'
-              size='large'
-            />
-          </Box>
+          {success && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '20px 0px',
+              }}
+            >
+              <Pagination
+                count={totalPage}
+                onChange={onChangePage}
+                shape='rounded'
+                size='large'
+              />
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
