@@ -42,7 +42,7 @@ const Filter = ({ categories = [], category_Id = 0 }) => {
         }
       } else {
         Swal.fire({
-          title: "Please login to add a product to your wishlist!",
+          text: "Please login to add a product to your wishlist!",
           icon: "error",
           confirmButtonText: "OK",
         });

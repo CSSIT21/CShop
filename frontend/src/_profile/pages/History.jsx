@@ -1,17 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import TabsController from "../components/HistoryBase/TabsController";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import TopProfile from "../components/TopProfile";
 import Search from "~/common/components/NavbarBase/ContentBase/Search";
-import orders from "../components/HistoryBase/fakeOrder";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import authState from "../../common/store/authState";
+import config from "~/common/constants";
+import Dialog from "@mui/material/Dialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const HistoryPage = () => {
   const classes = useStyles();
+  const auth = useRecoilValue(authState);
+  const [orders, setOrders] = useState([]);
+  const [onLoad, setonLoad] = useState(false);
+
   useEffect(() => {
-    document.body.style.backgroundColor = "#f3f4f5";
-    return () => (document.body.style.backgroundColor = "white");
+    setonLoad(true);
+    axios
+      .post(`${config.SERVER_URL}/profile/order`, {
+        customer_id: auth.user.id,
+      })
+      .then(({ data }) => {
+        for (var i = 0; i < data.length; i++) {
+          if (
+            data[i].status === "Received_a_request" ||
+            data[i].status === "Received_a_package" ||
+            data[i].status === "Delivering"
+          ) {
+            data[i].status = "Waiting";
+          }
+        }
+        return data;
+      })
+      .then((data) => {
+        setOrders(data);
+        setonLoad(false);
+      });
+  }, []);
+  useLayoutEffect(() => {
+    document.body.classList.add("gray");
+    return () => document.body.classList.remove("gray");
   }, []);
 
   return (
@@ -39,6 +71,28 @@ const HistoryPage = () => {
           <TabsController orders={orders} />
         </Box>
       </Box>
+      <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem", marginTop: "50px" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </>
   );
 };
