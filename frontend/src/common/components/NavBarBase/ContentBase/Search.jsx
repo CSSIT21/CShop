@@ -19,6 +19,7 @@ const Search = ({
   const [keyWord, setKeyWord] = useState(q);
   const { id } = useParams();
   const searching = () => {
+    if (keyWord.trim() === '') return;
     if (id && id > 0)
       router.push(`/search/category/${id}?q=${keyWord.trim()}&id=${nanoid()}`);
     else router.push(`/search?q=${keyWord.trim()}&id=${nanoid()}`);
