@@ -5,6 +5,7 @@ import { User } from './dto/user.dto';
 import * as CryptoJs from 'crypto-js';
 import { FavouriteProduct } from './dto/favourite.dto';
 import { Order } from './dto/order.dto';
+import { Product } from './dto/product.dto';
 
 @Injectable()
 export class ProfileService {
@@ -396,6 +397,32 @@ export class ProfileService {
 				},
 			});
 			return orderDetail;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+
+	public async getProductDetail(data: Product) {
+		const { product_id, option_one, option_two } = data;
+		try {
+			const productOption = await this.prisma.product_options.findFirst({
+				where: {
+					id: option_one,
+					product_id: product_id,
+				},
+				include: {
+					product_choices: {
+						where: {
+							id: option_two,
+						},
+					},
+				},
+			});
+			return productOption;
 		} catch (e) {
 			console.log(e.message);
 			return {
