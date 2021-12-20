@@ -11,7 +11,7 @@ import axios from "axios";
 import config from "~/common/constants";
 import ProductCard from "~/common/components/ProductCard";
 import { For } from "~/common/utils";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 import Swal from "sweetalert2/dist/sweetalert2.js";

@@ -6,8 +6,7 @@ import Button from "@mui/material/Button";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 
 const Header = ({ shopInfo = {}, follow = false }) => {
   const auth = useRecoilValue(authState);
