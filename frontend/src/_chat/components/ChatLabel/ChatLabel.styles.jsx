@@ -7,7 +7,8 @@ const useStyles = makeStyles({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         padding: '5px 2px',
-        width: '188px',
+        minWidth: '144px',
+        maxWidth: '210px',
         height: '34px',
         background: 'rgba(236, 236, 238, 0.7)',
         boxShadow: '1px 2px 3px rgba(0, 0, 0, 0.1)',
@@ -15,11 +16,15 @@ const useStyles = makeStyles({
     },
     cancelButton: {
         color: '#D9DBE9',
+        background: '#A0A3BD',
+        background:
+            'radial-gradient(circle, rgba(160,163,189,1) 0%, transparent 100%)',
         width: '18px !important',
-        height: '18px !important'
+        height: '18px !important',
+        border: 'none',
+        borderRadius: '18px'
     },
     colorLabel: {
-        color: '#00BF9D',
         width: '18px !important',
         height: '18px !important'
     }
