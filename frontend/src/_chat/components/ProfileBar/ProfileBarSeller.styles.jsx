@@ -73,7 +73,7 @@ const useStyles = makeStyles({
         padding:'7.14286px 14.2857px'
     },
     blackButton:{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'transparent',
         color: '#323232 ',
         width:'48.57px !important',
         height:'34.29px !important',

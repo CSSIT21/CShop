@@ -148,7 +148,8 @@ const ChatFeed = (props) => {
                 <ProfileBarSeller displayName={messages.shop_name}
                     status={messages.active}
                     pic={messages.shop_pic}
-                    url={'/shop/' + messages.shop_id} mark='Spam'/>
+                    url={'/shop/' + messages.shop_id}
+                    mark='Done'/>
             </Box>
             <Box className={classes.chatFeed}>
                 {messages.messages &&
