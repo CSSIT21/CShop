@@ -3,68 +3,33 @@ import LazyImage from '../../common/components/LazyImage/LazyImage'
 import { CheckCircleOutline, RadioButtonUnchecked,  } from '@mui/icons-material'
 import { Checkbox, Divider, FormControlLabel, TextField, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import useState from 'react'
+import React from 'react'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
 import VisaCardIcon from '../assets/images/Visa_2021.svg'
 import CButton from '../../common/components/CButton'
 import axios from 'axios'
 
-const useStyles = makeStyles({
-  header: {
-    display: "flex",
-    justifyContent: "center",
-    fontSize: "32px",
-    fontWeight: 600,
-    margin: "5% 0% 0% 0%",
-  },
 
-  textField: {
-    marginBottom: "40px",
-    display: "inline-block",
-  },
-  button: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "70px 0 180px 0",
-  },
-  error: {
-    fontSize: "14px",
-    color: "#FD3737",
-    textAlign: "right",
-    width: "100%",
-    marginTop: "6px",
-  },
-  pagestyle: {
-    width: "40%",
-    marginLeft: "30%",
-  },
-  creditCard: {
-    display: "flex",
-    flexDirection: "row",
-    width: "150px",
-  },
-  masterCardIcon: {
-    display: "flex",
-    flexDirection: "row",
-    left: "160%",
-    height: "100%",
-    marginBottom: "50px"
-  },
-  visaIcon: {
-    display: "flex",
-    flexDirection: "row",
-    left: "160%",
-    height: "100%",
-  },
-  securityBox: {
-    marginLeft: "20px"
-  },
-  expAndSecurityBox: {
-    display: "flex",
-    flexDirection: "row",
-  },
-});
 
+//const getData = () => {
+//     axios
+//      .get(`${config.SERVER_URL}/creditcard`)
+//      .then(({data}) => {
+//       if (data.success) {
+//        return setCreditCard(data.creditcard);
+//       }
+//       else {
+//        return console.log(data);
+//       }
+//      })
+//      .catch((err) => {
+//       return console.log(err.message);
+//      })
+//    };
+  
+//    useEffect(() => {
+//     getData();
+//    }, [])
 
 const CreditCard = () => {
   const classes = useStyles();
@@ -88,7 +53,7 @@ const CreditCard = () => {
         </Box>
         <Box marginBottom={2}>
           <Typography>Name on Card</Typography>
-          <TextField type="text" fullWidth placeholder="John More Doe" />
+          <TextField type="text" fullWidth placeholder="John" />
         </Box>
         <Box marginBottom={2}>
           <Typography>Card number</Typography>
@@ -127,4 +92,60 @@ const CreditCard = () => {
     );
 }
 
-export default CreditCard
+const useStyles = makeStyles({
+    header: {
+      display: "flex",
+      justifyContent: "center",
+      fontSize: "32px",
+      fontWeight: 600,
+      margin: "5% 0% 0% 0%",
+    },
+  
+    textField: {
+      marginBottom: "40px",
+      display: "inline-block",
+    },
+    button: {
+      display: "flex",
+      justifyContent: "center",
+      margin: "70px 0 180px 0",
+    },
+    error: {
+      fontSize: "14px",
+      color: "#FD3737",
+      textAlign: "right",
+      width: "100%",
+      marginTop: "6px",
+    },
+    pagestyle: {
+      width: "40%",
+      marginLeft: "30%",
+    },
+    creditCard: {
+      display: "flex",
+      flexDirection: "row",
+      width: "150px",
+    },
+    masterCardIcon: {
+      display: "flex",
+      flexDirection: "row",
+      left: "160%",
+      height: "100%",
+      marginBottom: "50px"
+    },
+    visaIcon: {
+      display: "flex",
+      flexDirection: "row",
+      left: "160%",
+      height: "100%",
+    },
+    securityBox: {
+      marginLeft: "20px"
+    },
+    expAndSecurityBox: {
+      display: "flex",
+      flexDirection: "row",
+    },
+  });
+
+export default CreditCard;

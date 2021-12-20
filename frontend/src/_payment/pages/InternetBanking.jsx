@@ -1,11 +1,12 @@
 import React from 'react'
+import { Box } from "@mui/system";
 
 const InternetBanking = () => {
     return (
-        <div>
+        <Box>
             
-        </div>
+        </Box>
     )
 }
 
-export default InternetBanking
+export default InternetBanking;
