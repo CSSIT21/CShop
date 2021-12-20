@@ -1,135 +1,126 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Checkbox,
   Box,
   Paper,
   Typography,
-} from "@mui/material";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-import { makeStyles } from "@mui/styles";
-import { useRecoilValue } from "recoil";
-import authState from "~/common/store/authState";
-import axios from "axios";
-import config from "~/common/constants";
+} from '@mui/material';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import { makeStyles } from '@mui/styles';
+import { useRecoilValue } from 'recoil';
+import authState from '~/common/store/authState';
+import axios from 'axios';
+import config from '~/common/constants';
+import dayjs from 'dayjs';
 
 const Popup = () => {
   const classes = useStyles();
   const [popup, setPopup] = useState([]);
   const [open, setOpen] = useState(true);
-  const [checked, setChecked] = useState(false);
   const { isLoggedIn, user } = useRecoilValue(authState);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const getData = async () => {
     axios
-      .get(`${config.SEVER_URL}/home/popup`)
+      .get(`${config.SERVER_URL}/home/popup`)
       .then(({ data }) => {
         if (data.success) {
-          return setPopup(data.popup);
-        }
-        else {
+          const { description, start_date, end_date, path, thumbnail } =
+            data.popup;
+          return setPopup({
+            description,
+            start_date: dayjs(start_date).format('YYYY/MM/DD'),
+            end_date: dayjs(end_date).format('YYYY/MM/DD'),
+            path,
+            thumbnail,
+          });
+        } else {
           return console.log(data);
         }
       })
       .catch((err) => {
         return console.log(err.message);
-      })
+      });
   };
-
-  useEffect(() => {
-    getData();
-  }, [])
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const onCheck = (e) => {
-    setChecked(e.target.checked);
   };
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      aria-labelledby='alert-dialog-title'
+      aria-describedby='alert-dialog-description'
       PaperComponent={Box}
     >
       <CancelRoundedIcon
         className={classes.closeStyle}
-        sx={{ fontSize: "1.5rem" }}
+        sx={{ fontSize: '1.5rem' }}
         onClick={handleClose}
       />
 
       <Paper className={classes.paperStyle}>
-        <img className={classes.imgStyle} width={75} src={popup.path} />
-
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id='alert-dialog-title' sx={{ fontSize: '22px' }}>
           {isLoggedIn ? `Hi ${user.customer_info.firstname}!` : `Hi User!`}
         </DialogTitle>
 
         <DialogContent>
           <DialogContentText
-            sx={{ width: 300, textAlign: "center" }}
-            id="alert-dialog-description"
+            sx={{ width: '100%', textAlign: 'center', wordBreak: 'break-word' }}
+            id='alert-dialog-description'
           >
             {popup.description}
           </DialogContentText>
 
+          <img className={classes.imgStyle} width={75} src={popup.path} />
           <Typography
-            fontSize="12px"
+            fontSize='12px'
             fontWeight={400}
-            color="#A0A3BD"
-            mt={4}
-            sx={{ textAlign: "center" }}
+            color='#A0A3BD'
+            sx={{ textAlign: 'center', marginTop: '20px' }}
           >
             During {popup.start_date} - {popup.end_date}
           </Typography>
         </DialogContent>
       </Paper>
-
-      <DialogActions sx={{ display: "flex", justifyContent: "flex-start" }}>
-        <Checkbox
-          checked={checked}
-          onChange={onCheck}
-          size="small"
-          sx={{ color: "#FD6637" }}
-        />
-        <Typography fontSize="12px" fontWeight={400} color="#CCCCCC">
-          Not show all day
-        </Typography>
-      </DialogActions>
     </Dialog>
   );
 };
 
 const useStyles = makeStyles({
   paperStyle: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    minWidth: '300px',
+    maxWidth: '360px',
   },
 
   imgStyle: {
-    marginBottom: "10px",
-    display: "block",
-    transform: "translate(0, -70px) scale(4)",
+    display: 'block',
+    top: '0%',
+    right: '0%',
+    margin: '20px auto 0 auto',
+    width: '40%',
   },
 
   closeStyle: {
-    color: "#ffffff7d",
-    position: "absolute",
-    top: "-12%",
-    right: "0%",
-    cursor: "pointer",
+    color: '#ffffff7d',
+    position: 'absolute',
+    top: '-14%',
+    right: '-6%',
+    cursor: 'pointer',
 
-    "&:hover": {
-      color: "#FD6637",
+    '&:hover': {
+      color: '#FD6637',
     },
   },
 });

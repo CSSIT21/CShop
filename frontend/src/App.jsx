@@ -84,7 +84,7 @@ import ManageBanner from "./_home/pages/ManageBanner";
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Catch
         onError={() => {}}
         fallback={({ state }) => (
@@ -96,77 +96,84 @@ function App() {
             <Router>
               <Switch>
                 {/* REDIRECT / to /home */}
-                <Redirect exact path="/" to="/home" />
+                <Redirect exact path='/' to='/home' />
 
                 {/* ROUTES FOR Sidebar Layout ATTACHED */}
-                <Route path="/manage/:path?" exact>
+                <Route path='/manage/:path?' exact>
                   <SidebarLayout>
                     <Suspense fallback={<SkeletonLoading />}>
-                      <Route exact path="/manage">
-                        <Redirect exact path="/manage" to="/manage/users" />
+                      <Route exact path='/manage'>
+                        <Redirect exact path='/manage' to='/manage/users' />
                       </Route>
-                      <Route exact path="/manage/users">
+                      <Route exact path='/manage/users'>
                         <UsersPage />
                       </Route>
-                      <Route exact path="/manage/bannedsellers">
+                      <Route exact path='/manage/bannedsellers'>
                         <BannedSellerPage />
                       </Route>
-                      <Route exact path="/manage/sellers">
+                      <Route exact path='/manage/sellers'>
                         <SellersPage />
                       </Route>
-                      <Route exact path="/manage/bannedusers">
+                      <Route exact path='/manage/bannedusers'>
                         <BannedUsersPage />
                       </Route>
-                      <Route exact path="/manage/banner">
+                      <Route exact path='/manage/banner'>
                         <ManageBanner />
                       </Route>
                     </Suspense>
                   </SidebarLayout>
                 </Route>
-                <Route path="/home" exact>
+                <Route path='/home' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <HomePage />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/home/:path?" exact>
+                <Route path='/home/:path?' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
-                      <Route path="/home/suggest">
+                      <Route path='/home/suggest'>
                         <SugggestionPage />
                       </Route>
-                      <Route path="/home/favourite">
+                      <Route path='/home/favourite'>
                         <FavouritePage />
                       </Route>
                     </Suspense>
                   </MainLayout>
                 </Route>
 
-              <Route path="/search/category/:id" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <CategoryPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/product/:id" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <ProductPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/chat/:id?" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <ChatPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
+                <Route path='/search/category/:id' exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path='/search' exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path='/product/:id' exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ProductPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path='/chat' exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ChatPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
 
                 {/* LOGIN PAGE */}
-                <Route path="/login" exact>
+                <Route path='/login' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <LoginPage />
@@ -174,98 +181,98 @@ function App() {
                   </MainLayout>
                 </Route>
                 {/* Register Page */}
-                <Route path="/register" exact>
+                <Route path='/register' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <RegisterPage />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/register/info" exact>
+                <Route path='/register/info' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <RegisterInfoPage />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/register/seller" exact>
+                <Route path='/register/seller' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <SellerRegister />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/profile" exact>
+                <Route path='/profile' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ProfilePage />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/profile/:path?" exact>
+                <Route path='/profile/:path?' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
-                      <Route path="/profile/information">
+                      <Route path='/profile/information'>
                         <InformationPage />
                       </Route>
-                      <Route path="/profile/address">
+                      <Route path='/profile/address'>
                         <AddressPage />
                       </Route>
-                      <Route path="/profile/voucher">
+                      <Route path='/profile/voucher'>
                         <VoucherPage />
                       </Route>
-                      <Route path="/profile/history">
+                      <Route path='/profile/history'>
                         <HistoryPage />
                       </Route>
-                      <Route path="/profile/followedshop">
+                      <Route path='/profile/followedshop'>
                         <FollowedShop />
                       </Route>
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/shop/:id/comment" exact>
+                <Route path='/shop/:id/comment' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShopComment />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/shop/:id/:cateId" exact>
+                <Route path='/shop/:id/:cateId' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShopCategory />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/shop/:id" exact>
+                <Route path='/shop/:id' exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <SellerShop />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/promotion">
+                <Route exact path='/promotion'>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <Promotion />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/coin/history">
+                <Route exact path='/coin/history'>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinHistoryPage />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/coin">
+                <Route exact path='/coin'>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinRedeemPage />
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/cart">
+                <Route exact path='/cart'>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShoppingCartPage />
@@ -275,37 +282,37 @@ function App() {
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}
-                <Route path="/seller/:id/:path?" exact>
+                <Route path='/seller/:id/:path?' exact>
                   <SellerConsoleSidebarLayout>
                     <Suspense fallback={<SkeletonLoading />}>
-                      <Route path="/seller/:id/dashboard">
+                      <Route path='/seller/:id/dashboard'>
                         <SellerDashboard />
                       </Route>
-                      <Route path="/seller/:id/customize">
+                      <Route path='/seller/:id/customize'>
                         <SellerShopCustomizationPage />
                       </Route>
-                      <Route path="/seller/:id/stock">
+                      <Route path='/seller/:id/stock'>
                         <SellerStock />
                       </Route>
-                      <Route path="/seller/:id/flashsell">
+                      <Route path='/seller/:id/flashsell'>
                         <SellerFlashsell />
                       </Route>
-                      <Route path="/seller/:id/orderlog">
+                      <Route path='/seller/:id/orderlog'>
                         <SellerOrderLog />
                       </Route>
-                      <Route path="/seller/:id/refundlog">
+                      <Route path='/seller/:id/refundlog'>
                         <SellerRefundLog />
                       </Route>
-                      <Route path="/seller/:id/stocklog">
+                      <Route path='/seller/:id/stocklog'>
                         <SellerStockLog />
                       </Route>
-                      <Route path="/seller/:id/discountlog">
+                      <Route path='/seller/:id/discountlog'>
                         <SellerDiscountLog />
                       </Route>
                     </Suspense>
                   </SellerConsoleSidebarLayout>
                 </Route>
-                <Route path="*">
+                <Route path='*'>
                   <Suspense fallback={<SkeletonLoading />}>
                     <NotFoundPage />
                   </Suspense>

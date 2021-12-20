@@ -46,6 +46,7 @@ const CarouselProductSelect = ({
   const [open, setOpen] = React.useState(false);
   const [openAddProduct, setopenAddProduct] = useState(false);
   const [Topic, setTopic] = useState("Topic");
+  const [searchText, setsearchText] = useState("");
   const [selectedValue, setSelectedValue] = useState();
   useLayoutEffect(() => {
     if (id in information) {
@@ -355,6 +356,10 @@ const CarouselProductSelect = ({
           sx={{ margin: "0 25px" }}
           variant="filled"
           size="small"
+          value={searchText}
+          onChange={(e) => {
+            setsearchText(e.target.value);
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
