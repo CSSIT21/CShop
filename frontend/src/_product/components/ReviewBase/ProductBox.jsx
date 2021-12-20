@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import React from "react";
 import Box from "@mui/material/Box";
 
-const ProductBox = ({ img, productName, options, choices }) => {
+const ProductBox = ({ img, productName, options }) => {
   return (
     <Box sx={container}>
       {/* อย่าลบลบborderออก */}
@@ -46,12 +46,12 @@ const ProductBox = ({ img, productName, options, choices }) => {
           {options ? "Option :" : "Option : none"}
           {options && (
             <>
-              {options.slice(0, 5).map((e, key) => (
+              {options?.slice(0, 5).map((e, key) => (
                 <Typography
                   sx={{ marginLeft: "5px", marginRight: "6px" }}
                   key={key}
                 >
-                  {e} {choices && <>{choices[key]}</>}{" "}
+                  {e.firstChoice} {e.secondChoice && <>{e.secondChoice}</>}{" "}
                   {key == options.length - 1 ? <> </> : " , "}
                 </Typography>
               ))}

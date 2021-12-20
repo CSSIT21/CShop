@@ -14,6 +14,10 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
+import { ProductModule } from './_product/product/product.module';
+import { ReviewProductModule } from './_product/review-product/review-product.module';
+import { ShortLinkModule } from './_product/short-link/short-link.module';
+import { CommentModule } from './_product/comment/comment.module';
 
 @Module({
 	imports: [
@@ -26,6 +30,10 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		ProductModule,
+		ReviewProductModule,
+		ShortLinkModule,
+		CommentModule,
 		ChatModule,
 		PromotionModule
 	],
