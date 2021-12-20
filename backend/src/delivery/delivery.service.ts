@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HmacSHA512 } from 'crypto-js';
 import { DeliveryLoginDTO } from './dto/create-delivery.dto';
-import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 import { nanoid } from 'nanoid';
 import * as province from './file/province.json'
 import { Address } from './dto/address.dto';
@@ -14,6 +13,8 @@ export class DeliveryService {
 	constructor(private readonly prisma: PrismaService) { }
 
 	public async login(loginInfo: DeliveryLoginDTO) {
+		console.log(loginInfo);
+
 		let password = HmacSHA512(loginInfo.password, process.env.PASSWORD_KEY).toString()
 		try {
 			const adminInfo = await this.prisma.delivery_admin.findFirst({
@@ -44,10 +45,7 @@ export class DeliveryService {
 			}
 
 		} catch (e) {
-			return {
-				success: false,
-				e
-			};
+			return e
 		}
 	}
 
@@ -66,10 +64,7 @@ export class DeliveryService {
 				success: false
 			}
 		} catch (e) {
-			return {
-				success: false,
-				e
-			}
+			return e
 		}
 
 	}
@@ -110,57 +105,28 @@ export class DeliveryService {
 		})
 
 		return {
+			id: updateTrackingnumber.id,
 			tracking_number: updateTrackingnumber.tracking_number
 		}
 	}
 
-	public async getAllRequests() {
+	public async getAdminCheckStatus(status: string) {
 		try {
-			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
-				where: {
-					status: "Received a request"
+			const checkStatus = (v): string => {
+				switch (v) {
+					case 'request':
+						return "Received a request";
+					case 'packages':
+						return 'Received a package';
+					case 'delivering':
+						return 'Delivering';
+					default:
+						return 'Success'
 				}
-			})
-			return fetchedRequest
-
-		} catch (e) {
-			return e
-		}
-	}
-
-	public async getAllpackages() {
-		try {
+			}
 			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
 				where: {
-					status: "Received a package"
-				}
-			})
-			return fetchedRequest
-
-		} catch (e) {
-			return e
-		}
-	}
-
-	public async getAllDelivering() {
-		try {
-			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
-				where: {
-					status: "Delivering"
-				}
-			})
-			return fetchedRequest
-
-		} catch (e) {
-			return e
-		}
-	}
-
-	public async getAllSuccess() {
-		try {
-			const fetchedRequest = await this.prisma.delivery_product_status.findMany({
-				where: {
-					status: "Success"
+					status: checkStatus(status)
 				}
 			})
 			return fetchedRequest
@@ -218,7 +184,7 @@ export class DeliveryService {
 			}
 
 		} catch (e) {
-
+			return e
 		}
 	}
 
@@ -304,21 +270,5 @@ export class DeliveryService {
 		} catch (e) {
 			return e
 		}
-	}
-
-	findAll() {
-		return `This action returns all delivery`;
-	}
-
-	findOne(id: number) {
-		return `This action returns a #${id} delivery`;
-	}
-
-	update(id: number, updateDeliveryDto: UpdateDeliveryDto) {
-		return `This action updates a #${id} delivery`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} delivery`;
 	}
 }
