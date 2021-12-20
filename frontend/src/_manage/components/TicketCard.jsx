@@ -60,7 +60,7 @@ export class TicketCard extends React.Component {
       {
         "id": this.props.ticket.id,
         "status": '',
-        "admin_id": 1
+        "admin_id": this.props.auth.user.id
       }
     );
 
@@ -73,7 +73,7 @@ export class TicketCard extends React.Component {
       {
         "id": this.props.ticket.id,
         "status": '',
-        "admin_id": 2
+        "admin_id": 1
       }
     );
 
@@ -99,6 +99,7 @@ export class TicketCard extends React.Component {
   }
 
   async componentDidMount(){
+
     const fetchedData = await axios.get(
       "http://localhost:8080/manageaccount/users/id?id=" + this.props.ticket.customer_id
     );

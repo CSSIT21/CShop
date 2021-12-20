@@ -22,6 +22,8 @@ import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import TicketCard from "../components/TicketCard";
 import { Search } from '@mui/icons-material';
 import axios from "axios";
+import authState from '../../common/store/authState';
+import { useRecoilValue } from "recoil";
 
 const cardStyle = {
     width: '100%',
@@ -56,6 +58,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
+
+    const auth = useRecoilValue(authState);
 
     const [tickets, setTicketsList] = React.useState([]);
     const setTickets = async () => {
@@ -200,7 +204,7 @@ const ManageSellerAccountPage = () => {
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <TicketCard ticket={key} setStatus={setStatus}/>
+                                    <TicketCard ticket={key} setStatus={setStatus} auth={auth}/>
                                 </div>
                             </li>
                         ))}
