@@ -93,7 +93,7 @@ const FlashSalesLogBody = ({ columns }) => {
                       <Box sx={{ display: "block", textAlign: "center" }}>
                         {" "}
                         <Typography variant="h4" component="div">
-                          No Data （；´д｀）ゞ
+                        No results found （；´д｀）ゞ
                         </Typography>
                       </Box>
                     </TableCell>

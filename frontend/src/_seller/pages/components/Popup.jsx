@@ -191,6 +191,7 @@ export default function Popup({
               width: "150px",
               height: "150px",
               marginRight: "30px",
+              mt: 2,
             }}
           >
             {path ? "" : <ImageIcon sx={{ fontSize: "4em" }} />}
@@ -216,7 +217,12 @@ export default function Popup({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button
+          onClick={handleClose}
+          sx={{ mt:2 }}
+        >
+          Cancel
+        </Button>
         {/* <Button onClick={updateInfo}>Save</Button> */}
         <LoadingButton
           onClick={handleClick}

@@ -18,11 +18,11 @@ export default function SellerStockLog() {
 
   const columns = [
     { id: "productId", label: "productId" },
-    {
-      id: "product_picture",
-      label: "product_picture",
-      align: "right",
-    },
+    // {
+    //   id: "product_picture",
+    //   label: "product_picture",
+    //   align: "right",
+    // },
     { id: "productName", label: "productName" },
     {
       id: "quantity",

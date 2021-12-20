@@ -41,17 +41,23 @@ const StockLogBody = ({ columns }) => {
       const res = await axios.get(
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/stockhistory`
       );
-      const created = res.data.map((el) =>
-        createData(
-          el.product_id,
-          el.product_id_from_sconsole_stock_history.product_picture.path,
-          el.product_id_from_sconsole_stock_history.title,
-          el.quantity,
-          Ttype,
-          el.product_id_from_sconsole_stock_history.quantity,
-          el.updated_date
-        )
-      );
+      const created = res.data
+        .slice(0, 10)
+        .map((el) =>
+          createData(
+            el.product_id,
+            // el.product_id_from_sconsole_stock_history.product_picture.length ==
+            //   0
+            //   ? ""
+            //   : el.product_id_from_sconsole_stock_history.product_picture[0]
+            //       .path,
+            el.product_id_from_sconsole_stock_history.title,
+            el.quantity,
+            Ttype,
+            el.product_id_from_sconsole_stock_history.quantity,
+            el.updated_date
+          )
+        );
       setRows(created);
     } catch (e) {
       console.log(e);
@@ -66,7 +72,7 @@ const StockLogBody = ({ columns }) => {
 
   function createData(
     productId,
-    product_picture,
+    // product_picture,
     productName,
     quantity,
     TradeType,
@@ -75,7 +81,7 @@ const StockLogBody = ({ columns }) => {
   ) {
     return {
       productId,
-      product_picture,
+      // product_picture,
       productName,
       quantity,
       TradeType,
@@ -109,7 +115,7 @@ const StockLogBody = ({ columns }) => {
                   <TableRow>
                     <TableCell sx={{ display: "block", textAlign: "center" }}>
                       <Typography variant="h4" component="div">
-                        No Data （；´д｀）ゞ
+                        No results found （；´д｀）ゞ
                       </Typography>
                     </TableCell>
                   </TableRow>

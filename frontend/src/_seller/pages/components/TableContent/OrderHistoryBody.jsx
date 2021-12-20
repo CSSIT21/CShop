@@ -90,7 +90,7 @@ const HistoryTable = ({ columns }) => {
 
   return (
     <>
-      <Box sx={{p:4}}>
+      <Box sx={{ p: 4 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <TableHead sx={{ backgroundColor: "#FDF4DD" }}>
@@ -114,7 +114,7 @@ const HistoryTable = ({ columns }) => {
                       <Box sx={{ display: "block", textAlign: "center" }}>
                         {" "}
                         <Typography variant="h4" component="div">
-                          No Data （；´д｀）ゞ
+                          No results found （；´д｀）ゞ
                         </Typography>
                       </Box>
                     </TableCell>
