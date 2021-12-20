@@ -116,11 +116,30 @@ export class CartService {
     return true
   }
 
-  async updateamount(newamount : {id:number,amount:number}[]){
+  async updateamount(userID: number, addressID: number ,newamount : {id:number,amount:number}[]){
     const prisma = this.prisma
     newamount.forEach(async(data)=>{
       await prisma.order_cart_item.update({where:{id:data.id},data:{quantity: data.amount }})
     })
+
+    const orders = await prisma.order_cart_item.findMany({where:{customer_id:userID},select:{product_id_from_order_cart_item:true,} })
+    let total = 0
+    orders.forEach(item=>(total+=item.product_id_from_order_cart_item.price))
+    const address = await prisma.address.findUnique({where:{id:addressID}})
+    const ex = await fetch("http://localhost:8080/delivery/generate-tracking")
+    await prisma.order.create({data:{total_price:total,order_date: new Date(),customer_id:userID,status:"Received_a_request"}})
+
+    
+
+    // const data = orders.map(item=>{return({
+    //   order_id:1,
+    //   price:item.product_id_from_order_cart_item.price,
+    //   product_id:item,
+      
+    // })})
+
+    // await prisma.order_item.createMany({data})
+
     return true
   }
 

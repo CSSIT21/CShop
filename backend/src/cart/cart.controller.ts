@@ -35,7 +35,7 @@ export class CartController {
 
   @Post('/updateamount') @Public()
   updateamount(@Body() request){
-    return this.cartService.updateamount(request.updateAmount)
+    return this.cartService.updateamount(request.userID,request.addressID,request.updateAmount)
   }
   @Post('/removefromcart') @Public()
   removefromcart(@Body() request) { 
