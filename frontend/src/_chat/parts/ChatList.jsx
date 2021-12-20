@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { AddChatModal, ChatBox } from '../components'
 import { Button, Typography, CircularProgress } from '@mui/material'
+import ChooseUser from '../components/ChooseUser/ChooseUser'
 
 const useStyles = makeStyles({
     chatListContainer: {
@@ -74,6 +75,7 @@ const ChatList = (props) => {
                     <Typography className={classes.chatPageHeading}>
                         Chat
                     </Typography>
+                    <ChooseUser/>
                 </Box>
                 <Box className={classes.loader}>
                     {props.ChatService.isGetting ? (

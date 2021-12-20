@@ -2,12 +2,11 @@ import React from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { CircularProgress } from '@mui/material'
-
 import {
     ChatBubble,
     ChatMediaModal,
     MessageBar,
-    ProfileBar
+    ProfileBar, ProfileBarSeller
 } from '../components'
 
 const useStyles = makeStyles({
@@ -128,13 +127,17 @@ const ChatFeed = (props) => {
         <Box className={classes.chatFeedContainer}>
             {/* ChatFeed on the right shows all messages between two users */}
             <Box className={classes.chatFeedTitle}>
-                <ProfileBar
+                {/* <ProfileBar
                     displayName={messages.shop_name}
                     status={messages.active}
                     pic={messages.shop_pic}
                     url={'/shop/' + messages.shop_id}
                     notification={messages.is_muted}
-                />
+                /> */}
+                <ProfileBarSeller displayName={messages.shop_name}
+                    status={messages.active}
+                    pic={messages.shop_pic}
+                    url={'/shop/' + messages.shop_id} mark='Spam'/>
             </Box>
             <Box className={classes.chatFeed}>
                 {messages.messages &&
