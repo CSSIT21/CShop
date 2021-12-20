@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Indicator from "./components/Indicator";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -11,12 +11,12 @@ import CategoryPic1 from "~/common/assets/images/category-1.png";
 import AddProduct from "./components/AddProduct";
 import SellerSearch from "./components/SellerSearch";
 import AddIcon from "@mui/icons-material/Add";
-import GroupCard from './components/CardGroup'
+import GroupCard from "./components/CardGroup";
 import StockBody from "./components/TableContent/StockBody";
 import Avatar from "@mui/material/Avatar";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
-import PageHeader from './components/PageHeader'
+import PageHeader from "./components/PageHeader";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -27,7 +27,11 @@ const SellerStock = () => {
 
   const columns = [
     { id: "productId", label: "productId" },
-
+    {
+      id: "path",
+      label: "path",
+      align: "right",
+    },
     {
       id: "productname",
       label: "productname",
@@ -47,8 +51,6 @@ const SellerStock = () => {
       format: (value) => value.toFixed(2),
     },
   ];
-
-
 
   const [product, setProduct] = useState(false);
 
@@ -82,7 +84,7 @@ const SellerStock = () => {
           m: 1,
         }}
       >
-        <PageHeader Pagename={Pagename}/>
+        <PageHeader Pagename={Pagename} />
         {/* <SellerSearch Pagename={Pagename} /> */}
         <Button variant="contained" size="large" onClick={setProduct}>
           {<AddIcon fontSize="24" />}&nbsp;New Product

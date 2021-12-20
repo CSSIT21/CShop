@@ -167,6 +167,11 @@ export class SellerconsoleService {
 				quantity: true,
 				price: true,
 				added_date: true,
+				product_picture: {
+					select: {
+						path: true,
+					},
+				},
 			},
 		});
 		return res;
@@ -427,6 +432,7 @@ export class SellerconsoleService {
 				title: true,
 				started_date: true,
 				ended_date: true,
+				path: true,
 			},
 		});
 		return res;
@@ -485,9 +491,9 @@ export class SellerconsoleService {
 				path: path,
 				thumbnail: thumbnail,
 				description: description,
-				started_date: started_date,
-				ended_date: ended_date,
-				products: {product}
+				started_date: new Date(started_date),
+				ended_date: new Date(ended_date),
+				products: { product },
 			},
 		});
 		return newFlashSales;

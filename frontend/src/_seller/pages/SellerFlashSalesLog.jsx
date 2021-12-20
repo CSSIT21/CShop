@@ -25,6 +25,11 @@ const SellerFlashSalesLog = () => {
       label: "end_date",
       align: "right",
     },
+    {
+      id: "path",
+      label: "path",
+      align: "right",
+    },
   ];
 
   return (

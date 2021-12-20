@@ -67,14 +67,13 @@ const SellerFlashsell = () => {
   const auth = useRecoilValue(authState);
   const shopid = useParams();
 
-  //   shop_id: shopid,
-  //   title: title,
-  //   path: path,
-  //   thumbnail: thumbnail,
-  //   description: description,
-  //   started_date: started_date,
-  //   ended_date: ended_date,
-  //   products: {product}
+//   "shop_id":1,
+//   "title":"Aroy",
+//   "path":"https://i.ytimg.com/vi/e8YBesRKq_U/maxresdefault.jpg",
+//   "thumbnail":"https://i.ytimg.com/vi/e8YBesRKq_U/maxresdefault.jpg",
+//   "description":"All sales 25hrs",
+//   "started_date":"2021-12-19T11:05:26.014Z",
+//   "ended_date":"2021-12-25T18:05:26.014Z"
 
   const [descpt, setDescpt] = useState("");
   const [started_date, setStarted] = useState("");
@@ -86,7 +85,7 @@ const SellerFlashsell = () => {
   const newFlashSale = async () => {
     try {
       await axios.post(
-        `${config.SERVER_URL}/sellerconsole/${shopid}/newflashsales`,
+        `${config.SERVER_URL}/sellerconsole/${shopid.id}/newflashsales`,
         {
           shop_id: parseInt(shopid.id),
           title: title,

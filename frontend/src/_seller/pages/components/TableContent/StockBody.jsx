@@ -25,9 +25,17 @@ const StockBody = ({ columns }) => {
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/stock`
       );
 
-      const created = res.data.map((el) =>
-        createData(el.id, el.title, el.quantity, el.price)
-      );
+      const created = res.data
+        .slice(0, 10)
+        .map((el) =>
+          createData(
+            el.id,
+            el.product_picture.path,
+            el.title,
+            el.quantity,
+            el.price
+          )
+        )
       setRows(created);
     } catch (e) {
       console.log(e);
@@ -40,9 +48,10 @@ const StockBody = ({ columns }) => {
     // console.log(shopid.id)
   }, [rows]);
 
-  function createData(productId, productname, amount, price) {
+  function createData(productId, path, productname, amount, price) {
     return {
       productId,
+      path,
       productname,
       amount,
       price,
@@ -139,7 +148,7 @@ const StockBody = ({ columns }) => {
                                         />
                                       );
                                     }
-                                  } else if (column.id === "productImage") {
+                                  } else if (column.id === "path") {
                                     return (
                                       <Avatar
                                         src={value}

@@ -20,12 +20,13 @@ const FlashSalesLogBody = ({ columns }) => {
   const shopid = useParams();
   const [rows, setRows] = useState([]);
 
-  function createData(id, title, start_date, end_date) {
+  function createData(id, title, start_date, end_date, path) {
     return {
       id,
       title,
       start_date,
       end_date,
+      path,
     };
   }
 
@@ -37,7 +38,7 @@ const FlashSalesLogBody = ({ columns }) => {
 
       //   console.log(res.data);
       const created = res.data.map((el) =>
-        createData(el.id, el.title, el.started_date, el.ended_date)
+        createData(el.id, el.title, el.started_date, el.ended_date, el.path)
       );
 
       setRows(created);
@@ -122,7 +123,7 @@ const FlashSalesLogBody = ({ columns }) => {
                                     typeof value === "number"
                                   ) {
                                     return column.format(value);
-                                  } else if (column.id === "picture_path") {
+                                  } else if (column.id === "path") {
                                     return (
                                       <Avatar
                                         src={value}
