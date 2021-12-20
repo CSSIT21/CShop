@@ -146,6 +146,28 @@ ORDER BY message_time DESC LIMIT 1;`;
 					},
 				});
 				break;
+
+			case 'Image':
+				msgContent = await this.prisma.chat_image.create({
+					data: {
+						message_id: msg.id,
+						title: '',
+						path: message.content,
+						thumbnail: '',
+					},
+				});
+				break;
+
+			case 'Video':
+				msgContent = await this.prisma.chat_video.create({
+					data: {
+						message_id: msg.id,
+						title: '',
+						path: message.content,
+						thumbnail: message.content_extra,
+					},
+				});
+				break;
 		}
 
 		// console.log(msg);
@@ -154,8 +176,8 @@ ORDER BY message_time DESC LIMIT 1;`;
 
 		return {
 			...msg,
-			content: msgContent.text,
-			content_extra: null,
+			content: msgContent.text || msgContent.path,
+			content_extra: msgContent.thumbnail || null,
 			temp_id: message.temp_id
 		};
 	}

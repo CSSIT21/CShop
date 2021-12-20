@@ -45,10 +45,10 @@ model customer {
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
   product_reviews               product_reviews[]
-  rem_number_interaction_user   rem_number_interaction_user?
-  rem_number_payment_product    rem_number_payment_product?
-  rem_number_product_in_cart    rem_number_product_in_cart?
-  rem_number_view_product       rem_number_view_product?
+  rem_number_interaction_user   rem_number_interaction_user[]
+  rem_number_payment_product    rem_number_payment_product[]
+  rem_number_product_in_cart    rem_number_product_in_cart[]
+  rem_number_view_product       rem_number_view_product[]
   rem_suggestion_homepage       rem_suggestion_homepage?
   sconsole_discount_log         sconsole_discount_log[]
   sconsole_refund               sconsole_refund[]
@@ -719,7 +719,7 @@ model order {
   order_billing          order_billing?
   order_cancel_refund    order_cancel_refund[]
   order_detail           order_detail?
-  order_item             order_item?
+  order_item             order_item[]
   order_refund_item      order_refund_item[]
   sconsole_order_history sconsole_order_history[]
   sconsole_order_status  sconsole_order_status[]
@@ -734,12 +734,13 @@ model order_status {
 }
 
 model order_item {
-  order_id                   Int          @id
+  order_id                   Int
   product_id                 Int
   product_options            Int[]
   quantity                   Int
   price                      Int
   status_id                  Int
+  id                         Int          @id @default(autoincrement())
   order_id_from_order_item   order        @relation(fields: [order_id], references: [id])
   product_id_from_order_item product      @relation(fields: [product_id], references: [id])
   status_id_from_order_item  order_status @relation(fields: [status_id], references: [id])
@@ -931,43 +932,47 @@ model chat_deleted_message {
 }
 
 model rem_number_view_product {
-  customer_id                              Int      @id
+  customer_id                              Int
   product_id                               Int
   total_view                               Int
   event_id                                 Int
   added_time                               DateTime @db.Timestamp(6)
+  id                                       Int      @id @default(autoincrement())
   customer_id_from_rem_number_view_product customer @relation(fields: [customer_id], references: [id])
   event_id_from_rem_number_view_product    event    @relation(fields: [event_id], references: [id])
   product_id_from_rem_number_view_product  product  @relation(fields: [product_id], references: [id])
 }
 
 model rem_number_product_in_cart {
-  customer_id                                 Int      @id
+  customer_id                                 Int
   product_id                                  Int
   sum_in_cart                                 Int
   added_time                                  DateTime @default(now()) @db.Timestamp(6)
   event_id                                    Int
+  id                                          Int      @id @default(autoincrement())
   customer_id_from_rem_number_product_in_cart customer @relation(fields: [customer_id], references: [id])
   event_id_from_rem_number_product_in_cart    event    @relation(fields: [event_id], references: [id])
   product_id_from_rem_number_product_in_cart  product  @relation(fields: [product_id], references: [id])
 }
 
 model rem_number_payment_product {
-  customer_id                                 Int      @id
+  customer_id                                 Int
   product_id                                  Int
   sum_buy                                     Int
   added_time                                  DateTime @default(now()) @db.Timestamp(6)
   event_id                                    Int
+  id                                          Int      @id @default(autoincrement())
   customer_id_from_rem_number_payment_product customer @relation(fields: [customer_id], references: [id])
   event_id_from_rem_number_payment_product    event    @relation(fields: [event_id], references: [id])
   product_id_from_rem_number_payment_product  product  @relation(fields: [product_id], references: [id])
 }
 
 model rem_number_interaction_user {
-  customer_id                                  Int      @id
+  customer_id                                  Int
   product_id                                   Int
   interaction_score                            Int
   added_time                                   DateTime @default(now()) @db.Timestamp(6)
+  id                                           Int      @id @default(autoincrement())
   customer_id_from_rem_number_interaction_user customer @relation(fields: [customer_id], references: [id])
   product_id_from_rem_number_interaction_user  product  @relation(fields: [product_id], references: [id])
 }
@@ -1310,6 +1315,7 @@ model home_shop_log {
   customer_id                    Int
   shop_id                        Int
   id                             Int       @id @default(autoincrement())
+  view_date                      DateTime  @db.Timestamp(6)
   customer_id_from_home_shop_log customer  @relation(fields: [customer_id], references: [id])
   shop_id_from_home_shop_log     shop_info @relation(fields: [shop_id], references: [id])
 }
@@ -1492,7 +1498,7 @@ model delivery_admin {
 model delivery_admin_log {
   admin_id                Int
   delivery_id             Int
-  updated_time            DateTime                @db.Timestamp(6)
+  updated_time            DateTime                @default(now()) @db.Timestamp(6)
   id                      Int                     @id @default(autoincrement())
   delivery_product_status delivery_product_status @relation(fields: [delivery_id], references: [id])
 }
@@ -1504,9 +1510,9 @@ model delivery_product_status {
   complete_date      DateTime?            @db.Timestamp(6)
   recipient_name     String?              @db.VarChar(60)
   status             String               @default("Received a request")
-  delivery_detail    Json
   province           String               @db.VarChar(2)
   tracking_number    String?              @db.VarChar(10)
+  delivery_detail    Json[]
   delivery_admin_log delivery_admin_log[]
   order_status       order_status[]
 }
@@ -1622,6 +1628,7 @@ enum ChatMessageTypes {
   Text
   Image
   Video
+  Noti
 }
 
 enum ChatConversationMark {

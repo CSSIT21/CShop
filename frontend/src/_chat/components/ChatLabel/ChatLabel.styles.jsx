@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     cancelButton: {
         color: '#D9DBE9',
         background: '#A0A3BD',
-        background:
+        backgroundImage:
             'radial-gradient(circle, rgba(160,163,189,1) 0%, transparent 100%)',
         width: '18px !important',
         height: '18px !important',

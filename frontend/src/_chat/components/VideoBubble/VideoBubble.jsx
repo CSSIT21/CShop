@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Card, CardActionArea, CardContent, CardMedia, IconButton } from '@mui/material'
+import React, { useEffect, useRef } from 'react'
+import { Card, CardActionArea, CardContent, CardMedia, CircularProgress } from '@mui/material'
 import useStyles from './VideoBubble.styles'
 import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
 
@@ -41,13 +41,16 @@ const VideoBubble = (props) => {
     }, [props.thumbnail, props.src])
 
     return (
-        <Card
-            className={classes.videoBubble}
-            onClick={() => props.openModal('video', props.messageId)}
-        >
+        <Card className={classes.videoBubble} onClick={props.openModal}>
             <CardActionArea>
                 <CardContent className={classes.videoThumbnailPlay}>
-                    <PlayCircleOutlineRoundedIcon className={classes.videoThumbnailPlayIcon} />
+                    {props.isUploading ? (
+                        <PlayCircleOutlineRoundedIcon
+                            className={classes.videoThumbnailPlayIcon}
+                        />
+                    ) : (
+                        <CircularProgress color="secondary" />
+                    )}
                 </CardContent>
                 <CardMedia
                     component="img"
