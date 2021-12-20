@@ -117,7 +117,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     }
 
     function confirmOrder(){
-      axios.post("http://localhost:8080/cart/updateamount",{updateAmount:amount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id+"&" : ""}addressID=${activeID}`))
+      axios.post("http://localhost:8080/cart/updateamount",{updateAmount:amount,addressID:activeID,userID:accountInfo[0].customer_id,totalprice:totalCost-discount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id+"&" : ""}addressID=${activeID}`))
       
     }
 

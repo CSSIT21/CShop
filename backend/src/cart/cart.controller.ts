@@ -30,12 +30,12 @@ export class CartController {
 
   @Post('/addtocart') @Public()
   addtocart(@Body() request) { 
-    return this.cartService.addtocart(request.userID, request.productID, request.amount, request.firstchoiceID, request.seconedchoiceID);
+    return this.cartService.addtocart(request.userID, request.productID, request.amount, request.firstchoiceID, request.secondchoiceID);
   }
 
   @Post('/updateamount') @Public()
   updateamount(@Body() request){
-    return this.cartService.updateamount(request.userID,request.addressID,request.updateAmount)
+    return this.cartService.updateamount(request.userID,request.addressID,request.totalprice, request.updateAmount)
   }
   @Post('/removefromcart') @Public()
   removefromcart(@Body() request) { 
@@ -49,7 +49,7 @@ export class CartController {
 
   @Post('/rebuy') @Public()
   rebuy(@Body() request){
-    return this.cartService.rebuy(request.userID, request.rebuyitem)
+    return this.cartService.rebuy(request.userID, request.cartitems)
   }
 
   @Delete(':id') @Public()
