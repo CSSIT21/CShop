@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HmacSHA512 } from 'crypto-js';
 import { DeliveryLoginDTO } from './dto/create-delivery.dto';
-import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 import { nanoid } from 'nanoid';
 import * as province from './file/province.json'
 import { Address } from './dto/address.dto';
@@ -14,6 +13,8 @@ export class DeliveryService {
 	constructor(private readonly prisma: PrismaService) { }
 
 	public async login(loginInfo: DeliveryLoginDTO) {
+		console.log(loginInfo);
+
 		let password = HmacSHA512(loginInfo.password, process.env.PASSWORD_KEY).toString()
 		try {
 			const adminInfo = await this.prisma.delivery_admin.findFirst({
@@ -104,6 +105,7 @@ export class DeliveryService {
 		})
 
 		return {
+			id: updateTrackingnumber.id,
 			tracking_number: updateTrackingnumber.tracking_number
 		}
 	}
