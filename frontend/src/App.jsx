@@ -27,6 +27,7 @@ import ProductsPage from "./_manage/pages/Products";
 import SellersPage from "./_manage/pages/Sellers";
 import TicketsPage from "./_manage/pages/Tickets";
 import SupportPage from "./_manage/pages/Support";
+import AuditPage from "./_manage/pages/Audit";
 import FavouritePage from "./_home/pages/Favourite";
 import SugggestionPage from "./_home/pages/Suggestion";
 import CategoryPage from "./_category/pages/Category";
@@ -117,6 +118,9 @@ function App() {
                       </Route>
                         <Route exact path="/manage/products">
                       <ProductsPage />
+                      </Route>
+                      <Route exact path="/manage/audits">
+                      <AuditPage />
                       </Route>
                       <Route exact path="/manage/banner">
                         <ManageBanner />

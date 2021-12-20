@@ -17,7 +17,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
-import ProductCard from "../components/ProductCard";
+import AuditCard from "../components/AuditCard";
 import { Search } from '@mui/icons-material';
 import { grey, red, orange } from '@mui/material/colors';
 import axios from "axios";
@@ -39,133 +39,50 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 
-/*let products = [
+let audits = [
     {
-        id: 12,
-        avatarInitials: 'SD',
-        avatarColor: red[400],
-        path: '',
-        title: 'Sanguine Desire',
-        price: 150,
-        quantity: 5,
-        sold: 2,
-        shop_id: 1,
-        rating: 3.8,
-        comments: 30,
+        id: 1110,
+        admin_id: 1,
+        login_date: '2021-12-20 23:02:20.154000',
+        action: 'TEST'
     },
     {
-        id: 13,
-        avatarInitials: 'SD',
-        avatarColor: red[400],
-        path: '',
-        title: 'Furioso',
-        price: 300,
-        quantity: 9,
-        sold: 3,
-        shop_id: 2,
-        rating: 4.2,
-        comments: 35,
+        id: 1110,
+        admin_id: 2,
+        login_date: '2021-11-30 23:02:20.154000',
+        action: 'TEST2'
     },
     {
-        id: 1412,
-        avatarInitials: 'SD',
-        avatarColor: red[400],
-        path: '',
-        title: 'Paradise Lost',
-        price: 666,
-        quantity: 6,
-        sold: 6,
-        shop_id: 6,
-        rating: 0.6,
-        comments: 66,
+        id: 1,
+        admin_id: 3,
+        login_date: '2021-10-20 23:02:20.154000',
+        action: 'TEST3 TEST3 TEST3, TEST3 TEST3 TEST3 TEST3 TEST3TEST3 TEST3 ,TEST3TEST3'
     },
-];*/
-
-let resId = 1000;
+];
 
 const ManageAccountPage = () => {
     const classes = useStyles();
     
-    const [products, setProductsList] = React.useState([]);
-    const setProducts = async () => {
+    /*const [audits, setAuditList] = React.useState([]);
+    const setAudits = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/products"
+          "http://localhost:8080/audits"
         );
-        setProductsList(fetchedData.data);
-      };
-    
-    const [sortBy, setSortBy] = React.useState('');
-    const setSort = (event) => {
-        setSortBy(event.target.value);
-      };
-
-    const [sortOrder, setSortOrder] = React.useState(false);
-    const toggleSort = () => {
-        setSortOrder(!sortOrder);
-      }
+        setAuditList(fetchedData.data);
+      };*/
 
     const [page, setPage] = React.useState(1);
     const handlePagination = (event) => {
         setPage(event.target.textContent);
     }
-
-    const [search, setSearch] = React.useState('');
-    const handleSearch = (event) => {
-        setSearch(event.target.value);
-    }
     
     useEffect(()=>{
-        setProducts();
+        //setAudits();
     }, [])
 
     return (
         <div>
             <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
-                <Box className={classes.topright}>
-                </Box>
-                <Box className={classes.topright}>
-                    <Box sx={{ margin: '8px'}}>
-                        <TextField
-                        hiddenLabel
-                        id="search-field"
-                        placeholder="Search"
-                        variant="filled"
-                        size="small"
-                        onChange={handleSearch}
-                        className={classes.root2}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                <Search color="primary"/>
-                                </InputAdornment>
-                                ),
-                                className: classes.input,
-                            }}
-                        />
-                    </Box>
-                    <Box sx={{ marginTop: '10px', marginBottom: '10px', display:'flex', justifyContent: 'flex-end'}}>
-                        <FormGroup sx={{ margin: '6px'}}>
-                            <FormControlLabel onChange={toggleSort} control={<Checkbox />} label="Sort by Ascending"/>
-                        </FormGroup>
-                        <FormControl sx={{ m: 1 }}>
-                            <InputLabel id="sort-by-select-label" sx={{ top: '-5px' }}>Sort By</InputLabel>
-                            <Select
-                              labelId="sort-by-label"
-                              id="sort-by"
-                              value={sortBy}
-                              label="Sort By"
-                              className={classes.root}
-                              onChange={setSort}
-                            >
-                              <MenuItem value={'title'}>Product Name</MenuItem>
-                              <MenuItem value={'price'}>Price</MenuItem>
-                              <MenuItem value={'quantity'}>Stock</MenuItem>
-                              <MenuItem value={'sold'}>Sold</MenuItem>
-                              <MenuItem value={'shop_id'}>Shop Name</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </Box>
             </Box>
             <Card variant="outlined" sx={cardStyle} sx={{ margin:'0px 45px'}}>
                 <Card variant="outlined" style={{
@@ -176,28 +93,16 @@ const ManageAccountPage = () => {
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
                         <Box sx={{ width: '12%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Products ({products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length})</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Admin ID</Typography>
                         </Box>
-                        <Box sx={{ width: '18%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Name</Typography>
+                        <Box sx={{ width: '22%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Admin Name</Typography>
                         </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Price</Typography>
+                        <Box sx={{ width: '12%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Time</Typography>
                         </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '30%' }}>Stock</Typography>
-                        </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '30%' }}>Sold</Typography>
-                        </Box>
-                        <Box sx={{ width: '16%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '40%' }}>Shop</Typography>
-                        </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '40%' }}>Ratings</Typography>
-                        </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '34%' }}>Comments</Typography>
+                        <Box sx={{ width: '40%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '65%' }}>Log</Typography>
                         </Box>
                     </Box>
                     </CardContent>
@@ -206,13 +111,11 @@ const ManageAccountPage = () => {
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
                         {
-                        (products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { 
-                            return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
-                            .slice((page -1)  * 10, (page - 1) * 10 + 10)
+                        audits.slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
-                            <li key={key.id.toString()}>
+                            <li key={key.admin_id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <ProductCard product={key}/>
+                                    <AuditCard audit={key}/>
                                 </div>
                             </li>
                         ))}
@@ -223,8 +126,8 @@ const ManageAccountPage = () => {
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
                     {
-                        products.length > 0 ?
-                        <Pagination count={Math.ceil((products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length)/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>:
+                        audits.length > 0 ?
+                        <Pagination count={Math.ceil((audits.length)/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>:
                         <Pagination count={1}/>
                     }
                 </div>

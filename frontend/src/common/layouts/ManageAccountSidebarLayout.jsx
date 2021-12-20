@@ -16,6 +16,7 @@ import NoAccountsRoundedIcon from '@mui/icons-material/NoAccountsRounded';
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import ViewCarouselRoundedIcon from '@mui/icons-material/ViewCarouselRounded';
 import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { Link, useLocation } from "react-router-dom";
 import { useMiddleware } from "../hooks";
@@ -29,6 +30,7 @@ let links = [
     generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
     generateLink(CardGiftcardRoundedIcon, "Products", "/manage/products"),
     generateLink(HelpRoundedIcon, "Support", "/manage/tickets"),
+    generateLink(AssignmentIcon, "Audit Log", "/manage/audits"),
     generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
 ];
 
