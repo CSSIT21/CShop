@@ -80,10 +80,21 @@ const CarouselProductSelect = ({
       setSelectedValue(null);
     }
   };
-  const [products, setproducts] = useMemo(() => {
-    let products = originalProduct.filter((e) => !products_id.includes(e.id));
-    return [products];
-  }, [originalProduct, products_id, sectionImages]);
+
+  const products = useMemo(() => {
+    // "   hello  world   " -> "hello world"
+    let words = searchText.trim().split(" ");
+
+    let products = originalProduct.filter((e) => {
+      return (
+        !products_id.includes(e.id) &&
+        words.every((word) => {
+          return e.title.toLowerCase().includes(word.toLowerCase());
+        })
+      );
+    });
+    return products;
+  }, [originalProduct, products_id, sectionImages, searchText]);
   console.log(products, typeof products !== "undefined");
 
   const updateTopic = () => {
