@@ -1,12 +1,13 @@
 import { makeStyles } from "@mui/styles";
+import { CircularProgress } from "@mui/material";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { noop } from '~/common/utils';
 
 const SubImage = ({
 	path = "",
-	index = 0,
 	title = "picture",
 	onDelete = noop,
+	loading = false,
 	...rest
 }) => {
 	const classes = useStyles();
@@ -14,7 +15,21 @@ const SubImage = ({
 	return (
 		<div className={classes.block} {...rest}>
 			<img src={path} alt={title} style={{ width: '100%', transition: "0.25s all ease-in-out", }} />
-			<DeleteRoundedIcon className={classes.iconStyle} sx={{ fontSize: "1.7rem" }} onClick={() => onDelete(index)} />
+			{loading
+				? <CircularProgress
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						marginTop: '-20px',
+						marginLeft: '-20px',
+					}} />
+				: <DeleteRoundedIcon
+					className={classes.iconStyle}
+					sx={{ fontSize: "1.7rem" }}
+					onClick={onDelete}
+				/>
+			}
 		</div>
 	);
 };

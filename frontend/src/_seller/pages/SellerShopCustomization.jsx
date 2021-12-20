@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -16,7 +16,15 @@ import CarouselBannerIcon from "./components/CustomizationBase/DragableIcon/Caro
 import YoutubeEmbedIcon from "./components/CustomizationBase/DragableIcon/YoutubeEmbedIcon";
 import ProductCarouselIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselIcon";
 import ProductCarouselSelectIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselSelectIcon";
-import Button from "@mui/material/Button";
+import { getUrl } from "~/common/utils";
+import axios from "axios";
+import config from "~/common/constants";
+import Swal from "sweetalert2";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Dialog from "@mui/material/Dialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -113,33 +121,37 @@ const Notice = styled.div`
 const ITEMS = [
   {
     id: nanoid(),
-    content: "ImageBanner",
+    type: "Banner",
   },
   {
     id: nanoid(),
-    content: "CarouselBanner",
+    type: "BannerCarousel",
   },
   {
     id: nanoid(),
-    content: "Youtube",
+    type: "Video",
   },
   {
     id: nanoid(),
-    content: "CarouselProduct",
+    type: "ProductCarousel",
   },
   {
     id: nanoid(),
-    content: "CarouselProductSelect",
+    type: "ProductCarouselSelect",
   },
 ];
-
 const SellerShopCustomization = () => {
+  const auth = useRecoilValue(authState);
   const shopName = "Shop name";
   const dropArea = "area";
+  const [onLoad, setonLoad] = useState(false);
+  const [loading, setloading] = useState(false);
   const [state, setState] = useState({
     [dropArea]: [],
   });
+  const [categories, setcategories] = useState([]);
   const [sectionInfos, setSectionInfos] = useState({});
+  const [sectionInfosHistory, setSectionInfosHistory] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -148,15 +160,179 @@ const SellerShopCustomization = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return "tablet";
+    }
+    if (
+      /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua
+      )
+    ) {
+      return "mobile";
+    }
+    return "desktop";
+  };
+  console.log("sectionInfos", sectionInfos);
+  console.log("sectionInfosHistory", sectionInfosHistory);
+  console.log("state", state);
 
+  useEffect(() => {
+    (async () => {
+      setonLoad(true);
+      await axios
+        .get(
+          `${config.SERVER_URL}/shopcustomization/category/${auth.user.shop_info[0].id}`
+        )
+        .then(({ data }) => {
+          const computedcategories = data.categories.map((e) => {
+            return { title: e.title, id: e.id };
+          });
+          return computedcategories;
+        })
+        .then((computedcategories) => {
+          setcategories(computedcategories);
+        });
+      await axios
+        .get(
+          `${config.SERVER_URL}/shopcustomization/info/${auth.user.shop_info[0].id}`
+        )
+        .then(async ({ data }) => {
+          await setSectionInfos(data.sections_info);
+          await setSectionInfosHistory(data.sections_info);
+        });
+      await axios
+        .get(
+          `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
+        )
+        .then(({ data }) => setState({ area: data.sections }));
+      setonLoad(false);
+    })();
+  }, []);
+  console.log(Object.entries(sectionInfos));
+  const saveChange = async () => {
+    setloading(true);
+    await axios
+      .patch(
+        `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`,
+        { sections: state.area, device: getDeviceType() }
+      )
+      .then(async () => {
+        await Object.entries(sectionInfos).forEach(async (e) => {
+          const item = state.area.find((item) => e[0] == item.id);
+          switch (item.type) {
+            case "Banner":
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                const url = await getUrl(e[1].content.file);
+                if (url.success) {
+                  axios.post(`${config.SERVER_URL}/shopcustomization/banner`, {
+                    id: e[0],
+                    path: url.original_link,
+                    thumbnail: url.original_link,
+                    title: e[1].content.title.slice(0, 50),
+                  });
+                }
+              }
+              break;
+            case "BannerCarousel":
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                const banners = [];
+                for (const element of e[1].content.banners) {
+                  if (element.file) {
+                    const url = await getUrl(element.file);
+                    if (url.success) {
+                      banners.push({
+                        id: element.id,
+                        title: element.title.slice(0, 50),
+                        path: url.original_link,
+                      });
+                    }
+                  } else {
+                    banners.push({
+                      id: element.id,
+                      title: element.title.slice(0, 50),
+                      path: element.path,
+                    });
+                  }
+                }
+                if (banners.length != 0) {
+                  await axios.post(
+                    `${config.SERVER_URL}/shopcustomization/bannercarousel`,
+                    {
+                      id: e[0],
+                      banners: banners,
+                    }
+                  );
+                }
+              }
+              break;
+            case "Video":
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                await axios.post(
+                  `${config.SERVER_URL}/shopcustomization/video`,
+                  {
+                    id: e[0],
+                    path: e[1].content.path,
+                  }
+                );
+              }
+              break;
+            case "ProductCarousel":
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                await axios.post(
+                  `${config.SERVER_URL}/shopcustomization/productcarousel`,
+                  {
+                    id: e[0],
+                    category: e[1].content.category,
+                  }
+                );
+              }
+              break;
+            case "ProductCarouselSelect":
+              if (sectionInfosHistory[e[0]] !== sectionInfos[e[0]]) {
+                await axios.post(
+                  `${config.SERVER_URL}/shopcustomization/productcarouselselect`,
+                  {
+                    id: e[0],
+                    filter_name: e[1].header,
+                    products: e[1].content.products,
+                  }
+                );
+              }
+              break;
+          }
+        });
+        setloading(false);
+        Swal.fire({
+          title: "Success",
+          text: "Sections Successfully Save!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      })
+      .catch((e) => {
+        console.log(e.message);
+        Swal.fire({
+          title: "Something went wrong!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
+  };
   const deleteItem = (source, id) => {
     const target = source.find((item) => item.id === id);
     const index = source.indexOf(target);
     const cloneSource = [...source];
+    if (typeof sectionInfos[id] !== "undefined") {
+      setSectionInfos((sectionInfos) => {
+        delete sectionInfos[id];
+        return sectionInfos;
+      });
+    }
     cloneSource.splice(index, 1);
     return cloneSource;
   };
-  console.log(state);
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
@@ -202,26 +378,26 @@ const SellerShopCustomization = () => {
 
   const GetComponent = ({ type, ...rest }) => {
     const Components = {
-      Youtube: <YoutubeSection {...rest} />,
-      ImageBanner: <ImageBanner {...rest} />,
-      CarouselProduct: <CarouselProduct {...rest} />,
-      CarouselBanner: <CarouselBanner {...rest} />,
-      CarouselProductSelect: <CarouselProductSelect {...rest} />,
+      Video: <YoutubeSection {...rest} />,
+      Banner: <ImageBanner {...rest} />,
+      ProductCarousel: <CarouselProduct {...rest} />,
+      BannerCarousel: <CarouselBanner {...rest} />,
+      ProductCarouselSelect: <CarouselProductSelect {...rest} />,
     };
 
-    return Components[type] || Components["ImageBanner"];
+    return Components[type] || Components["Banner"];
   };
 
   const GetIcon = ({ type, ...rest }) => {
     const Components = {
-      ImageBanner: <ImageBannerIcon {...rest} />,
-      CarouselBanner: <CarouselBannerIcon {...rest} />,
-      Youtube: <YoutubeEmbedIcon {...rest} />,
-      CarouselProduct: <ProductCarouselIcon {...rest} />,
-      CarouselProductSelect: <ProductCarouselSelectIcon {...rest} />,
+      Banner: <ImageBannerIcon {...rest} />,
+      BannerCarousel: <CarouselBannerIcon {...rest} />,
+      Video: <YoutubeEmbedIcon {...rest} />,
+      ProductCarousel: <ProductCarouselIcon {...rest} />,
+      ProductCarouselSelect: <ProductCarouselSelectIcon {...rest} />,
     };
 
-    return Components[type] || Components["ImageBanner"];
+    return Components[type] || Components["Banner"];
   };
 
   return (
@@ -231,7 +407,7 @@ const SellerShopCustomization = () => {
           position: "fixed",
           width: `calc(100vw - 280px)`,
           height: "100px",
-          padding: "1rem",
+          padding: "1rem 5rem 1rem 1rem",
           backgroundColor: "#FFE8E1",
           display: "flex",
           justifyContent: "space-between",
@@ -247,7 +423,15 @@ const SellerShopCustomization = () => {
         >
           {shopName}
         </Typography>
-        <Button variant="contained">Save</Button>
+
+        <LoadingButton
+          loading={loading}
+          onClick={saveChange}
+          variant="contained"
+          sx={{ padding: "10px 30px", width: "100px" }}
+        >
+          Save
+        </LoadingButton>
       </Box>
       <Box>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -276,11 +460,11 @@ const SellerShopCustomization = () => {
                           isDragging={snapshot.isDragging}
                           style={provided.draggableProps.style}
                         >
-                          <GetIcon type={item.content} />
+                          <GetIcon type={item.type} />
                         </Item>
                         {snapshot.isDragging && (
                           <Clone>
-                            <GetIcon type={item.content} />
+                            <GetIcon type={item.type} />
                           </Clone>
                         )}
                       </React.Fragment>
@@ -292,7 +476,6 @@ const SellerShopCustomization = () => {
           </Droppable>
           <Content>
             {Object.keys(state).map((list, i) => {
-              console.log("==> list", list);
               return (
                 <Droppable key={list} droppableId={list}>
                   {(provided, snapshot) => (
@@ -340,10 +523,11 @@ const SellerShopCustomization = () => {
                                     </IconButton>
                                   </Box>
                                   <GetComponent
-                                    type={item.content}
+                                    type={item.type}
                                     id={item.id}
                                     information={sectionInfos}
                                     setInformation={setSectionInfos}
+                                    categories={categories}
                                     {...provided.dragHandleProps}
                                     order={index}
                                   />
@@ -366,6 +550,28 @@ const SellerShopCustomization = () => {
           </Content>
         </DragDropContext>
       </Box>
+      <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </>
   );
 };

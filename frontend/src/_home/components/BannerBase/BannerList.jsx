@@ -1,15 +1,21 @@
+import { useState } from 'react';
+import axios from "axios";
+import Swal from 'sweetalert2';
+import config from "~/common/constants"
 import { useTransition, animated } from 'react-spring';
 import { Container } from '@mui/material';
 import BannerItem from './BannerItem';
 import { noop } from '~/common/utils';
 
-const BannerList = ({ items = [], setItems = noop }) => {
+const BannerList = ({ items = [], setItems = noop, }) => {
+	const [loading, setLoading] = useState(false);
+
 	let height = 0;
 	const transitions = useTransition(items.map(item => (
 		{ ...item, y: (height += item.height || 0) - item.height || 0 })
 	),
 		{
-			keys: item => item.order,
+			keys: item => item.id,
 			from: { height: 0, opacity: 0 },
 			leave: { height: 0, opacity: 0 },
 			enter: ({ y, height }) => ({ y, height, opacity: 1 }),
@@ -21,23 +27,31 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		setItems((items) => {
 			return items.map((item, i) => {
 				if (i == index) {
+					items[index].order = i;
+					// items[index - 1].order = i + 1;
 					return items[i - 1];
 				}
 				else if (i == index - 1) {
+					items[index - 1].order = i + 2;
+					// items[index].order = i + 2;
 					return items[i + 1];
 				}
 				return item;
 			})
 		})
 	};
+
+	console.log(items);
 
 	const onNext = (index) => {
 		setItems((items) => {
 			return items.map((item, i) => {
 				if (i == index) {
+					items[index].order = i + 2;
 					return items[i + 1];
 				}
 				else if (i == index + 1) {
+					items[index + 1].order = i;
 					return items[i - 1];
 				}
 				return item;
@@ -45,11 +59,28 @@ const BannerList = ({ items = [], setItems = noop }) => {
 		})
 	};
 
-	const onDelete = (index) => {
-		setItems(() => {
-			items.splice(index, 1)
-			return [...items];
-		});
+	const handleDeleteBanner = (id) => {
+		setLoading(true);
+		axios
+			.delete(`${config.SERVER_URL}/home/banner/${id}`)
+			.then(({ data }) => {
+				if (data.success) {
+					console.log(data.bannerInfo);
+
+					let array = items;
+					array = array.filter(item => item.id !== id);
+					console.log(array);
+					setItems(array);
+
+					setLoading(false);
+					return Swal.fire('Done', "Already deleted the banner", 'success');
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				setLoading(false);
+				return Swal.fire('Oop!', 'Cannot delete banner, please try again', 'error');
+			})
 	};
 
 	return (
@@ -73,7 +104,8 @@ const BannerList = ({ items = [], setItems = noop }) => {
 							setItems={setItems}
 							onNext={onNext}
 							onPrev={onPrev}
-							onDelete={onDelete}
+							handleDeleteBanner={() => handleDeleteBanner(item.id)}
+							mainLoading={loading}
 						/>
 					</animated.div>
 				)

@@ -1,22 +1,22 @@
-// import { styled } from "@mui/material/styles";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-// import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
+import dayjs from "dayjs";
+import * as relativeTime from "dayjs/plugin/relativeTime";
 
-// const Item = styled(Paper)(({ theme }) => ({
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: "center",
-//   color: theme.palette.text.secondary,
-// }));
+dayjs.extend(relativeTime);
 
-export default function RowAndColumnSpacing() {
+export default function HeaderRight({ shopInfo = {} }) {
   const classes = useStyles();
   const { id } = useParams();
+  const [date, setdate] = useState();
+  useEffect(() => {
+    const joinDate = shopInfo.join_date;
+    setdate(dayjs(joinDate).fromNow());
+  }, [shopInfo]);
   return (
     <>
       <Box
@@ -35,7 +35,7 @@ export default function RowAndColumnSpacing() {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            6666
+            {shopInfo.products}
           </Grid>
           <Grid item xs={3}>
             <Typography fontSize="16px" color="#78909c">
@@ -53,7 +53,7 @@ export default function RowAndColumnSpacing() {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            7.4k
+            {shopInfo.followers}
           </Grid>
           <Grid item xs={3}>
             <Typography fontSize="16px" color="#78909c">
@@ -61,7 +61,7 @@ export default function RowAndColumnSpacing() {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            4 years ago
+            {date}
           </Grid>
         </Grid>
         <Grid className={classes.gridMargin} container>
@@ -71,7 +71,11 @@ export default function RowAndColumnSpacing() {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <Link to={`/shop/${id}/comment`}>4.7</Link>
+            <Link to={`/shop/${id}/comment`}>
+              {shopInfo.rating !== null
+                ? parseFloat(shopInfo.rating).toFixed(1)
+                : 0}
+            </Link>
           </Grid>
         </Grid>
       </Box>

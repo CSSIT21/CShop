@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Carousel from "~/common/components/Carousel";
@@ -11,23 +11,26 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 const progressBar = () => <LinearProgress />;
 
-const FlashSale = ({ items, onFavourite, endAt }) => {
-  const [products, setProducts] = useState(items);
+const FlashSale = ({ flashSale, flashSaleItems, onFavourite }) => {
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;
-  const totalPage = Math.ceil(products.length / productsPerRow);
-  const curDate = new Date();
-  const endDate = new Date(endAt * 1000);
+  const totalPage = Math.ceil(flashSale.products.length / productsPerRow);
+  const curDate = new Date().getTime();
+  const endDate = new Date(flashSale.ended_date).getTime();
   const [timeLeft, settimeLeft] = useState(endDate - curDate);
-  const hours = useMemo(() => Math.floor(timeLeft / 3600000), [timeLeft]);
+  const hours = useMemo(
+    () => Math.floor(endDate - curDate / 3600000),
+    [curDate]
+  );
   const mins = useMemo(
-    () => Math.floor((timeLeft - hours * 3600000) / 60000),
-    [timeLeft]
+    () => Math.floor((endDate - curDate - hours * 3600000) / 60000),
+    [curDate]
   );
   const secs = useMemo(
-    () => Math.floor((timeLeft - mins * 60000 - hours * 3600000) / 1000),
-    [timeLeft]
+    () =>
+      Math.floor((endDate - curDate - mins * 60000 - hours * 3600000) / 1000),
+    [curDate]
   );
   const [rotateSecs, setrotateSecs] = useState(false);
   const [s, setS] = useState(0);
@@ -119,7 +122,7 @@ const FlashSale = ({ items, onFavourite, endAt }) => {
 
           <Box className={classes.bestsellerCarousel}>
             <Carousel
-              items={products}
+              items={flashSaleItems}
               pageState={page}
               setPageState={setPage}
               itemsPerRow={productsPerRow}
@@ -130,7 +133,6 @@ const FlashSale = ({ items, onFavourite, endAt }) => {
                   product={product}
                   onFavourite={onFavourite}
                   to="/product/1"
-                  status={`Items left: ${50}`}
                   key={product.id}
                 />
               )}

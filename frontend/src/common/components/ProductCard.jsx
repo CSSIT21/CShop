@@ -1,16 +1,20 @@
-import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import ProductMedia from "./ProductCardBase/ProductMedia";
 import ProductContent from "./ProductCardBase/ProductContent";
 import { noop } from "../utils";
+import authState from "../../common/store/authState";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
+import config from "~/common/constants";
+import { Link } from "react-router-dom";
 
 const cardStyle = {
-  width: '100%',
-  padding: '8px',
-  margin: '0 auto',
+  width: "100%",
+  padding: "8px",
+  margin: "0 auto",
 
   borderRadius: "15px",
-  border: 'none',
+  border: "none",
   transition: "all ease 0.125s",
 
   "&:hover": {
@@ -19,21 +23,57 @@ const cardStyle = {
 };
 
 const productTemplate = {
-  title: 'fake product',
+  title: "fake product",
   image: "https://via.placeholder.com/410x360",
   price: 0,
   favourite: false,
 };
 
 const ProductCard = (props) => {
-  const { product = productTemplate, to = "/product/1", onFavourite = noop, status = undefined, addToCart = false } = props;
+  const { user } = useRecoilValue(authState);
+  const {
+    product = productTemplate,
+    to = "/product/1",
+    onFavourite = noop,
+    status = undefined,
+    addToCart = false,
+  } = props;
+
+  const postData = () => {
+    axios
+      .post(`${config.SERVER_URL}/log-system/product`, {
+        customer_id: user.id,
+        product_id: product.id,
+        view_date: new Date().toISOString(),
+      })
+      .then(({ data }) => {
+        if (data.success) {
+          return console.log(data.product);
+        }
+        else {
+          return console.log(data);
+        }
+      })
+      .catch((err) => {
+        return console.log(err.message);
+      })
+  };
+
+  const handleClick = () => {
+    postData();
+  };
+
   return (
-    <Link to={to}>
-      <Card
-        variant="outlined"
-        sx={cardStyle}
-      >
-        <ProductMedia image={product.image} title={product.title} />
+    <Link to={"/product/" + product.id}>
+      <Card variant="outlined" sx={cardStyle} onClick={handleClick}>
+        <ProductMedia
+          image={
+            product.product_picture?.length > 0
+              ? product.product_picture[0].path
+              : null
+          }
+          title={product.title}
+        />
         <ProductContent
           product={product}
           status={status}

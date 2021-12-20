@@ -5,14 +5,13 @@ import Carousel from "~/common/components/Carousel";
 import AppReviewCard from '../commonBase/AppReviewCard';
 
 const ReviewCarousel = ({
-	items = [],
+	reviews = [],
 	currentPage = 0,
 	totalPage = 1,
 	pageHandle = () => { },
 	itemsPerRow = 0,
 	loop = false,
 }) => {
-
 	const onPrev = () => {
 		if (currentPage === 0) {
 			pageHandle(totalPage - 1);
@@ -42,17 +41,18 @@ const ReviewCarousel = ({
 			</Fab>
 
 			<Box sx={{ width: "90%" }}>
-				<Carousel
-					items={items}
-					pageState={currentPage}
-					setPageState={pageHandle}
-					itemsPerRow={itemsPerRow}
-					loop={loop}
-				>
-					{(item) => (
-						<AppReviewCard review={item} key={item.id} />
-					)}
-				</Carousel>
+				{reviews.length > 0 &&
+					<Carousel
+						items={reviews}
+						pageState={currentPage}
+						setPageState={pageHandle}
+						itemsPerRow={itemsPerRow}
+						loop={loop}
+					>
+						{(review) => (
+							<AppReviewCard review={review} key={review.id} />
+						)}
+					</Carousel>}
 			</Box>
 
 			<Fab

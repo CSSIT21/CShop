@@ -5,6 +5,53 @@ import CardAndPagination from "../components/commonBase/CardAndPagination";
 import HeaderWithIcon from "../components/commonBase/HeaderWithIcon";
 import { makeStyles } from '@mui/styles';
 import { Box } from "@mui/system";
+import axios from "axios";
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+
+
+const FavouritePage = () => {
+    const classes = useStyles();
+    const { user } = useRecoilValue(authState);
+    const [skip, setSkip] = useState(0);
+    const [page, setPage] = useState(1);
+    const [products, setProducts] = useState(fakeProducts);
+
+    const onPageChange = (e, value) => {
+        setPage(value)
+    };
+
+    const getData = () => {
+        setSkip((page - 1) * 16);
+        axios
+            .get(`${config.SERVER_URL}/home/favorites/${user.id}?take=16&skip=${skip}`)
+            .then(({ data }) => {
+                if (data.success) {
+                    return setProducts(data.favorites);
+                }
+                else {
+                    return console.log(data);
+                }
+            })
+            .catch((err) => {
+                return console.log(err.message);
+            })
+    };
+
+    useEffect(() => {
+        getData();
+    }, [page])
+
+    return (
+        <Box className={classes.FavoriteWrapper}>
+            <Box className={classes.content}>
+                <HeaderWithIcon title="Favorite" ItemIcon={FavoriteIcon} />
+                <CardAndPagination products={products} onPageChange={onPageChange} />
+            </Box>
+        </Box>
+    );
+};
 
 const useStyles = makeStyles({
     FavoriteWrapper: {
@@ -26,34 +73,5 @@ const useStyles = makeStyles({
         alignItems: 'center',
     },
 });
-
-const FavouritePage = (props) => {
-    const classes = useStyles();
-
-    const [page, setPage] = useState(1);
-    const [products, setProducts] = useState(fakeProducts);
-
-    const onFavourite = (index) => {
-        setProducts((products) => {
-            const target = products[index];
-            target.favourite = !target.favourite;
-
-            return [...products];
-        });
-    };
-
-    const onPageChange = (e, value) => {
-        setPage(value)
-    };
-
-    return (
-        <Box className={classes.FavoriteWrapper}>
-            <Box className={classes.content}>
-                <HeaderWithIcon title="Favorite" ItemIcon={FavoriteIcon} />
-                <CardAndPagination products={products} onFavorite={onFavourite} />
-            </Box>
-        </Box>
-    );
-};
 
 export default FavouritePage;

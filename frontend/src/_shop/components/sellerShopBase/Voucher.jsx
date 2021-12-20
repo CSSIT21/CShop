@@ -1,84 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import CarouselButton from "~/common/components/CarouselButton";
 import Carousel from "~/common/components/Carousel";
 import Coupon from "./Coupon";
+import axios from "axios";
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
-const coupons = [
-  {
-    id: 1,
-    title: "50% save for new user!!",
-    remaining: 2,
-    valid: "Until 31/12/2021",
-    claimed: false,
-  },
-  {
-    id: 2,
-    title: "50% save for new user!!",
-    remaining: 10,
-    valid: "Until 31/12/2021",
-    claimed: true,
-  },
-  {
-    id: 3,
-    title: "50% save for new user!!",
-    remaining: 5,
-    valid: "Until 31/12/2021",
-    claimed: false,
-  },
-];
-
-const Voucher = () => {
+const Voucher = ({ shopcoupons }) => {
   const classes = useStyles();
+  const auth = useRecoilValue(authState);
+  const [coupons, setcoupons] = useState(shopcoupons);
   const [page, setPage] = useState(0);
   const couponsPerRow = 2;
   const totalPage = Math.ceil(coupons.length / couponsPerRow);
-  const [currentCoupon, setCurrentCoupon] = useState(4);
-  const handleClaim = () => {
-    setCurrentCoupon(currentCoupon - 1);
+  const [loading, setloading] = useState(false);
+  const handleClaim = (coupon_id) => {
+    if (auth.isLoggedIn) {
+      setloading(true);
+      axios
+        .post(`${config.SERVER_URL}/promotion/upshop`, {
+          discount_id: coupon_id,
+          userId: auth.user.id,
+        })
+        .then(() => {
+          setcoupons(
+            coupons.filter((coupon) => {
+              return coupon.discount_id != coupon_id;
+            })
+          );
+          setloading(false);
+          Swal.fire({
+            title: "Coupon claimed!",
+            text: "Check it out! On your Voucher & Coupon!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        });
+    } else {
+      Swal.fire({
+        title: "Please login to claim a coupon!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
+  console.log(coupons);
+  if (coupons.length > 0) {
+    return (
+      <Box className={classes.wrapper}>
+        <Box className={classes.header}>
+          <Typography
+            sx={{ fontSize: "24px", fontWeight: "600", color: "#FD6637" }}
+          >
+            Shop Voucher
+          </Typography>
+          <CarouselButton
+            pageHandle={setPage}
+            currentPage={page}
+            totalPage={totalPage}
+          />
+        </Box>
 
-  return (
-    <Box className={classes.wrapper}>
-      <Box className={classes.header}>
-        <Typography
-          sx={{ fontSize: "24px", fontWeight: "600", color: "#FD6637" }}
-        >
-          Shop Voucher
-        </Typography>
-        <CarouselButton
-          pageHandle={setPage}
-          currentPage={page}
-          totalPage={totalPage}
-        />
+        <Box className={classes.content}>
+          <Carousel
+            items={coupons}
+            pageState={page}
+            setPageState={setPage}
+            itemsPerRow={couponsPerRow}
+          >
+            {(coupon, idx) => (
+              <Coupon
+                key={coupon.discount_id}
+                coupon={coupon}
+                loading={loading}
+                onClick={() => handleClaim(coupon.discount_id)}
+              />
+            )}
+          </Carousel>
+        </Box>
       </Box>
-
-      <Box className={classes.content}>
-        <Carousel
-          items={coupons}
-          pageState={page}
-          setPageState={setPage}
-          itemsPerRow={couponsPerRow}
-        >
-          {(coupon, idx) => (
-            <Coupon
-              key={idx}
-              coupon={coupon}
-              currentCoupon={currentCoupon}
-              totalCoupon={5}
-              claimProps={{
-                  disabled: coupon.claimed,
-                  title: 'Claim',
-                  onClick: handleClaim
-              }}
-            />
-          )}
-        </Carousel>
-      </Box>
-    </Box>
-  );
+    );
+  }
+  return <></>;
 };
 
 const useStyles = makeStyles({

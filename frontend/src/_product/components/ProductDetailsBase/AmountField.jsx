@@ -6,61 +6,53 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 
-const Products = () => {
-  const [products, setProducts] = useState({
-    count: 1,
-  });
-
+const AmountField = ({ stock = 0, count, setCount }) => {
   const handleChange = (e) => {
-    setProducts({ count: e.target.value || 1 });
+    setCount(e.target.value || 1);
   };
 
+  // Decrease
   const decrease = (e) => {
-    if (products.count <= 1) {
+    if (count <= 1) {
       return;
     }
-    setProducts({ count: products.count - 1 });
+    setCount(count - 1);
+  };
+
+  // Increase
+  const increase = (e) => {
+    if (count >= stock) {
+      return;
+    }
+    setCount(count + 1);
   };
 
   const IncreaseButton = () => (
-    <IconButton
-      sx={{ width: "10px", height: "10px" }}
-      onClick={() => setProducts({ count: products.count + 1 })}
-    >
-      <Increase style={{ fontSize: "22px" }} />
+    <IconButton sx={{ width: "10px", height: "10px" }} onClick={increase}>
+      <Increase style={{ fontSize: "20px" }} />
     </IconButton>
   );
-
   const DecreaseButton = () => (
     <IconButton sx={{ width: "10px", height: "10px" }} onClick={decrease}>
-      <Decrease style={{ fontSize: "22px" }} />
+      <Decrease style={{ fontSize: "20px" }} />
     </IconButton>
   );
 
   const classes = useStyles();
+
   return (
-    <Box
-      sx={{
-        width: "116px",
-        height: "56px",
-        position: "relative",
-      }}
-    >
+    <Box className={classes.wrapper}>
       <TextField
         type="text"
-        value={products.count}
+        value={count}
         onChange={handleChange}
         className={classes.show}
-      ></TextField>
-      <Box
-        sx={{
-          position: "absolute",
-          display: "flex",
-          flexDirection: "column",
-          top: "11px",
-          right: "5px",
+        InputProps={{
+          readOnly: true,
         }}
-      >
+        size="small"
+      ></TextField>
+      <Box className={classes.button}>
         <IncreaseButton />
         <DecreaseButton />
       </Box>
@@ -69,10 +61,25 @@ const Products = () => {
 };
 
 const useStyles = makeStyles({
-  show: {
-    position: "absolute",
+  wrapper: {
     width: "116px",
+    height: "44px",
+    paddingTop: "2.5px",
+
+    position: "relative",
+  },
+  show: {
+    width: "100%",
+    position: "absolute",
+  },
+  button: {
+    position: "absolute",
+    top: "7px",
+    right: "8px",
+
+    display: "flex",
+    flexDirection: "column",
   },
 });
 
-export default Products;
+export default AmountField;
