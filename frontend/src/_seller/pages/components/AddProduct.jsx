@@ -229,6 +229,9 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
   const [price , setPrice] = useState();
   const [category , setCategory] = useState();
   const [subTitle , setSubtitle] = useState();
+  const [path , setPath] = useState();
+  const [thumbnail , setThumbnail] = useState();
+  const [pictitle , setPictitle] = useState();
   // const [sold , setSold] = useState();
   // const [suggest , setSuggest] = useState();
   // const [rate , setRating] = useState();
@@ -244,11 +247,15 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
           price : parseInt(price),
           category_id : parseInt(category),
           sub_title : subTitle,
+          path : path,
+          thumbnail : thumbnail,
+          title : pictitle,
           // sold : parseInt(sold),
           // suggest_products : [],
           // rating : parseInt(rate),
-      }
+        }
       );
+
       handleClose();
       // window.location.reload(false);
     }catch (e){
@@ -370,7 +377,7 @@ export default function AddProduct({ product = false, setProduct = () => {} }) {
                       style={{ display: "none" }}
                       id={`outlined-button-file-`}
                       onChange={(e) => {
-                        uploadFile(e);
+                        uploadFile(e.target.files[0]);
                       }}
                     />
                     Upload file

@@ -5,6 +5,9 @@ import { DiscountClass, DiscountTypes, OrderStatus, PrismaClient, Prisma } from 
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Timestamp } from 'rxjs';
 import e from 'express';
+import { Url } from 'url';
+import { url } from 'inspector';
+import path from 'path/posix';
 
 @Injectable()
 export class SellerconsoleService {
@@ -185,6 +188,9 @@ export class SellerconsoleService {
 		price: number,
 		quantity: number,
 		categoryId: number,
+		path : string,
+		thumbnail : string,
+		pictitle : string
 		// sold: number,
 		// suggest_product: number[],
 		// rating: number,
@@ -200,6 +206,14 @@ export class SellerconsoleService {
 				sold: 0,
 				suggest_products: [],
 				rating: 0,
+				product_picture : ({
+					create : {
+						path : path ,
+						thumbnail : thumbnail,
+						title : pictitle,
+						
+					}
+				})
 			},
 		});
 		return productId.id;

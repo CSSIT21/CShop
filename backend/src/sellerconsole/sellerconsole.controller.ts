@@ -66,6 +66,9 @@ export class SellerconsoleController {
 		var price = request.price;
 		var quantity = request.quantity;
 		var category_id = request.category_id;
+		var path = request.path;
+		var thumbnail= request.thumbnail;
+		var pictitle = request.title;
 		// var sold = request.sold;
 		// var suggest_products = request.suggest_products;
 		// var rating = request.rating;
@@ -78,6 +81,9 @@ export class SellerconsoleController {
 			price,
 			quantity,
 			category_id,
+			path,
+			thumbnail,
+			pictitle,
 		);
 		console.log(a);
 		const b = await this.sellerconsoleService.UpdatetoStockLog(shop_id, a, quantity);
