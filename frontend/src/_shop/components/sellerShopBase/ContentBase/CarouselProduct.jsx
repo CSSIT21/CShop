@@ -7,6 +7,7 @@ import Carousel from "~/common/components/Carousel";
 import ProductCard from "~/common/components/ProductCard";
 import CarouselButton from "~/common/components/CarouselButton";
 import authState from "~/common/store/authState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useRecoilValue } from "recoil";
 
 const useStyles = makeStyles({
@@ -50,7 +51,7 @@ const CarouselProduct = ({ items, filterName }) => {
         }
       } else {
         Swal.fire({
-          title: "Please login to add a product to your wishlist!",
+          text: "Please login to add a product to your wishlist!",
           icon: "error",
           confirmButtonText: "OK",
         });

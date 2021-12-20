@@ -86,9 +86,12 @@ const CarouselProductSelect = ({
     let words = searchText.trim().split(" ");
 
     let products = originalProduct.filter((e) => {
-      return !products_id.includes(e.id) && words.every((word) => {
-        return e.title.toLowerCase().includes(word.toLowerCase());
-      });
+      return (
+        !products_id.includes(e.id) &&
+        words.every((word) => {
+          return e.title.toLowerCase().includes(word.toLowerCase());
+        })
+      );
     });
     return products;
   }, [originalProduct, products_id, sectionImages, searchText]);
