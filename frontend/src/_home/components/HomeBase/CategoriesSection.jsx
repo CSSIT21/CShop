@@ -39,35 +39,43 @@ const CategoriesSection = () => {
 
 	return (
 		<Box className={classes.categoriesWrapper}>
+			<HeaderWithButton
+				colors="black"
+				headerName="Categories"
+				page={page}
+				totalPage={totalPage}
+				setPage={setPage}
+				isShow={categories.length > 0}
+			/>
 
-			<Box className={classes.categoriesContent}>
-				<HeaderWithButton
-					colors="black"
-					headerName="Categories"
-					page={page}
-					totalPage={totalPage}
-					setPage={setPage}
-				/>
-
-				{categories.length > 0 &&
-					<Carousel
-						items={categories}
-						pageState={page}
-						setPageState={setPage}
-						itemsPerRow={itemsPerRow}
-					>
-						{({ id, name, icon_id_from_category }) => (
-							<Link to={`/search/category/${id}`}>
-								<Box className={classes.categoriesItem} key={id}>
-									<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
-									<img src={icon_id_from_category.path} alt={icon_id_from_category.title} />
-								</Box>
-							</Link>
-						)}
-					</Carousel>}
-			</Box >
-
-			<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
+			{categories.length > 0
+				? <>
+					<Box className={classes.categoriesContent}>
+						<Carousel
+							items={categories}
+							pageState={page}
+							setPageState={setPage}
+							itemsPerRow={itemsPerRow}
+						>
+							{({ id, name, icon_id_from_category }) => (
+								<Link to={`/search/category/${id}`}>
+									<Box className={classes.categoriesItem} key={id}>
+										<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
+										<img src={icon_id_from_category.path} alt={icon_id_from_category.title} />
+									</Box>
+								</Link>
+							)}
+						</Carousel>
+					</Box>
+					<CustomDot width={50} setPageState={setPage} currentPage={page} totalPage={totalPage} />
+				</>
+				: <Typography
+					textAlign="center"
+					fontSize={16}
+					fontWeight={400}
+					color="gray">
+					No categories to show
+				</Typography>}
 		</Box >
 
 	);
