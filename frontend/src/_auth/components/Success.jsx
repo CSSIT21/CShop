@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useLayoutEffect } from "react";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import CButton from "../../common/components/CButton";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 const Success = () => {
   const classes = useStyles();
   const router = useHistory();

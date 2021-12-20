@@ -5,7 +5,7 @@ import { Avatar, Typography } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import authState from "../../../common/store/authState";
 import Button from "@mui/material/Button";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import StoreIcon from "@mui/icons-material/Store";
 const userType = "seller";
 const TopSeller = () => {

@@ -10,7 +10,7 @@ import axios from "axios";
 import config from "../../common/constants";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const FollowedShop = () => {
   const classes = useStyles();

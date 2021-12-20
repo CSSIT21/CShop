@@ -531,9 +531,6 @@ const SellerShopCustomization = () => {
                                     {...provided.dragHandleProps}
                                     order={index}
                                   />
-                                  <Box>
-                                    Hello {item.content} {JSON.stringify(item)}
-                                  </Box>
                                 </div>
                               )}
                             </Draggable>
