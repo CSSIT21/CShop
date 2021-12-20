@@ -44,6 +44,7 @@ export class SellerCard extends React.Component {
     this.productCount = 'PENDING';
     this.rating = 'PENDING';
     this.cancelRate = '0%';
+    this.reports = 'PENDING';
   }
 
   handleExpandClick = () => {
@@ -71,8 +72,12 @@ export class SellerCard extends React.Component {
     const fetchedData2 = await axios.get(
       "http://localhost:8080/manageaccount/products/shop_id?id=" + this.props.seller.id
     );
+    const fetchedData3 = await axios.get(
+      "http://localhost:8080/manageaccount/sellers/reported?id=" + this.props.seller.id
+    )
     this.types = fetchedData.data;
     this.productCount = fetchedData2.data.length;
+    this.reports = fetchedData3.data.length;
 
     let a = 0;
 
@@ -222,6 +227,7 @@ export class SellerCard extends React.Component {
               <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>:
               <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Update</Button>
             }
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Report Count: {this.reports}</Typography>
           </CardContent>
           <CardContent>
             {

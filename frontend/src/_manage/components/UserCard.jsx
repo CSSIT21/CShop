@@ -42,6 +42,7 @@ export class UserCard extends React.Component {
     this.address = {address_line: 'PENDING', postal_code: 'PENDING'};
     this.types = [];
     this.path = '';
+    this.reports = 'PENDING';
   }
 
   async componentDidMount(){
@@ -57,11 +58,15 @@ export class UserCard extends React.Component {
       "http://localhost:8080/manageaccount/users/picture?id=" + this.props.user.customer_picture.customer_id
     );
     }
+    const fetchedData4 = await axios.get(
+      "http://localhost:8080/manageaccount/users/reported?id=" + this.props.user.id
+    )
     this.address = fetchedData.data;
     this.types = fetchedData2.data;
     if(fetchedData3 != null){
     this.path = fetchedData3.data.path;
     }
+    this.reports = fetchedData4.data.length;
     this.forceUpdate();
   }
 
@@ -208,6 +213,7 @@ export class UserCard extends React.Component {
               <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Add</Button>:
               <Button onClick={this.dialogClickOpen} variant="contained" sx={{ height:'50%', margin:'12px' }}>Update</Button>
             }
+            <Typography noWrap style={{ fontWeight: 600, fontSize: '15px', margin:'20px'}}>Report Count: {this.reports}</Typography>
           </CardContent>
           <CardContent>
             {

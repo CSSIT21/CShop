@@ -261,6 +261,26 @@ export class ManageaccountController {
     });
   }
 
+  @Get('/users/reported')
+  @Public()
+  public getReportedUser(@Query('id') i: number){
+    return this.prisma.admin_reported_customer.findMany({
+      where:{
+        reported_customer_id: +i,
+      }
+    });
+  }
+
+  @Get('/sellers/reported')
+  @Public()
+  public getReportedSeller(@Query('id') i: number){
+    return this.prisma.admin_reported_shop.findMany({
+      where:{
+        reported_shop_id: +i,
+      }
+    });
+  }
+
   @Get('/suspension/types')
   @Public()
   public getSusTypes(){
@@ -306,5 +326,18 @@ export class ManageaccountController {
         id: +i
       }
     });
+  }
+
+  @Post('audit/create')
+  @Public()
+  public logAudit(@Query('id') i: number, @Query('log') l: string){{
+    return this.prisma.admin_audit.create({
+      data:{
+          admin_id: +i,
+          login_date: new Date(),
+          action: l,
+        }
+      });
+    }
   }
 }
