@@ -76,7 +76,6 @@ export class DeliveryService {
 
 	public async generateTrackingNumber(address: Address) {
 		let provinceNumber = province[address.province]
-
 		const createTrackingNumber = await this.prisma.delivery_product_status.create({
 			data: {
 				recipient_name: address.recipient_name,

@@ -6,7 +6,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const menusSelect = ["Admin", "Contact"];
+const menusSelect = ["Admin"];
 
 const NavBar = () => {
     const classes = useStyles();

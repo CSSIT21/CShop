@@ -10,12 +10,28 @@ const TrackingSearch = ({ setDelivery }) => {
     const classes = useStyles();
     const [trackingNumber, setTrackingNumber] = useState("");
     const [checkLength, setCheckLength] = useState(false);
+    const [helperText, setHelperText] = useState("");
 
     const fetchedTrackingNumber = async () => {
         const getTrackingNumber = await axios.get(
             `http://localhost:8080/delivery/search?tracking=${trackingNumber}`
         );
         setDelivery(getTrackingNumber.data);
+        if (!getTrackingNumber.data) {
+            setCheckLength(true);
+            setHelperText("Not found");
+        }
+    };
+
+    const checkInput = () => {
+        if (trackingNumber.length === 10) {
+            setCheckLength(false);
+            setHelperText("");
+            fetchedTrackingNumber();
+        } else {
+            setCheckLength(true);
+            setHelperText("This field must contain 10 characters");
+        }
     };
 
     const keyCheck = (e) => {
@@ -34,7 +50,7 @@ const TrackingSearch = ({ setDelivery }) => {
                 <CustomTextField
                     sx={{ width: "400px" }}
                     onChange={(e) => {
-                        setTrackingNumber(e.target.value);
+                        setTrackingNumber(e.target.value.toUpperCase());
                     }}
                     onKeyPress={(e) => {
                         keyCheck(e);
@@ -44,11 +60,7 @@ const TrackingSearch = ({ setDelivery }) => {
                             ? trackingNumber.substring(0, 10)
                             : trackingNumber
                     }
-                    helperText={
-                        checkLength
-                            ? "this field must contain 10 characters"
-                            : null
-                    }
+                    helperText={checkLength ? helperText : null}
                 />
                 <ColorButton
                     sx={{
@@ -56,7 +68,7 @@ const TrackingSearch = ({ setDelivery }) => {
                         height: "55px",
                         margin: "0 10px",
                     }}
-                    onClick={fetchedTrackingNumber}
+                    onClick={checkInput}
                 >
                     <Typography>Track</Typography>
                 </ColorButton>
