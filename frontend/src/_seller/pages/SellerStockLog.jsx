@@ -25,8 +25,8 @@ export default function SellerStockLog() {
     },
     { id: "productName", label: "productName" },
     {
-      id: "Quantity",
-      label: "Quantity",
+      id: "quantity",
+      label: "quantity",
       align: "right",
       format: (value) => value.toLocaleString("en-US"),
     },

@@ -30,12 +30,12 @@ const StockBody = ({ columns }) => {
         .map((el) =>
           createData(
             el.id,
-            el.product_picture.path,
+            el.product_picture[0].path,
             el.title,
             el.quantity,
             el.price
           )
-        )
+        );
       setRows(created);
     } catch (e) {
       console.log(e);

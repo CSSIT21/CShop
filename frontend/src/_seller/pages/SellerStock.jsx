@@ -54,14 +54,6 @@ const SellerStock = () => {
 
   const [product, setProduct] = useState(false);
 
-  function createData(productId, productname, amount, price) {
-    return {
-      productId,
-      productname,
-      amount,
-      price,
-    };
-  }
 
   return (
     <>
