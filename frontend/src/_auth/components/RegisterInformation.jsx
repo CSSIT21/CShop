@@ -6,7 +6,7 @@ import { years, months, days, genders } from "../../common/constants/register";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";

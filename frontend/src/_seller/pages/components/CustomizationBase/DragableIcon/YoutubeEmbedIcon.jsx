@@ -6,7 +6,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 const YoutubeEmbedIcon = ({ ...rest }) => {
   return (
     <Box {...rest}>
-      <Typography fontSize="18px">Banner</Typography>
+      <Typography fontSize="18px">Video</Typography>
       <Box
         sx={{
           display: "flex",

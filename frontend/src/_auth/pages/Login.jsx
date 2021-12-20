@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "../../common/constants/index";
