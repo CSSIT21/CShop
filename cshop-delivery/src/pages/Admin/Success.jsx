@@ -7,7 +7,9 @@ import axios from "axios";
 const Success = () => {
     const [allRequests, setAllRequests] = useState();
     const fetchedRequests = async () => {
-        const data = await axios.get("http://localhost:8080/delivery/success");
+        const data = await axios.get(
+            "http://localhost:8080/delivery/admin?status=success"
+        );
         setAllRequests(data.data);
     };
 

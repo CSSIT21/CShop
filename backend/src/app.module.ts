@@ -20,6 +20,8 @@ import { ProductModule } from './_product/product/product.module';
 import { ReviewProductModule } from './_product/review-product/review-product.module';
 import { ShortLinkModule } from './_product/short-link/short-link.module';
 import { CommentModule } from './_product/comment/comment.module';
+import { SearchModule } from './_search/search.module';
+import { DeliveryModule } from './delivery/delivery.module';
 
 @Module({
 	imports: [
@@ -29,9 +31,9 @@ import { CommentModule } from './_product/comment/comment.module';
 		BannerModule,
 		HomeModule,
 		LogSystemModule,
-    	SellershopModule,
-    	ShopcustomizationModule,
-    	ProfileModule,
+		SellershopModule,
+		ShopcustomizationModule,
+		ProfileModule,
 		CartModule,
 		SellershopModule,
 		ShopcustomizationModule,
@@ -41,7 +43,9 @@ import { CommentModule } from './_product/comment/comment.module';
 		ShortLinkModule,
 		CommentModule,
 		ChatModule,
-		PromotionModule
+		PromotionModule,
+		SearchModule,
+		DeliveryModule
 	],
 
 	controllers: [AppController],
@@ -53,4 +57,4 @@ import { CommentModule } from './_product/comment/comment.module';
 		},
 	],
 })
-export class AppModule {}
+export class AppModule { }
