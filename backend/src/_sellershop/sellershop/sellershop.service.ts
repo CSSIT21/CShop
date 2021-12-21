@@ -60,202 +60,31 @@ export class SellershopService {
 		readyToShip: boolean,
 		outOfStock: boolean,
 		rating: number,
+		customer_id: number,
 	) {
 		try {
-			if (category_id != 0) {
-				const shop_category = await this.prisma.shop_category.findFirst({
-					where: {
-						shop_id: id,
-						id: category_id,
-					},
-					select: {
-						products: true,
-						id: true,
-					},
-				});
-				if (readyToShip && outOfStock) {
-					const products = await this.prisma.product.findMany({
-						where: {
-							id: {
-								in: shop_category.products,
-							},
-							rating: {
-								gte: rating,
-							},
-							price: {
-								gte: priceLow,
-								lte: priceHigh,
-							},
-						},
-						include: {
-							product_picture: true,
-						},
-						skip: (page - 1) * 16,
-						take: 16,
-					});
-					const count = await this.prisma.product.count({
-						where: {
-							id: {
-								in: shop_category.products,
-							},
-							rating: {
-								gte: rating,
-							},
-							price: {
-								gte: priceLow,
-								lte: priceHigh,
-							},
-						},
-					});
-					return { products, count };
-				} else if (readyToShip) {
-					const products = await this.prisma.product.findMany({
-						where: {
-							id: {
-								in: shop_category.products,
-							},
-							quantity: {
-								gt: 0,
-							},
-							rating: {
-								gte: rating,
-							},
-							price: {
-								gte: priceLow,
-								lte: priceHigh,
-							},
-						},
-						include: {
-							product_picture: true,
-						},
-						skip: (page - 1) * 16,
-						take: 16,
-					});
-					const count = await this.prisma.product.count({
-						where: {
-							id: {
-								in: shop_category.products,
-							},
-							quantity: {
-								gt: 0,
-							},
-							rating: {
-								gte: rating,
-							},
-							price: {
-								gte: priceLow,
-								lte: priceHigh,
-							},
-						},
-					});
-					return { products, count };
-				}
-				const products = await this.prisma.product.findMany({
-					where: {
-						id: {
-							in: shop_category.products,
-						},
-						rating: {
-							gte: rating,
-						},
-						price: {
-							gte: priceLow,
-							lte: priceHigh,
-						},
-					},
-					include: {
-						product_picture: true,
-					},
-					skip: (page - 1) * 16,
-					take: 16,
-				});
-				const count = await this.prisma.product.count({
-					where: {
-						id: {
-							in: shop_category.products,
-						},
-						rating: {
-							gte: rating,
-						},
-						price: {
-							gte: priceLow,
-							lte: priceHigh,
-						},
-					},
-				});
-				return { products, count };
-			} else if (readyToShip && outOfStock) {
-				const products = await this.prisma.product.findMany({
-					where: {
-						shop_id: id,
-						rating: {
-							gte: rating,
-						},
-						price: {
-							gte: priceLow,
-							lte: priceHigh,
-						},
-					},
-					include: {
-						product_picture: true,
-					},
-					skip: (page - 1) * 16,
-					take: 16,
-				});
-				const count = await this.prisma.product.count({
-					where: {
-						shop_id: id,
-						rating: {
-							gte: rating,
-						},
-						price: {
-							gte: priceLow,
-							lte: priceHigh,
-						},
-					},
-				});
-				return { products, count };
-			} else if (readyToShip) {
-				const products = await this.prisma.product.findMany({
-					where: {
-						shop_id: id,
-						quantity: {
-							gt: 0,
-						},
-						rating: {
-							gte: rating,
-						},
-						price: {
-							gte: priceLow,
-							lte: priceHigh,
-						},
-					},
-					include: {
-						product_picture: true,
-					},
-					skip: (page - 1) * 16,
-					take: 16,
-				});
-				const count = await this.prisma.product.count({
-					where: {
-						shop_id: id,
-						quantity: {
-							gt: 0,
-						},
-						rating: {
-							gte: rating,
-						},
-						price: {
-							gte: priceLow,
-							lte: priceHigh,
-						},
-					},
-				});
-				return { products, count };
-			}
-			const products = await this.prisma.product.findMany({
+			const shop_category = await this.prisma.shop_category.findFirst({
 				where: {
 					shop_id: id,
+					id: category_id,
+				},
+				select: {
+					products: true,
+					id: true,
+				},
+			});
+			const products = await this.prisma.product.findMany({
+				where: {
+					...(shop_category && {
+						id: {
+							in: shop_category.products,
+						},
+					}),
+					...(readyToShip && {
+						quantity: {
+							gt: 0,
+						},
+					}),
 					rating: {
 						gte: rating,
 					},
@@ -263,16 +92,31 @@ export class SellershopService {
 						gte: priceLow,
 						lte: priceHigh,
 					},
+					shop_id: id,
 				},
 				include: {
 					product_picture: true,
+					customer_wishlist: {
+						where: {
+							customer_id: customer_id,
+						},
+					},
 				},
-				skip: (page - 1) * 16,
 				take: 16,
+				skip: (page - 1) * 16,
 			});
 			const count = await this.prisma.product.count({
 				where: {
-					shop_id: id,
+					...(shop_category && {
+						id: {
+							in: shop_category.products,
+						},
+					}),
+					...(readyToShip && {
+						quantity: {
+							gt: 0,
+						},
+					}),
 					rating: {
 						gte: rating,
 					},
@@ -280,10 +124,15 @@ export class SellershopService {
 						gte: priceLow,
 						lte: priceHigh,
 					},
+					shop_id: id,
 				},
 			});
+			const result = {
+				products: products,
+				count: count,
+			};
 
-			return { products, count };
+			return { ...result };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -352,7 +201,7 @@ export class SellershopService {
 		}
 	}
 
-	public async getShopSection(id: number) {
+	public async getShopSection(id: number, customer_id: number) {
 		try {
 			const shopsections = await this.prisma.shop_section.findUnique({
 				where: {
@@ -407,6 +256,11 @@ export class SellershopService {
 								},
 								include: {
 									product_picture: true,
+									customer_wishlist: {
+										where: {
+											customer_id: customer_id,
+										},
+									},
 								},
 							});
 
@@ -427,6 +281,11 @@ export class SellershopService {
 								},
 								include: {
 									product_picture: true,
+									customer_wishlist: {
+										where: {
+											customer_id: customer_id,
+										},
+									},
 								},
 							});
 
@@ -534,6 +393,14 @@ export class SellershopService {
 					discount_id: {
 						notIn: getCouponCustomerOwn.map((e) => e.discount_id),
 					},
+					quantity: {
+						gte: 1,
+					},
+					discount_id_from_discount_shop: {
+						end_date: {
+							gte: new Date(Date.now()),
+						},
+					},
 				},
 				include: {
 					discount_id_from_discount_shop: {
@@ -554,7 +421,7 @@ export class SellershopService {
 		}
 	}
 
-	public async getFlashSale(id: number) {
+	public async getFlashSale(id: number, customer_id: number) {
 		try {
 			console.log(new Date(Date.now()));
 
@@ -579,6 +446,11 @@ export class SellershopService {
 					},
 					include: {
 						product_picture: true,
+						customer_wishlist: {
+							where: {
+								customer_id: customer_id,
+							},
+						},
 					},
 				});
 

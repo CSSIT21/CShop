@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Filter from "../components/sellerShopBase/Filter";
 import config from "~/common/constants";

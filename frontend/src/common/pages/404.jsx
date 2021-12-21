@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { nanoid } from 'nanoid';
 const NotFoundPage = () => {
   const classes = useStyles();
@@ -33,8 +33,7 @@ const NotFoundPage = () => {
               height: "70px",
               fontSize: "20px",
               borderRadius: "12px",
-              marginRight:"30px",
-           
+              marginRight: "30px",
             }}
             onClick={() => {
               router.goBack();

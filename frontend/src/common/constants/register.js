@@ -32,8 +32,14 @@ export const days = ["Select Day", ...DAYS.map((day, idx) => 1 + idx)];
 
 export const genders = [
   { id: 0, value: "Select Gender", label: "Select Gender" },
+
+  { id: 1, value: "male", label: "Male" },
+  { id: 2, value: "female", label: "Female" },
+  { id: 3, value: "others", label: "Others" },
+
   { id: 1, value: "Male", label: "Male" },
   { id: 2, value: "Female", label: "Female" },
   { id: 3, value: "Others", label: "Others" },
   { id: 4, value: "PreferNotToSay", label: "Prefer not to say" },
+
 ];

@@ -23,9 +23,11 @@ import SkeletonLoading from "~/common/components/SkeletonLoading";
 
 import HomePage from "./_home/pages/Home";
 import UsersPage from "./_manage/pages/Users";
-import BannedUsersPage from "./_manage/pages/BannedUsers";
+import ProductsPage from "./_manage/pages/Products";
 import SellersPage from "./_manage/pages/Sellers";
-import BannedSellerPage from "./_manage/pages/BannedSeller";
+import TicketsPage from "./_manage/pages/Tickets";
+import SupportPage from "./_manage/pages/Support";
+import AuditPage from "./_manage/pages/Audit";
 import FavouritePage from "./_home/pages/Favourite";
 import SugggestionPage from "./_home/pages/Suggestion";
 import CategoryPage from "./_category/pages/Category";
@@ -48,10 +50,12 @@ import SellerStockLog from "./_seller/pages/SellerStockLog";
 import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
+import SellerOrderStatus from "./_seller/pages/SellerOrderStatus";
 import Promotion from "./_promotion/pages/Promotion";
 import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
 import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
+import SellerCreateCoupon from "./_seller/pages/SellerCreateCoupon";
 
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
@@ -81,6 +85,8 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
+import SellerFlashSalesLog from "./_seller/pages/SellerFlashSalesLog";
+import OrderDetail from "./_profile/pages/OrderDetail";
 
 function App() {
   return (
@@ -105,17 +111,20 @@ function App() {
                       <Route exact path="/manage">
                         <Redirect exact path="/manage" to="/manage/users" />
                       </Route>
-                      <Route exact path="/manage/users">
-                        <UsersPage />
+                        <Route exact path="/manage/users">
+                      <UsersPage />
                       </Route>
-                      <Route exact path="/manage/bannedsellers">
-                        <BannedSellerPage />
+                        <Route exact path="/manage/tickets">
+                      <TicketsPage />
                       </Route>
-                      <Route exact path="/manage/sellers">
-                        <SellersPage />
+                        <Route exact path="/manage/sellers">
+                      <SellersPage />
                       </Route>
-                      <Route exact path="/manage/bannedusers">
-                        <BannedUsersPage />
+                        <Route exact path="/manage/products">
+                      <ProductsPage />
+                      </Route>
+                      <Route exact path="/manage/audits">
+                      <AuditPage />
                       </Route>
                       <Route exact path="/manage/banner">
                         <ManageBanner />
@@ -150,6 +159,13 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+                <Route path="/search" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
                 <Route path="/product/:id" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -157,7 +173,7 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route path="/chat" exact>
+                <Route path="/chat/:id?" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ChatPage />
@@ -173,6 +189,16 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
+                {/* SUPPORT PAGE */}
+                <Route path="/support" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <SupportPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
                 {/* Register Page */}
                 <Route path="/register" exact>
                   <MainLayout>
@@ -223,6 +249,13 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+                <Route path="/profile/history/order/:id" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <OrderDetail />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
                 <Route path="/shop/:id/comment" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -251,20 +284,21 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/coin/history">
+
+                {/* <Route exact path="/coin/history">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinHistoryPage />
                     </Suspense>
                   </MainLayout>
-                </Route>
-                <Route exact path="/coin">
+                </Route> */}
+                {/* <Route exact path="/coin">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinRedeemPage />
                     </Suspense>
                   </MainLayout>
-                </Route>
+                </Route> */}
                 <Route exact path="/cart">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -272,6 +306,7 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}
@@ -281,9 +316,11 @@ function App() {
                       <Route path="/seller/:id/dashboard">
                         <SellerDashboard />
                       </Route>
+
                       <Route path="/seller/:id/customize">
                         <SellerShopCustomizationPage />
                       </Route>
+
                       <Route path="/seller/:id/stock">
                         <SellerStock />
                       </Route>
@@ -301,6 +338,16 @@ function App() {
                       </Route>
                       <Route path="/seller/:id/discountlog">
                         <SellerDiscountLog />
+                      </Route>
+
+                      <Route path="/seller/:id/orderstatus">
+                        <SellerOrderStatus />
+                      </Route>
+                      <Route path="/seller/:id/coupon">
+                        <SellerCreateCoupon />
+                      </Route>
+                      <Route path="/seller/:id/flashsalelog">
+                        <SellerFlashSalesLog />
                       </Route>
                     </Suspense>
                   </SellerConsoleSidebarLayout>

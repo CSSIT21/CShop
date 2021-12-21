@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import config from "~/common/constants";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Typography, Stack, Button } from '@mui/material';
+import { Typography, Stack, Button, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CButton from '~/common/components/CButton';
 import BannerList from '../components/BannerBase/BannerList';
@@ -13,6 +13,7 @@ import NewBannerDialog from '../components/BannerBase/NewBannerDialog';
 const ManageBanner = () => {
 	const classes = useStyles();
 	const [items, setItems] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -24,14 +25,36 @@ const ManageBanner = () => {
 			.get(`${config.SERVER_URL}/home/banner/manage`)
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.banners);
 					setItems(data.banners.map(item => ({ ...item, height: 100 })));
 				}
 			})
-			.catch((error) => {
+			.catch((err) => {
 				console.log(err.message);
 				return Swal.fire('Something went wrong', "Sorry, we cannot fetch banner's data to show", 'error');
 			})
+	};
+
+	const handleSave = async () => {
+		setLoading(true);
+		items.forEach((item, index) => {
+			axios
+				.patch(`${config.SERVER_URL}/home/banner/${item.id}`, {
+					order: index + 1,
+				})
+				.then(({ data }) => {
+					if (data.success) {
+						console.log("success");
+					}
+				})
+				.catch((err) => {
+					console.log(err.message, item.id);
+					setLoading(false);
+					return Swal.fire('Something went wrong', "Sorry, we cannot save the change of banners, please try again", 'error');
+				})
+		});
+
+		setLoading(false);
+		return Swal.fire('Done', "Updated the change of banners successfully", 'success');
 	};
 
 	const onClickDialog = () => {
@@ -51,11 +74,26 @@ const ManageBanner = () => {
 					</Typography>
 					<Typography fontSize={28} fontWeight={600}>Management</Typography>
 				</Stack>
-				<CButton
-					title="Save"
-					width="90px"
-					height="42px"
-				/>
+				<Box sx={{ m: 1, position: 'relative' }}>
+					<CButton
+						title="Save"
+						width="90px"
+						height="42px"
+						onClick={handleSave}
+					/>
+					{loading && (
+						<CircularProgress
+							size={24}
+							sx={{
+								position: 'absolute',
+								top: '50%',
+								left: '50%',
+								marginTop: '-16px',
+								marginLeft: '-16px',
+							}}
+						/>
+					)}
+				</Box>
 			</Box>
 
 			<Box className={classes.header} sx={{ borderBottom: '1px solid #C4C4C4' }}>
@@ -76,7 +114,7 @@ const ManageBanner = () => {
 			</Box>
 
 			{items.length === 0
-				? (<Typography textAlign="center" fontSize={36} fontWeight={500} color="lightgray" mt={5}>No banner to show</Typography>)
+				? (<Typography textAlign="center" fontSize={30} fontWeight={400} color="gray" mt={5}>No banner to show</Typography>)
 				: (<BannerList items={items} setItems={setItems} getData={getData} />)}
 		</Box>
 	);

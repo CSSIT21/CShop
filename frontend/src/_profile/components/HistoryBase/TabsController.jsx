@@ -6,7 +6,7 @@ import TabPanel from "../HistoryBase/TabPanel";
 import CardWrapper from "../HistoryBase/CardWrapper";
 import { makeStyles } from "@mui/styles";
 
-const TabsController = ({ orders = [], ...rest }) => {
+const TabsController = ({ orders, ...rest }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const getColor = () => {
@@ -69,13 +69,13 @@ const TabsController = ({ orders = [], ...rest }) => {
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <CardWrapper items={orders} status="waiting" />
+        <CardWrapper items={orders} status="Waiting" />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CardWrapper items={orders} status="success" />
+        <CardWrapper items={orders} status="Success" />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <CardWrapper items={orders} status="cancel" />
+        <CardWrapper items={orders} status="Cancel" />
       </TabPanel>
     </Box>
   );

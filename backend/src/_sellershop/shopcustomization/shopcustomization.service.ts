@@ -6,7 +6,7 @@ import { Prisma } from '.prisma/client';
 
 @Injectable()
 export class ShopcustomizationService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 
 	async getSection(id: number) {
 		try {
@@ -159,7 +159,7 @@ export class ShopcustomizationService {
 				include: {
 					product_picture: true,
 				},
-				take: 20,
+				take: 50,
 			});
 			return products;
 		} catch (e) {
@@ -357,6 +357,7 @@ export class ShopcustomizationService {
 	async createBannerCarousel(shop_banner_carouselCreateInput: Prisma.shop_banner_carouselCreateInput) {
 		try {
 			console.log(shop_banner_carouselCreateInput);
+
 			await this.prisma.shop_banner_carousel.create({
 				data: {
 					id: shop_banner_carouselCreateInput.id,

@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import GoogleLogo from "../assets/google-icon.png";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import config from "../../common/constants/index";
@@ -78,8 +78,8 @@ const LoginPage = () => {
   };
 
   useLayoutEffect(() => {
-    document.body.classList.add("gray");
-    return () => document.body.classList.remove("gray");
+    document.body.classList.add('gray');
+    return () => document.body.classList.remove('gray');
   }, []);
   return (
     <Fragment>
@@ -88,6 +88,10 @@ const LoginPage = () => {
           <Box className={classes.header}>Sign In</Box>
           <Box className={classes.textFieldBox}>
             <TextField
+
+              id="phoneNumber"
+              placeholder="Phone Number"
+
               id="email"
               placeholder="Email"
               variant="outlined"
@@ -231,7 +235,7 @@ const useStyles = makeStyles({
   },
   divider: {
     color: "#A0A3BD",
-    margin: "30px 0px",
+    margin: "40px 0px",
   },
   error: {
     marginTop: "5px",
