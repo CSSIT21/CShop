@@ -83,24 +83,10 @@ const ChatList = (props) => {
                         'Your chatbox is empty'
                     )}
                 </Box>
-                <Box className={classes.chatListButtom}>
-                    <Button
-                        variant="contained"
-                        className={classes.addNewChatButton}
-                        sx={{
-                            backgroundColor: '#FD6637',
-                            width: '100%',
-                            height: '100%'
-                        }}
-                    >
-                        Add New Chat
-                    </Button>
-                </Box>
             </Box>
         )
     }
 
-    // console.log(props.messages)
     return (
         <Box className={classes.chatListContainer}>
             {/* ChatList on the left lists all users that have a messages */}
@@ -108,21 +94,47 @@ const ChatList = (props) => {
                 <Typography className={classes.chatPageHeading}>
                     Chat
                 </Typography>
-                <ChooseUser />
+                {!props.ChatService._isCustomer && (
+                    <ChooseUser
+                        selected_name={
+                            props.isCustomerView
+                                ? props.user_name
+                                : props.ChatService.shop.name
+                        }
+                        selected_pic={
+                            props.isCustomerView
+                                ? props.user_pic
+                                : props.ChatService.shop.pic
+                        }
+                        user_name={props.user_name}
+                        shop_name={props.ChatService.shop.name}
+                        setView={props.setView}
+                    />
+                )}
             </Box>
             <Box className={classes.chatList}>
                 {messages &&
                     messages.map((message, i) =>
-                        message.id === -1 ? (
+                        (message.id === -1 || (message.customer_id === props.user_id && !props.isCustomerView) || (message.customer_id !== props.user_id && props.isCustomerView)) ? (
                             <></>
                         ) : (
                             <ChatBox
                                 key={i}
-                                displayName={message.shop_name}
+                                displayName={
+                                    message.customer_id === props.user_id
+                                        ? message.shop_name
+                                        : message.firstname +
+                                          ' ' +
+                                          message.lastname
+                                }
                                 contentType={message.content_type}
                                 fromCustomer={message.from_customer}
                                 latestText={message.latest_text}
-                                pic={message.shop_pic}
+                                pic={
+                                    message.customer_id === props.user_id
+                                        ? message.shop_pic
+                                        : message.customer_pic
+                                }
                                 isFilled={
                                     props.currentConversation === message.id
                                 }
@@ -140,7 +152,7 @@ const ChatList = (props) => {
                         )
                     )}
             </Box>
-            <Box className={classes.chatListButtom}>
+            {/* <Box className={classes.chatListButtom}>
                 <Button
                     variant="contained"
                     className={classes.addNewChatButton}
@@ -152,7 +164,7 @@ const ChatList = (props) => {
                 >
                     Add New Chat
                 </Button>
-            </Box>
+            </Box> */}
         </Box>
     )
 }

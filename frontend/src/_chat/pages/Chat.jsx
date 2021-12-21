@@ -27,7 +27,7 @@ const ChatPage = (props) => {
     const history = useHistory()
     if(!auth.isLoggedIn) history.push('/login')
     const user_id = auth.user.id
-    const [ChatService] = useState(() => new _ChatService(auth.user, handleGetConversation, handleIncomingMessage))
+    const [ChatService] = useState(() => new _ChatService(auth.user, handleGetConversation, handleGetShop, handleIncomingMessage))
     const { id: router_id } = useParams()
 
     const [currentConversation, setCurrentConversation] = useState(0)
@@ -40,6 +40,7 @@ const ChatPage = (props) => {
     const [lastUpdate, setLastUpdate] = useState(nanoid())
     const classes = useStyles()
     const [shouldScroll, setShouldScroll] = useState(false)
+    const [isCustomerView, setIsCustomerView] = useState(true)
 
     // console.log('rendering with messages: ', messages)
 
@@ -51,6 +52,10 @@ const ChatPage = (props) => {
         // )
         setShouldScroll(true)
         // console.log(messages)
+    }
+
+    function handleGetShop() {
+        console.log(ChatService.shop)
     }
 
     function handleIncomingMessage(message) {
@@ -78,6 +83,12 @@ const ChatPage = (props) => {
         //     }
         // ])
         // lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    function handleChangeView(newView) {
+        console.log(newView ? 'use customer view' : 'use seller view')
+        setIsCustomerView(newView)
+        setCurrentConversation(0)
     }
 
     function handleSubmitMessage(text) {
@@ -169,8 +180,13 @@ const ChatPage = (props) => {
     }
 
     useEffect(() => {
-        if (router_id) {
-            alert('opening chat page for id#' + router_id)
+        if (auth.isLoggedIn && router_id) {
+            console.log('opening chat page for ' + (parseInt(router_id) ? 'id#' : 'url slug ') + router_id)
+            ChatService.getConversationId(parseInt(router_id), (id) => {
+                console.log('get coonv ' + id + ' complete')
+                // console.log(ChatService.conversation(id))
+                changeChat(id)
+            })
         }
         // console.log(
         //     `%c Chat.jsx %c initiated for user#${user_id}`,
@@ -211,10 +227,17 @@ const ChatPage = (props) => {
         <Box className={classes.chatLayout}>
             <ChatList
                 user_id={user_id}
+                user_name={auth.user?.customer_info?.firstname}
+                user_pic={
+                    auth.user?.customer_picture
+                        ?.picture_id_from_customer_picture?.path
+                }
                 currentConversation={currentConversation}
                 setCurrent={changeChat}
                 ChatService={ChatService}
                 lastUpdate={lastUpdate}
+                setView={handleChangeView}
+                isCustomerView={isCustomerView}
             />
             <ChatFeed
                 handleSubmitMessage={handleSubmitMessage}
@@ -226,6 +249,7 @@ const ChatPage = (props) => {
                 openModal={openModal}
                 lastUpdate={lastUpdate}
                 shouldScroll={shouldScroll}
+                isCustomerView={isCustomerView}
             />
             <ChatMediaModal
                 open={open}
