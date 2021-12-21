@@ -45,7 +45,7 @@ const CategoryPage = () => {
   const [outOfStock, setOutOfStock] = useState(false);
   const [loading, setLoading] = useState(false);
   const MIN_PRICE = 0,
-    MAX_PRICE = 1500;
+    MAX_PRICE = 1000000;
   const [price, setPrice] = useState([MIN_PRICE, MAX_PRICE]);
   /**rate */
   const [rate, setRate] = useState(0);
