@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from '@mui/material'
 
 import useStyles from './ChatMediaModal.styles'
@@ -7,6 +7,24 @@ import VideoModal from '../VideoModal/VideoModal'
 
 const ChatMediaModal = (props) => {
     const classes = useStyles()
+
+    const [content, setContent] = useState('')
+
+    useEffect(() => {
+        console.log(props)
+        if(!props.message.id)
+        {
+            // setContent(decompress(sessionStorage.getItem(props.message.temp_id)))
+            // setContent(sessionStorage.getItem(props.message.temp_id))
+            console.log('cant open, loading')
+        }
+        else
+        {
+            setContent(props.message.content)
+        }
+    }, [props.message.id, props.message.temp_id])
+
+    // const content = props.message.id ? props.message.content : decompress(sessionStorage.getItem(props.temp_id))
 
     return (
         <Modal
@@ -17,9 +35,9 @@ const ChatMediaModal = (props) => {
             onClose={props.onClose}
         >
             {props.message.content_type === 'Image' ? (
-                <ImageModal src={props.message.content} onClose={props.onClose} />
+                <ImageModal src={content} onClose={props.onClose} />
             ) : (
-                <VideoModal src={props.message.content} onClose={props.onClose} />
+                <VideoModal src={content} onClose={props.onClose} />
             )}
         </Modal>
     )

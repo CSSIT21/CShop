@@ -6,17 +6,22 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { IconButton } from '@mui/material'
 
 const ChatLabel = (props) => {
-    const classes = useStyles()
+    const classes = useStyles(props.color)
 
     return (
         <Box className={classes.label}>
             <IconButton>
-            <CircleIcon className={classes.colorLabel} />
+                <CircleIcon
+                    className={classes.colorLabel}
+                    sx={{ color: props.color }}
+                />
             </IconButton>
-            <Typography>New customer</Typography>
-            <IconButton>
-                <CancelIcon className={classes.cancelButton} />
-            </IconButton>
+            <Typography>{props.text}</Typography>
+            {props.removeable && (
+                <IconButton onClick={props.onRemove}>
+                    <CancelIcon className={classes.cancelButton} />
+                </IconButton>
+            )}
         </Box>
     )
 }

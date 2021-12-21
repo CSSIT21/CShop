@@ -10,6 +10,7 @@ import config from "~/common/constants";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { date } from "faker";
 
 const Voucher = ({ shopcoupons }) => {
   const classes = useStyles();
@@ -28,6 +29,12 @@ const Voucher = ({ shopcoupons }) => {
           userId: auth.user.id,
         })
         .then(() => {
+          axios.post(
+            `${config.SERVER_URL}/log-system/discount/${auth.user.id}/${coupon_id}`,
+            {
+              view_date: new Date(Date.now()),
+            }
+          );
           setcoupons(
             coupons.filter((coupon) => {
               return coupon.discount_id != coupon_id;
