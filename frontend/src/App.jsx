@@ -193,7 +193,6 @@ function App() {
                   </MainLayout>
                 </Route>
 
-<<<<<<< HEAD
                 {/* SUPPORT PAGE */}
                 <Route path="/support" exact>
                   <MainLayout>
@@ -203,8 +202,6 @@ function App() {
                   </MainLayout>
                 </Route>
 
-=======
->>>>>>> bd70a1ce94d4beb0477933b65c14c908ba7cc29d
                 {/* Register Page */}
                 <Route path="/register" exact>
                   <MainLayout>
