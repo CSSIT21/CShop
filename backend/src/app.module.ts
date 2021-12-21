@@ -23,6 +23,7 @@ import { ShortLinkModule } from './_product/short-link/short-link.module';
 import { CommentModule } from './_product/comment/comment.module';
 import { SearchModule } from './_search/search.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 
 @Module({
 	imports: [
@@ -47,7 +48,8 @@ import { DeliveryModule } from './delivery/delivery.module';
 		ChatModule,
 		PromotionModule,
 		SearchModule,
-		DeliveryModule
+		DeliveryModule,
+		ManageaccountModule
 	],
 
 	controllers: [AppController],

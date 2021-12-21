@@ -48,7 +48,7 @@ const SellerStock = () => {
     },
     {
       id: "price",
-      label: "price/pcs",
+      label: "baht/pcs",
       align: "right",
       format: (value) => value.toFixed(2),
     },

@@ -47,11 +47,13 @@ const ProductBox = ({ img, productName, options }) => {
           {options && (
             <>
               {options && (
-                <Typography
-                  sx={{ marginLeft: "5px", marginRight: "6px" }}
-                  key={key}
-                >
-                  {options[0]} {options[1] && <>{options[1]}</>}{" "}
+                <Typography sx={{ marginLeft: "5px", marginRight: "6px" }}>
+                  {options[0]?.name}
+                  {options[1] && (
+                    <>
+                      {", "} {options[1]?.name}
+                    </>
+                  )}{" "}
                 </Typography>
               )}
             </>

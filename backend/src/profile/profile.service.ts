@@ -407,22 +407,53 @@ export class ProfileService {
 	}
 
 	public async getProductDetail(data: Product) {
-		const { product_id, option_one, option_two } = data;
+		const { option_one, option_two } = data;
+
 		try {
-			const productOption = await this.prisma.product_options.findFirst({
+			const productChoiceOne = await this.prisma.product_choices.findFirst({
 				where: {
 					id: option_one,
-					product_id: product_id,
 				},
-				include: {
-					product_choices: {
-						where: {
-							id: option_two,
-						},
-					},
+				select: {
+					name: true,
 				},
 			});
-			return productOption;
+			if (option_two) {
+				const productChoiceTwo = await this.prisma.product_choices.findFirst({
+					where: {
+						id: option_two,
+					},
+					select: {
+						name: true,
+					},
+				});
+				const options = [productChoiceOne, productChoiceTwo];
+				return options;
+			}
+
+			const options = [productChoiceOne];
+			return options;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async checkIfReview(data: Product) {
+		const { customer_id, product_id } = data;
+		try {
+			const review = await this.prisma.product_reviews.findFirst({
+				where: {
+					customer_id: customer_id,
+					product_id: product_id,
+				},
+			});
+			if (review) {
+				return true;
+			}
+			return false;
 		} catch (e) {
 			console.log(e.message);
 			return {
