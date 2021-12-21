@@ -11,6 +11,15 @@ export class CoinController {
 
     constructor(private readonly coinService: CoinService, public prisma: PrismaService) {}
 
+    @Post('/checkin')
+	@Public()
+	async checkinCoin(@Body()request , @Res() res){
+		var userId = request.userId;
+		console.log(userId)
+		const a = await this.coinService.coincheckinInfo(userId);
+		const b = await this.coinService.checkcoin(userId);
+	}
+
     @Get('/showusedcoin')
 	@Public()
 	async showUsedCoin(@Req() req, @Res() res){
@@ -44,7 +53,7 @@ export class CoinController {
 		const b = await this.coinService.checkcoin(userId);
 	}
 
-	@Get('totalcoin')
+	@Get('/totalcoin')
 	@Public()
 	async checkin(@Body()request , @Res() res): Promise<void> {
 		var userId = request.userId;
