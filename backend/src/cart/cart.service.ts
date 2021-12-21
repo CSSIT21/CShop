@@ -87,46 +87,31 @@ export class CartService {
 		cartitems: {
 			productID: number;
 			amount: number;
-			firstchoiceID: number;
-			seconedchoiceID: number;
+			product_options: number[];
 			price: number;
 		}[],
 	) {
 		const prisma = this.prisma;
 		const data = cartitems.map((item) => {
-			if (item.firstchoiceID) {
-				let product_options = [item.firstchoiceID];
-				if (item.seconedchoiceID) {
-					product_options.push(item.seconedchoiceID);
-				}
-				return {
-					customer_id: userID,
-					product_id: item.productID,
-					quantity: item.amount,
-					added_time: new Date(),
-					product_options,
-				};
-			}
-			return { customer_id: userID, product_id: item.productID, quantity: item.amount, added_time: new Date() };
+			return {
+				customer_id: userID,
+				product_id: item.productID,
+				quantity: item.amount,
+				added_time: new Date(),
+				product_options: item.product_options,
+			};
 		});
 
 		await prisma.order_cart_item.createMany({ data: data });
 
 		const rebuydata = cartitems.map((item) => {
-			if (item.firstchoiceID) {
-				let product_options = [item.firstchoiceID];
-				if (item.seconedchoiceID) {
-					product_options.push(item.seconedchoiceID);
-				}
-				return {
-					customer_id: userID,
-					product_id: item.productID,
-					date: new Date(),
-					price: item.price,
-					product_options,
-				};
-			}
-			return { customer_id: userID, product_id: item.productID, date: new Date(), price: item.price };
+			return {
+				customer_id: userID,
+				product_id: item.productID,
+				date: new Date(),
+				price: item.price,
+				product_option: item.product_options,
+			};
 		});
 		await prisma.order_rebuy.createMany({ data: rebuydata });
 		return true;

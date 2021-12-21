@@ -23,27 +23,8 @@ function ReviewDialog({
   productId,
   shopId,
   customerId,
-  // ตัอย่างoptions
-  // กรณีที่สินค้ามีoption 2
-  // options = [
-  //   { firstChoice: "XL", secondChoice: "Pink" },
-  //   { firstChoice: "L", secondChoice: "Red" },
-  //   { firstChoice: "M", secondChoice: "Green" },
-  //   { firstChoice: "XL", secondChoice: "Pink" },
-  //   { firstChoice: "L", secondChoice: "Red" },
-  //   { firstChoice: "M", secondChoice: "Green" },
-  //
-  // กรณีที่สินค้ามีoption 1
-  // options = [
-  //   { firstChoice: "Pink" },
-  //   { firstChoice: "Red" },
-  //   { firstChoice: "Green" },
-  //   { firstChoice: "Pink" },
-  //   { firstChoice: "Red" },
-  //   { firstChoice: "Green" },
-  // ],
-  // กรณีที่สินค้าไม่มีoption
   options,
+  setreviewable = () => {},
 }) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -57,11 +38,10 @@ function ReviewDialog({
     { key: 4, label: "Good Ship Services", clicked: false },
   ]);
   const [imageList, setImageList] = useState([]);
-  const [starScore, setStarScore] = useState();
+  const [starScore, setStarScore] = useState(0);
   const onUploadFile = (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target?.files[0]);
-
       console.log(e.target?.files[0]);
       setImageList((imageList) => {
         imageList.push({
@@ -138,7 +118,6 @@ function ReviewDialog({
         title: imageList[i].title,
       });
     }
-
     console.log(pictureList);
     let rating;
     starScore <= 0 ? (rating = 0) : (rating = starScore);
@@ -205,6 +184,7 @@ function ReviewDialog({
           });
         });
     }
+    setreviewable(false);
     handleClickOpenThankYouDialog();
   };
 

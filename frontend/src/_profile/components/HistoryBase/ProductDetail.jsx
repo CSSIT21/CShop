@@ -9,23 +9,35 @@ import config from "~/common/constants";
 import axios from "axios";
 
 const ProductDetail = ({ data, status, customerId }) => {
-  const [reviewable, setreviewable] = useState(true);
+  const [reviewable, setreviewable] = useState(false);
+  const [options, setOptions] = useState([]);
   const classes = useStyles();
   useLayoutEffect(() => {
     axios
       .post(`${config.SERVER_URL}/profile/order/detail/option`, {
-        product_id: data.product_id,
         option_one: data.product_options[0],
         option_two: data.product_options[1],
       })
       .then(({ data }) => {
+        setOptions(data);
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
+    axios
+      .post(`${config.SERVER_URL}/profile/order/detail/checkreview`, {
+        customer_id: customerId,
+        product_id: data.product_id,
+      })
+      .then(({ data }) => {
+        console.log(data);
+        if (!data) {
+          setreviewable(true);
+        }
+      });
   }, []);
-  console.log(data);
+
   if (status === "Success") {
     return (
       <>
@@ -34,18 +46,25 @@ const ProductDetail = ({ data, status, customerId }) => {
             src={data.product_id_from_order_item.product_picture[0].path}
             alt=""
             className={classes.pic}
-            width="80"
-            height="80"
+            width="90"
+            height="90"
           />
         </Grid>
         <Grid item xs={8} sx={gridStyle}>
-          <Typography
-            className={classes.shopName}
-            sx={{
-              marginBottom: "10px",
-            }}
-          >
+          <Typography className={classes.shopName}>
             {data.product_id_from_order_item.title}
+          </Typography>
+          <Typography
+            sx={{ color: "#949494", marginBottom: "10px" }}
+            fontSize={"14px"}
+          >
+            {options[0]?.name}{" "}
+            {options[1] && (
+              <>
+                {", "}
+                {options[1].name}
+              </>
+            )}
           </Typography>
           <Typography>x{data.quantity}</Typography>
         </Grid>
@@ -62,9 +81,24 @@ const ProductDetail = ({ data, status, customerId }) => {
               productId={data.product_id}
               shopId={data.product_id_from_order_item.shop_id}
               customerId={customerId}
+              options={options}
+              setreviewable={setreviewable}
             />
           ) : (
-            <></>
+            <>
+              <Button
+                variant="outlined"
+                sx={{
+                  height: "40px",
+                  width: "130px",
+                  textTransform: "capitalize",
+                  fontSize: "14px",
+                }}
+                disabled
+              >
+                Reviewed
+              </Button>
+            </>
           )}
         </Grid>
         <Grid item xs={14}>
