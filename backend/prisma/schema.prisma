@@ -12,6 +12,7 @@ model customer {
   email                         String                          @unique @db.VarChar(60)
   password                      String                          @db.VarChar(255)
   date                          DateTime                        @default(now())
+  admin                         admin?
   admin_customer_suspensions    admin_customer_suspensions?
   admin_reported_customer       admin_reported_customer[]
   admin_reported_shop           admin_reported_shop[]
@@ -1540,6 +1541,8 @@ model admin {
   id          Int           @id(map: "admin_pk") @default(autoincrement())
   username    String        @db.VarChar(20)
   password    String
+  customer_id Int?          @unique(map: "admin_customer_id_uindex")
+  customer    customer?     @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "admin_customer_id_fk")
   admin_audit admin_audit[]
 }
 

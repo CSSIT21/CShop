@@ -5,6 +5,7 @@ import { For } from "~/common/utils";
 import { useHistory } from "react-router-dom";
 
 const OrderCard = ({ data }) => {
+  console.log(data);
   const classes = useStyles();
   const router = useHistory();
   const getColor = () => {
@@ -77,7 +78,24 @@ const OrderCard = ({ data }) => {
                     }}
                   />
                   <Typography sx={{ fontSize: "14px", fontWeight: "300" }}>
-                    {data?.id}
+                    {
+                      data?.order_detail?.address_id_from_order_detail
+                        ?.address_line
+                    }
+                    ,{" "}
+                    {
+                      data?.order_detail?.address_id_from_order_detail
+                        ?.sub_district
+                    }
+                    ,{" "}
+                    {data?.order_detail?.address_id_from_order_detail?.district}
+                    ,{" "}
+                    {data?.order_detail?.address_id_from_order_detail?.province}
+                    ,{" "}
+                    {
+                      data?.order_detail?.address_id_from_order_detail
+                        ?.postal_code
+                    }
                   </Typography>
                 </Box>
                 <Box className={classes.orderTitle}>
