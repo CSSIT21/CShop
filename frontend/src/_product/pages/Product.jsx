@@ -10,7 +10,7 @@ import { Box, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import config from "../../common/constants";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import authState from "../../common/store/authState";
 import Swal from "sweetalert2";
 import Dialog from "@mui/material/Dialog";
@@ -19,7 +19,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 const ProductPage = (props) => {
   const { id } = useParams();
   const [count, setCount] = useState(1);
-  const auth = useRecoilValue(authState);
+  const [auth,setAuth] = useRecoilState(authState);
   const [open, setOpen] = useState(false);
   const [shopId, setShopId] = useState(-1);
   const [options, setOptions] = useState();
@@ -299,6 +299,19 @@ const ProductPage = (props) => {
         }
       )
       .then(({ data }) => {
+        axios
+          .get(`${config.SERVER_URL}/profile/me`, {
+            withCredentials: true,
+            validateStatus: () => true,
+          })
+          .then(({ data }) => {
+            if (data.success) {
+              setAuth(({ isLoggedIn }) => ({
+                isLoggedIn,
+                user: data.user,
+              }));
+            }
+          });
         if (data.success) {
           Swal.fire({
             title: "Success!",
