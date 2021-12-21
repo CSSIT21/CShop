@@ -3,6 +3,7 @@ import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Collapse } from "@mui/material";
 import { Typography } from "@mui/material";
+import config from '../../common/constants';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
 import { withStyles } from "@mui/styles";
@@ -67,13 +68,13 @@ export class SellerCard extends React.Component {
 
   async componentDidMount(){
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/suspension/types"
+        config.SERVER_URL + "/manageaccount/suspension/types"
     );
     const fetchedData2 = await axios.get(
-      "http://localhost:8080/manageaccount/products/shop_id?id=" + this.props.seller.id
+        config.SERVER_URL + "/manageaccount/products/shop_id?id=" + this.props.seller.id
     );
     const fetchedData3 = await axios.get(
-      "http://localhost:8080/manageaccount/sellers/reported?id=" + this.props.seller.id
+        config.SERVER_URL + "/manageaccount/sellers/reported?id=" + this.props.seller.id
     )
     this.types = fetchedData.data;
     this.productCount = fetchedData2.data.length;
@@ -104,7 +105,7 @@ export class SellerCard extends React.Component {
     
     if(this.props.seller.admin_shop_suspensions == null){
       const res = await axios.post(
-        "http://localhost:8080/manageaccount/suspension/sellers/create",
+          config.SERVER_URL + "/manageaccount/suspension/sellers/create",
         {
           "shop_id": this.props.seller.id,
           "description": this.desc,
@@ -118,12 +119,12 @@ export class SellerCard extends React.Component {
       );
 
       await axios.post(
-        "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Suspened ' + this.props.seller.shop_name
+          config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Suspened ' + this.props.seller.shop_name
       );
     }
     else{
       const res = await axios.post(
-        "http://localhost:8080/manageaccount/suspension/sellers/update",
+          config.SERVER_URL + "/manageaccount/suspension/sellers/update",
         {
           "id": this.props.seller.id,
           "description": this.desc,
@@ -137,7 +138,7 @@ export class SellerCard extends React.Component {
       );
 
       await axios.post(
-        "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Updated suspension of ' + this.props.seller.shop_name
+          config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Updated suspension of ' + this.props.seller.shop_name
       );
     }
     

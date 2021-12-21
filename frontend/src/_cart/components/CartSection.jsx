@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Box, Typography, Stack, TextField, MenuItem } from '@mui/material';
 import { makeStyles } from "@mui/styles";
+import config from '../../common/constants';
 import products from '../../common/faker/fakeProducts';
 import VoucherCard from './VoucherCard';
 import ProductCartCard from './ProductCartCard';
@@ -113,11 +114,11 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     
     function removeAll(e){
       e.preventDefault();
-      axios.post("http://localhost:8080/cart/removeallfromcart",{userID:accountInfo[0].customer_id}).then(item=>setProduct([]));
+      axios.post( config.SERVER_URL + "/cart/removeallfromcart",{userID:accountInfo[0].customer_id}).then(item=>setProduct([]));
     }
 
     function confirmOrder(){
-      axios.post("http://localhost:8080/cart/updateamount",{updateAmount:amount,addressID:activeID,userID:accountInfo[0].customer_id,totalprice:totalCost-discount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id+"&" : ""}addressID=${activeID}`))
+      axios.post( config.SERVER_URL + "/cart/updateamount",{updateAmount:amount,addressID:activeID,userID:accountInfo[0].customer_id,totalprice:totalCost-discount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id+"&" : ""}addressID=${activeID}`))
       
     }
 

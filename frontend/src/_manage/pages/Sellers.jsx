@@ -17,6 +17,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import config from '../../common/constants';
 import SellerCard from "../components/SellerCard";
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
@@ -69,7 +70,7 @@ const ManageSellerAccountPage = () => {
     const [sellers, setSellersList] = React.useState([]);
     const setSellers = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/sellers"
+            config.SERVER_URL + "/manageaccount/sellers"
         );
         setSellersList(fetchedData.data);
       };
@@ -104,15 +105,15 @@ const ManageSellerAccountPage = () => {
 
     const deleteRestriction = async (sellerid) => {
         const res = await axios.post(
-            "http://localhost:8080/manageaccount/suspension/sellers/delete?id=" + sellerid
+            config.SERVER_URL + "/manageaccount/suspension/sellers/delete?id=" + sellerid
           );
 
           const fetchedData = await axios.get(
-            "http://localhost:8080/manageaccount/sellers/unique?id=" + sellerid
+              config.SERVER_URL + "/manageaccount/sellers/unique?id=" + sellerid
         );
 
         await axios.post(
-            "http://localhost:8080/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.shop_name
+            config.SERVER_URL + "/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.shop_name
         );
 
         document.location.reload();

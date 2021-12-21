@@ -34,13 +34,10 @@ const ProductDetails = ({
   favorite,
   setFavorite,
 }) => {
-  const handleClickClose = () => {
-    setOpen(false);
-  };
   const handleAddToCart = () => {
     if (auth.isLoggedIn) {
       addToCart();
-    } else location.href = "http://localhost:3000/register";
+    } else location.href = "https://prod.cshop.cscms.ml/register";
   };
 
   const handleClickChoice = (e) => {
@@ -193,11 +190,11 @@ const ProductDetails = ({
             >
               Add to cart
             </Button>
-            <ConfirmDialogs
+            {/* <ConfirmDialogs
               text="The item already added in the cart"
               open={open}
               handleClose={handleClickClose}
-            />
+            /> */}
           </Box>
         </Box>
         <Box sx={{ display: "flex", marginTop: "12px", fontSize: "16px" }}>
