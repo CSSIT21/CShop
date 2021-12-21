@@ -6,6 +6,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { FavouriteProduct } from './dto/favourite.dto';
 import { Order } from './dto/order.dto';
 import { Product } from './dto/product.dto';
+import { Address } from './dto/address.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -18,7 +19,9 @@ export class ProfileController {
 	}
 
 	@Get('/me')
+	@Public()
 	public async getInfo(@CurrentUser() currentUser) {
+		console.log(currentUser);
 		const user = await this.profileService.fetch(currentUser.id);
 		delete user.password;
 		return {
@@ -58,6 +61,12 @@ export class ProfileController {
 		return await this.profileService.addAddress(data);
 	}
 
+	@Patch('/address/changeprimary')
+	@Public()
+	public async changePrimary(@Body() data: Address) {
+		return await this.profileService.changePrimary(data);
+	}
+
 	@Post('/favourite')
 	@Public()
 	public async favourite(@Body() data: FavouriteProduct) {
@@ -86,5 +95,11 @@ export class ProfileController {
 	@Public()
 	public async checkIfReview(@Body() data: Product) {
 		return await this.profileService.checkIfReview(data);
+	}
+
+	@Patch('/resetpassword')
+	@Public()
+	public async resetPassword(@Body() data: User) {
+		return await this.profileService.resetPassword(data);
 	}
 }

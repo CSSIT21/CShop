@@ -156,7 +156,7 @@ const RegisterPage = () => {
               ></LoadingButton>
             )}
           </Box>
-          <Box className={classes.divider}>OR</Box>
+          {/* <Box className={classes.divider}>OR</Box>
           <Button
             variant="contained"
             style={{
@@ -171,7 +171,7 @@ const RegisterPage = () => {
             startIcon={<Avatar src={GoogleLogo} />}
           >
             Sign Up With Google
-          </Button>
+          </Button> */}
           <Box className={classes.condition2}>
             Already have an account?{"\u00A0"}
             <Link to="/login">

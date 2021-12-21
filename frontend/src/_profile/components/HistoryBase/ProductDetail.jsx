@@ -20,7 +20,6 @@ const ProductDetail = ({ data, status, customerId }) => {
       })
       .then(({ data }) => {
         setOptions(data);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -31,7 +30,6 @@ const ProductDetail = ({ data, status, customerId }) => {
         product_id: data.product_id,
       })
       .then(({ data }) => {
-        console.log(data);
         if (!data) {
           setreviewable(true);
         }
