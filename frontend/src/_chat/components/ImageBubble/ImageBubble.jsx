@@ -1,24 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Card, CardActionArea, CardContent, CardMedia } from '@mui/material'
-import CircularProgress from '@mui/material/CircularProgress'
+import { Card, CardActionArea, CardContent, CardMedia, CircularProgress } from '@mui/material'
 
 import useStyles from './ImageBubble.styles'
 
 const ImageBubble = (props) => {
     const classes = useStyles()
     const [loaded, setLoaded] = useState(false)
+    const [isPng, setIsPng] = useState(false)
     const imgRef = useRef(null)
 
     useEffect(() => {
+        if(props.src === null) return
         fetch(props.src)
             .then((response) => response.blob())
             .then((blob) => {
+                console.log(blob)
                 var url = URL.createObjectURL(blob)
                 var img = new Image()
                 img.src = url
                 img.onload = function () {
                     imgRef.current.src = url
                     imgRef.current.style.opacity = 1
+                    setIsPng(blob.type === 'image/png')
                     if(this.naturalWidth >= this.naturalHeight) {
                         imgRef.current.style.height = `calc(28vw * ${
                             this.naturalHeight / this.naturalWidth
@@ -41,7 +44,7 @@ const ImageBubble = (props) => {
     }, [props.src])
 
     return (
-        <Card className={classes.imageBubble} onClick={props.openModal}>
+        <Card className={[classes.imageBubble, isPng ? classes.white : classes.primary].join(' ')} onClick={props.openModal}>
             <CardActionArea>
                 {!loaded && (
                     <CardContent className={classes.imageSpinner}>

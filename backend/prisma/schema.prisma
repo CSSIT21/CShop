@@ -41,7 +41,7 @@ model customer {
   order                         order[]
   order_cart_item               order_cart_item[]
   order_deleted_item            order_deleted_item[]
-  order_rebuy                   order_rebuy?
+  order_rebuy                   order_rebuy[]
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
   product_reviews               product_reviews[]
@@ -704,13 +704,15 @@ model order_deleted_item {
 }
 
 model order_rebuy {
-  customer_id                  Int      @id
-  product_id                   Int
-  product_options              Int[]
-  price                        Int
-  date                         DateTime @db.Timestamp(6)
-  customer_id_from_order_rebuy customer @relation(fields: [customer_id], references: [id])
-  product_id_from_order_rebuy  product  @relation(fields: [product_id], references: [id])
+  id                           Int       @id(map: "order_rebuy_pk") @unique(map: "order_rebuy_id_uindex") @default(autoincrement())
+  customer_id                  Int?
+  product_id                   Int?
+  product_option               Int[]
+  price                        Int?
+  date                         DateTime? @db.Timestamp(6)
+  quantity                     Int?
+  customer_id_from_order_rebuy customer? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_rebuy_customer_id_fk")
+  product_id_from_order_rebuy  product?  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_rebuy_product_id_fk")
 }
 
 model order_cart_item {
@@ -1247,9 +1249,11 @@ model admin_reported_customer {
 }
 
 model admin_audit {
-  admin_id   Int      @id
-  login_date DateTime @db.Timestamp(6)
-  action     String
+  id         Int       @id(map: "admin_audit_pk") @default(autoincrement())
+  admin_id   Int?
+  login_date DateTime? @db.Timestamp(6)
+  action     String?   @db.VarChar
+  admin      admin?    @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "admin_audit_admin_id_fk")
 }
 
 model home_banner_picture {
@@ -1532,6 +1536,13 @@ model delivery_admin_log {
   delivery_id_from_delivery_admin_log delivery_product_status @relation(fields: [delivery_id], references: [id])
 }
 
+model admin {
+  id          Int           @id(map: "admin_pk") @default(autoincrement())
+  username    String        @db.VarChar(20)
+  password    String
+  admin_audit admin_audit[]
+}
+
 enum homeBannerPicturePosition {
   Main
   Sub
@@ -1628,6 +1639,7 @@ enum ChatMessageTypes {
   Text
   Image
   Video
+  Noti
 }
 
 enum ChatConversationMark {
@@ -1635,6 +1647,7 @@ enum ChatConversationMark {
   Important
   Unread
   Done
+  None
 }
 
 enum SConsoleRefundTypes {

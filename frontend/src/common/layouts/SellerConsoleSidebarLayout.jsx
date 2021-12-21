@@ -19,6 +19,7 @@ import ReceiptRoundedIcon from "@mui/icons-material/ReceiptRounded";
 import LoyaltyRoundedIcon from "@mui/icons-material/LoyaltyRounded";
 import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 import { Link, useParams, useLocation } from "react-router-dom";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { useMiddleware } from "../hooks";
 
 const drawerWidth = 280;
@@ -97,14 +98,14 @@ export default function SellerConsoleSidebarLayout(props) {
       "/seller/" + params.id + "/stock"
     ),
     generateLink(
+      ShowChartRoundedIcon,
+      "Stock Log",
+      "/seller/" + params.id + "/stocklog"
+    ),
+    generateLink(
       BoltRoundedIcon,
       "FlashSale",
       "/seller/" + params.id + "/flashsell"
-    ),
-    generateLink(
-      BuildRoundedIcon,
-      "Page customization",
-      "/seller/" + params.id + "/customize"
     ),
     generateLink(
       ShoppingBasketRoundedIcon,
@@ -112,30 +113,36 @@ export default function SellerConsoleSidebarLayout(props) {
       "/seller/" + params.id + "/flashsalelog"
     ),
     generateLink(
-      ShowChartRoundedIcon,
-      "Stock Log",
-      "/seller/" + params.id + "/stocklog"
+      BuildRoundedIcon,
+      "Page customization",
+      "/seller/" + params.id + "/customize"
     ),
-    generateLink(
-      FormatListBulletedRoundedIcon,
-      "Order Status",
-      "/seller/" + params.id + "/orderstatus"
-    ),
+
+    // generateLink(
+    //   FormatListBulletedRoundedIcon,
+    //   "Order Status",
+    //   "/seller/" + params.id + "/orderstatus"
+    // ),
     generateLink(
       ReceiptRoundedIcon,
       "Order History",
       "/seller/" + params.id + "/orderlog"
     ),
+    // generateLink(
+    //   LocalOfferIcon,
+    //   "Add Coupon",
+    //   "/seller/" + params.id + "/coupon"
+    // ),
     generateLink(
       LoyaltyRoundedIcon,
-      "Discount History",
+      "Coupon",
       "/seller/" + params.id + "/discountlog"
     ),
-    generateLink(
-      AttachMoneyRoundedIcon,
-      "Refund History",
-      "/seller/" + params.id + "/refundlog"
-    ),
+    // generateLink(
+    //   AttachMoneyRoundedIcon,
+    //   "Refund History",
+    //   "/seller/" + params.id + "/refundlog"
+    // ),
   ];
 
   return (

@@ -65,7 +65,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     MyCartItems.length = 5;
     const [MyCart, setmyCart] = useState(allProduct);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
-    const phone = useMemo(() => addresses.find(v => v.id === address).phone ,[address]);
+    // const phone = useMemo(() => addresses.find(v => v.id === address).phone ,[address]);
     const totalCost = useMemo(() => MyCart.reduce((prev,product) => prev + (+product.price) * product.amount,0), [MyCart]);
     const discount = useMemo(() => calculateDiscount(totalCost, selectedCoupon));
     const classes = useStyles();
@@ -117,7 +117,7 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
     }
 
     function confirmOrder(){
-      axios.post("http://localhost:8080/cart/updateamount",{updateAmount:amount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id : ""}`))
+      axios.post("http://localhost:8080/cart/updateamount",{updateAmount:amount,addressID:activeID,userID:accountInfo[0].customer_id,totalprice:totalCost-discount}).then(item=>router.push(`/payment${selectedCoupon ? "?cuponID="+selectedCoupon.id+"&" : ""}addressID=${activeID}`))
       
     }
 
@@ -135,8 +135,14 @@ function CartSection({ allProduct,setProduct,discounts,accountInfo}) {
               select
               value={activeID}
               onChange={e => {
+                setActiveID(e.target.value)
                 setAddress(e.target.value)
-                address.forEach(item => { setPhoneNumber(item.phone)})
+                addressInfo.forEach((item,idx) => {
+                  if(item.id === e.target.value){
+                    setPhoneNumber(item.phone)
+                  }
+                  
+                  })
               }}
             >
               { addressInfo.map( address => <MenuItem value={address.id} key={address.id}>

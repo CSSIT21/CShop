@@ -114,7 +114,7 @@ const ManageBanner = () => {
 			</Box>
 
 			{items.length === 0
-				? (<Typography textAlign="center" fontSize={36} fontWeight={500} color="gray" mt={5}>No banner to show</Typography>)
+				? (<Typography textAlign="center" fontSize={30} fontWeight={400} color="gray" mt={5}>No banner to show</Typography>)
 				: (<BannerList items={items} setItems={setItems} getData={getData} />)}
 		</Box>
 	);

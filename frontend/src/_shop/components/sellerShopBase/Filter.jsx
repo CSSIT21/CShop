@@ -30,8 +30,8 @@ const Filter = ({ categories = [], category_Id = 0 }) => {
   const [outOfStock, setoutOfStock] = useState(false);
   const [rating, setrating] = useState(0);
   const onFavourite = (index) => {
-    setItems((items) => {
-      if (auth.isLoggedIn) {
+    if (auth.isLoggedIn) {
+      setItems((items) => {
         const target = items.find((e) => e.id == index);
         if (target.customer_wishlist.length > 0) {
           target.customer_wishlist.pop();
@@ -40,15 +40,15 @@ const Filter = ({ categories = [], category_Id = 0 }) => {
             { product_id: target.id, customer_id: auth.user.id },
           ];
         }
-      } else {
-        Swal.fire({
-          title: "Please login to add a product to your wishlist!",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-      return [...items];
-    });
+        return [...items];
+      });
+    } else {
+      Swal.fire({
+        text: "Please login to add a product to your wishlist!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
   const handleChange = (event, value) => {
     setPage(value);

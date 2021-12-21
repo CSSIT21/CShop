@@ -6,7 +6,9 @@ import axios from "axios";
 const Requests = () => {
     const [allRequests, setAllRequests] = useState();
     const fetchedRequests = async () => {
-        const data = await axios.get("http://localhost:8080/delivery/requests");
+        const data = await axios.get(
+            "http://localhost:8080/delivery/admin?status=requests"
+        );
         setAllRequests(data.data);
     };
 
