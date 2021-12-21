@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { CircularProgress, Snackbar } from '@mui/material'
-
+import AutomatedChat from '../components/AutomatedChat/AutomatedChat'
 import {
     ChatBubble,
     ChatMediaModal,
@@ -172,7 +172,9 @@ const ChatFeed = (props) => {
                             openSnackbar={openSnackbar}
                         />
                     ))}
+                    <AutomatedChat/>
             </Box>
+            
             <Box className={classes.chatFeedButtom}>
                 <MessageBar
                     currentConversation={props.currentConversation}
