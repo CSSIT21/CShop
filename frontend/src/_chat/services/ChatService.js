@@ -1,6 +1,5 @@
 import { io } from 'socket.io-client'
 import { nanoid } from 'nanoid'
-import axios from 'axios'
 import config from '~/common/constants/index'
 import { getUrl } from '~/common/utils'
 

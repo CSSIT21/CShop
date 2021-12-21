@@ -41,7 +41,7 @@ model customer {
   order                         order[]
   order_cart_item               order_cart_item[]
   order_deleted_item            order_deleted_item[]
-  order_rebuy                   order_rebuy?
+  order_rebuy                   order_rebuy[]
   payment_credit_card_owner     payment_credit_card_owner[]
   product_comment_rating        product_comment_rating[]
   product_reviews               product_reviews[]
@@ -704,13 +704,15 @@ model order_deleted_item {
 }
 
 model order_rebuy {
-  customer_id                  Int      @id
-  product_id                   Int
-  product_options              Int[]
-  price                        Int
-  date                         DateTime @db.Timestamp(6)
-  customer_id_from_order_rebuy customer @relation(fields: [customer_id], references: [id])
-  product_id_from_order_rebuy  product  @relation(fields: [product_id], references: [id])
+  id                           Int       @id(map: "order_rebuy_pk") @unique(map: "order_rebuy_id_uindex") @default(autoincrement())
+  customer_id                  Int?
+  product_id                   Int?
+  product_option               Int[]
+  price                        Int?
+  date                         DateTime? @db.Timestamp(6)
+  quantity                     Int?
+  customer_id_from_order_rebuy customer? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_rebuy_customer_id_fk")
+  product_id_from_order_rebuy  product?  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_rebuy_product_id_fk")
 }
 
 model order_cart_item {
@@ -1636,6 +1638,7 @@ enum ChatConversationMark {
   Important
   Unread
   Done
+  None
 }
 
 enum SConsoleRefundTypes {
