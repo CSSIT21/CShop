@@ -2,10 +2,12 @@ import Paper from '@mui/material/Paper';
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { List } from "@mui/material";
+import { For } from "~/common/utils/index";
 import { styled } from '@mui/material/styles';
 import { Pagination } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import { Checkbox } from '@mui/material';
@@ -16,10 +18,9 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React, { useEffect } from "react";
-import UserCard from "../components/UserCard";
+import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import TicketCard from "../components/TicketCard";
 import { Search } from '@mui/icons-material';
-import { Button } from '@mui/material';
 import axios from "axios";
 import authState from '../../common/store/authState';
 import { useRecoilValue } from "recoil";
@@ -40,50 +41,37 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-/*let users = [
+/*let tickets = [
     {
-        id: 24578,
-        path: '',
-        customer_info:{
-            firstname: 'Hokma',
-            lastname: 'Benjamin',
-            gender: 'Male',
-            birthdate: '02/08/1987',
-        },
-        customer_address:{
-            address_line: 'Nest of former L Corp, District 12, The City',
-            postal_code: '10120',
-        },
-        date: '10/10/2020',
-        admin_customer_suspensions: 
-        {
-            suspension_type_id: 1,
-            admin_id: 1,
-            start_date: '15/05/2020',
-            end_date: '15/05/2020',
-            description: 'Test'
-        },
+        id: 89547,
+        title: 'Missing Coffee',
+        description: 'Binah replaced my coffee with tea. I swear to god that arbiter will pay for this.',
+        type_title: 'User Report',
+        customer_id: 'Daniel Chesed',
+        target: 'Garion Binah',
+        sent_date: '01/08/2020',
+        admin_id: 'AdminAngela',
+        status: 'Open',
+        path: "https://via.placeholder.com/410x360"
     },
 ];*/
 
-let resId = 1000;
-
-const ManageAccountPage = () => {
+const ManageSellerAccountPage = () => {
     const classes = useStyles();
 
-    const [users, setUsersList] = React.useState([]);
-    const setUsers = async () => {
+    const auth = useRecoilValue(authState);
+
+    const [tickets, setTicketsList] = React.useState([]);
+    const setTickets = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/users"
+          "http://localhost:8080/manageaccount/tickets"
         );
-        fetchedData.data.forEach((u) => {u["name"] = u.customer_info.firstname + " " + u.customer_info.lastname; u["gender"] = u.customer_info.gender; u["birthdate"] = u.customer_info.birthdate})
-        setUsersList(fetchedData.data);
+        setTicketsList(fetchedData.data);
       };
 
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
-        console.log(sortBy);
       };
 
     const [sortOrder, setSortOrder] = React.useState(false);
@@ -91,9 +79,9 @@ const ManageAccountPage = () => {
         setSortOrder(!sortOrder);
       }
 
-    const [showRestricted, setShowRestricted] = React.useState(false);
-    const toggleShowRestricted = () => {
-        setShowRestricted(!showRestricted);
+    const [showClosed, setShowClosed] = React.useState(false);
+    const toggleShowClosed = () => {
+        setShowClosed(!showClosed);
         setPage(1);
         }
 
@@ -107,38 +95,24 @@ const ManageAccountPage = () => {
         setSearch(event.target.value);
     }
 
-    const deleteRestriction = async (userid) => {
-        const res = await axios.post(
-            "http://localhost:8080/manageaccount/suspension/users/delete?id=" + userid
-          );
-
-        const fetchedData = await axios.get(
-            "http://localhost:8080/manageaccount/users/id?id=" + userid
-        );
-
-        await axios.post(
-            "http://localhost:8080/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.customer_info.firstname + " " + fetchedData.data.customer_info.lastname
-        );
-        
-        document.location.reload();
+    const setStatus = (ticketid, status) => {
+        tickets.filter(ticket => ticket.id === ticketid)[0].status = status;
     }
 
-    useEffect(async ()=>{
-        setUsers();
+    useEffect(()=>{
+        setTickets(); 
     }, [])
-
-    const auth = useRecoilValue(authState);
 
     return (
         <div>
             <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
                 <Box className={classes.topright}>
                     <FormGroup>
-                        <FormControlLabel onChange={toggleShowRestricted} control={<Checkbox />} label="Show Restricted Only" />
+                        <FormControlLabel onChange={toggleShowClosed} control={<Checkbox />} label="Show Closed Tickets" />
                     </FormGroup>
                 </Box>
                 <Box className={classes.topright}>
-                    <Box>
+                    <Box sx={{ margin: '8px'}}>
                         <TextField
                         hiddenLabel
                         id="search-field"
@@ -165,17 +139,18 @@ const ManageAccountPage = () => {
                             <InputLabel id="sort-by-select-label" sx={{ top: '-5px' }}>Sort By</InputLabel>
                             <Select
                               labelId="sort-by-label"
+                              label="Sort By"
                               id="sort-by"
                               value={sortBy}
-                              label="Sort By"
                               className={classes.root}
                               onChange={setSort}
                             >
-                              <MenuItem value={'name'}>Name</MenuItem>
-                              <MenuItem value={'id'}>User ID</MenuItem>
-                              <MenuItem value={'gender'}>Gender</MenuItem>
-                              <MenuItem value={'date'}>Join Date</MenuItem>
-                              <MenuItem value={'birthdate'}>Birthday</MenuItem>
+                              <MenuItem value={'description'}>Content</MenuItem>
+                              <MenuItem value={'support_type_id'}>Type</MenuItem>
+                              <MenuItem value={'customer_id'}>Filer</MenuItem>
+                              <MenuItem value={'target'}>Target</MenuItem>
+                              <MenuItem value={'sent_date'}>Filed Date</MenuItem>
+                              <MenuItem value={'admin_id'}>Assingee</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -189,26 +164,28 @@ const ManageAccountPage = () => {
                     marginBottom: '0px'}}>
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
-                        <Box sx={{ width: '27%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_customer_suspensions != null;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                        <Box sx={{ width: '50%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Tickets ({(!showClosed ? (tickets.filter(ticket => ticket.title.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_support_status.status.status != 'Closed';})).length : tickets.filter(ticket => ticket.title.toUpperCase().includes(search.toUpperCase())).length)})</Typography>
                         </Box>
-                        <Box sx={{ width: '20%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
+                        <Box sx={{ width: '16%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Type</Typography>
                         </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Gender</Typography>
+                        <Box sx={{ width: '16%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Filer</Typography>
                         </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Postal</Typography>
+                        <Box sx={{ width: '16%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Target</Typography>
+                        </Box>
+                        <Box sx={{ width: '16%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Filed Date</Typography>
+                        </Box>
+                        <Box sx={{ width: '16%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Assigned To</Typography>
                         </Box>
                         <Box sx={{ width: '14%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Joined Date</Typography>
-                        </Box>
-                        <Box sx={{ width: '13%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Birth Date</Typography>
-                        </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
                             <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Status</Typography>
+                        </Box>
+                        <Box sx={{ width: '5%' }} className={classes.header}>
                         </Box>
                     </Box>
                     </CardContent>
@@ -217,17 +194,17 @@ const ManageAccountPage = () => {
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
                         {
-                        (showRestricted ? 
-                            (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => {return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                        (showClosed ? 
+                            (tickets.filter(ticket => ticket.title.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            : (tickets.filter(ticket => ticket.title.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                             .filter(function( obj ) {
-                                return obj.admin_customer_suspensions != null;
+                                return obj.admin_support_status.status.status != 'Closed';
                             })
-                            : (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
                         ).slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard user={key} deleteRestriction={deleteRestriction} auth={auth}/>
+                                    <TicketCard ticket={key} setStatus={setStatus} auth={auth}/>
                                 </div>
                             </li>
                         ))}
@@ -237,7 +214,7 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_customer_suspensions != null;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    <Pagination count={Math.ceil(((showClosed ? (tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.status == 'Closed';})).length : tickets.filter(ticket => ticket.description.toUpperCase().includes(search.toUpperCase())).length - 1))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
                 </div>
             </CardContent>
         </div>
@@ -272,4 +249,4 @@ const useStyles = makeStyles({
     }
 });
 
-export default ManageAccountPage;
+export default ManageSellerAccountPage;

@@ -98,6 +98,11 @@ export default function SellerConsoleSidebarLayout(props) {
       "/seller/" + params.id + "/stock"
     ),
     generateLink(
+      ShowChartRoundedIcon,
+      "Stock Log",
+      "/seller/" + params.id + "/stocklog"
+    ),
+    generateLink(
       BoltRoundedIcon,
       "FlashSale",
       "/seller/" + params.id + "/flashsell"
@@ -113,11 +118,6 @@ export default function SellerConsoleSidebarLayout(props) {
       "/seller/" + params.id + "/customize"
     ),
 
-    generateLink(
-      ShowChartRoundedIcon,
-      "Stock Log",
-      "/seller/" + params.id + "/stocklog"
-    ),
     // generateLink(
     //   FormatListBulletedRoundedIcon,
     //   "Order Status",

@@ -23,9 +23,11 @@ import SkeletonLoading from "~/common/components/SkeletonLoading";
 
 import HomePage from "./_home/pages/Home";
 import UsersPage from "./_manage/pages/Users";
-import BannedUsersPage from "./_manage/pages/BannedUsers";
+import ProductsPage from "./_manage/pages/Products";
 import SellersPage from "./_manage/pages/Sellers";
-import BannedSellerPage from "./_manage/pages/BannedSeller";
+import TicketsPage from "./_manage/pages/Tickets";
+import SupportPage from "./_manage/pages/Support";
+import AuditPage from "./_manage/pages/Audit";
 import FavouritePage from "./_home/pages/Favourite";
 import SugggestionPage from "./_home/pages/Suggestion";
 import CategoryPage from "./_category/pages/Category";
@@ -109,17 +111,20 @@ function App() {
                       <Route exact path="/manage">
                         <Redirect exact path="/manage" to="/manage/users" />
                       </Route>
-                      <Route exact path="/manage/users">
-                        <UsersPage />
+                        <Route exact path="/manage/users">
+                      <UsersPage />
                       </Route>
-                      <Route exact path="/manage/bannedsellers">
-                        <BannedSellerPage />
+                        <Route exact path="/manage/tickets">
+                      <TicketsPage />
                       </Route>
-                      <Route exact path="/manage/sellers">
-                        <SellersPage />
+                        <Route exact path="/manage/sellers">
+                      <SellersPage />
                       </Route>
-                      <Route exact path="/manage/bannedusers">
-                        <BannedUsersPage />
+                        <Route exact path="/manage/products">
+                      <ProductsPage />
+                      </Route>
+                      <Route exact path="/manage/audits">
+                      <AuditPage />
                       </Route>
                       <Route exact path="/manage/banner">
                         <ManageBanner />
@@ -181,6 +186,15 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <LoginPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
+                {/* SUPPORT PAGE */}
+                <Route path="/support" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <SupportPage />
                     </Suspense>
                   </MainLayout>
                 </Route>
