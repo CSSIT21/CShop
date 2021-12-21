@@ -36,9 +36,22 @@ const OrderDetail = () => {
         cartitems: cartitems,
       })
       .then(({ data }) => {
-        console.log(data);
+        if (data) {
+          Swal.fire({
+            title: "Success!",
+            text: "Your products have been added to cart",
+            icon: "success",
+            timer: 3000,
+          });
+        } else {
+          Swal.fire({
+            title: "Failed!",
+            text: "Products can not be order again",
+            icon: "error",
+            timer: 3000,
+          });
+        }
       });
-    // console.log(auth.user.id, cartitems);
   };
   useEffect(() => {
     setonLoad(true);
@@ -130,6 +143,7 @@ const OrderDetail = () => {
                 variant="outlined"
                 sx={buttonStyle}
                 startIcon={<ChatRoundedIcon />}
+                // onClick={()=> }
               >
                 Contact Seller
               </Button>
