@@ -9,7 +9,7 @@ import LazyImage from '../../common/components/LazyImage/LazyImage'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
 import CreditCard from '../pages/CreditCard'
 import VisaCard from '../assets/images/Visa_2021.svg'
-import InternetBanking from '../pages/InternetBanking'
+import InternetBanking from '../pages/PayByInternetBanking'
 import Wallet from '../pages/Wallet'
 import PaidByQr from '../pages/PaidByQr'
 
@@ -82,6 +82,8 @@ const ChoiceForPay = ({ order_id }) => {
 
     const classes = useStyles();
     const [value, setValue] = React.useState('');
+
+    
     
     const handleRadioChange = (event) => {
         setValue(event.target.value);

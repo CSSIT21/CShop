@@ -13,9 +13,12 @@ import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
 import PayByInternetBanking from "./PayByInternetBanking";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Popup from "../components/Popup";
+import Axios from "axios";
+import config from "~/common/constants";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   navbarWrapper: {
@@ -71,11 +74,33 @@ const rows = [
   createData("1567879", 123.45, "None", false),
 ];
 
-const Wallet = () => {
+const Wallet = ({order_id}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const classes = useStyles();
+
+  
+  useEffect(() => {
+    getWallet()
+  }, [])
+
+  const [wallet, setWallet] = useState([]);
+  const [order, setOrder] = useState([])
+  const orderId = { "orderId" : 238}
+
+  const getWallet = () => {
+    Axios.post(`${config.SERVER_URL}/payment/mywallet`, orderId).then((res) => {
+      if (res.data.success) {
+        setWallet(res.data.walletOrder.wallet);
+
+        setOrder(res.data.walletOrder.order);
+      }
+    }).catch((err) => console.log(err))
+  }
+
+  
+
   return (
     <>
       <Box className={classes.navbarWrapper}>
@@ -108,7 +133,7 @@ const Wallet = () => {
         >
           <CardContent>
             <Typography variant="h4" component="div">
-              ฿ 0
+              ฿ {wallet.balance}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               Current CShop Wallet Balance

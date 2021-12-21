@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
-=======
-import React from 'react';
->>>>>>> payment-2
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import ChoiceForPay from '../components/ChoiceForPay';
@@ -31,27 +27,20 @@ const useStyles = makeStyles({
 })
 
 
-<<<<<<< HEAD
 
-const payment = ({ orderId }) => {
-
-    const classes = useStyles();
-    
-    
-
-=======
 const Payment = () => {
 
     const classes = useStyles();
+    
+    const orderId ={"orderId": 238}
 
->>>>>>> payment-2
     return (
         <Box>
             <Box className = {classes.boxLeft}>
                 <ChoiceForPay order_id={orderId} />
             </Box>
             <Box className = {classes.boxRight}>
-                <OrderSummarize />
+                <OrderSummarize order_id={orderId} />
             </Box>
         </Box>
     )

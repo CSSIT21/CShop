@@ -1,13 +1,14 @@
 import { Box, typography } from '@mui/system'
 import LazyImage from '../../common/components/LazyImage/LazyImage'
-import { CheckCircleOutline, RadioButtonUnchecked,  } from '@mui/icons-material'
 import { Checkbox, Divider, FormControlLabel, TextField, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React from 'react'
+import React, {useState} from 'react'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
 import VisaCardIcon from '../assets/images/Visa_2021.svg'
 import CButton from '../../common/components/CButton'
-import axios from 'axios'
+import config from "~/common/constants";
+import Axios from 'axios'
+
 
 
 
@@ -27,15 +28,42 @@ import axios from 'axios'
 //      })
 //    };
   
-//    useEffect(() => {
-//     getData();
-//    }, [])
+  //  useEffect(() => {
+  //   getData();
+  //  }, [])
 
-const CreditCard = () => {
+
+
+  
+
+const CreditCard = ({ orderId }) => {
   const classes = useStyles();
+  const [cardNo, setCardNo] = useState("");
+  const [exp, setExp] = useState();
+  const [cvc, setCvc] = useState("")
+
+  const onClickHandler = () => {
+    confirm();
+    
+  }
+
+  const confirm = () => {
   
+  console.log("Done");
   
-  
+    Axios.post(`${config.SERVER_URL}/payment/card`, {
+      "cardNo": cardNo,
+      "exp": exp,
+      "cvc": cvc,
+      "orderId": orderId
+    }).then((res) => {
+    if (res.data.success) {
+      console.log(cardNo);
+      
+      }
+  }).catch((err) => console.log(err))
+}
+
     return (
       <Box className={classes.pagestyle}>
         <Box className={classes.header}>Credit card payment</Box>
@@ -57,20 +85,22 @@ const CreditCard = () => {
         </Box>
         <Box marginBottom={2}>
           <Typography>Card number</Typography>
-          <TextField type="text" fullWidth placeholder="1111-2222-3333-4444" />
+          <TextField type="number" onInput={(e) => { e.target.value = (e.target.value).toString().slice(0, 16) }}
+              onChange={(e) => setCardNo(e.target.value)} />
         </Box>
         <Box className={classes.expAndSecurityBox} marginBottom={2}>
           <Box>
             <Typography>Exp date</Typography>
-            <TextField type="text" placeholder="September" />
+            <TextField type="month"  onChange={(e)=>setExp(new Date(e.target.value).toISOString())} />
           </Box>
           <Box className={classes.securityBox}>
             <Typography>Security code</Typography>
-            <TextField type="text" placeholder="123" />
+            <TextField type="number" onInput={(e) => { e.target.value = (e.target.value).toString().slice(0, 3) }}
+              onChange={(e) => setCvc(e.target.value)} />
           </Box>
         </Box>
         
-        <CButton title="complete transaction" />
+        <CButton title="complete transaction" onClick={onClickHandler} />
 
         {/* <Box
                 className={classes.textFieldBox}

@@ -20,9 +20,9 @@ export class PaymentService {
     }
     
     
-    //OR code
+    //-----------------QR code---------------//
     async getQr(orderId?: number) {
-        const order = await this.prisma.order.findUnique({
+        const order = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
             },
@@ -85,8 +85,8 @@ export class PaymentService {
                 console.error(error);
             });
         let createPayment = await this.createPaymentQr(orderId);
-        let createTrans = await this.createPaymentQrTrans(order.total_price, ref1, createPayment.id, str);
-        if (order.total_price > 1000) {
+        //let createTrans = await this.createPaymentQrTrans(order.total_price, ref1, createPayment.id, str);
+        if (order.total_price > 100) {
             
             let coinId = await this.prisma.discount_coin_information.findFirst({
                 where: {
@@ -102,18 +102,18 @@ export class PaymentService {
                         id: coinId.id,
                 },
                 update: {
-                    amount: coinId.amount + order.total_price/1000
+                    amount: coinId.amount +  Math.floor(order.total_price / 100)
                 },
                     create: {
                         customer_id: order.customer_id,
-                        amount: order.total_price / 1000,
+                        amount:  Math.floor(order.total_price / 100),
                         got_date: new Date().toISOString(),
-                        expire_date: null,
+                        expire_date: new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * 10),
                         get_from: "Payment"
                     }
                 })
             }
-        return str;
+        return { str,ref1 };
     }
 
 
@@ -122,11 +122,6 @@ export class PaymentService {
 
 
     async createPaymentQr(orderId?: number) {
-        // let orderDetail = await this.prisma.order_detail.findUnique({
-        //     where: {
-        //         order_id: orderId,
-        //     }
-        // })
         let order = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
@@ -144,12 +139,6 @@ export class PaymentService {
                 status: "Pending",
                 created_date: new Date(),
                 updated_date: new Date(),
-                home_payment_log: {
-                    create: {
-                        customer_id: order.customer_id,
-                        issue_at: new Date().toISOString(),
-                    },
-                }, 
             }
         })
     }
@@ -171,24 +160,87 @@ export class PaymentService {
         });
     }
 
-
-
-
-
-
-    //Wallet
-    async getWallet(customerId?: number) {
-        return await this.prisma.wallet.findFirst({
+    async paidByQr(req?: any, orderId?: number, qr?: string, ref?: string) {
+        let refRe = req.billPaymentRef1;
+        let amount = parseInt(req.amount);
+        let transId = parseInt(req.transactionId);
+        let time = req.transactionDateandTime
+        let customerId = await this.prisma.order.findFirst({
             where: {
-                customer_id: customerId
+                id: orderId,
+            },
+            select: {
+                customer_id: true
+            }
+        })
+        let payment = await this.prisma.payment.findFirst({
+            where: {
+                order_id: orderId
+            }
+        })
+        if (refRe.normalize() === ref.normalize()) {
+            let updatePayment = await this.prisma.payment.update({
+                where: {
+                    id: orderId,
+                },
+                data: {
+                    status: "Success",
+                }
+            })
+            let log = await this.prisma.home_payment_log.create({
+                data: {
+                    payment_id: payment.id,
+                    customer_id: customerId.customer_id,
+                    issue_at: new Date().toISOString()
+                }
+            })
+            return await this.prisma.payment_transaction.create({
+                data: {
+                    amount: amount,
+                    time: time,
+                    desc: "",
+                    payment_qr: {
+                        create: {
+                            payment_id: payment.id,
+                            ref: refRe,
+                            qr: qr
+                        },
+                    },
+                },
+            });
+        } else {
+            return null;
+        }
+        
+    }
+
+
+
+
+    //-----------------Wallet---------------//
+    async getWallet(orderId?: number) {
+        try {
+            let order = await this.prisma.order.findFirst({
+            where: {
+                id: orderId,
+            },
+        })
+        let wallet = await this.prisma.wallet.findFirst({
+            where: {
+                customer_id: order.customer_id
             }
         });
+        
+            return { wallet, order}
+        } catch (err) {
+            console.log(err)
+        }
+        
     }
 
     async createWallet(customerId?: number) {
         return await this.prisma.wallet.create({
 				data: {
-					// id: walletId,
 					customer_id: customerId,
 					balance: 10000,
 					updated_time: new Date().toISOString(),
@@ -226,9 +278,8 @@ export class PaymentService {
         
     }
 
-
     async paidByWallet(orderId?: number) {
-        let order = await this.prisma.order.findUnique({
+        let order = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
             }
@@ -310,13 +361,13 @@ export class PaymentService {
                         id: coinId.id,
                 },
                 update: {
-                    amount: coinId.amount + order.total_price/1000
+                    amount: coinId.amount +  Math.floor(order.total_price / 100)
                 },
                     create: {
                         customer_id: order.customer_id,
-                        amount: order.total_price / 1000,
+                        amount:  Math.floor(order.total_price / 100),
                         got_date: new Date().toISOString(),
-                        expire_date: null,
+                        expire_date: new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * 10),
                         get_from: "Payment"
                     }
                 })
@@ -332,15 +383,15 @@ export class PaymentService {
 
     
 
-    //Credit Card
+    //-----------------Credit Card---------------//
     
     async createCard(cardNo?: string, exp?: Date, cvc?: string, customerId?: number) {   
-        if (cardNo.charAt[0] = '5') {
+        if (cardNo.charAt(0).match(/^5/)) {
             let creditCard = await this.prisma.payment_credit_card.create({
                 data: {
-                    card_number: CryptoJs.HmacSHA512(cardNo.toString(), process.env.PASSWORD_CREDITCARD).toString(),
+                    card_number: CryptoJs.HmacSHA512(cardNo, process.env.PASSWORD_CREDITCARD).toString(),
                     expire_date: exp,
-                    cvc: CryptoJs.HmacSHA512(cvc.toString(), process.env.PASSWORD_CVC).toString(),
+                    cvc: CryptoJs.HmacSHA512(cvc, process.env.PASSWORD_CVC).toString(),
                     type: "MasterCard",
                 }
             });
@@ -355,9 +406,9 @@ export class PaymentService {
         else {
             let creditCard = await this.prisma.payment_credit_card.create({
                 data: {
-                    card_number: CryptoJs.HmacSHA512(cardNo.toString(),process.env.PASSWORD_CREDITCARD).toString(),
+                    card_number: CryptoJs.HmacSHA512(cardNo,process.env.PASSWORD_CREDITCARD).toString(),
                     expire_date: exp,
-                    cvc: CryptoJs.HmacSHA512(cvc.toString(),process.env.PASSWORD_CVC).toString(),
+                    cvc: CryptoJs.HmacSHA512(cvc,process.env.PASSWORD_CVC).toString(),
                     type: "Visa",
                 }
             })
@@ -372,9 +423,14 @@ export class PaymentService {
     }
 
     async paidByCreditCard(cardNo?: string, exp?: Date, cvc?: string, orderId?: number) {
-        let order = await this.prisma.order.findUnique({
+        let order = await this.prisma.order.findFirst({
             where: {
                 id: orderId
+            }
+        })
+        let orderItem = await this.prisma.order_item.findFirst({
+            where: {
+                order_id: orderId
             }
         })
 
@@ -388,7 +444,7 @@ export class PaymentService {
                 card_number: cardNo,
             }
         })
-        if (find == null || card == null || card.id != find.credit_card_id) {
+        if (find && card && card.id && find.credit_card_id != card.id ) {
             card = await this.createCard(cardNo, exp, cvc, order.customer_id)
         }
         let payment = await this.prisma.payment.create({
@@ -398,7 +454,7 @@ export class PaymentService {
                     amount: order.total_price,
                     status: "Success",
                     created_date: new Date(),
-                    updated_date: null,
+                    updated_date: new Date(),
                 }
         })
         let trans = await this.prisma.payment_transaction.create({
@@ -408,12 +464,22 @@ export class PaymentService {
                 desc:"",
             }
         })
+        let refund = await this.prisma.order_refund_item.create({
+            data: {
+                order_id: orderId,
+                product_id: orderItem.product_id,
+                product_options: orderItem.product_options,
+                request: false,
+                time_remaining: new Date().toISOString(),
+            }
+        })
+        
         let transCard = await this.prisma.payment_credit_card_transaction.create({
             data: {
                 card_id: find.credit_card_id,
                 status: "Success",
                 transaction_id: trans.id,
-                refund_id: null
+                refund_id: refund.id,
             }
         })
         let paymentCard = await this.prisma.payment_card.create({
@@ -431,7 +497,7 @@ export class PaymentService {
                 }
         })
 
-        if (order.total_price > 1000) {
+        if (order.total_price > 100) {
             
             let coinId = await this.prisma.discount_coin_information.findFirst({
                 where: {
@@ -447,13 +513,13 @@ export class PaymentService {
                         id: coinId.id,
                 },
                 update: {
-                    amount: coinId.amount + order.total_price/1000
+                    amount: coinId.amount +  Math.floor(order.total_price / 100)
                 },
                     create: {
                         customer_id: order.customer_id,
-                        amount: order.total_price / 1000,
+                        amount: Math.floor(order.total_price / 100),
                         got_date: new Date().toISOString(),
-                        expire_date: null,
+                        expire_date: new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * 10),
                         get_from: "Payment"
                     }
                 })
@@ -465,7 +531,7 @@ export class PaymentService {
 
 
 
-    // Shop income
+    //-----------------Seller income---------------//
     async paymentShopBankAcc(shopId: number, firstname: string, lastname: string, accountNo: string) {
         return await this.prisma.payment_shop_bank_account.create({
             data: {
@@ -479,7 +545,7 @@ export class PaymentService {
     }
 
     async sellerIncome(shopId: number, orderId: number) {
-        let amount = await this.prisma.order.findUnique({
+        let amount = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
             },
@@ -491,7 +557,8 @@ export class PaymentService {
             data: {
                 shop_id: shopId,
                 order_id: orderId,
-                total_price: amount.total_price,
+                total_price:  amount.total_price
+                ,
                 time: new Date().toISOString()
             }
         })
@@ -518,6 +585,31 @@ export class PaymentService {
         })
     }
 
+    async createCoin() {
+        let customerId = await this.prisma.customer.findMany({
+            take: 20,
+            select: {
+                id: true
+            }
+        })
+        for (let i = 0; i < customerId.length; i++) {
+            await this.prisma.discount_coin_information.create({
+                data: {
+                    customer_id: customerId[i].id,
+                    amount: 10,
+                    got_date: new Date().toISOString(),
+                    expire_date: new Date(Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/ * 24 /*day*/ * 10),
+                    get_from: "Payment"
+                }
+            })
+
+        }
+    }
+
+
+
+//-----------------Banking---------------//
+// async create
 
 
 
@@ -526,10 +618,7 @@ export class PaymentService {
 
 
 
-
-
-
-
+//-----------------etc---------------//
     throwError(err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       console.log(err.message);

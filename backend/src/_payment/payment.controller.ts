@@ -8,6 +8,13 @@ import * as bcrypt from 'bcrypt';
 
 let request: object;
 
+let qr: any;
+let order_id: number;
+const omise = require('omise')({
+	publicKey: process.env.OMISE_PUBLIC_KEY,
+	secretKey: process.env.OMISE_SECRET_KEY,
+});
+
 async function Hash(){
 	const saltOrRounds = 10;
 	const password = 'random_password';
@@ -30,7 +37,6 @@ export class PaymentController {
 	}
 
 	//-----------------QRCODE Payment-----------------------//
-
 	@Post('/qrcode')
 	@Public()
 	async getQRcode(
@@ -41,11 +47,12 @@ export class PaymentController {
 		try {
 			const request = req.body;
 			let orderId = request.orderId;
-			let rawQr: string;
-			rawQr = await this.paymentService.getQr(orderId);
+			order_id = request.orderId;
+			qr = await this.paymentService.getQr(orderId)
+			let rawQr = qr.str;
 			return {
 				success: true,
-				 rawQr
+				rawQr
 			}
 		}
 		catch(err) {
@@ -55,10 +62,19 @@ export class PaymentController {
 
 	@Post('/confirm')
 	@Public()
-	callback(@Req() req, @Res() res): void {
-		request = req.body;
-		console.log(req.body);
-		res.status(200).send('');
+	callback(@Req() req, @Res() res) {
+		try{
+		const request = req.body;
+		let trans = this.paymentService.paidByQr(request, order_id, qr.str, qr.ref);
+			return {
+				success: true,
+				trans
+			}
+		}catch(err) {
+			return this.paymentService.throwError(err)
+	}
+
+		
 	}
 
 	@Get('/status')
@@ -79,6 +95,8 @@ export class PaymentController {
 	@Post('/krungsri')
 	@Public()
 	async getKrungsri(@Req() req, @Res() res): Promise<void> {
+		const request = req.body;
+		const orderId = request.orderId
 		const checkoutInternetBanking = async (req, res, next) => {
 			const { id, total_price, token } = req.body;
 		  
@@ -101,6 +119,19 @@ export class PaymentController {
 		  };
 	}
 
+	@Post('/bankconfirm')
+	@Public()
+	bankCallback(@Req() req, @Res() res): void {
+		try {
+			request = req.body
+			console.log(request);
+			
+    		res.status(200).send(request);
+		} catch (err) {
+			return this.paymentService.throwError(err)
+		}
+	}
+
 	//-----------------Credit Card Spy---------------//
 	// var omise = require('omise')({
 	//   'publicKey': process.env.OMISE_PUBLIC_KEY,
@@ -119,14 +150,11 @@ export class PaymentController {
 		try {
 			const request = req.body;
 			const cardNo = request.cardNo;
+			
+			
 			const exp = request.exp;
 			const cvc = request.cvc;
 			const orderId = request.orderId;
-			// let card = this.paymentService.createCreditCard(cardNo, exp, cvc, userId);
-			// return {
-			// 	success: true,
-			// 	card
-			// }
 			let card = this.paymentService.paidByCreditCard(cardNo, exp, cvc, orderId);
 			return {
 				success: true,
@@ -141,13 +169,33 @@ export class PaymentController {
 
 	//-----------------Wallet Willy---------------//
 
+	@Post('/mywallet')
+	@Public()
+	async getWallet(@Req() req) {
+		 try {
+			const orderId = req.body.orderId;
+			
+			const walletOrder = await this.paymentService.getWallet(orderId);
+			
+			return {
+				success: true,
+				walletOrder
+				}
+	} catch (err) {
+		return this.paymentService.throwError(err);
+		}
+	}
+
+
 	@Post('/wallet')
 	@Public()
 	createPaymentWallet(
-		@Query('orderId', ParseIntPipe) orderId?: number,
+		//@Query('orderId', ParseIntPipe) orderId?: number,
+		@Req() req,
 		) {
 		try {
-			
+			const request = req.body;
+			const orderId = request.orerId;
 				let paymentWallet = this.paymentService.paidByWallet(orderId);
 				return {
 					success: true,
@@ -157,11 +205,72 @@ export class PaymentController {
 				return this.paymentService.throwError(err);
 			}
 	}
+
+
+	//-----------------CustomerDetail---------------//
+
+	@Post('/summary')
+	@Public()
+	async getCusInfo(@Req() req) {
+		const request = req.body
+		const orderId = request.orderId
+		
+		
+		try {
+			let order = await this.prisma.order.findFirst({
+				where: {
+					id: orderId
+				},
+				select: {
+					customer_id: true,
+					total_price: true,
+					order_date: true,
+				}
+			})
+			let customer = await this.prisma.customer_info.findFirst({
+				where: {
+					customer_id: order.customer_id
+				},
+				select: {
+					firstname: true, lastname: true,
+				}
+			})
+			let cuswithadd = await this.prisma.customer_address.findFirst({
+				where: {
+					customer_id: order.customer_id
+				},
+				select: {
+					address_id: true
+				}
+				
+			})
+			let address = await this.prisma.address.findFirst({
+				where: {
+					id: cuswithadd.address_id
+				}
+			})
+			return { success: true,
+				order, customer, address
+			}
+
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
+	}
+
 	
 	//-----------------Coin---------------//
 
 
-
+	@Get('/test')
+	@Public()
+	createCoin() {
+		try {
+			this.paymentService.createCoin();
+		} catch (err) {
+			return this.paymentService.throwError(err);
+		}
+	}
 
 	
 

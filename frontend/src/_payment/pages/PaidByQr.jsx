@@ -5,10 +5,10 @@ import { makeStyles } from '@mui/styles';
 import Axios from 'axios';
 import config from "~/common/constants";
 import OrderSummarize from '../components/OrderSummerize';
-import { Button, ButtonBase, ButtonGroup, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import CButton from '../../common/components/CButton';
-import { useParams } from 'react-router-dom';
+
 
 const useStyles = makeStyles({
     
@@ -48,7 +48,6 @@ const useStyles = makeStyles({
 })
 
 
-const qrCode = "0002010102123032011563959634889012902091234678325204701153037645406100.005802TH5905CShop6007BANGKOK62340523202111151028050140000000703CMQ630447C0";
 
 
 const PaidByQr = ({ orderId }) => {
@@ -56,17 +55,23 @@ const PaidByQr = ({ orderId }) => {
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(5);
     const [display, setDisplay] = useState("none")
-<<<<<<< HEAD
     const [qrCode, setQrCode] = useState("");
+
+    useEffect(() => {
+        getQr()
+    },[])
     
 
-    Axios.post(`${config.SERVER_URL}/payment/qrcode`,{orderId}).then(({ data }) => {
-        if (data.success) {
-            setQrCode(data.rawQr)
-        }
-    })
-=======
->>>>>>> payment-2
+    const getQr = () => {
+    Axios.post(`${config.SERVER_URL}/payment/qrcode`,orderId).then(({ data }) => {
+            if (data.success) {
+                setQrCode(data.rawQr)
+            } 
+        }).catch((err) => {return Promise.reject(err)})
+    }
+    
+
+    
 
     function updateTime() {
     if (minutes === 0 && seconds === 0) {
@@ -101,7 +106,7 @@ const PaidByQr = ({ orderId }) => {
     return (
         <Box>
             <Box className={classes.BoxLeft}>
-                <OrderSummarize/>
+                <OrderSummarize order_id={238}/>
             </Box>
             <Box className={classes.BoxRight}>
                 <Box className={classes.boxHead}>
