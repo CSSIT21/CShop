@@ -1,4 +1,5 @@
-import React from 'react';
+import { useState, useEffect } from "react";
+
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -16,25 +17,79 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import zIndex from '@mui/material/styles/zIndex';
 
+import config from "~/common/constants";
+import axios from "axios";
+
 function createData(info, expire, coins) {
     return { info, expire, coins };
 }
 
-const rows = [
-    createData('Login Reward', '20/3/2022', '10'),
-    createData('Used coins', '21/4/2022', '20'),
-    createData('Login Reward', '30/4/2022', '30'),
-    createData('Earned coins', '23/4/2022', '40'),
-    createData('Used coins', '4/4/2022', '50'),
-    createData('Login Reward', '20/3/2022', '10'),
-    createData('Used coins', '21/4/2022', '20'),
-    createData('Login Reward', '30/4/2022', '30'),
-    createData('Earned coins', '23/4/2022', '40'),
-    createData('Used coins', '4/4/2022', '50'),
-];
+// const rows = [
+//     createData('Login Reward', '20/3/2022', '10'),
+//     createData('Used coins', '21/4/2022', '20'),
+//     createData('Login Reward', '30/4/2022', '30'),
+//     createData('Earned coins', '23/4/2022', '40'),
+//     createData('Used coins', '4/4/2022', '50'),
+//     createData('Login Reward', '20/3/2022', '10'),
+//     createData('Used coins', '21/4/2022', '20'),
+//     createData('Login Reward', '30/4/2022', '30'),
+//     createData('Earned coins', '23/4/2022', '40'),
+//     createData('Used coins', '4/4/2022', '50'),
+// ];
 
 
 const CoinHistoryPage = (coinhistory) => {
+    const [coin,setCoin] = useState()
+
+    const [array,setTheArray] = useState([])
+    const [used,setUsed] = useState([])
+    const [earned,setEarned] = useState([])
+
+
+    // this.setState( prevState => ({
+    //     userFavorites: [{id: 3, title: 'C'}, ...prevState.userFavourites]
+    //  }));
+    const fetchCoin= async ()=>{
+        try {
+            const coin = await axios.post(`${config.SERVER_URL}/coin/checkin`,{
+                userId:1
+            })
+            setCoin(coin.data.ckeckin_coin[0].total_coin)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+   
+    
+
+    const fetchCoinTable= async ()=>{
+        try {
+            const history = await axios.get(`${config.SERVER_URL}/coin/showallcoin`,{
+                userId:1
+            })
+            // console.log(history.data.recieve)
+            const usedcoin = history.data.used.map((el)=>(createData(el.user_for,el.used_time,el.used_amount)))
+            setUsed(usedcoin)
+            
+            const earnedcoin = history.data.recieve.map((el)=>(createData(el.get_from,el.got_date,el.amount)))
+            setEarned(earnedcoin)
+            
+            setTheArray(usedcoin)
+            setTheArray(usedcoin => [...usedcoin, ...earnedcoin])
+    
+           
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(()=>{
+        fetchCoin()
+        fetchCoinTable()
+    },[])
+
     const classes = useStyles();
 
     function TabPanel(props) {
@@ -87,7 +142,7 @@ const CoinHistoryPage = (coinhistory) => {
 
             <Box className={classes.headercoin}>
                 <img src={CoinPic} alt="pic" style={{ height: "60px", width: "60px", alignItem: "center", marginTop: "5px" }} />
-                <Box className={classes.cointext}>1.11</Box>
+                <Box className={classes.cointext}>{coin}</Box>
                 <Box className={classes.cointext}><Link to="/coin" > ></Link></Box>
             </Box>
 
@@ -112,7 +167,7 @@ const CoinHistoryPage = (coinhistory) => {
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {array.map((row) => (
                                             <TableRow
                                                 key={row.info}
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -142,7 +197,7 @@ const CoinHistoryPage = (coinhistory) => {
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {earned.map((row) => (
                                             <TableRow
                                                 key={row.info}
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -172,7 +227,7 @@ const CoinHistoryPage = (coinhistory) => {
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {used.map((row) => (
                                             <TableRow
                                                 key={row.info}
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -1,4 +1,5 @@
-import React from 'react';
+import { useState, useEffect } from "react";
+
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -13,9 +14,35 @@ import { Link } from 'react-router-dom';
 import Popover from '@mui/material/Popover';
 import Popuppic from '~/common/assets/images/popup.png';
 
+import config from "~/common/constants";
+import axios from "axios";
+
 const CoinRedeemPage = (coinredeem) => {
 
+    const [coin,setCoin] = useState()
+
+    const fetchData= async ()=>{
+        try {
+            const res = await axios.post(`${config.SERVER_URL}/coin/checkin`,{
+                userId:1
+            })
+            // console.log(res.data.ckeckin_coin)
+            setCoin(res.data.ckeckin_coin[0].total_coin)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(()=>{
+        fetchData()
+    },[])
+    
+    // const [cointotal, setCointotal] = useState();
+    
+    
     const [anchorEl, setAnchorEl] = React.useState(null);
+
+
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -73,6 +100,7 @@ const CoinRedeemPage = (coinredeem) => {
     };
 
     const handleComplete = () => {
+        fetchData()
         const newCompleted = completed;
         newCompleted[activeStep] = true;
         setCompleted(newCompleted);
@@ -101,7 +129,7 @@ const CoinRedeemPage = (coinredeem) => {
                     }}>
                         <img src={CoinPic} alt="pic" style={{ height: "60px", width: "60px", alignItem: "center", marginTop: "5px" }} />
 
-                        <Box className={classes.cointext}>1.11</Box>
+                        <Box className={classes.cointext}>{coin}</Box>
                         <Box className={classes.cointext}><Link to="/coin/history" > ></Link></Box>
                     </Box>
                     <Box sx={{ width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItem: "center", marginTop: "75px" }}>
