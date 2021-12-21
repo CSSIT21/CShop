@@ -86,7 +86,7 @@ const TabsController = ({ categories = [], ...rest }) => {
               }}
               sx={{ color: "black" }}
             >
-              {categories.slice(3, categories.length).map((menu, idx) => {
+              {categories.slice(2, categories.length).map((menu, idx) => {
                 return (
                   <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
                     <MenuItem
