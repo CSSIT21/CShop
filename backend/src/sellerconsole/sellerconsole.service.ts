@@ -109,14 +109,14 @@ export class SellerconsoleService {
 		return result;
 	}
 
-	async getOrderStatus(orderid: number) {
-		const res = await this.prisma.sconsole_order_status.findMany({
-			where: {
-				order_id: orderid,
-			},
-			select: {},
-		});
-	}
+	// async getOrderStatus(orderid: number) {
+	// 	const res = await this.prisma.sconsole_order_status.findMany({
+	// 		where: {
+	// 			order_id: orderid,
+	// 		},
+	// 		select: {},
+	// 	});
+	// }
 
 	async findOneOrder(orderid: number) {
 		const res = await this.prisma.order.findUnique({
@@ -127,33 +127,33 @@ export class SellerconsoleService {
 		return res;
 	}
 
-	async removeOrderFromOrderStatus(orderid: number) {
-		const res = await this.prisma.sconsole_order_status.delete({
-			where: {
-				id: orderid, // wrong
-			},
-		});
-		return res;
-	}
+	// async removeOrderFromOrderStatus(orderid: number) {
+	// 	const res = await this.prisma.sconsole_order_status.delete({
+	// 		where: {
+	// 			id: orderid, // wrong
+	// 		},
+	// 	});
+	// 	return res;
+	// }
 
-	async addOrderStatusToOrderHistory(
-		order_id: number,
-		product_id: number,
-		shop_id: number,
-		started_date: Date,
-		status: string,
-	) {
-		await this.prisma.sconsole_order_history.create({
-			data: {
-				order_id: order_id,
-				product_id: product_id,
-				shop_id: shop_id,
-				started_date: started_date,
-				ended_date: new Date(),
-				status: status,
-			},
-		});
-	}
+	// async addOrderStatusToOrderHistory(
+	// 	order_id: number,
+	// 	product_id: number,
+	// 	shop_id: number,
+	// 	started_date: Date,
+	// 	status: string,
+	// ) {
+	// 	await this.prisma.sconsole_order_history.create({
+	// 		data: {
+	// 			order_id: order_id,
+	// 			product_id: product_id,
+	// 			shop_id: shop_id,
+	// 			started_date: started_date,
+	// 			ended_date: new Date(),
+	// 			status: status,
+	// 		},
+	// 	});
+	// }
 
 	seller_refundhistory(id: number) {
 		return `#${id}`;
