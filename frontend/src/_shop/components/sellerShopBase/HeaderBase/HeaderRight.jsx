@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
