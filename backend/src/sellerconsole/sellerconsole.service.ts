@@ -521,6 +521,7 @@ export class SellerconsoleService {
 			select: {
 				id: true,
 			},
+			take: 50,
 		});
 
 		const newFlashSales = await this.prisma.shop_flashsale.create({
@@ -532,7 +533,7 @@ export class SellerconsoleService {
 				description: description,
 				started_date: new Date(started_date),
 				ended_date: new Date(ended_date),
-				products: { product },
+				products: product,
 			},
 		});
 		return newFlashSales;
