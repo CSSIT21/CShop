@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
@@ -24,6 +24,8 @@ const useStyles = makeStyles({
 
 const ChatPage = (props) => {
     const [auth] = useRecoilState(authState)
+    const history = useHistory()
+    if(!auth.isLoggedIn) history.push('/login')
     const user_id = auth.user.id
     const [ChatService] = useState(() => new _ChatService(auth.user, handleGetConversation, handleIncomingMessage))
     const { id: router_id } = useParams()
@@ -97,30 +99,19 @@ const ChatPage = (props) => {
     function handleUpload(type, file) {
         if (type === 'image') {
             ChatService.send('image', file, currentConversation).then(() => {
-                setConversation(ChatService.conversation)
-                setMessages(ChatService.messagesBetween(currentConversation))
-                console.log(
-                    `%c Chat.jsx %c sent image '${file.name}' to user#${currentConversation}`,
-                    'background:#40ffbf;color:#032e20',
-                    ''
-                )
-                setTimeout(() => {
-                    lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
-                }, 500)
+                // setConversation(ChatService.conversation)
+                // setMessages(ChatService.messagesBetween(currentConversation))
+                // console.log(
+                //     `%c Chat.jsx %c sent image '${file.name}' to user#${currentConversation}`,
+                //     'background:#40ffbf;color:#032e20',
+                //     ''
+                // )
+                // setTimeout(() => {
+                //     lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
+                // }, 500)
             })
         } else if (type === 'video') {
-            ChatService.send('video', file, currentConversation).then(() => {
-                setConversation(ChatService.conversation)
-                setMessages(ChatService.messagesBetween(currentConversation))
-                console.log(
-                    `%c Chat.jsx %c sent video '${file.name}' to user#${currentConversation}`,
-                    'background:#40ffbf;color:#032e20',
-                    ''
-                )
-                setTimeout(() => {
-                    lastBubbleRef.current.scrollIntoView({ behavior: 'smooth' })
-                }, 500)
-            })
+            ChatService.send('video', file, currentConversation)
         }
     }
 
@@ -163,7 +154,13 @@ const ChatPage = (props) => {
         //     conversation_id: conversation_id,
         //     message_id: message_id
         // })
-        setMediaMessage(messages.get(conversation_id).find(m => m.id === message_id))
+        console.log(type, conversation_id, message_id)
+        if(Number.isInteger(message_id)) {
+            setMediaMessage(ChatService.conversation(conversation_id).messages.find(m => m.id === message_id)) 
+        } else {
+            setMediaMessage(ChatService.conversation(conversation_id).messages.find(m => m.temp_id === message_id))
+        }
+        // setMediaMessage(ChatService.conversation(conversation_id).find(m => m.id === message_id))
         setOpen(true)
     }
 

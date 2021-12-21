@@ -46,6 +46,20 @@ const ProductBox = ({ img, productName, options }) => {
           {options ? "Option :" : "Option : none"}
           {options && (
             <>
+              {options && (
+                <Typography sx={{ marginLeft: "5px", marginRight: "6px" }}>
+                  {options[0]?.name}
+                  {options[1] && (
+                    <>
+                      {", "} {options[1]?.name}
+                    </>
+                  )}{" "}
+                </Typography>
+              )}
+            </>
+          )}
+          {/* {options && (
+            <>
               {options?.slice(0, 5).map((e, key) => (
                 <Typography
                   sx={{ marginLeft: "5px", marginRight: "6px" }}
@@ -57,7 +71,7 @@ const ProductBox = ({ img, productName, options }) => {
               ))}
               {options.length > 5 && options ? "....." : " "}
             </>
-          )}
+          )} */}
         </Typography>
       </Box>
     </Box>

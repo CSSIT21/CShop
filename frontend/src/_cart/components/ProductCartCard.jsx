@@ -21,9 +21,6 @@ function ProductCartCard({ product, setProduct=void(0),userID }) {
       });
       }).catch(err=>console.log(err));
     }
-    
-
-  
 
     return (
       <Stack direction="row" gap={2} sx={{background: 'white', padding: '15px', borderRadius: '18px'}}>

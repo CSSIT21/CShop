@@ -8,7 +8,7 @@ const Delivering = () => {
     const [allRequests, setAllRequests] = useState();
     const fetchedRequests = async () => {
         const data = await axios.get(
-            "http://localhost:8080/delivery/delivering"
+            "http://localhost:8080/delivery/admin?status=delivering"
         );
         setAllRequests(data.data);
     };
