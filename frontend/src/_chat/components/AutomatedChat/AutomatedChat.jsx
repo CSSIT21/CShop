@@ -13,8 +13,8 @@ const AutomatedChat = (props) => {
 
     return (
         <Box className={classes.automatedContainer}>
-            {quickReply.map((e) => (
-                <Button className={classes.automatedButton}>{e}</Button>
+            {quickReply.map((e, i) => (
+                <Button key={i} className={classes.automatedButton} onClick={() => props.handleSubmitMessage(e)}>{e}</Button>
             ))}
         </Box>
     )

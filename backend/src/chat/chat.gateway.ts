@@ -12,6 +12,7 @@ import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
 import { ConversationDto } from './dto/conversation.dto';
 import { NotificationDto } from './dto/notification.dto';
+import { ChatConversationMark } from '@prisma/client';
 
 const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;
 
@@ -53,11 +54,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				this.connectionMap.delete(conversation);
 			}
 		}
+		client.disconnect()
 	}
 
 	@SubscribeMessage('get')
 	async get(@MessageBody() data: { item: string; as: number; with?: any }, @ConnectedSocket() client: Socket) {
-		console.log('/chat get', data);
+		// console.log('/chat get', data);
 		// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 		switch (data.item) {
 			case 'conversation': {
@@ -187,6 +189,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				data: shop
 			}
 		}
+	}
+
+	@SubscribeMessage('post')
+	async post(@MessageBody() data: any) {
+		switch(data.item) {
+			case 'mark':
+				await this.postMark(data.with, data.to)
+		}
+	}
+
+	async postMark(conversation_id: number, value: ChatConversationMark) {
+		await this.chatService.updateMark(conversation_id, value)
 	}
 
 	@SubscribeMessage('join')

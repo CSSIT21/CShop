@@ -50,16 +50,24 @@ const ProfileBarSeller = (props) => {
             </Box>
             <Box className={classes.buttonZone}>
     
-                <IconButton>
+                <IconButton onClick={() => {
+                    props.setMark('Spam')
+                }}>
                     <FlagIcon className={props.mark === 'Spam' ? classes.orangeButton : classes.grayButton}/>
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => {
+                    props.setMark('Important')
+                }}>
                     <StarIcon className={props.mark === 'Important' ? classes.orangeButton : classes.grayButton} />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => {
+                    props.setMark('Unread')
+                }}>
                     <EmailIcon className={props.mark === 'Unread' ? classes.orangeButton : classes.grayButton} />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => {
+                    props.setMark('Done')
+                }}>
                     <CheckIcon className={props.mark === 'Done' ? classes.orangeButton : classes.grayButton} />
                 </IconButton>
                 <IconButton>

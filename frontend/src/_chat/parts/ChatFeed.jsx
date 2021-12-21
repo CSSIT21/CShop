@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { CircularProgress, Snackbar } from '@mui/material'
@@ -84,6 +84,11 @@ const ChatFeed = (props) => {
     }
 
     const messages = props.ChatService.conversation(props.currentConversation)
+    const [markedAs, setMarkedAs] = useState('None')
+
+    useEffect(() => {
+        setMarkedAs(messages?.marked_as)
+    }, [messages])
     // console.log('feed ' + props.lastUpdate, messages)
     const classes = useStyles()
     if (messages === undefined) {
@@ -103,13 +108,24 @@ const ChatFeed = (props) => {
             <Box className={classes.chatFeedContainer}>
                 {/* ChatFeed on the right shows all messages between two users */}
                 <Box className={classes.chatFeedTitle}>
-                    <ProfileBar
-                        displayName={messages.shop_name}
-                        status={false}
-                        pic={messages.shop_pic}
-                        url={'/shop/' + messages.shop_id}
-                        notification={messages.is_muted}
-                    />
+                    {props.isCustomerView ? (
+                        <ProfileBar
+                            displayName={messages.shop_name}
+                            status={false}
+                            pic={messages.shop_pic}
+                            url={'/shop/' + messages.shop_id}
+                            notification={messages.is_muted}
+                        />
+                    ) : (
+                        <ProfileBarSeller
+                            displayName={
+                                messages.firstname + ' ' + messages.lastname
+                            }
+                            status={false}
+                            pic={messages.customer_pic}
+                            mark={messages.marked_as}
+                        />
+                    )}
                 </Box>
                 <Box className={classes.loader}>
                     <CircularProgress color="primary" />
@@ -130,6 +146,11 @@ const ChatFeed = (props) => {
         {
             props.ChatService.read(props.currentConversation, message_id)
         }
+    }
+
+    function setMark(mark) {
+        props.ChatService.postMark(messages.id, mark)
+        setMarkedAs(mark)
     }
     // if(messages.latest_id === )
     // console.log(messages)
@@ -161,7 +182,8 @@ const ChatFeed = (props) => {
                         }
                         status={messages.active}
                         pic={messages.customer_pic}
-                        mark="Done"
+                        mark={markedAs}
+                        setMark={setMark}
                     />
                 )}
             </Box>
@@ -172,10 +194,8 @@ const ChatFeed = (props) => {
                             key={i}
                             currentConversation={props.currentConversation}
                             variant={
-                                (m.from_customer &&
-                                    props.isCustomerView) ||
-                                (!m.from_customer &&
-                                    !props.isCustomerView)
+                                (m.from_customer && props.isCustomerView) ||
+                                (!m.from_customer && !props.isCustomerView)
                                     ? 'right'
                                     : 'left'
                             }
@@ -194,7 +214,9 @@ const ChatFeed = (props) => {
                             isCustomerView={props.isCustomerView}
                         />
                     ))}
-                <AutomatedChat />
+                {props.isCustomerView && <AutomatedChat
+                    handleSubmitMessage={props.handleSubmitMessage}
+                />}
             </Box>
 
             <Box className={classes.chatFeedButtom}>

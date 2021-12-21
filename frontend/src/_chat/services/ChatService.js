@@ -448,6 +448,18 @@ class ChatService {
         })
     }
 
+    postMark(conversation_id, value) {
+        ChatService.socket.emit('post', {
+            item: 'mark',
+            with: conversation_id,
+            to: value
+        })
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
+        conversation.marked_as = value
+        sessionStorage.setItem('messages', JSON.stringify(messages))
+    }
+
     static disconnect() {
         ChatService.socket?.disconnect()
         sessionStorage.removeItem('temp')

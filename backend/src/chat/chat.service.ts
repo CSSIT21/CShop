@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient, ChatMessageTypes } from '@prisma/client';
+import { PrismaClient, ChatMessageTypes, ChatConversationMark } from '@prisma/client';
 import { MessageDto } from './dto/message.dto';
 import { NotificationDto } from './dto/notification.dto';
 import { io } from 'socket.io-client';
@@ -275,6 +275,10 @@ FROM customer_info
     JOIN shop_info ON shop_info.customer_id = customer_info.customer_id
     LEFT JOIN shop_picture sp on shop_info.id = sp.shop_id
 WHERE customer_info.customer_id = ${uid}`;
+	}
+
+	async updateMark(conversation_id: number, value: ChatConversationMark) {
+		await this.prisma.$queryRaw`UPDATE chat_conversation SET marked_as = ${value} WHERE id = ${conversation_id};`
 	}
 
 	static push(notification: { from: number; to: number; text: string; redirect_to: string }) {
