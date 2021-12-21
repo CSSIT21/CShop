@@ -327,14 +327,23 @@ export class SellershopService {
 					customer_id_from_shop_comment: {
 						include: {
 							customer_info: true,
-							customer_picture: true,
+							customer_picture: {
+								include: {
+									picture_id_from_customer_picture: true,
+								},
+							},
 						},
 					},
 				},
 				skip: (page - 1) * 10,
 				take: 10,
 			});
-			return comments;
+			const count = await this.prisma.shop_comment.count({
+				where: {
+					shop_id: id,
+				},
+			});
+			return { comments, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -357,14 +366,30 @@ export class SellershopService {
 					customer_id_from_product_reviews: {
 						include: {
 							customer_info: true,
-							customer_picture: true,
+							customer_picture: {
+								include: {
+									picture_id_from_customer_picture: true,
+								},
+							},
+						},
+					},
+					product_id_from_product_reviews: {
+						include: {
+							product_picture: true,
 						},
 					},
 				},
 				skip: (page - 1) * 10,
 				take: 10,
 			});
-			return comments;
+			const count = await this.prisma.product_reviews.count({
+				where: {
+					product_id_from_product_reviews: {
+						shop_id: id,
+					},
+				},
+			});
+			return { comments, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);

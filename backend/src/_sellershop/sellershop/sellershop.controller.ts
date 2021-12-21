@@ -23,7 +23,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('sellershop')
 export class SellershopController {
-	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) { }
+	constructor(private readonly sellershopService: SellershopService, private readonly prisma: PrismaService) {}
 
 	@Get(':id')
 	@Public()
@@ -129,7 +129,7 @@ export class SellershopController {
 	) {
 		const shopcomments = await this.sellershopService.getShopComments(id, page);
 		if (shopcomments) {
-			res.send({ success: true, shopcomments });
+			res.send({ success: true, ...shopcomments });
 		} else {
 			res.send({
 				success: false,
@@ -146,7 +146,7 @@ export class SellershopController {
 	) {
 		const shopproductscomments = await this.sellershopService.getShopProductComments(id, page);
 		if (shopproductscomments) {
-			res.send({ success: true, shopproductscomments });
+			res.send({ success: true, ...shopproductscomments });
 		} else {
 			res.send({
 				success: false,
