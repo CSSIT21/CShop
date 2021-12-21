@@ -6,7 +6,7 @@ import { PictureListDto } from './dto/pictureList.dto';
 @Injectable()
 export class ReviewProductService {
 	constructor(private readonly prisma: PrismaService) {}
-
+//
 	async createProductReview(
 		reviewInput: Prisma.product_reviewsCreateInput,
 		reviewPictureList: PictureListDto,
@@ -43,7 +43,7 @@ export class ReviewProductService {
 		});
 		return createReview;
 	}
-	
+	//
 	async createShopReview(
 		reviewInput: Prisma.shop_commentCreateInput,
 		shop_id: number,

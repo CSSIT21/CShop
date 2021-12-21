@@ -7,7 +7,7 @@ import { SuggestionProductDto } from './dto/suggestion-product.dto';
 @Injectable()
 export class ProductService {
 	constructor(private readonly prisma: PrismaService) {}
-
+//
 	public async getProductDetails(id: number, customerId : number) {
 		try {
 			const product = await this.prisma.product.findUnique({
@@ -34,7 +34,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-	
+//
 	public async updateSuggestionProducts(id: number, suggestionProductDto: SuggestionProductDto) {
 		try {
 			const update = await this.prisma.product.update({
@@ -55,7 +55,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-
+//
 	public async getSuggestProducts(id: number, customerId : number) {
 		try {
 			const suggest_products_id = await this.prisma.product.findFirst({
@@ -101,7 +101,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-
+//
 	public async getProductPictures(id: number) {
 		try {
 			const product_pictures = await this.prisma.product_picture.findMany({
@@ -120,7 +120,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-
+//
 	public async getShopDetails(id: number) {
 		try {
 			// Shop Picture
@@ -167,7 +167,7 @@ export class ProductService {
 			if (link && link.shorted_link) {
 				return link.shorted_link;
 			} else {
-				const generatedString = nanoid(8);
+				const generatedString = nanoid(6);
 				const link = await this.prisma.product_short_link.create({
 					data: {
 						product_id: id,
