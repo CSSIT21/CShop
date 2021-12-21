@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Box } from '@mui/system'
-import { IconButton, Tooltip, styled } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import VideoLibraryOutlinedIcon from '@mui/icons-material/VideoLibraryOutlined'
 import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined'
 import SendIcon from '@mui/icons-material/Send'
@@ -64,43 +64,45 @@ const MessageBar = (props) => {
     }
 
     function submitVideo(e) {
-        if (e.target.files.length < 1) return
         // console.log(
         //     `%c MessageBar.jsx %c submitted video '${e.target.files[0].name}' to conv#${props.currentConversation}`,
         //     'color:#e0c7ff;background:#590db5',
         //     ''
         // )
+        if (e.target.files.length < 1) return
+        
         props.handleUpload('video', e.target.files[0])
+        vidInputRef.current.value = ''
     }
 
     function submitImage(e) {
-        if (e.target.files.length < 1) return
         // console.log(
         //     `%c MessageBar.jsx %c submitted image '${e.target.files[0].name}' to conv#${props.currentConversation}`,
         //     'color:#e0c7ff;background:#590db5',
         //     ''
         // )
+
+        if (e.target.files.length < 1) return
+        
         props.handleUpload('image', e.target.files[0])
+        imgInputRef.current.value = ''
     }
-
-    const Input = styled('input')({
-        display: 'none'
-    })
-
     return (
         <Box className={classes.container}>
             <Box>
-                <Input
+                <input
                     accept="video/*"
                     type="file"
                     ref={vidInputRef}
                     onChange={submitVideo}
+                    style={{ display: 'none' }}
                 />
-                <Input
-                    accept="image/*"
+                <input
                     type="file"
+                    accept="image/*"
                     ref={imgInputRef}
                     onChange={submitImage}
+                    style={{ display: 'none' }}
                 />
                 <Tooltip title="Upload video">
                     <IconButton onClick={() => vidInputRef.current.click()}>

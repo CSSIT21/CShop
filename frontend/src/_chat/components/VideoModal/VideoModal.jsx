@@ -9,12 +9,8 @@ const VideoModal = React.forwardRef((props, ref) => {
     return (
         <Card className={classes.videoModalStyle}>
             <CardMedia component="video" src={props.src} controls />
-            <IconButton className={classes.closeButton}>
-                <CloseRoundedIcon
-                    onClick={props.onClose}
-                    sx={{ color: 'white' }}
-                    fontSize="large"
-                />
+            <IconButton className={classes.closeButton} onClick={props.onClose}>
+                <CloseRoundedIcon sx={{ color: 'white' }} fontSize="large" />
             </IconButton>
         </Card>
     )

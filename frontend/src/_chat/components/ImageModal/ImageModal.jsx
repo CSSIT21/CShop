@@ -9,12 +9,8 @@ const ImageModal = React.forwardRef((props, ref) => {
     return (
         <Card className={classes.imageModalStyle}>
             <CardMedia component="img" image={props.src} alt="image modal" />
-            <IconButton className={classes.closeButton}>
-                <CloseRoundedIcon
-                    onClick={props.onClose}
-                    sx={{ color: 'white' }}
-                    fontSize="large"
-                />
+            <IconButton className={classes.closeButton} onClick={props.onClose}>
+                <CloseRoundedIcon sx={{ color: 'white' }} fontSize="large" />
             </IconButton>
         </Card>
     )

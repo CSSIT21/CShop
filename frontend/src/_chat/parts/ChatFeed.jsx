@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
-import { CircularProgress } from '@mui/material'
-
+import { CircularProgress, Snackbar } from '@mui/material'
+import AutomatedChat from '../components/AutomatedChat/AutomatedChat'
 import {
     ChatBubble,
     ChatMediaModal,
     MessageBar,
-    ProfileBar
+    ProfileBar, ProfileBarSeller
 } from '../components'
 
 const useStyles = makeStyles({
@@ -72,6 +72,16 @@ const TimeLabel = (props) => {
 }
 
 const ChatFeed = (props) => {
+    const [open, setOpen] = useState(false)
+
+    function openSnackbar() {
+        setOpen(true)
+    }
+    
+    function closeSnackbar() {
+        setOpen(false)
+    }
+
     const messages = props.ChatService.conversation(props.currentConversation)
     // console.log('feed ' + props.lastUpdate, messages)
     const classes = useStyles()
@@ -111,7 +121,7 @@ const ChatFeed = (props) => {
     }
 
     function handleRead(message_id) {
-        props.ChatService.read(props.currentConversation, message_id)
+        if(Number.isInteger(message_id)) props.ChatService.read(props.currentConversation, message_id)
     }
     // if(messages.latest_id === )
     // console.log(messages)
@@ -128,24 +138,30 @@ const ChatFeed = (props) => {
         <Box className={classes.chatFeedContainer}>
             {/* ChatFeed on the right shows all messages between two users */}
             <Box className={classes.chatFeedTitle}>
-                <ProfileBar
+                {/* <ProfileBar
                     displayName={messages.shop_name}
                     status={messages.active}
                     pic={messages.shop_pic}
                     url={'/shop/' + messages.shop_id}
                     notification={messages.is_muted}
-                />
+                /> */}
+                <ProfileBarSeller displayName={messages.shop_name}
+                    status={messages.active}
+                    pic={messages.shop_pic}
+                    url={'/shop/' + messages.shop_id}
+                    mark='Done'/>
             </Box>
             <Box className={classes.chatFeed}>
                 {messages.messages &&
                     messages.messages.map((m, i) => (
                         <ChatBubble
                             key={i}
+                            currentConversation={props.currentConversation}
                             variant={m.from_customer ? 'right' : 'left'}
                             read={m.seen}
                             fromCustomer={m.from_customer}
                             time={m.message_time}
-                            messageId={m.id}
+                            messageId={m.id || m.temp_id}
                             contentType={m.content_type}
                             content={m.content}
                             contentExtra={m.content_extra}
@@ -153,9 +169,12 @@ const ChatFeed = (props) => {
                             openModal={props.openModal}
                             shouldScroll={props.shouldScroll}
                             onRead={handleRead}
+                            openSnackbar={openSnackbar}
                         />
                     ))}
+                    <AutomatedChat/>
             </Box>
+            
             <Box className={classes.chatFeedButtom}>
                 <MessageBar
                     currentConversation={props.currentConversation}
@@ -163,6 +182,13 @@ const ChatFeed = (props) => {
                     handleUpload={props.handleUpload}
                 />
             </Box>
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                autoHideDuration={2000}
+                open={open}
+                onClose={closeSnackbar}
+                message="Uploading"
+            />
         </Box>
     )
 }

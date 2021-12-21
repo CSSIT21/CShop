@@ -107,18 +107,18 @@ export class HomeService {
     };
   }
 
-  async findProductsById(params: {
+  async findProductsByIds(params: {
     customer_id: number;
-    product_ids: number[];
+    productIds: number[];
     take?: number;
     skip?: number;
   }) {
-    const { customer_id, product_ids, take, skip } = params;
+    const { customer_id, productIds, take, skip } = params;
 
     return this.prisma.product.findMany({
       where: {
         id: {
-          in: product_ids
+          in: productIds
         }
       },
       include: {
