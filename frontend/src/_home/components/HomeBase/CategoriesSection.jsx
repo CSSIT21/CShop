@@ -26,6 +26,7 @@ const CategoriesSection = () => {
 			.get(`${config.SERVER_URL}/home/categories`)
 			.then(({ data }) => {
 				if (data.success) {
+					console.log(data.categories);
 					return setCategories(data.categories);
 				}
 				else {
@@ -58,7 +59,7 @@ const CategoriesSection = () => {
 							itemsPerRow={itemsPerRow}
 						>
 							{({ id, name, icon_id_from_category: icon }) => (
-								<Link to={`/search/category/${id}`}>
+								<Link to={name === 'Free Shipping' ? '/promotion' : `/search/category/${id}`}>
 									<Box className={classes.categoriesItem} key={id}>
 										<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
 										<div><img src={icon.path} alt={icon.title} /></div>
@@ -90,6 +91,7 @@ const useStyles = makeStyles({
 		width: "90%",
 		margin: "0 auto",
 		padding: '20px 10px',
+		height: '150px',
 
 		backgroundColor: '#EFEFF1',
 		borderRadius: '20px',

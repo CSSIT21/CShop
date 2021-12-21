@@ -27,18 +27,18 @@ const AccountDropdown = () => {
 };
 
 const useStyles = makeStyles({
-  account: {
-    display: "flex",
-    alignItems: "center",
-  },
+	account: {
+		display: 'flex',
+		alignItems: 'center'
+	},
 
-  accountName: {
-    width: "100%",
-    paddingRight: 10,
-    color: "black",
-    textTransform: "capitalize",
-    fontWeight: 500,
-  },
+	accountName: {
+		width: '100%',
+		paddingRight: 10,
+		color: 'black',
+		textTransform: "capitalize",
+		fontWeight: 500,
+	},
 });
 
 export default AccountDropdown;

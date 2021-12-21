@@ -45,7 +45,7 @@ const CarouselProductSelect = ({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openAddProduct, setopenAddProduct] = useState(false);
-  const [Topic, setTopic] = useState("Topic");
+  const [Topic, setTopic] = useState("");
   const [searchText, setsearchText] = useState("");
   const [selectedValue, setSelectedValue] = useState();
   useLayoutEffect(() => {
@@ -104,8 +104,11 @@ const CarouselProductSelect = ({
           ...info,
           [id]: {
             ...info[id],
-            header: Topic,
-            content: { products_info: sectionImages, products: products_id },
+            content: {
+              filter_name: Topic,
+              products_info: sectionImages,
+              products: products_id,
+            },
           },
         }));
       }, 500);

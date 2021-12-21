@@ -1,21 +1,27 @@
 import { useState, useEffect } from "react";
 import { Box } from "@mui/system";
+import config from '../../common/constants';
 import ProductSuggestion from "../components/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
 import CartSection from "../components/CartSection";
 import axios from "axios";
 import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
+import Dialog from "@mui/material/Dialog";
+import { Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function ShoppingCartPage() {
   const [products, setProducts] = useState([]);
   const [sugproduct, setSugproduct] = useState(fakeProducts);
   const [discounts, setDiscounts] = useState([]);
   const [accountInfo, setAccountInfo] = useState([]);
+  const [onLoad, setonLoad] = useState(false);
   const auth = useRecoilValue(authState);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/cart/${auth.user.id}`).then((item) => {
+    setonLoad(true);
+    axios.get(`${config.SERVER_URL}/cart/${auth.user.id}`).then((item) => {
       setProducts(
         item.data.newD.map((item) => {
           return {
@@ -46,6 +52,7 @@ function ShoppingCartPage() {
         })
       );
       setAccountInfo([...item.data.customerDetail]);
+      setonLoad(false);
     });
   }, []);
 
@@ -90,6 +97,28 @@ function ShoppingCartPage() {
           onFavourite={onFavourite}
         />
       </Box>
+      <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem", marginTop: "50px" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </Box>
   );
 }

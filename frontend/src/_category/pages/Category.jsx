@@ -12,6 +12,7 @@ import {
   LinearProgress,
 } from '@mui/material';
 import { FilterAltOutlined } from '@mui/icons-material';
+import config from '../../common/constants';
 import CategoryHeader from '../components/CategoryHeader';
 
 import CategoryFilterPrice from '../components/CategoryFilterPrice';
@@ -45,7 +46,7 @@ const CategoryPage = () => {
   const [outOfStock, setOutOfStock] = useState(false);
   const [loading, setLoading] = useState(false);
   const MIN_PRICE = 0,
-    MAX_PRICE = 1500;
+    MAX_PRICE = 1000000;
   const [price, setPrice] = useState([MIN_PRICE, MAX_PRICE]);
   /**rate */
   const [rate, setRate] = useState(0);
@@ -62,7 +63,7 @@ const CategoryPage = () => {
     setLoading(true);
     axios
       .get(
-        `http://localhost:8080/search?q=${q}&category=${id || 0}` +
+        `${config.SERVER_URL}/search?q=${q}&category=${id || 0}` +
           `&page=${page}&itemPerPage=${itemPerPage}&priceLow=${price[0]}` +
           `&priceHigh=${price[1]}&rate=${rate}` +
           `&readyToShip=${readyToShip}&outOfStock=${outOfStock}`
