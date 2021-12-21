@@ -15,6 +15,12 @@ const useStyles = makeStyles({
             transition: 'all 500ms ease'
         }
     },
+    primary: {
+        backgroundColor: '#FD6637 !important',
+    },
+    white: {
+        backgroundColor: '#FFFFFF !important',
+    },
     imageSpinner: {
         color: 'white',
         position: 'absolute',
