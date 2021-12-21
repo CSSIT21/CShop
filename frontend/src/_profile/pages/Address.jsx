@@ -12,6 +12,8 @@ import authState from "../../common/store/authState";
 import Swal from "sweetalert2";
 import LoadingButton from "@mui/lab/LoadingButton";
 import config from "~/common/constants";
+import Dialog from "@mui/material/Dialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const AddressPage = () => {
   const classes = useStyles();
@@ -34,9 +36,9 @@ const AddressPage = () => {
     postalCode: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [onLoad, setonLoad] = useState(false);
 
   const addNewAddress = () => {
-    console.log(userAddress);
     if (
       userAddress.recipient &&
       userAddress.phoneNumber &&
@@ -98,6 +100,15 @@ const AddressPage = () => {
       postalCode: "",
     });
   };
+  useEffect(() => {
+    setonLoad(true);
+    axios
+      .post(config.SERVER_URL + "/profile/address/get", { id: auth.user.id })
+      .then(({ data }) => {
+        setAddress(data.address);
+        setonLoad(false);
+      });
+  }, []);
 
   const getData = async () => {
     const fetchedData = await axios.get(
@@ -382,6 +393,28 @@ const AddressPage = () => {
           </AccordionCommon>
           <AddressInfo address={address} setAddress={setAddress} />
         </Box>
+        <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+          <Box
+            sx={{
+              height: "250px",
+              width: "500px",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
+            <Typography
+              fontWeight="600"
+              fontSize="20px"
+              color="#FD6637"
+              sx={{ padding: "0 2rem", marginTop: "50px" }}
+            >
+              Loading
+            </Typography>
+          </Box>
+        </Dialog>
       </Box>
     </>
   );

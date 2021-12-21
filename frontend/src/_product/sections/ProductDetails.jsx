@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 import DisplayImage from "../components/ProductDetailsBase/Image";
 import Amount from "../components/ProductDetailsBase/AmountField";
@@ -22,8 +22,6 @@ const ProductDetails = ({
   options,
   setOptions,
   productPictures,
-  favorite,
-  setFavorite,
   count,
   setCount,
   addToCart,
@@ -32,6 +30,9 @@ const ProductDetails = ({
   open,
   setOpen,
   setProductDetails,
+  onFavourite,
+  favorite,
+  setFavorite,
 }) => {
   const handleClickClose = () => {
     setOpen(false);
@@ -40,32 +41,6 @@ const ProductDetails = ({
     if (auth.isLoggedIn) {
       addToCart();
     } else location.href = "http://localhost:3000/register";
-  };
-
-  const onFavourite = (index) => {
-    setProductDetails((items) => {
-      if (auth.isLoggedIn) {
-        const target = items.find((e) => e.id == index);
-        if (target.customer_wishlist.length > 0) {
-          target.customer_wishlist.pop();
-        } else {
-          target.customer_wishlist = [
-            { product_id: target.id, customer_id: auth.user.id },
-          ];
-        }
-      } else {
-        Swal.fire({
-          title: "Please login to add a product to your wishlist!",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-      return [...items];
-    });
-    // if (auth.isLoggedIn) {
-    //   // axios from JIW
-    //   setProduct({ ...product, favourite: !product.favourite });
-    // } else location.href = "http://localhost:3000/register";
   };
 
   const handleClickChoice = (e) => {
@@ -129,13 +104,13 @@ const ProductDetails = ({
               <ShareIcon sx={{ color: "#A0A3BD", fontSize: "22px" }} />
             </IconButton>
             <IconButton
-              onClick={onFavourite(productDetails)}
+              onClick={onFavourite}
               sx={{
                 fontWeight: "bold",
                 fontSize: "22px",
               }}
             >
-              {productDetails.customer_wishlist ? (
+              {favorite ? (
                 <FavoriteRoundedIcon
                   sx={{ color: "#A0A3BD" }}
                   fontSize="inherit"

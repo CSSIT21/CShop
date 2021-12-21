@@ -14,6 +14,10 @@ const Banner = () => {
   const [banners, setBanners] = useState([]);
   const [page, setPage] = useState(0);
 
+  useEffect(() => {
+    getData();
+  }, [])
+
   const getData = async () => {
     axios
       .get(`${config.SERVER_URL}/home/banner/homepage`)
@@ -30,42 +34,40 @@ const Banner = () => {
       })
   };
 
-  useEffect(() => {
-    getData();
-  }, [])
-
   return (
     <Box className={classes.bannerWrapper}>
-      <Box className={classes.carouselStyle}>
-        {banners.length > 0
-          ? <Carousel
-            items={banners}
-            pageState={page}
-            setPageState={setPage}
-            loop={true}
-            itemsPerRow={1}
-            hideArrow={false}
-          >
-            {(banner) => (
-              <Link to={`/search?q=${banner.keywords[0]}`}>
-                <LazyImage
-                  src={banner.pictures.main.path}
-                  lazy="https://via.placeholder.com/1140x516.png"
-                  key={banner.id}
-                />
-              </Link>
-            )}
-          </Carousel>
-          : <Typography
-            textAlign="center"
-            fontSize={16}
-            fontWeight={400}
-            color="gray">
-            No banners to show
-          </Typography>}
-      </Box>
+      {banners.length > 0
+        ? (<>
+          <Box className={classes.carouselStyle}>
+            <Carousel
+              items={banners}
+              pageState={page}
+              setPageState={setPage}
+              loop={true}
+              itemsPerRow={1}
+              hideArrow={false}
+            >
+              {(banner) => (
+                <Link to={`/search?q=${banner.keywords[0]}`}>
+                  <LazyImage
+                    src={banner.pictures.main.path}
+                    lazy="https://via.placeholder.com/1140x516.png"
+                    key={banner.id}
+                  />
+                </Link>
+              )}
+            </Carousel>
 
-      <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={3} />
+          </Box>
+          <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={3} />
+        </>)
+        : <Typography
+          textAlign="center"
+          fontSize={16}
+          fontWeight={400}
+          color="gray">
+          No banners to show
+        </Typography>}
     </Box >
   );
 };

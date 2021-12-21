@@ -9,6 +9,7 @@ import Slide from "@mui/material/Slide";
 import ReviewDialogContents from "./ReviewDialogContents";
 import CButton from "~/common/components/CButton";
 import ConfirmDialogs from "~/common/components/ConfirmDialogs";
+import CreateRoundedIcon from "@mui/icons-material/CreateRounded";
 import { getUrl } from "~/common/utils";
 import axios from "axios";
 import config from "~/common/constants";
@@ -31,7 +32,7 @@ function ReviewDialog({
   //   { firstChoice: "XL", secondChoice: "Pink" },
   //   { firstChoice: "L", secondChoice: "Red" },
   //   { firstChoice: "M", secondChoice: "Green" },
-  // ],
+  //
   // กรณีที่สินค้ามีoption 1
   // options = [
   //   { firstChoice: "Pink" },
@@ -43,9 +44,7 @@ function ReviewDialog({
   // ],
   // กรณีที่สินค้าไม่มีoption
   options,
-  isReview = true, // ต้องถามธรรม์อีกที
 }) {
-  // const auth = useRecoilValue(authState);
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
   const [commentProductText, setCommentProductText] = useState("");
@@ -59,7 +58,6 @@ function ReviewDialog({
   ]);
   const [imageList, setImageList] = useState([]);
   const [starScore, setStarScore] = useState(0);
-
   const onUploadFile = (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target?.files[0]);
@@ -92,12 +90,17 @@ function ReviewDialog({
     chipData.forEach((el) => {
       if (el.clicked) chipCheck = true;
     });
+    console.log(chipCheck);
     imageList.forEach((el) => {
       if (imageList) imageCheck = true;
     });
+    console.log(imageCheck);
     if (commentProductText) commentCheck = true;
+    console.log(commentCheck);
     if (starScore != 0) scoreCheck = true;
+    console.log(scoreCheck);
     if (chipCheck || imageCheck || commentCheck || scoreCheck) allCheck = true;
+    console.log(allCheck);
     return allCheck;
   }, [chipData, imageList, commentProductText, starScore]);
 
@@ -207,7 +210,17 @@ function ReviewDialog({
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} disabled={!isReview}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        startIcon={<CreateRoundedIcon />}
+        sx={{
+          height: "40px",
+          width: "130px",
+          textTransform: "capitalize",
+          fontSize: "14px",
+        }}
+      >
         Review
       </Button>
 
