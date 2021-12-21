@@ -109,7 +109,7 @@ const DropdownDetail = ({ children }) => {
             My Shop
           </MenuItem>
         )}
-         {auth.user.role === "SELLER" && (
+        {auth.user.role === "ADMIN" && (
           <MenuItem
             onClick={() => {
               router.push(`/manage`);
