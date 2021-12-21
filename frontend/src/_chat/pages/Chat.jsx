@@ -10,6 +10,7 @@ import ChatList from '../parts/ChatList'
 import { default as _ChatService } from '../services/ChatService'
 import { ChatMediaModal } from '../components'
 import authState from '~/common/store/authState'
+import ChatPreferenceModal from '../components/ChatPreferenceModal/ChatPreferenceModal'
 /* Navbar height is not fixed, adjust this to preserve page's layout */
 const __NAVBAR_HEIGHT = '135px'
 
@@ -256,6 +257,7 @@ const ChatPage = (props) => {
                 onClose={closeModal}
                 message={mediaMessage}
             />
+            <ChatPreferenceModal open={false}/>
         </Box>
     )
 }
