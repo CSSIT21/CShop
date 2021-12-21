@@ -88,7 +88,7 @@ const TabsController = ({ categories = [], ...rest }) => {
             >
               {categories.slice(2, categories.length).map((menu, idx) => {
                 return (
-                  <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
+                  <Link key={idx} to={`/shop/${id}/${menu.id}`}>
                     <MenuItem
                       sx={{ height: "50px", width: "200px", color: "black" }}
                       onClick={handleClose}
