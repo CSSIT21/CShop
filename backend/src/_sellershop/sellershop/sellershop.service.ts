@@ -177,19 +177,46 @@ export class SellershopService {
 				},
 			});
 			if (check) {
-				await this.prisma.customer_followed_shop.delete({
-					where: {
-						id: check.id,
-					},
-				});
+				await Promise.all([
+					this.prisma.customer_followed_shop.delete({
+						where: {
+							id: check.id,
+						},
+					}),
+					this.prisma.shop_info.update({
+						where: {
+							id: id,
+						},
+						data: {
+							followers: {
+								decrement: 1,
+							},
+						},
+					}),
+				]);
+
 				return 'You unfollow this shop';
 			}
-			await this.prisma.customer_followed_shop.create({
-				data: {
-					customer_id: customer_followed_shopCreateManyInput.customer_id,
-					shop_id: id,
-				},
-			});
+			await Promise.all([
+				this.prisma.customer_followed_shop.create({
+					data: {
+						customer_id: customer_followed_shopCreateManyInput.customer_id,
+						shop_id: id,
+					},
+				}),
+
+				this.prisma.shop_info.update({
+					where: {
+						id: id,
+					},
+					data: {
+						followers: {
+							increment: 1,
+						},
+					},
+				}),
+			]);
+
 			return 'You follow this shop';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
