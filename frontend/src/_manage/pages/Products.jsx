@@ -17,6 +17,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import config from '../../common/constants';
 import ProductCard from "../components/ProductCard";
 import { Search } from '@mui/icons-material';
 import { grey, red, orange } from '@mui/material/colors';
@@ -89,7 +90,7 @@ const ManageAccountPage = () => {
     const [products, setProductsList] = React.useState([]);
     const setProducts = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/products"
+          config.SERVER_URL + "/manageaccount/products"
         );
         setProductsList(fetchedData.data);
       };

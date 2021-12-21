@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Typography } from "@mui/material";
+import config from '../../common/constants';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
 import { withStyles } from "@mui/styles";
@@ -31,7 +32,7 @@ export class ProductCard extends React.Component {
 
   async componentDidMount(){
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/sellers/unique?id=" + this.props.product.shop_id
+        config.SERVER_URL + "/manageaccount/sellers/unique?id=" + this.props.product.shop_id
     );
     this.seller.shop_name = fetchedData.data.shop_name;
 

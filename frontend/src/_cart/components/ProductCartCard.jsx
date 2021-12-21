@@ -3,6 +3,7 @@ import { Divider, Typography, Avatar, CardMedia, Stack, TextField } from "@mui/m
 import { Box } from "@mui/system";
 import CancelIcon from '@mui/icons-material/CancelRounded';
 import axios from "axios";
+import config from '../../common/constants';
 import products from "../../common/faker/fakeProducts";
 import {useRecoilState} from 'recoil'
 import {amountQuery} from "../recoil/chageamount"
@@ -14,7 +15,7 @@ function ProductCartCard({ product, setProduct=void(0),userID }) {
 
     function remove(){
       console.log(product.orderID)
-      axios.post("http://localhost:8080/cart/removefromcart",{orderID: product.orderID,userID:userID,productID:product.id}).then(item=>{
+      axios.post( config.SERVER_URL + "/cart/removefromcart",{orderID: product.orderID,userID:userID,productID:product.id}).then(item=>{
         setProduct(products => {
           products[products.indexOf(product)] = false;
           return products.filter(p => p);
