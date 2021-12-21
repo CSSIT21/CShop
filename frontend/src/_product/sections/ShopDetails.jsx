@@ -9,13 +9,12 @@ import Button from "@mui/material/Button";
 import config from "../../common/constants";
 import dayjs from "dayjs";
 
-const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
+const ShopDetails = ({ shopDetail, shopId, auth, avgRating, axios }) => {
   const [activeTime, setActiveTime] = useState();
   const [joinTime, setJoinTime] = useState();
 
   const handleGoToChat = () => {
-    if (auth.isLoggedIn)
-      location.href = `http://localhost:3000/chat/${shopDetail.id}`;
+    if (auth.isLoggedIn) location.href = `http://localhost:3000/chat/${shopId}`;
     else {
       Swal.fire({
         title: "Please login to chat with shop!",
@@ -28,12 +27,15 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
   const goToShop = () => {
     if (auth.isLoggedIn) {
       axios
-        .post(`${config.SERVER_URL}/log-system/shop/${user.id}/${shopId}`, {
-          view_date: new Date().toISOString(),
-        })
+        .post(
+          `${config.SERVER_URL}/log-system/shop/${auth.user.id}/${shopId}`,
+          {
+            view_date: new Date().toISOString(),
+          }
+        )
         .then(({ data }) => {
           if (data.success) {
-            location.href = `http://localhost:3000/chat/${shopId}`;
+            location.href = `http://localhost:3000/shop/${shopId}`;
           } else {
             console.log(data);
           }

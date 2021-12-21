@@ -34,9 +34,6 @@ const ProductDetails = ({
   favorite,
   setFavorite,
 }) => {
-  // const handleClickClose = () => {
-  //   setOpen(false);
-  // };
   const handleAddToCart = () => {
     if (auth.isLoggedIn) {
       addToCart();
