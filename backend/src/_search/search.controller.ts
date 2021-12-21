@@ -39,13 +39,14 @@ export class SearchController {
 	async findAll(
 		@Query('q', new DefaultValuePipe('')) query: string,
 		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
-		@Query('priceHigh', new DefaultValuePipe(1500), ParseFloatPipe) priceHigh: number,
+		@Query('priceHigh', new DefaultValuePipe(1000000), ParseFloatPipe) priceHigh: number,
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,
 		@Query('category', new DefaultValuePipe(0), ParseIntPipe) category: number,
 		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
 		@Query('itemPerPage', new DefaultValuePipe(10), ParseIntPipe) itemPerPage: number,
+		@Query('cursor', new DefaultValuePipe(1), ParseIntPipe) startId: number,
 	) {
 		console.log('query: ', query.trim().split(' '));
 		console.log('category: ', category);
@@ -95,6 +96,7 @@ export class SearchController {
 			include: {
 				product_picture: true,
 			},
+			take: 144,
 		});
 
 		return {

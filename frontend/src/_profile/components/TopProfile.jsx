@@ -110,11 +110,11 @@ const TopProfile = () => {
         ></Avatar>
         <Box className={classes.nametag}>
           <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-            {auth.user.customer_info.firstname}{" "}
-            {auth.user.customer_info.lastname}
+            {auth?.user?.customer_info?.firstname}{" "}
+            {auth?.user?.customer_info?.lastname}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            #{auth.user.customer_info.customer_id}
+            #{auth?.user?.customer_info?.customer_id}
           </Typography>
         </Box>
       </Box>
@@ -127,7 +127,7 @@ const TopProfile = () => {
             height: "45px",
           }}
           onClick={() => {
-            router.push(`/shop/${auth.user.shop_info[0].id}`);
+            router.push(`/shop/${auth?.user?.shop_info[0]?.id}`);
           }}
         >
           <Typography sx={{ fontSize: "12px" }}>My Shop</Typography>

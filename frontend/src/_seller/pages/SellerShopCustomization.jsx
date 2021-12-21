@@ -558,12 +558,12 @@ const SellerShopCustomization = () => {
             alignItems: "center",
           }}
         >
-          <CircularProgress />
+          <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
           <Typography
             fontWeight="600"
             fontSize="20px"
             color="#FD6637"
-            sx={{ padding: "0 2rem" }}
+            sx={{ padding: "0 2rem", marginTop: "50px" }}
           >
             Loading
           </Typography>

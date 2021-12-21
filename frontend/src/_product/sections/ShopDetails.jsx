@@ -9,13 +9,13 @@ import Button from "@mui/material/Button";
 import config from "../../common/constants";
 import dayjs from "dayjs";
 
-const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
+const ShopDetails = ({ shopDetail, shopId, auth, avgRating, axios }) => {
   const [activeTime, setActiveTime] = useState();
   const [joinTime, setJoinTime] = useState();
-  const rating = "4.7";
 
   const handleGoToChat = () => {
-    if (auth.isLoggedIn) location.href = "http://localhost:3000/chat";
+    if (auth.isLoggedIn)
+      location.href = `${config.SERVER_URL}/chat/${shopDetail.id}`;
     else {
       Swal.fire({
         title: "Please login to chat with shop!",
@@ -23,7 +23,34 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
         confirmButtonText: "OK",
       });
     }
-    // else location.href = "http://localhost:3000/register";
+  };
+
+  const goToShop = () => {
+    if (auth.isLoggedIn) {
+      axios
+        .post(
+          `${config.SERVER_URL}/log-system/shop/${auth.user.id}/${shopId}`,
+          {
+            view_date: new Date().toISOString(),
+          }
+        )
+        .then(({ data }) => {
+          if (data.success) {
+            location.href = `http://localhost:3000/shop/${shopId}`;
+          } else {
+            console.log(data);
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      Swal.fire({
+        title: "Please login to chat with shop!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   const activeTimeFormat = () => {
@@ -107,11 +134,15 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
               Chat now
             </Button>
             {/* </Link> */}
-            <Link to={`/shop/${shopId}`}>
-              <Button startIcon={<StoreOutlinedIcon />} style={goToShopStyle}>
-                Go to shop
-              </Button>
-            </Link>
+            {/* <Link to={`/shop/${shopId}`}> */}
+            <Button
+              startIcon={<StoreOutlinedIcon />}
+              style={goToShopStyle}
+              onClick={goToShop}
+            >
+              Go to shop
+            </Button>
+            {/* </Link> */}
           </Box>
         </Box>
       </Box>

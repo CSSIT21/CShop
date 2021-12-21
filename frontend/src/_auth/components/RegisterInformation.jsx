@@ -258,7 +258,6 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DatePicker
                   value={userInfo.birthdate}
-                  sx={{ width: "100%" }}
                   renderInput={(params) => <TextField {...params} />}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, birthdate: e.toISOString() });
@@ -345,12 +344,13 @@ const useStyles = makeStyles({
   },
   birthdateSelect: {
     display: "flex",
-    justifyContent: "space-between",
     marginTop: "35px",
-    backgroundColor: "white",
-    borderRadius: "10px",
-    width: "266px",
+    "& .MuiFormControl-root ": {
+      backgroundColor: "white",
+      borderRadius: "10px",
+    },
   },
+
   button: {
     display: "flex",
     justifyContent: "center",

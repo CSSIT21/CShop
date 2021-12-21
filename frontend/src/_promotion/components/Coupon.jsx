@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 import CouponPic from "~/common/assets/images/voucher-pic.png";
 import CButton from "~/common/components/CButton";
 import BorderLinearProgress from "~/common/components/BorderLinearProgress";
+import config from '../../common/constants';
 import Couponshop from "./Couponshop";
 
 
@@ -15,7 +16,7 @@ const Coupon = ({coupon,claimProps = { title: "Claim", idx: 'idx'},}) => {
   const handleClaim = () => {
     setCurrentCoupon(currentCoupon - 1);
   };
-  let apiUrl = "http://localhost:8080/promotion/";
+  let apiUrl = config + "/promotion/";
   const [post,setPost] = useState(null);
   
   function shop(){
