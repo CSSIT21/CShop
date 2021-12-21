@@ -11,13 +11,14 @@ import axios from "axios";
 import config from "~/common/constants";
 import ProductCard from "~/common/components/ProductCard";
 import { For } from "~/common/utils";
-import { useParams } from "react-router";
-
-const Bestseller1 =
-  "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg";
+import { useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const Filter = ({ categories = [], category_Id = 0 }) => {
   const { id, cateId } = useParams();
+  const auth = useRecoilValue(authState);
   const [count, setcount] = useState(0);
   const itemPerPage = 16;
   const [items, setItems] = useState([]);
@@ -29,21 +30,39 @@ const Filter = ({ categories = [], category_Id = 0 }) => {
   const [outOfStock, setoutOfStock] = useState(false);
   const [rating, setrating] = useState(0);
   const onFavourite = (index) => {
-    setItems((items) => {
-      const target = items[index];
-      target.favourite = !target.favourite;
-
-      return [...items];
-    });
+    if (auth.isLoggedIn) {
+      setItems((items) => {
+        const target = items.find((e) => e.id == index);
+        if (target.customer_wishlist.length > 0) {
+          target.customer_wishlist.pop();
+        } else {
+          target.customer_wishlist = [
+            { product_id: target.id, customer_id: auth.user.id },
+          ];
+        }
+        return [...items];
+      });
+    } else {
+      Swal.fire({
+        text: "Please login to add a product to your wishlist!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
   const handleChange = (event, value) => {
     setPage(value);
   };
 
-  useEffect(async () => {
-    await axios
+  useEffect(() => {
+    let userId = 0;
+    if (auth.isLoggedIn) {
+      console.log("login");
+      userId = auth.user.id;
+    }
+    axios
       .get(
-        `${config.SERVER_URL}/sellershop/products/${id}?page=${page}&category=${categoryId}&priceLow=${priceLow}&priceHigh=${priceHigh}&readyToShip=${readyToShip}&outOfStock=${outOfStock}&rating=${rating}`
+        `${config.SERVER_URL}/sellershop/products/${id}?page=${page}&category=${categoryId}&priceLow=${priceLow}&priceHigh=${priceHigh}&readyToShip=${readyToShip}&outOfStock=${outOfStock}&rating=${rating}&customer_id=${userId}`
       )
       .then(({ data }) => {
         setItems(data.products);

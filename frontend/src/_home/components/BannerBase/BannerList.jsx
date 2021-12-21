@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
 import BannerItem from './BannerItem';
 import { noop } from '~/common/utils';
 
-const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
+const BannerList = ({ items = [], setItems = noop, }) => {
 	const [loading, setLoading] = useState(false);
 
 	let height = 0;
@@ -27,9 +27,13 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 		setItems((items) => {
 			return items.map((item, i) => {
 				if (i == index) {
+					items[index].order = i;
+					// items[index - 1].order = i + 1;
 					return items[i - 1];
 				}
 				else if (i == index - 1) {
+					items[index - 1].order = i + 2;
+					// items[index].order = i + 2;
 					return items[i + 1];
 				}
 				return item;
@@ -41,9 +45,11 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 		setItems((items) => {
 			return items.map((item, i) => {
 				if (i == index) {
+					items[index].order = i + 2;
 					return items[i + 1];
 				}
 				else if (i == index + 1) {
+					items[index + 1].order = i;
 					return items[i - 1];
 				}
 				return item;
@@ -51,19 +57,16 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 		})
 	};
 
-	const handleDeleteBanner = (id, index) => {
+	const handleDeleteBanner = (id) => {
 		setLoading(true);
 		axios
 			.delete(`${config.SERVER_URL}/home/banner/${id}`)
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.bannerInfo);
+					let array = items;
+					array = array.filter(item => item.id !== id);
+					setItems(array);
 
-					// setItems(items => {
-					// 	items.splice(index, 1)
-					// 	return [...items];
-					// });
-					getData();
 					setLoading(false);
 					return Swal.fire('Done', "Already deleted the banner", 'success');
 				}
@@ -96,8 +99,7 @@ const BannerList = ({ items = [], setItems = noop, getData = noop, }) => {
 							setItems={setItems}
 							onNext={onNext}
 							onPrev={onPrev}
-							getData={getData}
-							handleDeleteBanner={() => handleDeleteBanner(item.id, index)}
+							handleDeleteBanner={() => handleDeleteBanner(item.id)}
 							mainLoading={loading}
 						/>
 					</animated.div>

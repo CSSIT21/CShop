@@ -35,13 +35,20 @@ export class CoinController {
 		res.send(await this.coinService.showAll(userId));
 	}
 
-    @Post('/checkin')
+    @Post('/recievecoin')
 	@Public()
-	async checkin(@Body()request , @Res() res): Promise<void> {
+	async recievecheckin(@Body()request , @Res() res): Promise<void> {
 		var userId = request.userId;
 		console.log(userId)
 		const a = await this.coinService.coincheckinInfo(userId);
 		const b = await this.coinService.checkcoin(userId);
+	}
+
+	@Get('totalcoin')
+	@Public()
+	async checkin(@Body()request , @Res() res): Promise<void> {
+		var userId = request.userId;
+		console.log(userId)
 		const ckeckin_coin = await this.coinService.checkIn(userId)
 		const check = await this.coinService.checkcoinUser(userId);
 		res.send({ckeckin_coin,check})

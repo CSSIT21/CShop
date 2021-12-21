@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import fakeProducts from "~/common/faker/fakeProducts";
 import Carousel from "~/common/components/Carousel";
@@ -11,8 +11,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 const progressBar = () => <LinearProgress />;
 
-const FlashSale = ({ flashSale, onFavourite }) => {
-  const [products, setProducts] = useState(flashSale.products_info);
+const FlashSale = ({ flashSale, flashSaleItems, onFavourite }) => {
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const productsPerRow = 5;
@@ -20,17 +19,13 @@ const FlashSale = ({ flashSale, onFavourite }) => {
   const curDate = new Date().getTime();
   const endDate = new Date(flashSale.ended_date).getTime();
   const [timeLeft, settimeLeft] = useState(endDate - curDate);
-  const hours = useMemo(
-    () => Math.floor(endDate - curDate / 3600000),
-    [curDate]
-  );
+  const hours = useMemo(() => Math.floor(timeLeft / 3600000), [curDate]);
   const mins = useMemo(
-    () => Math.floor((endDate - curDate - hours * 3600000) / 60000),
+    () => Math.floor((timeLeft - hours * 3600000) / 60000),
     [curDate]
   );
   const secs = useMemo(
-    () =>
-      Math.floor((endDate - curDate - mins * 60000 - hours * 3600000) / 1000),
+    () => Math.floor((timeLeft - mins * 60000 - hours * 3600000) / 1000),
     [curDate]
   );
   const [rotateSecs, setrotateSecs] = useState(false);
@@ -40,6 +35,7 @@ const FlashSale = ({ flashSale, onFavourite }) => {
   const unmountedStyle = {
     transition: "0.4s",
   };
+
   useEffect(() => {
     const timeLeftInterval = setInterval(() => {
       setrotateSecs(true);
@@ -122,7 +118,7 @@ const FlashSale = ({ flashSale, onFavourite }) => {
 
           <Box className={classes.bestsellerCarousel}>
             <Carousel
-              items={flashSale.products_info}
+              items={flashSaleItems}
               pageState={page}
               setPageState={setPage}
               itemsPerRow={productsPerRow}

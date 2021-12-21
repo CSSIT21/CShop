@@ -10,7 +10,12 @@ export class HomeService {
   constructor(private readonly prisma: PrismaService) { }
 
   async findAllReviews() {
-    return this.prisma.home_app_review.findMany();
+    return this.prisma.home_app_review.findMany({
+      take: 20,
+      orderBy: {
+        review_date: "desc",
+      },
+    });
   }
 
   async findAllPartners() {
@@ -23,40 +28,38 @@ export class HomeService {
           gte: new Date().toISOString(),
         },
       },
+      orderBy: {
+        start_date: 'asc'
+      },
       select: {
+        id: true,
         name: true,
-        path: true,
-        title_pic: true,
+        title: true,
         type: true,
+        path: true,
         thumbnail: true,
       }
     });
   }
 
-  async findBestSeller() : Promise<product_picture[]> {
-    const productId = await this.prisma.product.findMany({
-      orderBy:{sold: "desc"},
+  async findBestSeller(customer_id: number) {
+    return this.prisma.product.findMany({
+      orderBy: {
+        sold: "desc",
+      },
       take: 20,
-      select:{id:true}
-    });
-    let pic : product_picture[];
-    for (let index = 0; index < productId.length; index++) {
-      if (!Array.isArray(pic)) {
-        pic = [];
-    }
-      pic.push(await this.prisma.product_picture.findFirst({
-        where:{
-          product_id: productId[index].id
+      include: {
+        product_picture: true,
+        customer_wishlist: {
+          where: { customer_id },
         }
-      }))
-
-    }
-    return pic;
+      },
+    });
   }
 
-  async getPopUp(){
-    return this.prisma.home_popup.findMany({
-      where : {
+  async getPopUp() {
+    return this.prisma.home_popup.findFirst({
+      where: {
         start_date: {
           lte: new Date().toISOString(),
         },
@@ -64,7 +67,9 @@ export class HomeService {
           gte: new Date().toISOString(),
         },
       },
-      select:{
+      select: {
+        start_date: true,
+        end_date: true,
         description: true,
         path: true,
         thumbnail: true,
@@ -72,14 +77,75 @@ export class HomeService {
     });
   }
 
-  async findFavorite(){
-    
+  async findFavorite(params: {
+    customer_id: number;
+    where?: Prisma.customer_wishlistWhereInput;
+    take?: number;
+    skip?: number;
+  }) {
+    const { customer_id, where, take, skip } = params;
+    const products = await this.prisma.customer_wishlist.findMany({
+      where,
+      take,
+      skip,
+      include: {
+        product_id_from_wishlist: {
+          include: {
+            product_picture: true,
+            customer_wishlist: {
+              where: { customer_id }
+            }
+          }
+        }
+      },
+    })
+
+    const count = products.length;
+    return {
+      products,
+      count,
+    };
   }
 
-  async findSuggestion(){
-    this.prisma.rem_suggestion_homepage.findMany(
-      
-    );
+  async findProductsByIds(params: {
+    customer_id: number;
+    productIds: number[];
+    take?: number;
+    skip?: number;
+  }) {
+    const { customer_id, productIds, take, skip } = params;
+
+    return this.prisma.product.findMany({
+      where: {
+        id: {
+          in: productIds
+        }
+      },
+      include: {
+        product_picture: true,
+        customer_wishlist: {
+          where: { customer_id },
+        },
+      },
+      take,
+      skip,
+    });
+  }
+
+  async findCategory() {
+    return this.prisma.category.findMany({
+      select: {
+        id: true,
+        name: true,
+        icon_id_from_category: {
+          select: {
+            id: true,
+            title: true,
+            path: true,
+          },
+        },
+      }
+    });
   }
 
   throwError(err) {

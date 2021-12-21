@@ -72,7 +72,7 @@ function DialogImage({handleCloseDialog,openDialog,photo, page,setPage}) {
                     <DialogContent>
                       <Box>
                         <img
-                          src={item}
+                          src={item.path}
                           alt={idx}
                           style={{ width: "100%", maxWidth: "60vw" }}
                         />

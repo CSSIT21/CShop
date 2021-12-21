@@ -1,10 +1,76 @@
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Carousel from "~/common/components/Carousel";
-import LazyImage from "~/common/components/LazyImage/LazyImage";
 import { makeStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
-import BannerImage from "../../assets/images/TopBanner.png"
+import LazyImage from "~/common/components/LazyImage/LazyImage";
+import axios from "axios";
+import config from "~/common/constants";
+import { Link } from "react-router-dom";
+
+const Banner = () => {
+  const classes = useStyles();
+  const [banners, setBanners] = useState([]);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const getData = async () => {
+    axios
+      .get(`${config.SERVER_URL}/home/banner/homepage`)
+      .then(({ data }) => {
+        if (data.success) {
+          return setBanners(data.banners);
+        }
+        else {
+          return console.log(data);
+        }
+      })
+      .catch((err) => {
+        return console.log(err.message);
+      })
+  };
+
+  return (
+    <Box className={classes.bannerWrapper}>
+      {banners.length > 0
+        ? (<>
+          <Box className={classes.carouselStyle}>
+            <Carousel
+              items={banners}
+              pageState={page}
+              setPageState={setPage}
+              loop={true}
+              itemsPerRow={1}
+              hideArrow={false}
+            >
+              {(banner) => (
+                <Link to={`/search?q=${banner.keywords[0]}`}>
+                  <LazyImage
+                    src={banner.pictures.main.path}
+                    lazy="https://via.placeholder.com/1140x516.png"
+                    key={banner.id}
+                  />
+                </Link>
+              )}
+            </Carousel>
+
+          </Box>
+          <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={3} />
+        </>)
+        : <Typography
+          textAlign="center"
+          fontSize={16}
+          fontWeight={400}
+          color="gray">
+          No banners to show
+        </Typography>}
+    </Box >
+  );
+};
 
 const useStyles = makeStyles({
   bannerWrapper: {
@@ -24,53 +90,5 @@ const useStyles = makeStyles({
     marginBottom: 25,
   }
 });
-
-const Banner = () => {
-  const bannerItems = [
-    {
-      id: 0,
-      url: BannerImage,
-    },
-    {
-      id: 1,
-      url: BannerImage,
-
-    },
-    {
-      id: 2,
-      url: BannerImage,
-    },
-  ];
-
-  const classes = useStyles();
-
-  const [items, setItems] = useState(bannerItems);
-  const [page, setPage] = useState(0);
-
-  return (
-    <Box className={classes.bannerWrapper}>
-      <Box className={classes.carouselStyle}>
-        <Carousel
-          items={items}
-          pageState={page}
-          setPageState={setPage}
-          loop={true}
-          itemsPerRow={1}
-          hideArrow={false}
-        >
-          {(item) => (
-            <LazyImage
-              src={item.url}
-              lazy="https://via.placeholder.com/1140x516.png"
-              key={item.id}
-            />
-          )}
-        </Carousel>
-      </Box>
-
-      <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={3} />
-    </Box >
-  );
-};
 
 export default Banner;

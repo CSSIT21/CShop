@@ -35,8 +35,8 @@ const useStyle = makeStyles(() => ({
     "& .QontoStepIcon-completed": {
       color: "white",
       backgroundColor: "#00BF9D",
-      width: 60,
-      height: 60,
+      width: 25,
+      height: 25,
       padding: "18px",
       borderRadius: "50%",
     },

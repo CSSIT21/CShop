@@ -1,8 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Gender } from '@prisma/client';
+import { Gender, OrderStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './dto/user.dto';
 import * as CryptoJs from 'crypto-js';
+import { FavouriteProduct } from './dto/favourite.dto';
+import { Order } from './dto/order.dto';
+import { Product } from './dto/product.dto';
 
 @Injectable()
 export class ProfileService {
@@ -128,9 +131,14 @@ export class ProfileService {
 			};
 		}
 	}
-	public async getFollowingShop(data: User) {
+	public async getFollowingShop(data: User, page: number) {
 		const { id } = data;
 		try {
+			const count = await this.prisma.customer_followed_shop.count({
+				where: {
+					customer_id: id,
+				},
+			});
 			const followingShop = await this.prisma.customer_followed_shop.findMany({
 				where: {
 					customer_id: id,
@@ -149,9 +157,11 @@ export class ProfileService {
 					},
 				},
 			});
+			const filteredShop = followingShop.slice((page - 1) * 20, page * 20);
 			return {
 				success: true,
-				followingShop,
+				filteredShop,
+				count,
 			};
 		} catch (e) {
 			console.log(e.message);
@@ -281,6 +291,174 @@ export class ProfileService {
 			console.log(e.message);
 			return {
 				success: false,
+			};
+		}
+	}
+	public async favourite(data: FavouriteProduct) {
+		const { customer_id, product_id } = data;
+		try {
+			const check = await this.prisma.customer_wishlist.findFirst({
+				where: {
+					customer_id: customer_id,
+					product_id: product_id,
+				},
+			});
+			if (check) {
+				await this.prisma.customer_wishlist.delete({
+					where: {
+						id: check.id,
+					},
+				});
+				return 'You delete this product from your wishlist';
+			}
+			await this.prisma.customer_wishlist.create({
+				data: {
+					customer_id: customer_id,
+					product_id: product_id,
+				},
+			});
+			return 'You add this product to your wishlist';
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async getOrders(data: Order) {
+		const { customer_id } = data;
+		try {
+			const order = await this.prisma.order.findMany({
+				where: {
+					customer_id: customer_id,
+				},
+				include: {
+					order_detail: true,
+					order_item: {
+						select: {
+							product_id: true,
+							product_id_from_order_item: {
+								select: {
+									title: true,
+									sub_title: true,
+									price: true,
+									product_picture: {
+										take: 1,
+									},
+								},
+							},
+						},
+					},
+				},
+			});
+			if (order) {
+				return order;
+			} else {
+				return 'This user has no order';
+			}
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+
+	public async getOrderDetail(data: Order) {
+		const { customer_id, order_id } = data;
+		try {
+			const orderDetail = await this.prisma.order.findFirst({
+				where: {
+					customer_id: customer_id,
+					id: order_id,
+				},
+				include: {
+					order_detail: true,
+					order_item: {
+						select: {
+							product_id: true,
+							quantity: true,
+							product_options: true,
+							product_id_from_order_item: {
+								select: {
+									title: true,
+									sub_title: true,
+									price: true,
+									product_picture: {
+										take: 1,
+									},
+									shop_id: true,
+								},
+							},
+						},
+					},
+				},
+			});
+			return orderDetail;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+
+	public async getProductDetail(data: Product) {
+		const { option_one, option_two } = data;
+
+		try {
+			const productChoiceOne = await this.prisma.product_choices.findFirst({
+				where: {
+					id: option_one,
+				},
+				select: {
+					name: true,
+				},
+			});
+			if (option_two) {
+				const productChoiceTwo = await this.prisma.product_choices.findFirst({
+					where: {
+						id: option_two,
+					},
+					select: {
+						name: true,
+					},
+				});
+				const options = [productChoiceOne, productChoiceTwo];
+				return options;
+			}
+
+			const options = [productChoiceOne];
+			return options;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async checkIfReview(data: Product) {
+		const { customer_id, product_id } = data;
+		try {
+			const review = await this.prisma.product_reviews.findFirst({
+				where: {
+					customer_id: customer_id,
+					product_id: product_id,
+				},
+			});
+			if (review) {
+				return true;
+			}
+			return false;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
 			};
 		}
 	}

@@ -1,13 +1,13 @@
-import GridCard from "./GridCard";
 import { Pagination } from '@mui/material';
+import GridCard from "../commonBase/GridCard";
 
-const CardAndPagination = ({ products, onFavorite, onPageChange, page }) => {
+const CardAndPagination = ({ products, onFavorite, onPageChange, page, count }) => {
 	return (
 		<>
 			<GridCard products={products} onFavorite={onFavorite} />
 
 			<Pagination
-				count={10}
+				count={Math.ceil(count / 16)}
 				shape="rounded"
 				color="primary"
 				page={page}

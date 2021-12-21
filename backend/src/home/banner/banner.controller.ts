@@ -4,6 +4,7 @@ import { CreateBannerInfoDto } from './dto/create-banner-info.dto';
 import { UpdateBannerInfoDto } from './dto/update-banner-info.dto';
 import { CreateBannerImageDto } from './dto/create-banner-image.dto';
 import { home_banner, home_banner_picture } from '@prisma/client';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('home/banner')
 export class BannerController {
@@ -11,6 +12,7 @@ export class BannerController {
 
   // Create new banner with information and main image
   @Post()
+  @Public()
   async createBanner(@Body() bannerData: { bannerInfo: CreateBannerInfoDto; bannerImage: CreateBannerImageDto }) {
     const { bannerInfo, bannerImage } = bannerData;
     const { description, start_date, end_date, order, keywords, visible, } = bannerInfo;
@@ -53,6 +55,7 @@ export class BannerController {
 
   // Create a sub image for banner with specific id
   @Post(':id/sub')
+  @Public()
   async createSubImage(@Param('id', ParseIntPipe) id: number, @Body() imageDto: CreateBannerImageDto) {
     try {
       const bannerPic = await this.bannerService.createImage(imageDto);
@@ -78,6 +81,7 @@ export class BannerController {
 
   // Get all visible banners for homepage
   @Get('homepage')
+  @Public()
   async getHomepageBanners() {
     try {
       const banners = await this.bannerService.getBanners(true);
@@ -94,6 +98,7 @@ export class BannerController {
 
   // Get all banners for management page
   @Get('manage')
+  @Public()
   async getAllBanners() {
     try {
       const banners = await this.bannerService.getBanners(false);
@@ -110,6 +115,7 @@ export class BannerController {
 
   // Update a banner information by Id
   @Patch(':id')
+  @Public()
   async updateInfo(@Param('id', ParseIntPipe) id: number, @Body() bannerDto: UpdateBannerInfoDto) {
     try {
       const bannerInfo = await this.bannerService.updateInfoById({
@@ -129,6 +135,7 @@ export class BannerController {
 
   // Delete a banner
   @Delete(':id')
+  @Public()
   async deleteBanner(@Param('id', ParseIntPipe) id: number) {
     try {
       const bannerInfo = await this.bannerService.deleteBannerById({ id });
@@ -145,6 +152,7 @@ export class BannerController {
 
   // Delete sub image from specific banner
   @Delete(':id/sub/:subId')
+  @Public()
   async deleteSubImage(@Param('id', ParseIntPipe) bannerId: number, @Param('subId', ParseIntPipe) subId: number) {
     try {
       const deletedImage = await this.bannerService.deleteSubImage(bannerId, subId);
