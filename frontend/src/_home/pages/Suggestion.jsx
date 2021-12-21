@@ -14,63 +14,64 @@ import authState from "~/common/store/authState";
 const SuggestionPage = () => {
     const classes = useStyles();
     const { isLoggedIn, user } = useRecoilValue(authState);
-    const [page, setPage] = useState(1);
     const [products, setProducts] = useState([]);
-    const [product_ids, setProduct_ids] = useState([]);
+    const [page, setPage] = useState(1);
     const [count, setCount] = useState(1);
+
+    useEffect(() => {
+        getData();
+    }, [page]);
 
     const onPageChange = (e, value) => {
         setPage(value);
     };
 
     const getData = async () => {
-        if (isLoggedIn) {
-            let productIds = [];
-            try {
-                if (product_ids.length == 0) {
-                    console.log("test try");
-                    const { data } = await axios.get(`https://ml-1.cshop.cscms.ml/suggestHomepage?uid=${user.id}`)
-                    // setProduct_ids(data.products);
-                    // productIds = data.products;
-                    setProduct_ids([123, 234, 45, 452, 45, 92, 35, 6, 8, 9, 55, 7563, 92, 32, 6, 23, 2, 4, 5, 7, 34, 2, 35, 776, 4576, 908, 34]);
-                    productIds = [123, 234, 45, 452, 45, 92, 35, 6, 8, 9, 55, 7563, 92, 32, 6, 23, 2, 4, 5, 7, 34, 2, 35, 776, 4576, 908, 34];
-                    setCount(productIds.length);
-                }
+        let customer_id = 0;
+        if (isLoggedIn) customer_id = user.id;
 
-                if (product_ids.length > 0) {
-                    console.log("test if");
-                    productIds = product_ids;
+        axios
+            .get(`${config.SERVER_URL}/home/suggestions/${customer_id}?take=16&skip=${(page - 1) * 16}`)
+            .then(({ data }) => {
+                if (data.success) {
+                    setCount(data.count);
+                    setProducts(data.suggestions);
+                    return window.scrollTo(0, 0);
                 }
-
-                console.log(productIds);
-                axios
-                    .get(`${config.SERVER_URL}/home/suggestions/${user.id}?product_ids=${productIds}&take=16&skip=${(page - 1) * 16}`)
-                    .then(({ data }) => {
-                        if (data.success) {
-                            return setProducts(data.suggestions);
-                        }
-                        else {
-                            return console.log(data);
-                        }
-                    })
-                    .catch((err) => {
-                        return console.log(err.message);
-                    })
-            }
-            catch (err) {
-                console.log(err.message);
-            }
-        }
+                else {
+                    return console.log(data);
+                }
+            })
+            .catch((err) => {
+                return console.log(err.message);
+            })
     };
 
-    const onFavorite = () => {
+    const onFavorite = (id) => {
+        if (isLoggedIn) {
+            setProducts(products => {
+                const target = products.find((e) => e.id == id);
 
-    }
+                if (target.customer_wishlist.length > 0) target.customer_wishlist.pop();
+                else target.customer_wishlist = [
+                    { product_id: target.id, customer_id: user.id },
+                ];
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        getData();
-    }, [page]);
+                return [...products];
+            });
+        }
+        else {
+            Swal.fire({
+                text: "Please login to add a product to your wishlist!",
+                icon: "error",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#FD6637",
+                width: 300,
+                timer: 2000,
+                timerProgressBar: true
+            });
+        }
+    };
 
     return (
         <Box className={classes.suggestionWrapper}>

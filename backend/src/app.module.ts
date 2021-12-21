@@ -14,6 +14,7 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
+import { SellerconsoleModule } from './sellerconsole/sellerconsole.module';
 import { CartModule } from './cart/cart.module';
 
 import { ProductModule } from './_product/product/product.module';
@@ -22,6 +23,7 @@ import { ShortLinkModule } from './_product/short-link/short-link.module';
 import { CommentModule } from './_product/comment/comment.module';
 import { SearchModule } from './_search/search.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 
 @Module({
 	imports: [
@@ -34,6 +36,7 @@ import { DeliveryModule } from './delivery/delivery.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		SellerconsoleModule,
 		CartModule,
 		SellershopModule,
 		ShopcustomizationModule,
@@ -45,7 +48,8 @@ import { DeliveryModule } from './delivery/delivery.module';
 		ChatModule,
 		PromotionModule,
 		SearchModule,
-		DeliveryModule
+		DeliveryModule,
+		ManageaccountModule
 	],
 
 	controllers: [AppController],

@@ -39,7 +39,7 @@ export class SearchController {
 	async findAll(
 		@Query('q', new DefaultValuePipe('')) query: string,
 		@Query('priceLow', new DefaultValuePipe(0), ParseFloatPipe) priceLow: number,
-		@Query('priceHigh', new DefaultValuePipe(1500), ParseFloatPipe) priceHigh: number,
+		@Query('priceHigh', new DefaultValuePipe(1000000), ParseFloatPipe) priceHigh: number,
 		@Query('readyToShip', new DefaultValuePipe(true), ParseBoolPipe) readyToShip: boolean,
 		@Query('outOfStock', new DefaultValuePipe(false), ParseBoolPipe) outOfStock: boolean,
 		@Query('rating', new DefaultValuePipe(0), ParseFloatPipe) rating: number,

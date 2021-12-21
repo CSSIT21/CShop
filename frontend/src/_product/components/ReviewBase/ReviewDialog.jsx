@@ -24,6 +24,7 @@ function ReviewDialog({
   shopId,
   customerId,
   options,
+  setreviewable = () => {},
 }) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -41,7 +42,6 @@ function ReviewDialog({
   const onUploadFile = (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target?.files[0]);
-
       console.log(e.target?.files[0]);
       setImageList((imageList) => {
         imageList.push({
@@ -118,7 +118,6 @@ function ReviewDialog({
         title: imageList[i].title,
       });
     }
-
     console.log(pictureList);
     let rating;
     starScore <= 0 ? (rating = 0) : (rating = starScore);
@@ -185,6 +184,7 @@ function ReviewDialog({
           });
         });
     }
+    setreviewable(false);
     handleClickOpenThankYouDialog();
   };
 

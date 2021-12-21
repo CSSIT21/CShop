@@ -1,6 +1,7 @@
 import { Controller, Get, Param, ParseArrayPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { Public } from 'src/common/decorators/public.decorator';
+import axios from 'axios';
 
 
 @Controller('home')
@@ -67,21 +68,29 @@ export class HomeController {
   @Public()
   async findSuggestion(
     @Param('id', ParseIntPipe) customer_id: number,
-    @Query('product_ids', ParseArrayPipe) product_ids: number[],
     @Query('take', ParseIntPipe) take: number,
     @Query('skip', ParseIntPipe) skip: number,
   ) {
     try {
-      product_ids = product_ids.map(id => +id);
+      let apiPath = "";
+      if (customer_id === 0) apiPath = 'https://ml-1.cshop.cscms.ml/suggestHomepageGeneral';
+      else apiPath = `https://ml-1.cshop.cscms.ml/suggestHomepageMember?uid=${customer_id}`;
 
-      const suggestions = await this.homeService.findProductsById({
+      let res = (await axios.get(apiPath)) as {
+        data: {
+          products: number[],
+          uid: string
+        }
+      };
+
+      const suggestions = await this.homeService.findProductsByIds({
         customer_id,
-        product_ids,
+        productIds: res.data.products,
         take,
         skip,
       });
 
-      const count = suggestions.length;
+      const count = res.data.products.length;
 
       return {
         success: true,

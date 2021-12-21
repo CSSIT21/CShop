@@ -14,6 +14,7 @@ import { For } from "~/common//utils";
 import StyledMenu from "../../StyledMenu";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import authState from "~/common/store/authState";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,7 +51,12 @@ const DropdownDetail = ({ children }) => {
   const onLogOut = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/home");
-    sessionStorage.clear()
+    localStorage.clear();
+    setAuth(() => ({
+      isLoggedIn: false,
+      user: {},
+    }));
+    sessionStorage.clear();
     return resetAuth();
   };
 
@@ -106,6 +112,18 @@ const DropdownDetail = ({ children }) => {
           >
             <StoreIcon />
             My Shop
+          </MenuItem>
+        )}
+        {auth.user.role === "ADMIN" && (
+          <MenuItem
+            onClick={() => {
+              router.push(`/manage`);
+              handleClose();
+            }}
+            disableRipple
+          >
+            <AdminPanelSettingsIcon />
+            Administration
           </MenuItem>
         )}
         <MenuItem

@@ -81,4 +81,10 @@ export class ProfileController {
 	public async getProductOption(@Body() data: Product) {
 		return await this.profileService.getProductDetail(data);
 	}
+
+	@Post('/order/detail/checkreview')
+	@Public()
+	public async checkIfReview(@Body() data: Product) {
+		return await this.profileService.checkIfReview(data);
+	}
 }

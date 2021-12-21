@@ -48,12 +48,29 @@ const ProductBox = ({ img, productName, options }) => {
             <>
               {options && (
                 <Typography sx={{ marginLeft: "5px", marginRight: "6px" }}>
-                  {options[0]?.name}{" "}
-                  {options[1]?.name && <>{options[1]?.name}</>}{" "}
+                  {options[0]?.name}
+                  {options[1] && (
+                    <>
+                      {", "} {options[1]?.name}
+                    </>
+                  )}{" "}
                 </Typography>
               )}
             </>
           )}
+          {/* {options && (
+            <>
+              {options?.slice(0, 5).map((e, key) => (
+                <Typography
+                  sx={{ marginLeft: "5px", marginRight: "6px" }}
+                  key={key}
+                >
+                  {e.firstChoice} {e.secondChoice && <>{e.secondChoice}</>}{" "}
+                  {key == options.length - 1 ? <> </> : " , "}
+                </Typography>
+              )}
+            </>
+          )} */}
         </Typography>
       </Box>
     </Box>

@@ -1,13 +1,13 @@
-import React from "react";
 import { Box } from "@mui/system";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Indicator = (props) => {
   return (
     <Box
       sx={{
         bgcolor: "background.paper",
-        boxShadow: 1,
+        boxShadow: 0,
         borderRadius: 1,
         p: 2,
         m: 3,
@@ -25,7 +25,7 @@ const Indicator = (props) => {
         </Box>
         <Box sx={{ color: "#A0A3BD" }}>{props.name}</Box>
       </Box>
-      <Box sx={{ display: "flex", marginLeft: "30%" }}>
+      <Box sx={{ display: "flex", marginLeft: "20%" }}>
         <props.icon sx={{ color: props.fontColor, fontSize: 72 }} />
       </Box>
     </Box>
