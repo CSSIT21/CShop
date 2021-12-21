@@ -156,6 +156,7 @@ const ProductPage = (props) => {
         });
       });
     updateSuggestProduct(userId);
+
     // Shop
     axios
       .get(`${config.SERVER_URL}/product/${id}/shop`)
