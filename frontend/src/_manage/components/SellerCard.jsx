@@ -116,6 +116,10 @@ export class SellerCard extends React.Component {
           "year": this.editDate.year
         }
       );
+
+      await axios.post(
+        "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Suspened ' + this.props.seller.shop_name
+      );
     }
     else{
       const res = await axios.post(
@@ -130,6 +134,10 @@ export class SellerCard extends React.Component {
           "month": this.editDate.month-1,
           "year": this.editDate.year
         }
+      );
+
+      await axios.post(
+        "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Updated suspension of ' + this.props.seller.shop_name
       );
     }
     

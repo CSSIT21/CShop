@@ -111,6 +111,15 @@ const ManageAccountPage = () => {
         const res = await axios.post(
             "http://localhost:8080/manageaccount/suspension/users/delete?id=" + userid
           );
+
+        const fetchedData = await axios.get(
+            "http://localhost:8080/manageaccount/users/id?id=" + userid
+        );
+
+        await axios.post(
+            "http://localhost:8080/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.customer_info.firstname + " " + fetchedData.data.customer_info.lastname
+        );
+        
         document.location.reload();
     }
 

@@ -100,18 +100,27 @@ const ManageSellerAccountPage = () => {
         setSearch(event.target.value);
     }
 
+    const auth = useRecoilValue(authState);
+
     const deleteRestriction = async (sellerid) => {
         const res = await axios.post(
             "http://localhost:8080/manageaccount/suspension/sellers/delete?id=" + sellerid
           );
+
+          const fetchedData = await axios.get(
+            "http://localhost:8080/manageaccount/sellers/unique?id=" + sellerid
+        );
+
+        await axios.post(
+            "http://localhost:8080/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.shop_name
+        );
+
         document.location.reload();
     }
 
     useEffect(()=>{
         setSellers(); 
     }, [])
-
-    const auth = useRecoilValue(authState);
 
     return (
         <div>
