@@ -76,11 +76,11 @@ export default function Popup({
       };
       if (file) {
         url = await getUrl(file);
-        console.log(url.original_link);
+        // console.log(url.original_link);
       }
       if (url.success) {
-        setPath(url.original_link);
-        setThumbnail(url.original_link);
+        // setPath(url.original_link);
+        // setThumbnail(url.original_link);
         await axios.post(
           `${config.SERVER_URL}/sellerconsole/${shopid.id}/updateShopinfo`,
           {
@@ -89,8 +89,8 @@ export default function Popup({
             description: descrp,
             phone_number: phonenumber,
             title: pictitle,
-            path: path,
-            thumbnail: thumbnail,
+            path: url.original_link,
+            thumbnail: url.original_link,
           }
         );
         // window.alert("Success");
