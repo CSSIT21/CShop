@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Box } from "@mui/system";
 import axios from 'axios'
 import Script from "react-load-script";
-import { Button, FormControl } from '@mui/material';
+import { Button } from '@mui/material';
 
 let OmiseCard;
 
@@ -54,7 +54,7 @@ export class Banking extends Component {
             <form>
               <Button
                 id="internet-banking"
-                className="btn internet-banking"
+                className="internet-banking"
                 type="button"
                 // disabled={this.props.cart.amount === 0}
                 onClick={this.handleClick}

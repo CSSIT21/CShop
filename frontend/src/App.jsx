@@ -81,6 +81,8 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
+import Payment from "./_payment/pages/Payment";
+import Wallet from "./_payment/pages/Wallet";
 
 function App() {
   return (
@@ -271,6 +273,16 @@ function App() {
                       <ShoppingCartPage />
                     </Suspense>
                   </MainLayout>
+                </Route>
+                <Route exact path="/payment">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Payment />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route exact path="/wallet">
+                      <Wallet />
                 </Route>
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
