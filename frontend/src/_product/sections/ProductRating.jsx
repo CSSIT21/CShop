@@ -82,8 +82,14 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
                       .picture_id_from_customer_picture?.path
                   }
                   username={
-                    val.firstname && val.lastname
-                      ? val.firstname + " " + val.lastname
+                    val?.customer_id_from_product_reviews.customer_info
+                      .firstname &&
+                    val?.customer_id_from_product_reviews.customer_info.lastname
+                      ? val?.customer_id_from_product_reviews.customer_info
+                          .firstname +
+                        " " +
+                        val?.customer_id_from_product_reviews.customer_info
+                          .lastname
                       : "undefined username"
                   }
                   rating={parseInt(val.rating)}
