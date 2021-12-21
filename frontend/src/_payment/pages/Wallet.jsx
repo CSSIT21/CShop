@@ -16,6 +16,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Popup from "../components/Popup";
+import ChoiceForPay from "../components/ChoiceForPay";
 
 const useStyles = makeStyles({
   navbarWrapper: {
@@ -49,17 +50,6 @@ const useStyles = makeStyles({
     borderColor: "gray",
   },
 
-  popup: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "white",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  },
 });
 
 function createData(number, withdrawal, deposit, success) {
@@ -75,6 +65,7 @@ const Wallet = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const classes = useStyles();
   return (
     <>
@@ -165,7 +156,6 @@ const Wallet = () => {
           </TableContainer>
         </Box>
       </Box>
-      <PayByInternetBanking/>
     </>
   );
 };

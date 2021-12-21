@@ -13,7 +13,7 @@ export class PayByInternetBanking extends Component {
     try {
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:8080/internet-banking',
+          url: 'http://localhost:8080/payment/internet-banking',
           data: {
             id,
             total_price,

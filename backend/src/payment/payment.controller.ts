@@ -106,7 +106,7 @@ export class PaymentController {
 
 	//------------------------Internet Banking Pin------------------------//
 
-	@Post('/krungsri')
+	@Post('/internet-banking')
 	@Public()
 	async getKrungsri(@Req() req, @Res() res): Promise<void> {
 		const checkoutInternetBanking = async (req, res, next) => {
