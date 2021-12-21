@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { AddChatModal, ChatBox } from '../components'
 import { Button, Typography, CircularProgress } from '@mui/material'
+import ChooseUser from '../components/ChooseUser/ChooseUser'
 
 const useStyles = makeStyles({
     chatListContainer: {
@@ -18,15 +19,15 @@ const useStyles = makeStyles({
     chatListTitle: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         width: '100%',
-        height: '72px'
+        height: '72px',
+        justifyContent: 'space-between'
     },
     chatPageHeading: {
         fontSize: '22px !important',
         fontWeight: '500 !important',
-        marginLeft: '16px !important',
-        marginTop: '8px !important'
+        marginLeft: '16px !important'
     },
     chatList: {
         display: 'flex',
@@ -67,7 +68,7 @@ const ChatList = (props) => {
     // console.log(props.messages.size)
     const classes = useStyles()
     const messages = props.ChatService.messages
-    if(messages.length === 0) {
+    if (messages.length === 0) {
         return (
             <Box className={classes.chatListContainer}>
                 <Box className={classes.chatListTitle}>
@@ -107,6 +108,7 @@ const ChatList = (props) => {
                 <Typography className={classes.chatPageHeading}>
                     Chat
                 </Typography>
+                <ChooseUser />
             </Box>
             <Box className={classes.chatList}>
                 {messages &&
@@ -121,7 +123,9 @@ const ChatList = (props) => {
                                 fromCustomer={message.from_customer}
                                 latestText={message.latest_text}
                                 pic={message.shop_pic}
-                                isFilled={props.currentConversation === message.id}
+                                isFilled={
+                                    props.currentConversation === message.id
+                                }
                                 setCurrent={() => {
                                     props.setCurrent(message.id)
                                     console.log(
