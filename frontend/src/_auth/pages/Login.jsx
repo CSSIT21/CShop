@@ -91,8 +91,6 @@ const LoginPage = () => {
           <Box className={classes.header}>Sign In</Box>
           <Box className={classes.textFieldBox}>
             <TextField
-              id="phoneNumber"
-              placeholder="Phone Number"
               id="email"
               placeholder="Email"
               variant="outlined"
@@ -260,7 +258,7 @@ const useStyles = makeStyles({
   },
   divider: {
     color: "#A0A3BD",
-    margin: "40px 0px",
+    margin: "30px 0px",
   },
   error: {
     marginTop: "5px",
