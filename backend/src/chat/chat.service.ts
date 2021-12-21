@@ -17,7 +17,7 @@ export class ChatService {
 			data: {
 				customer_id: uid,
 				shop_id: shop_id,
-				marked_as: 'Unread',
+				marked_as: 'None',
 				note: '',
 				is_muted: false,
 				is_blocked: false,
@@ -41,7 +41,7 @@ export class ChatService {
 
 	async findAllConversation(uid: number) {
 		const conv = await this.prisma
-			.$queryRaw`WITH cmax(id, time) AS (SELECT conversation_id, max(message_time) FROM chat_message GROUP BY conversation_id)
+			.$queryRaw`WITH cmax(id, time) AS (SELECT conversation_id, max(message_time) FROM chat_message WHERE content_type <> 'Noti' GROUP BY conversation_id)
 SELECT chat_conversation.id AS id, chat_conversation.customer_id AS customer_id, chat_conversation.shop_id AS shop_id, marked_as, note, is_muted, is_blocked, firstname, lastname, cpf.path AS customer_pic, shop_name, sp.path AS shop_pic, content_type, seen, COALESCE(text) AS latest_text, chat_message.id AS latest_id, from_customer
 FROM cmax
     JOIN chat_message ON cmax.time = chat_message.message_time
@@ -52,8 +52,7 @@ FROM cmax
     LEFT JOIN shop_info si on chat_conversation.shop_id = si.id
     LEFT JOIN shop_picture sp on si.id = sp.shop_id
     LEFT JOIN chat_text ct on chat_message.id = ct.message_id
-WHERE chat_conversation.customer_id = ${uid}
-   OR si.customer_id = ${uid}
+WHERE chat_conversation.customer_id = ${uid} OR si.customer_id = ${uid}
 ORDER BY message_time DESC;`;
 
 		// console.log(conv);
