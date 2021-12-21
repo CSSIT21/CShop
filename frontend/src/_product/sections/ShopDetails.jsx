@@ -15,7 +15,8 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
   const rating = "4.7";
 
   const handleGoToChat = () => {
-    if (auth.isLoggedIn) location.href = "http://localhost:3000/chat";
+    if (auth.isLoggedIn)
+      location.href = `http://localhost:3000/chat/${shopDetail}`;
     else {
       Swal.fire({
         title: "Please login to chat with shop!",

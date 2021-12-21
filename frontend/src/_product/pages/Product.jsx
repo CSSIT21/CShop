@@ -55,7 +55,8 @@ const ProductPage = (props) => {
   const onFavourite = () => {
     setProductDetails(() => {
       if (auth.isLoggedIn) {
-        if (favorite) {
+        console.log(productDetails.customer_wishlist);
+        if (productDetails.customer_wishlist.length > 0) {
           setFavorite(false);
         } else {
           setFavorite(true);
@@ -67,10 +68,12 @@ const ProductPage = (props) => {
           confirmButtonText: "OK",
         });
       }
+
+      console.log(auth.user?.id + " " + id);
       axios
         .post(`${config.SERVER_URL}/profile/favourite`, {
           customer_id: auth.user?.id,
-          product_id: id,
+          product_id: parseInt(id),
         })
         .then(({ data }) => {
           console.log(data);
@@ -329,6 +332,7 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setProductsSuggestion(data.suggest_products);
+          console.log(data.suggest_products);
         }
       })
       .catch((e) => {

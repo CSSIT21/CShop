@@ -78,6 +78,7 @@ export class ProductService {
 							id: true,
 							title: true,
 							price: true,
+							quantity:true,
 							product_picture: { take: 1 },
 							customer_wishlist: {
 								where: {

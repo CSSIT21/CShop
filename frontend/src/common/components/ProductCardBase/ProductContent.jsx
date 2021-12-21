@@ -73,10 +73,10 @@ const ProductContent = ({
           onClick={(e) => {
             e.preventDefault();
             onFavourite(product.id);
-            if (auth.isLoggedIn) {
+            if (isLoggedIn) {
               axios
                 .post(`${config.SERVER_URL}/profile/favourite`, {
-                  customer_id: auth.user.id,
+                  customer_id: user.id,
                   product_id: product.id,
                 })
                 .then(({ data }) => {
