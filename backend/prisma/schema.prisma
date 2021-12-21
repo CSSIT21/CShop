@@ -1521,6 +1521,8 @@ model delivery_product_status {
   order_status       order_status[]
 }
 
+
+
 model delivery_admin {
   id       Int    @id @default(autoincrement())
   username String @db.VarChar(20)

@@ -6,7 +6,7 @@ import ProductRating from "../sections/ProductRating";
 import ProductSuggestion from "../sections/ProductSuggestion";
 import fakeProducts from "~/common/faker/fakeProducts";
 import { Box } from "@mui/material";
-import ReviewsFromCustomer from "../sections/ReviewsFromCustomer";
+// import ReviewsFromCustomer from "../sections/ReviewsFromCustomer";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import config from "../../common/constants";
@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 const ProductPage = (props) => {
   const auth = useRecoilValue(authState);
   const [productsSuggestion, setProductsSuggestion] = useState();
+  const [favorite, setFavorite] = useState(false);
   const [productDetails, setProductDetails] = useState({ title: "" });
   const [commentPictures, setCommentPictures] = useState();
   const [selected, setSelected] = useState({});
@@ -26,13 +27,11 @@ const ProductPage = (props) => {
   const [comments, setComments] = useState();
   const [avgRating, setAvgRating] = useState();
   const [options, setOptions] = useState();
-  const [favorite, setFavorite] = useState(true);
   const [shopId, setShopId] = useState(-1);
   const [count, setCount] = useState(1);
   const { id } = useParams();
 
   const onFavouriteSuggestion = (index) => {
-    console.log(productsSuggestion);
     setProductsSuggestion((items) => {
       if (auth.isLoggedIn) {
         const target = items?.find((e) => e.id == index);
@@ -51,6 +50,43 @@ const ProductPage = (props) => {
         });
       }
       return [...items];
+    });
+  };
+  const onFavourite = () => {
+    setProductDetails(() => {
+      if (auth.isLoggedIn) {
+        console.log(productDetails.customer_wishlist);
+        if (productDetails.customer_wishlist.length > 0) {
+          setFavorite(false);
+        } else {
+          setFavorite(true);
+        }
+      } else {
+        Swal.fire({
+          title: "Please login to add a product to your wishlist!",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+
+      console.log(auth.user?.id + " " + id);
+      axios
+        .post(`${config.SERVER_URL}/profile/favourite`, {
+          customer_id: auth.user?.id,
+          product_id: parseInt(id),
+        })
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch((e) => {
+          console.log(e.message);
+          Swal.fire({
+            title: "Something went wrong!",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
+      return productDetails;
     });
 
     // setProductsSuggestion((products) => {
@@ -99,10 +135,13 @@ const ProductPage = (props) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
+    let userId = 0;
+    if (auth.isLoggedIn) {
+      userId = auth.user.id;
+    }
     // Product
     axios
-      .get(`${config.SERVER_URL}/product/${id}`)
+      .get(`${config.SERVER_URL}/product/${id}?customerId=${userId}`)
       .then(({ data }) => {
         if (data.success) {
           setProductDetails(data.product_details);
@@ -116,7 +155,7 @@ const ProductPage = (props) => {
           confirmButtonText: "OK",
         });
       });
-    updateSuggestProduct();
+    updateSuggestProduct(userId);
     // Shop
     axios
       .get(`${config.SERVER_URL}/product/${id}/shop`)
@@ -204,6 +243,24 @@ const ProductPage = (props) => {
   }, [id]);
 
   const addToCart = () => {
+    axios
+      .post(
+        `${config.SERVER_URL}/log-system/add-to-cart/${auth.user.id}/${id}`,
+        {
+          added_date: new Date().toISOString(),
+        }
+      )
+      .then(({ data }) => {
+        if (data.success) {
+          return console.log(data.addToCart);
+        } else {
+          return console.log(data);
+        }
+      })
+      .catch((err) => {
+        return console.log(err.message);
+      });
+
     let options = [Object.keys(selected).length];
     Object.entries(selected).forEach(([key, value], i) => {
       console.log(i);
@@ -212,8 +269,8 @@ const ProductPage = (props) => {
     });
     axios
       .post(`${config.SERVER_URL}/cart/addtocart`, {
-        userID: auth.user.customer_info?.customer_id,
-        productId: parseInt(id),
+        userID: auth.user?.id,
+        productID: id,
         amount: count,
         firstchoiceId: options[0] ? options[0] : undefined,
         secondchoiceId: options[1] ? options[1] : undefined,
@@ -234,19 +291,18 @@ const ProductPage = (props) => {
       });
   };
 
-  const updateSuggestProduct = () => {
+  const updateSuggestProduct = (userId) => {
     // Update suggestion product id
     axios
       .get(`https://ml-1.cshop.cscms.ml/relatedProduct?id=${id}`)
       .then(({ data }) => {
         if (data) {
-          console.log(data);
           // Update here -- > getSuggestProduct(data)
           axios
             .post(`${config.SERVER_URL}/product/${id}/updateSuggest`, data)
             .then(({ data }) => {
               if (data.success) {
-                getSuggestProduct();
+                getSuggestProduct(userId);
               }
             })
             .catch((e) => {
@@ -269,14 +325,14 @@ const ProductPage = (props) => {
       });
   };
 
-  const getSuggestProduct = () => {
+  const getSuggestProduct = (userId) => {
     // Get suggestion product detail
     axios
-      .get(`${config.SERVER_URL}/product/${id}/getSuggest`)
+      .get(`${config.SERVER_URL}/product/${id}/getSuggest?customerId=${userId}`)
       .then(({ data }) => {
-        console.log(data);
         if (data.success) {
           setProductsSuggestion(data.suggest_products);
+          console.log(data.suggest_products);
         }
       })
       .catch((e) => {
@@ -303,7 +359,7 @@ const ProductPage = (props) => {
       }}
     >
       <Box maxWidth="1200px">
-        <ReviewsFromCustomer />
+        {/* <ReviewsFromCustomer /> */}
         <ProductDetails
           productDetails={productDetails}
           productPictures={productPictures}
@@ -321,6 +377,7 @@ const ProductPage = (props) => {
           open={open}
           setOpen={setOpen}
           setProductDetails={setProductDetails}
+          onFavourite={onFavourite}
         />
         <ShopDetails
           shopId={shopId}
