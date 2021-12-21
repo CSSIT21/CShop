@@ -14,6 +14,7 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
+import { SellerconsoleModule } from './sellerconsole/sellerconsole.module';
 import { CartModule } from './cart/cart.module';
 
 import { ProductModule } from './_product/product/product.module';
@@ -35,6 +36,7 @@ import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		SellerconsoleModule,
 		CartModule,
 		SellershopModule,
 		ShopcustomizationModule,

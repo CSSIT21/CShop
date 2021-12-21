@@ -50,10 +50,12 @@ import SellerStockLog from "./_seller/pages/SellerStockLog";
 import SellerDiscountLog from "./_seller/pages/SellerDiscountLog";
 import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
+import SellerOrderStatus from "./_seller/pages/SellerOrderStatus";
 import Promotion from "./_promotion/pages/Promotion";
 import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
 import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
+import SellerCreateCoupon from "./_seller/pages/SellerCreateCoupon"
 
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
@@ -83,6 +85,8 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
+import SellerFlashSalesLog from "./_seller/pages/SellerFlashSalesLog";
+
 import OrderDetail from "./_profile/pages/OrderDetail";
 
 function App() {
@@ -123,9 +127,11 @@ function App() {
                       <Route exact path="/manage/audits">
                       <AuditPage />
                       </Route>
+
                       <Route exact path="/manage/banner">
                         <ManageBanner />
                       </Route>
+
                     </Suspense>
                   </SidebarLayout>
                 </Route>
@@ -187,6 +193,7 @@ function App() {
                   </MainLayout>
                 </Route>
 
+<<<<<<< HEAD
                 {/* SUPPORT PAGE */}
                 <Route path="/support" exact>
                   <MainLayout>
@@ -196,6 +203,8 @@ function App() {
                   </MainLayout>
                 </Route>
 
+=======
+>>>>>>> bd70a1ce94d4beb0477933b65c14c908ba7cc29d
                 {/* Register Page */}
                 <Route path="/register" exact>
                   <MainLayout>
@@ -211,6 +220,7 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
                 <Route path="/register/seller" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -218,6 +228,7 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
                 <Route path="/profile" exact>
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -240,6 +251,7 @@ function App() {
                       <Route path="/profile/history">
                         <HistoryPage />
                       </Route>
+
                       <Route path="/profile/followedshop">
                         <FollowedShop />
                       </Route>
@@ -257,6 +269,7 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <ShopComment />
+
                     </Suspense>
                   </MainLayout>
                 </Route>
@@ -281,20 +294,21 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/coin/history">
+
+                {/* <Route exact path="/coin/history">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinHistoryPage />
                     </Suspense>
                   </MainLayout>
-                </Route>
-                <Route exact path="/coin">
+                </Route> */}
+                {/* <Route exact path="/coin">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinRedeemPage />
                     </Suspense>
                   </MainLayout>
-                </Route>
+                </Route> */}
                 <Route exact path="/cart">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -302,6 +316,7 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}
@@ -311,9 +326,11 @@ function App() {
                       <Route path="/seller/:id/dashboard">
                         <SellerDashboard />
                       </Route>
+
                       <Route path="/seller/:id/customize">
                         <SellerShopCustomizationPage />
                       </Route>
+
                       <Route path="/seller/:id/stock">
                         <SellerStock />
                       </Route>
@@ -331,6 +348,16 @@ function App() {
                       </Route>
                       <Route path="/seller/:id/discountlog">
                         <SellerDiscountLog />
+                      </Route>
+
+                      <Route path="/seller/:id/orderstatus">
+                        <SellerOrderStatus />
+                      </Route>
+                      <Route path="/seller/:id/coupon">
+                        <SellerCreateCoupon />
+                      </Route>
+                      <Route path="/seller/:id/flashsalelog">
+                        <SellerFlashSalesLog />
                       </Route>
                     </Suspense>
                   </SellerConsoleSidebarLayout>
