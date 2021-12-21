@@ -16,7 +16,7 @@ export class AuditCard extends React.Component {
 
   async componentDidMount(){
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/users/id?id=" + this.props.audit.id
+      "http://localhost:8080/manageaccount/users/id?id=" + this.props.audit.admin_id
     );
 
     this.name = fetchedData.data.customer_info;
@@ -32,7 +32,7 @@ export class AuditCard extends React.Component {
         <CardContent>
           <Box className={classes.header}>
             <Box sx={{ width: '12%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
-              <Typography style={{ fontSize: '15px'}}>#{this.props.audit.id}</Typography>
+              <Typography style={{ fontSize: '15px'}}>#{this.props.audit.admin_id}</Typography>
             </Box>
             <Box sx={{ width: '20%', display:'flex', flexDirection: 'column', justifyContent: 'center' }}>  
               <Typography style={{ fontWeight: 600, fontSize: '15px'}}>{this.name.firstname + " " + this.name.lastname}</Typography>

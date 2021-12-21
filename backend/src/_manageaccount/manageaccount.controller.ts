@@ -340,4 +340,11 @@ export class ManageaccountController {
       });
     }
   }
+
+  @Get('audit')
+  @Public()
+  public getAudit(){{
+    return this.prisma.admin_audit.findMany();
+    }
+  }
 }

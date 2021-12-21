@@ -39,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 
-let audits = [
+/*let audits = [
     {
         id: 1110,
         admin_id: 1,
@@ -58,18 +58,18 @@ let audits = [
         login_date: '2021-10-20 23:02:20.154000',
         action: 'TEST3 TEST3 TEST3, TEST3 TEST3 TEST3 TEST3 TEST3TEST3 TEST3 ,TEST3TEST3'
     },
-];
+];*/
 
 const ManageAccountPage = () => {
     const classes = useStyles();
     
-    /*const [audits, setAuditList] = React.useState([]);
+    const [audits, setAuditList] = React.useState([]);
     const setAudits = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/audits"
+          "http://localhost:8080/manageaccount/audit"
         );
         setAuditList(fetchedData.data);
-      };*/
+      };
 
     const [page, setPage] = React.useState(1);
     const handlePagination = (event) => {
@@ -77,7 +77,7 @@ const ManageAccountPage = () => {
     }
     
     useEffect(()=>{
-        //setAudits();
+        setAudits();
     }, [])
 
     return (

@@ -129,8 +129,6 @@ export class TicketCard extends React.Component {
     this.type = fetchedData2.data;
     this.admin = fetchedData3.data.customer_info;
 
-    console.log(fetchedData.data)
-
     if(fetchedData4.data.length > 0){
       this.path = fetchedData4.data[0];
     }
