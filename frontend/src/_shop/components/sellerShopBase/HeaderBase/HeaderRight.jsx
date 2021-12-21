@@ -13,7 +13,19 @@ export default function HeaderRight({ shopInfo = {} }) {
   const classes = useStyles();
   const { id } = useParams();
   const [date, setdate] = useState();
+  const [rating, setrating] = useState(0);
   useEffect(() => {
+    let a = shopInfo.rating;
+    let floor = Math.floor(a);
+    let r = Math.abs(floor - a);
+    if (r > 0.5) {
+      a = floor + 1;
+    } else if (r == 0) {
+      a = floor;
+    } else if (r <= 0.5) {
+      a = floor + 0.5;
+    }
+    setrating(a);
     const joinDate = shopInfo.join_date;
     setdate(dayjs(joinDate).fromNow());
   }, [shopInfo]);
@@ -72,9 +84,7 @@ export default function HeaderRight({ shopInfo = {} }) {
           </Grid>
           <Grid item xs={3}>
             <Link to={`/shop/${id}/comment`}>
-              {shopInfo.rating !== null
-                ? parseFloat(shopInfo.rating).toFixed(1)
-                : 0}
+              {rating !== null ? rating : 0}
             </Link>
           </Grid>
         </Grid>

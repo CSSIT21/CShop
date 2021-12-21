@@ -10,7 +10,7 @@ const ProductCategorySelectIcon = ({ ...rest }) => {
   const classes = useStyles();
   return (
     <Box {...rest}>
-      <Typography fontSize="18px">Category</Typography>
+      <Typography fontSize="18px">Product Select</Typography>
       <Box
         sx={{
           backgroundColor: "#FDF4DD",
