@@ -35,9 +35,11 @@ export class CartController {
 	@Post('/addtocart')
 	@Public()
 	addtocart(@Body() request) {
+		console.log(request);
+
 		return this.cartService.addtocart(
 			request.userID,
-			request.productID,
+			parseInt(request.productID),
 			request.amount,
 			request.firstchoiceID,
 			request.seconedchoiceID,
@@ -47,7 +49,12 @@ export class CartController {
 	@Post('/updateamount')
 	@Public()
 	updateamount(@Body() request) {
-		return this.cartService.updateamount(request.updateAmount);
+		return this.cartService.updateamount(
+			request.userID,
+			request.addressID,
+			request.totalprice,
+			request.updateAmount,
+		);
 	}
 	@Post('/removefromcart')
 	@Public()

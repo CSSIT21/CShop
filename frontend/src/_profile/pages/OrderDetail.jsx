@@ -23,7 +23,6 @@ const OrderDetail = () => {
   const classes = useStyles();
   const orderId = useParams();
   const auth = useRecoilValue(authState);
-  // const [reviewable, setreviewable] = useState(true);
   const [onLoad, setonLoad] = useState(false);
   const [orderDetail, setorderDetail] = useState({});
   const [products, setProducts] = useState([]);

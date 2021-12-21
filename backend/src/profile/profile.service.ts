@@ -409,7 +409,6 @@ export class ProfileService {
 	public async getProductDetail(data: Product) {
 		const { product_id, option_one, option_two } = data;
 		console.log(data);
-
 		try {
 			const productOption = await this.prisma.product_options.findFirst({
 				where: {

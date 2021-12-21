@@ -44,7 +44,6 @@ function ReviewDialog({
   // ],
   // กรณีที่สินค้าไม่มีoption
   options,
-  isReview = true, // ต้องถามธรรม์อีกที
 }) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -91,12 +90,17 @@ function ReviewDialog({
     chipData.forEach((el) => {
       if (el.clicked) chipCheck = true;
     });
+    console.log(chipCheck);
     imageList.forEach((el) => {
       if (imageList) imageCheck = true;
     });
+    console.log(imageCheck);
     if (commentProductText) commentCheck = true;
+    console.log(commentCheck);
     if (starScore != 0) scoreCheck = true;
+    console.log(scoreCheck);
     if (chipCheck || imageCheck || commentCheck || scoreCheck) allCheck = true;
+    console.log(allCheck);
     return allCheck;
   }, [chipData, imageList, commentProductText, starScore]);
 

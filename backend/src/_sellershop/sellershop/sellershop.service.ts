@@ -7,7 +7,7 @@ import { User } from 'src/authentication/dto/user.dto';
 
 @Injectable()
 export class SellershopService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 
 	public async findOne(id: number) {
 		try {
@@ -105,9 +105,31 @@ export class SellershopService {
 				take: 16,
 				skip: (page - 1) * 16,
 			});
+			const count = await this.prisma.product.count({
+				where: {
+					...(shop_category && {
+						id: {
+							in: shop_category.products,
+						},
+					}),
+					...(readyToShip && {
+						quantity: {
+							gt: 0,
+						},
+					}),
+					rating: {
+						gte: rating,
+					},
+					price: {
+						gte: priceLow,
+						lte: priceHigh,
+					},
+					shop_id: id,
+				},
+			});
 			const result = {
 				products: products,
-				count: products.length,
+				count: count,
 			};
 
 			return { ...result };
@@ -370,6 +392,14 @@ export class SellershopService {
 					shop_id: id,
 					discount_id: {
 						notIn: getCouponCustomerOwn.map((e) => e.discount_id),
+					},
+					quantity: {
+						gte: 1,
+					},
+					discount_id_from_discount_shop: {
+						end_date: {
+							gte: new Date(Date.now()),
+						},
 					},
 				},
 				include: {
