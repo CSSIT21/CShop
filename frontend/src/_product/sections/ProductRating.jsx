@@ -28,6 +28,15 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
     setCommentOffset(commentOffset + 5);
   };
 
+  const findCommentPicture = (commentId) => {
+    let commentPicList;
+    commentPictures?.forEach((e) => {
+      if (e.id_comment == commentId) {
+        commentPicList = e.comment_pictures;
+      }
+    });
+    return commentPicList;
+  };
   return (
     <Box
       sx={{
@@ -56,7 +65,7 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
               Product Rating
             </Typography>
             <RatingStars
-              value={parseInt(avgRating)}
+              value={parseFloat(avgRating)}
               iconStyle={iconStyle}
               padding={paddingStar}
             ></RatingStars>
@@ -96,7 +105,7 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
                   comment={val.comment}
                   key={key}
                   reviewTime={val.review_time}
-                  reviewPhoto={commentPictures[key]?.comment_pictures}
+                  reviewPhoto={findCommentPicture(val.id)}
                 />
               ))}
               <Box sx={{ marginTop: "50px" }}>

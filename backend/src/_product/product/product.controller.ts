@@ -50,6 +50,23 @@ export class ProductController {
 			});
 		}
 	}
+	
+	@Post(':id/updateProductsRating')
+	@Public()
+	public async updateProductsRating(
+		@Body() rating,
+		@Param('id', ParseIntPipe) id: number,
+		@Res() res,
+	) {
+		const avgRating = await this.productService.updateProductsRating(id, rating.avgRating);
+		if (avgRating) {
+			res.send({ success: true, avgRating });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
 
 	@Get('/shortlink/:id')
 	@Public()

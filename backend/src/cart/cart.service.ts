@@ -78,7 +78,7 @@ export class CartService {
 			}
 			additem = { ...additem, product_options };
 		}
-		await prisma.order_cart_item.createMany({ data: additem });
+		await prisma.order_cart_item.create({ data: additem });
 		return true;
 	}
 

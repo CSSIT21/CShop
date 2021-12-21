@@ -58,20 +58,6 @@ const ProductBox = ({ img, productName, options }) => {
               )}
             </>
           )}
-          {/* {options && (
-            <>
-              {options?.slice(0, 5).map((e, key) => (
-                <Typography
-                  sx={{ marginLeft: "5px", marginRight: "6px" }}
-                  key={key}
-                >
-                  {e.firstChoice} {e.secondChoice && <>{e.secondChoice}</>}{" "}
-                  {key == options.length - 1 ? <> </> : " , "}
-                </Typography>
-              ))}
-              {options.length > 5 && options ? "....." : " "}
-            </>
-          )} */}
         </Typography>
       </Box>
     </Box>
