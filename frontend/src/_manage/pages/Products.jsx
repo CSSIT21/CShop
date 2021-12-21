@@ -1,5 +1,5 @@
 import Paper from '@mui/material/Paper';
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { List } from "@mui/material";
 import { styled } from '@mui/material/styles';
@@ -16,13 +16,11 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React, { useEffect } from "react";
-import UserCard from "../components/UserCard";
+import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import ProductCard from "../components/ProductCard";
 import { Search } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { grey, red, orange } from '@mui/material/colors';
 import axios from "axios";
-import authState from '../../common/store/authState';
-import { useRecoilValue } from "recoil";
 
 const cardStyle = {
     width: '100%',
@@ -40,29 +38,46 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-/*let users = [
+
+/*let products = [
     {
-        id: 24578,
+        id: 12,
+        avatarInitials: 'SD',
+        avatarColor: red[400],
         path: '',
-        customer_info:{
-            firstname: 'Hokma',
-            lastname: 'Benjamin',
-            gender: 'Male',
-            birthdate: '02/08/1987',
-        },
-        customer_address:{
-            address_line: 'Nest of former L Corp, District 12, The City',
-            postal_code: '10120',
-        },
-        date: '10/10/2020',
-        admin_customer_suspensions: 
-        {
-            suspension_type_id: 1,
-            admin_id: 1,
-            start_date: '15/05/2020',
-            end_date: '15/05/2020',
-            description: 'Test'
-        },
+        title: 'Sanguine Desire',
+        price: 150,
+        quantity: 5,
+        sold: 2,
+        shop_id: 1,
+        rating: 3.8,
+        comments: 30,
+    },
+    {
+        id: 13,
+        avatarInitials: 'SD',
+        avatarColor: red[400],
+        path: '',
+        title: 'Furioso',
+        price: 300,
+        quantity: 9,
+        sold: 3,
+        shop_id: 2,
+        rating: 4.2,
+        comments: 35,
+    },
+    {
+        id: 1412,
+        avatarInitials: 'SD',
+        avatarColor: red[400],
+        path: '',
+        title: 'Paradise Lost',
+        price: 666,
+        quantity: 6,
+        sold: 6,
+        shop_id: 6,
+        rating: 0.6,
+        comments: 66,
     },
 ];*/
 
@@ -70,32 +85,24 @@ let resId = 1000;
 
 const ManageAccountPage = () => {
     const classes = useStyles();
-
-    const [users, setUsersList] = React.useState([]);
-    const setUsers = async () => {
+    
+    const [products, setProductsList] = React.useState([]);
+    const setProducts = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/users"
+          "http://localhost:8080/manageaccount/products"
         );
-        fetchedData.data.forEach((u) => {u["name"] = u.customer_info.firstname + " " + u.customer_info.lastname; u["gender"] = u.customer_info.gender; u["birthdate"] = u.customer_info.birthdate})
-        setUsersList(fetchedData.data);
+        setProductsList(fetchedData.data);
       };
-
+    
     const [sortBy, setSortBy] = React.useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
-        console.log(sortBy);
       };
 
     const [sortOrder, setSortOrder] = React.useState(false);
     const toggleSort = () => {
         setSortOrder(!sortOrder);
       }
-
-    const [showRestricted, setShowRestricted] = React.useState(false);
-    const toggleShowRestricted = () => {
-        setShowRestricted(!showRestricted);
-        setPage(1);
-        }
 
     const [page, setPage] = React.useState(1);
     const handlePagination = (event) => {
@@ -106,39 +113,18 @@ const ManageAccountPage = () => {
     const handleSearch = (event) => {
         setSearch(event.target.value);
     }
-
-    const deleteRestriction = async (userid) => {
-        const res = await axios.post(
-            "http://localhost:8080/manageaccount/suspension/users/delete?id=" + userid
-          );
-
-        const fetchedData = await axios.get(
-            "http://localhost:8080/manageaccount/users/id?id=" + userid
-        );
-
-        await axios.post(
-            "http://localhost:8080/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.customer_info.firstname + " " + fetchedData.data.customer_info.lastname
-        );
-        
-        document.location.reload();
-    }
-
-    useEffect(async ()=>{
-        setUsers();
+    
+    useEffect(()=>{
+        setProducts();
     }, [])
-
-    const auth = useRecoilValue(authState);
 
     return (
         <div>
             <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
                 <Box className={classes.topright}>
-                    <FormGroup>
-                        <FormControlLabel onChange={toggleShowRestricted} control={<Checkbox />} label="Show Restricted Only" />
-                    </FormGroup>
                 </Box>
                 <Box className={classes.topright}>
-                    <Box>
+                    <Box sx={{ margin: '8px'}}>
                         <TextField
                         hiddenLabel
                         id="search-field"
@@ -171,11 +157,11 @@ const ManageAccountPage = () => {
                               className={classes.root}
                               onChange={setSort}
                             >
-                              <MenuItem value={'name'}>Name</MenuItem>
-                              <MenuItem value={'id'}>User ID</MenuItem>
-                              <MenuItem value={'gender'}>Gender</MenuItem>
-                              <MenuItem value={'date'}>Join Date</MenuItem>
-                              <MenuItem value={'birthdate'}>Birthday</MenuItem>
+                              <MenuItem value={'title'}>Product Name</MenuItem>
+                              <MenuItem value={'price'}>Price</MenuItem>
+                              <MenuItem value={'quantity'}>Stock</MenuItem>
+                              <MenuItem value={'sold'}>Sold</MenuItem>
+                              <MenuItem value={'shop_id'}>Shop Name</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -189,26 +175,29 @@ const ManageAccountPage = () => {
                     marginBottom: '0px'}}>
                     <CardContent sx={{ padding: '15px', paddingBottom: '15px!important'}}>
                     <Box className={classes.header}>
-                        <Box sx={{ width: '27%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Users ({(showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_customer_suspensions != null;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length)})</Typography>
+                        <Box sx={{ width: '12%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Products ({products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length})</Typography>
                         </Box>
-                        <Box sx={{ width: '20%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Address</Typography>
-                        </Box>
-                        <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Gender</Typography>
+                        <Box sx={{ width: '18%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Name</Typography>
                         </Box>
                         <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Postal</Typography>
-                        </Box>
-                        <Box sx={{ width: '14%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Joined Date</Typography>
-                        </Box>
-                        <Box sx={{ width: '13%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Birth Date</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Price</Typography>
                         </Box>
                         <Box sx={{ width: '10%' }} className={classes.header}>
-                            <Typography style={{ fontWeight: 600, fontSize: '15px' }}>Status</Typography>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '30%' }}>Stock</Typography>
+                        </Box>
+                        <Box sx={{ width: '10%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '30%' }}>Sold</Typography>
+                        </Box>
+                        <Box sx={{ width: '16%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '40%' }}>Shop</Typography>
+                        </Box>
+                        <Box sx={{ width: '10%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '40%' }}>Ratings</Typography>
+                        </Box>
+                        <Box sx={{ width: '10%' }} className={classes.header}>
+                            <Typography style={{ fontWeight: 600, fontSize: '15px' }} sx={{ marginLeft: '34%' }}>Comments</Typography>
                         </Box>
                     </Box>
                     </CardContent>
@@ -217,17 +206,13 @@ const ManageAccountPage = () => {
                 <Card variant="outlined" sx={cardStyle}>
                     <CardContent>
                         {
-                        (showRestricted ? 
-                            (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => {return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
-                            .filter(function( obj ) {
-                                return obj.admin_customer_suspensions != null;
-                            })
-                            : (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).sort((a,b) => { return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
-                        ).slice((page -1)  * 10, (page - 1) * 10 + 10)
+                        (products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).sort((a,b) => { 
+                            return (a[sortBy] > b[sortBy]) ? (sortOrder ? -1 : 1) : (sortOrder ? 1 : -1) ; }))
+                            .slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
                             <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
-                                    <UserCard user={key} deleteRestriction={deleteRestriction} auth={auth}/>
+                                    <ProductCard product={key}/>
                                 </div>
                             </li>
                         ))}
@@ -237,7 +222,11 @@ const ManageAccountPage = () => {
             </Card>
             <CardContent>
                 <div style={{ display:'flex', justifyContent:'center' }}>
-                    <Pagination count={Math.ceil(((showRestricted ? (users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).filter(function( obj ) {return obj.admin_customer_suspensions != null;})).length : users.filter(user => (user.customer_info.firstname + " " + user.customer_info.lastname).toUpperCase().includes(search.toUpperCase())).length))/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>
+                    {
+                        products.length > 0 ?
+                        <Pagination count={Math.ceil((products.filter(product => product.title.toUpperCase().includes(search.toUpperCase())).length)/10)} showFirstButton showLastButton color="primary" shape="rounded" onChange={handlePagination}/>:
+                        <Pagination count={1}/>
+                    }
                 </div>
             </CardContent>
         </div>

@@ -1249,9 +1249,11 @@ model admin_reported_customer {
 }
 
 model admin_audit {
-  admin_id   Int      @id
-  login_date DateTime @db.Timestamp(6)
-  action     String
+  id         Int       @id(map: "admin_audit_pk") @default(autoincrement())
+  admin_id   Int?
+  login_date DateTime? @db.Timestamp(6)
+  action     String?   @db.VarChar
+  admin      admin?    @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "admin_audit_admin_id_fk")
 }
 
 model home_banner_picture {
@@ -1537,9 +1539,10 @@ model delivery_admin_log {
 }
 
 model admin {
-  id       Int    @id(map: "admin_pk") @default(autoincrement())
-  username String @db.VarChar(20)
-  password String
+  id          Int           @id(map: "admin_pk") @default(autoincrement())
+  username    String        @db.VarChar(20)
+  password    String
+  admin_audit admin_audit[]
 }
 
 enum homeBannerPicturePosition {
