@@ -9,10 +9,9 @@ import Button from "@mui/material/Button";
 import config from "../../common/constants";
 import dayjs from "dayjs";
 
-const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
+const ShopDetails = ({ shopDetail, shopId, auth, avgRating, axios }) => {
   const [activeTime, setActiveTime] = useState();
   const [joinTime, setJoinTime] = useState();
-  const rating = "4.7";
 
   const handleGoToChat = () => {
     if (auth.isLoggedIn)
@@ -29,12 +28,15 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
   const goToShop = () => {
     if (auth.isLoggedIn) {
       axios
-        .post(`${config.SERVER_URL}/log-system/shop/${user.id}/${shopId}`, {
-          view_date: new Date().toISOString(),
-        })
+        .post(
+          `${config.SERVER_URL}/log-system/shop/${auth.user.id}/${shopId}`,
+          {
+            view_date: new Date().toISOString(),
+          }
+        )
         .then(({ data }) => {
           if (data.success) {
-            location.href = `http://localhost:3000/chat/${shopId}`;
+            location.href = `http://localhost:3000/shop/${shopId}`;
           } else {
             console.log(data);
           }

@@ -19,12 +19,13 @@ export class CommentService {
 							customer_picture: {
 								include: {
 									picture_id_from_customer_picture: true
-									// Get file
-								},
+								}, 
 							},
-						},
+						}, 
 					},
-				},
+				}, orderBy: {
+					id : 'desc'
+				}
 			});
 
 			const fetch_product_hrating = await this.prisma.product_reviews.aggregate({
@@ -67,7 +68,7 @@ export class CommentService {
 				const id_comment = picture_id_array[i].id
 				for(let id of picture_id_array[i].review_picture_id){
 					comment_pictures.push(this.prisma.product_reviews_picture.findFirst({
-						where: {id},
+						where: { id }
 					}));
 				}
 				comment_pictures = await Promise.all(comment_pictures);
