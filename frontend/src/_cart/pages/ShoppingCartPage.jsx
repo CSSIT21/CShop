@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Box } from "@mui/system";
+import config from '../../common/constants';
 import ProductSuggestion from "../components/SuggestionSection";
 import fakeProducts from "~/common/faker/fakeProducts";
 import CartSection from "../components/CartSection";
@@ -20,7 +21,7 @@ function ShoppingCartPage() {
 
   useEffect(() => {
     setonLoad(true);
-    axios.get(`http://localhost:8080/cart/${auth.user.id}`).then((item) => {
+    axios.get(`${config.SERVER_URL}/cart/${auth.user.id}`).then((item) => {
       setProducts(
         item.data.newD.map((item) => {
           return {

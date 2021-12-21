@@ -14,7 +14,8 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating, axios }) => {
   const [joinTime, setJoinTime] = useState();
 
   const handleGoToChat = () => {
-    if (auth.isLoggedIn) location.href = `http://localhost:3000/chat/${shopId}`;
+    if (auth.isLoggedIn)
+      location.href = `${config.SERVER_URL}/chat/${shopDetail.id}`;
     else {
       Swal.fire({
         title: "Please login to chat with shop!",

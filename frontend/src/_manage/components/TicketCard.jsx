@@ -3,6 +3,7 @@ import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Collapse } from "@mui/material";
 import { Typography } from "@mui/material";
+import config from '../../common/constants';
 import { CardLayout } from "./UserCardStyled";
 import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
@@ -56,7 +57,7 @@ export class TicketCard extends React.Component {
 
   changeAdmin = async () => {
     const res = await axios.post(
-      "http://localhost:8080/manageaccount/tickets/update/admin",
+        config.SERVER_URL + "manageaccount/tickets/update/admin",
       {
         "id": this.props.ticket.id,
         "status": '',
@@ -65,7 +66,7 @@ export class TicketCard extends React.Component {
     );
 
     await axios.post(
-      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + "Assigned ticket #" + this.props.ticket.id
+        config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + "Assigned ticket #" + this.props.ticket.id
     );
 
     document.location.reload();
@@ -73,7 +74,7 @@ export class TicketCard extends React.Component {
 
   returnAdmin = async () => {
     const res = await axios.post(
-      "http://localhost:8080/manageaccount/tickets/update/admin",
+        config.SERVER_URL + "/manageaccount/tickets/update/admin",
       {
         "id": this.props.ticket.id,
         "status": '',
@@ -82,7 +83,7 @@ export class TicketCard extends React.Component {
     );
 
     await axios.post(
-      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + "Returned ticket #" + this.props.ticket.id
+        config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + "Returned ticket #" + this.props.ticket.id
     );
 
     document.location.reload();
@@ -93,7 +94,7 @@ export class TicketCard extends React.Component {
 
     if(this.props.ticket.admin_support_status != null){
       const res = await axios.post(
-        "http://localhost:8080/manageaccount/tickets/update/status",
+          config.SERVER_URL + "/manageaccount/tickets/update/status",
         {
           "id": this.props.ticket.id,
           "status": event.target.value,
@@ -103,7 +104,7 @@ export class TicketCard extends React.Component {
     }
 
     await axios.post(
-      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Changed status of ticket #' + this.props.ticket.id + " to " + event.target.value
+        config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Changed status of ticket #' + this.props.ticket.id + " to " + event.target.value
     );
     
     document.location.reload();
@@ -113,16 +114,16 @@ export class TicketCard extends React.Component {
   async componentDidMount(){
 
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/users/id?id=" + this.props.ticket.customer_id
+        config.SERVER_URL + "/manageaccount/users/id?id=" + this.props.ticket.customer_id
     );
     const fetchedData3 = await axios.get(
-      "http://localhost:8080/manageaccount/users/id?id=" + this.props.ticket.admin_id
+        config.SERVER_URL + "/manageaccount/users/id?id=" + this.props.ticket.admin_id
     );
     const fetchedData2 = await axios.get(
-      "http://localhost:8080/manageaccount/tickets/type?id=" + this.props.ticket.support_type_id
+        config.SERVER_URL + "/manageaccount/tickets/type?id=" + this.props.ticket.support_type_id
     );
     const fetchedData4 = await axios.get(
-      "http://localhost:8080/manageaccount/tickets/picture?id=" + this.props.ticket.picture_id
+        config.SERVER_URL + "/manageaccount/tickets/picture?id=" + this.props.ticket.picture_id
     );
 
     this.filer = fetchedData.data.customer_info;

@@ -3,6 +3,7 @@ import { Card, TextField } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Collapse } from "@mui/material";
 import { Typography } from "@mui/material";
+import config from '../../common/constants';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
 import { withStyles } from "@mui/styles";
@@ -48,18 +49,18 @@ export class UserCard extends React.Component {
   async componentDidMount(){
     let fetchedData3 = {}
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/address?id=" + this.props.user.id
+      config.SERVER_URL + "/manageaccount/address?id=" + this.props.user.id
     );
     const fetchedData2 = await axios.get(
-      "http://localhost:8080/manageaccount/suspension/types"
+        config.SERVER_URL + "/manageaccount/suspension/types"
     );
     if(this.props.user.customer_picture != null){
     fetchedData3 = await axios.get(
-      "http://localhost:8080/manageaccount/users/picture?id=" + this.props.user.customer_picture.customer_id
+        config.SERVER_URL + "/manageaccount/users/picture?id=" + this.props.user.customer_picture.customer_id
     );
     }
     const fetchedData4 = await axios.get(
-      "http://localhost:8080/manageaccount/users/reported?id=" + this.props.user.id
+        config.SERVER_URL + "/manageaccount/users/reported?id=" + this.props.user.id
     )
     this.address = fetchedData.data;
     this.types = fetchedData2.data;
@@ -93,7 +94,7 @@ export class UserCard extends React.Component {
 
     if(this.props.user.admin_customer_suspensions == null){
       const res = await axios.post(
-        "http://localhost:8080/manageaccount/suspension/users/create",
+          config.SERVER_URL + "/manageaccount/suspension/users/create",
         {
           "customer_id": this.props.user.id,
           "description": this.desc,
@@ -107,12 +108,12 @@ export class UserCard extends React.Component {
       );
 
       await axios.post(
-        "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Suspened ' + this.props.user.customer_info.firstname + " " + this.props.user.customer_info.lastname
+          config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Suspened ' + this.props.user.customer_info.firstname + " " + this.props.user.customer_info.lastname
       );
     }
     else{
       const res = await axios.post(
-        "http://localhost:8080/manageaccount/suspension/users/update",
+          config.SERVER_URL + "/manageaccount/suspension/users/update",
         {
           "id": this.props.user.id,
           "description": this.desc,
@@ -126,7 +127,7 @@ export class UserCard extends React.Component {
       );
 
       await axios.post(
-        "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Updated suspension of ' + this.props.user.customer_info.firstname + " " + this.props.user.customer_info.lastname
+          config.SERVER_URL + "/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Updated suspension of ' + this.props.user.customer_info.firstname + " " + this.props.user.customer_info.lastname
       );
     }
 
