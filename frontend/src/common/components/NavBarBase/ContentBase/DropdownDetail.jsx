@@ -14,6 +14,7 @@ import { For } from "~/common//utils";
 import StyledMenu from "../../StyledMenu";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import authState from "~/common/store/authState";
+import ChatService from "~/_chat/services/ChatService";
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,7 +51,7 @@ const DropdownDetail = ({ children }) => {
   const onLogOut = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/home");
-    sessionStorage.clear()
+    ChatService.disconnect()
     return resetAuth();
   };
 

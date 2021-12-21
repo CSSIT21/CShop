@@ -51,12 +51,13 @@ class ChatService {
     _uid = -1
     _isCustomer = null
     _users = null
+    static socket
 
     constructor(user, onGetComplete, onReceive) {
         // console.log('init')
         this._uid = user.id
         this._isCustomer = user.role === 'CUSTOMER'
-        this.socket = io(config.SOCKET_URL)
+        ChatService.socket = io(config.SOCKET_URL)
         this.onGetComplete = onGetComplete
         this.onReceive = onReceive
         this.init()
@@ -66,11 +67,11 @@ class ChatService {
         if (!sessionStorage.getItem('temp')) {
             sessionStorage.setItem('temp', '{}')
         }
-        this.socket.on('get', (response) => {
+        ChatService.socket.on('get', (response) => {
             this.handleGet(response)
         })
 
-        this.socket.on('status', (response) => {
+        ChatService.socket.on('status', (response) => {
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let conv = messages.find((m) => m.id === response.conversation_id)
             if (response.peer === 'shop' && this._isCustomer) {
@@ -79,7 +80,7 @@ class ChatService {
             sessionStorage.setItem('messages', JSON.stringify(messages))
         })
 
-        this.socket.on('send', (response) => {
+        ChatService.socket.on('send', (response) => {
             // console.log('send')
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let index = messages.findIndex(
@@ -119,7 +120,7 @@ class ChatService {
             }
         })
 
-        this.socket.on('read', (response) => {
+        ChatService.socket.on('read', (response) => {
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let conversation = messages.find(
                 (m) => m.id === response.conversation_id
@@ -135,7 +136,7 @@ class ChatService {
         })
 
         // if (!sessionStorage.getItem('messages')) {
-        //     this.socket.emit('get', {
+        //     ChatService.socket.emit('get', {
         //         item: 'conversation',
         //         as: this._uid
         //     })
@@ -148,7 +149,7 @@ class ChatService {
         //     sessionStorage.setItem('isGetting', 'true')
         // }
 
-        this.socket.emit('get', {
+        ChatService.socket.emit('get', {
             item: sessionStorage.getItem('messages')
                 ? 'latestMessageId'
                 : 'conversation',
@@ -163,7 +164,7 @@ class ChatService {
             case 'conversation':
                 for (const conv of response.data) {
                     // console.log('joining ' + conv.id)
-                    this.socket.emit('join', {
+                    ChatService.socket.emit('join', {
                         conversation_id: conv.id,
                         from_customer: this._isCustomer
                     })
@@ -191,7 +192,7 @@ class ChatService {
                     (messages.length > 0 &&
                         messages[0].latest_id !== response.data.id)
                 ) {
-                    this.socket.emit('get', {
+                    ChatService.socket.emit('get', {
                         item: 'conversation',
                         as: this._uid
                     })
@@ -199,7 +200,7 @@ class ChatService {
                 } else if (messages.length > 0) {
                     for (const conv of messages) {
                         conv.active = false
-                        this.socket.emit('join', {
+                        ChatService.socket.emit('join', {
                             conversation_id: conv.id,
                             from_customer: this._isCustomer
                         })
@@ -241,7 +242,7 @@ class ChatService {
 
     getConversation(conversation_id, callback) {
         console.log('get', conversation_id)
-        this.socket.emit('get', {
+        ChatService.socket.emit('get', {
             item: 'message',
             with: {
                 conversation_id: conversation_id
@@ -265,7 +266,7 @@ class ChatService {
             'color:white;background:green',
             ''
         )
-        this.socket.emit('send', message)
+        ChatService.socket.emit('send', message)
         let messages = JSON.parse(sessionStorage.getItem('messages'))
         let conversation = messages.find((m) => m.id === conversation_id)
         conversation.messages.push({
@@ -308,7 +309,7 @@ class ChatService {
         const url = await getUrl(image)
         if (!url.success) return
         message.content = url.original_link
-        this.socket.emit('send', message)
+        ChatService.socket.emit('send', message)
 
         console.log(
             `%c ChatService.js %c Image sent to conv #${conversation_id}`,
@@ -357,7 +358,7 @@ class ChatService {
         if (!url.success) return
         message.content = url.original_link
         message.content_extra = thumbnail.original_link
-        this.socket.emit('send', message)
+        ChatService.socket.emit('send', message)
 
         console.log(
             `%c ChatService.js %c Video sent to conv #${conversation_id}`,
@@ -383,11 +384,18 @@ class ChatService {
                 (m) => m.id === message_id
             )?.from_customer
         ) {
-            this.socket.emit('read', {
+            ChatService.socket.emit('read', {
                 conversation_id: conversation_id,
                 message_id: message_id
             })
         }
+    }
+
+    static disconnect() {
+        ChatService.socket?.disconnect()
+        sessionStorage.removeItem('temp')
+        sessionStorage.removeItem('messages')
+        sessionStorage.removeItem('isGetting')
     }
 }
 
