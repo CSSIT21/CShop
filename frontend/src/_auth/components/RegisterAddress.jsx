@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
@@ -141,7 +141,6 @@ const RegisterAddress = ({
       ].sort()
     );
   }, [userInfo.subDistrict]);
-
   const [addressLineError, setaddressLineError] = useState("");
   const [provinceError, setprovinceError] = useState("");
   const [districtError, setdistrictError] = useState("");
@@ -162,12 +161,17 @@ const RegisterAddress = ({
               fullWidth
               multiline
               rows={5}
+              error={addressLineError.length === 0 ? false : true}
               value={userInfo.addressLine}
               onChange={(e) => {
                 setUserInfo({ ...userInfo, addressLine: e.target.value });
+                setaddressLineError("");
               }}
             />
           </Box>
+          {addressLineError.length != 0 && (
+            <Box className={classes.error}>{addressLineError}</Box>
+          )}
           <Box className={classes.rowSelect}>
             <Box className={classes.textFieldBox} style={{ width: "45%" }}>
               <TextField
@@ -177,9 +181,11 @@ const RegisterAddress = ({
                 fullWidth
                 select
                 label="Select Province"
+                error={provinceError.length === 0 ? false : true}
                 value={userInfo.province}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, province: e.target.value });
+                  setprovinceError("");
                 }}
               >
                 {province.map((data, idx) => {
@@ -199,9 +205,11 @@ const RegisterAddress = ({
                 fullWidth
                 select
                 label="Select District"
+                error={districtError.length === 0 ? false : true}
                 value={userInfo.district}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, district: e.target.value });
+                  setdistrictError("");
                 }}
               >
                 {district.map((data, idx) => (
@@ -212,6 +220,28 @@ const RegisterAddress = ({
               </TextField>
             </Box>
           </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            {provinceError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {provinceError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
+            {districtError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {districtError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
+          </Box>
           <Box className={classes.rowSelect}>
             <Box className={classes.textFieldBox} style={{ width: "45%" }}>
               <TextField
@@ -221,9 +251,11 @@ const RegisterAddress = ({
                 fullWidth
                 select
                 label="Select Sub District"
+                error={subDistrictError.length === 0 ? false : true}
                 value={userInfo.subDistrict}
                 onChange={(e) => {
                   setUserInfo({ ...userInfo, subDistrict: e.target.value });
+                  setsubDistrictError("");
                 }}
               >
                 {subDistrict.map((data, idx) => (
@@ -241,11 +273,13 @@ const RegisterAddress = ({
                 fullWidth
                 select
                 label="Select Postal Code"
+                error={postalCodeError.length === 0 ? false : true}
                 value={userInfo.postalCode}
                 onChange={(e) => {
                   setUserInfo((user) =>
                     assign({ ...user }, { postalCode: e.target.value })
                   );
+                  setpostalCodeError("");
                 }}
               >
                 {postalCode.map((data, idx) => (
@@ -255,6 +289,28 @@ const RegisterAddress = ({
                 ))}
               </TextField>
             </Box>
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            {subDistrictError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {subDistrictError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
+            {postalCodeError.length != 0 ? (
+              <Box className={classes.error} sx={{ width: "45%" }}>
+                {postalCodeError}
+              </Box>
+            ) : (
+              <Box sx={{ width: "45%" }}></Box>
+            )}
           </Box>
         </Box>
       </Box>
@@ -266,7 +322,6 @@ const RegisterAddress = ({
             backgroundColor: "#ffffff",
             boxShadow: "none",
             border: "1px solid #FD6637",
-            borderRadius: "12px",
             width: "300px",
             height: "55px",
             color: "#FD6637",
@@ -275,14 +330,6 @@ const RegisterAddress = ({
         >
           Back
         </Button>
-
-        <CButton
-          title="Register"
-          onClick={handleRegister}
-          width="300px"
-          height="55px"
-        />
-
         {!isLoading ? (
           <Button
             variant="contained"
@@ -308,7 +355,6 @@ const RegisterAddress = ({
             Register
           </LoadingButton>
         )}
-
       </Box>
     </Box>
   );
@@ -329,7 +375,7 @@ const useStyles = makeStyles({
     marginBottom: "40px",
   },
   textFieldBox: {
-    marginBottom: "35px",
+    marginTop: "35px",
     backgroundColor: "white",
     borderRadius: "10px",
     width: "100%",
@@ -347,6 +393,13 @@ const useStyles = makeStyles({
     justifyContent: "space-around",
     margin: "70px 0 180px 0",
     padding: "0 12%",
+  },
+  error: {
+    fontSize: "14px",
+    color: "#FD3737",
+    textAlign: "right",
+    width: "100%",
+    marginTop: "6px",
   },
 });
 export default RegisterAddress;
