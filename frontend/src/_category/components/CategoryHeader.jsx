@@ -15,27 +15,27 @@ import { useParams } from 'react-router-dom';
 
 const CategoryHeader = ({ title = "", ...rest }) => {
     const { id } = useParams();
-    if(id == 1 ){
+    if(id == 2 ){
         return <img src={CategoryHeaderIt} {...rest} alt="" />;
-    }else if(id == 2){
-        return <img src={CategoryHeaderEducation} {...rest} alt="" />;
     }else if(id == 3){
+        return <img src={CategoryHeaderEducation} {...rest} alt="" />;
+    }else if(id == 4){
         return <img src={CategoryHeaderFashion} {...rest} alt="" />;
     }
-    else if(id == 9){
+    else if(id == 10){
          return <img src={CategoryHeaderAccessories} {...rest} alt="" />;
     }
-    else if(id == 4){
+    else if(id == 5){
         return <img src={CategoryHeaderLogo} {...rest} alt="" />;
-    }else if(id == 5){
-        return <img src={CategoryHeaderFurniture} {...rest} alt="" />;
     }else if(id == 6){
-        return <img src={CategoryHeaderElectronics} {...rest} alt="" />;
+        return <img src={CategoryHeaderFurniture} {...rest} alt="" />;
     }else if(id == 7){
-        return <img src={CategoryHeaderFood} {...rest} alt="" />;
+        return <img src={CategoryHeaderElectronics} {...rest} alt="" />;
     }else if(id == 8){
+        return <img src={CategoryHeaderFood} {...rest} alt="" />;
+    }else if(id == 9){
         return <img src={CategoryHeaderSports} {...rest} alt="" />;
-    }else if(id == 10){
+    }else if(id == 11){
         return <img src={CategoryHeaderOther} {...rest} alt="" />; 
     }                                
 
