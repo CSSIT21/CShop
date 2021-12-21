@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { borderRadius, Box } from "@mui/system";
 import { Button, Divider, Modal, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { makeStyles } from "@mui/styles";
@@ -11,7 +11,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import PayByInternetBanking from "./PayByInternetBanking";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Popup from "../components/Popup";
@@ -19,35 +18,36 @@ import Axios from "axios";
 import config from "~/common/constants";
 import { useEffect } from "react";
 import { useState } from "react";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
 const useStyles = makeStyles({
-  navbarWrapper: {
+  sidebarWrapper: {
     display: "flex",
     backgroundColor: "white",
-    marginBottom: "1%",
   },
 
-  navbarRight: {
-    color: "#FD6637",
-    padding: "0 0 0 5%",
+  sidebarLeft: {
+    width: "20%",
+    margin: "1.5% 1.5% ",
+  },
+
+  sidebarRight: {
+    height: "100vh",
     display: "flex",
-    textAlign: "center",
-    justifyContent: "left",
-    alignItems: "center",
-    background: "#FFE8E1CC",
+    textAlign: "left",
+    justifyContent: "center",
+    background: "#f1f1f1",
   },
 
   cardWallet: {
-    borderRadius: "20px",
-    width: "25%",
+    borderRadius: "25px",
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
   },
 
   transTable: {
-    margin: "1%",
-    width: "75%",
+    width: "90%",
     border: "1",
     borderColor: "gray",
   },
@@ -74,76 +74,65 @@ const rows = [
   createData("1567879", 123.45, "None", false),
 ];
 
-const Wallet = ({order_id}) => {
+const Wallet = ({ order_id }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const classes = useStyles();
 
-  
   useEffect(() => {
-    getWallet()
-  }, [])
+    getWallet();
+  }, []);
 
   const [wallet, setWallet] = useState([]);
-  const [order, setOrder] = useState([])
-  const orderId = { "orderId" : 238}
+  const [order, setOrder] = useState([]);
+  const orderId = { orderId: 238 };
 
   const getWallet = () => {
-    Axios.post(`${config.SERVER_URL}/payment/mywallet`, orderId).then((res) => {
-      if (res.data.success) {
-        setWallet(res.data.walletOrder.wallet);
+    Axios.post(`${config.SERVER_URL}/payment/mywallet`, orderId)
+      .then((res) => {
+        if (res.data.success) {
+          setWallet(res.data.walletOrder.wallet);
 
-        setOrder(res.data.walletOrder.order);
-      }
-    }).catch((err) => console.log(err))
-  }
-
-  
+          setOrder(res.data.walletOrder.order);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <>
-      <Box className={classes.navbarWrapper}>
-        <Box
-          sx={{
-            width: "12%",
-            padding: "10px",
-            margin: "0 20px 0 0",
-          }}
-        >
+      <Box className={classes.sidebarWrapper}>
+        <Box className={classes.sidebarLeft}>
           <Link to="/home">
-            <img width="80%" src={CShopLogo} alt="Logo" />
+            <img width="140px" src={CShopLogo} alt="Logo" />
           </Link>
-        </Box>
+          <Card
+            className={classes.cardWallet}
+            sx={{
+              maxWidth: "100%",
+              margin: "12% 0",
+              padding: "4%",
+              background: "#F7F7F7",
+            }}
+          >
+            <CardContent>
+              <Typography variant="h4" component="div">
+                ฿ {wallet.balance}
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} variant="caption" color="text.secondary">
+                Current CShop Wallet Balance
+              </Typography>
+            </CardContent>
+          </Card>
 
-        <Box className={classes.navbarRight} sx={{ width: "88%" }}>
-          <Typography variant="h5">Wallet</Typography>
-        </Box>
-      </Box>
-
-      <Box className={classes.navbarWrapper}>
-        <Card
-          className={classes.cardWallet}
-          sx={{
-            minWidth: 275,
-            margin: "0 0 0 1%",
-            padding: "2%",
-            background: "#F7F7F7",
-          }}
-        >
-          <CardContent>
-            <Typography variant="h4" component="div">
-              ฿ {wallet.balance}
-            </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Current CShop Wallet Balance
-            </Typography>
-          </CardContent>
-          <Divider sx={{ margin: " 2% 0 5% 0" }} />
           <Button
             variant="contained"
             startIcon={<AddIcon />}
             onClick={handleOpen}
+            sx={{
+              width: "100%",
+            }}
           >
             Add Money to Wallet
           </Button>
@@ -155,42 +144,89 @@ const Wallet = ({order_id}) => {
           >
             <Popup />
           </Modal>
-        </Card>
+        </Box>
 
-        <Box className={classes.transTable}>
-          <Typography variant="h5" marginLeft="3%">
-            All Transaction Detail
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table sx={{ border: "1px solid #ddd" }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="20">Order Number</TableCell>
-                  <TableCell align="right">Withdrawal&nbsp;</TableCell>
-                  <TableCell align="right">Deposit&nbsp;</TableCell>
-                  <TableCell align="right">Success</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
+        <Box className={classes.sidebarRight} sx={{ width: "88%" }}>
+          <Box className={classes.transTable}>
+            <Typography variant="h5" margin="4% 3% 2%">
+              All Transaction Detail
+            </Typography>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
                   <TableRow
-                    key={row.number}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    sx={{
+                      background: "#FFF8B7",
+                    }}
                   >
-                    <TableCell component="th" scope="row">
-                      {row.number}
+                    <TableCell padding="20">Order Number</TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                      Withdrawal&nbsp;
                     </TableCell>
-                    <TableCell align="right">{row.withdrawal}</TableCell>
-                    <TableCell align="right">{row.deposit}</TableCell>
-                    <TableCell align="right">{row.success}</TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                      Deposit&nbsp;
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                    </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody sx={{ textAlign: "center" }}>
+                  {rows.map((row) => (
+                    <TableRow
+                      key={row.number}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row" sx={{ border: 0 }}>
+                        #{row.number}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{ border: 0, textAlign: "center" }}
+                      >
+                        {row.withdrawal}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{ border: 0, textAlign: "center" }}
+                      >
+                        {row.deposit}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          border: 0,
+                          display: "flex",
+                          alignContent: "center",
+                          justifyContent: "center",
+                          color: "green"
+                        }}
+                      >
+                        <CheckCircleRoundedIcon />
+                        Success
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </Box>
       </Box>
-      <PayByInternetBanking/>
     </>
   );
 };
