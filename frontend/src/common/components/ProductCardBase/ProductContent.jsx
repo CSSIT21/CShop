@@ -11,14 +11,13 @@ import {
 } from "@mui/material";
 import { isFunc, isUndef } from "~/common/utils/index";
 import CButton from "~/common/components/CButton";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
+import authState from "~/common/store/authState";
+import config from "~/common/constants";
 
-const ProductContent = ({
-  product,
-  status,
-  onFavourite,
-  statusProps = {},
-}) => {
-
+const ProductContent = ({ product, status, onFavourite, statusProps = {} }) => {
+  const { user, isLoggedIn } = useRecoilValue(authState);
   return (
     <>
       <CardContent sx={contentStyle}>

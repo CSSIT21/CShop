@@ -18,11 +18,11 @@ import Swal from "sweetalert2";
 // import authState from "../../common/store/authState";
 
 function ReviewDialog({
-  productImg,
-  productName,
-  productId,
-  shopId,
-  customerId,
+  productImg = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
+  productName = "Product Name",
+  productId = 1,
+  shopId = 1,
+  customerId = 1,
   // ตัอย่างoptions
   // กรณีที่สินค้ามีoption 2
   // options = [
@@ -44,7 +44,6 @@ function ReviewDialog({
   // ],
   // กรณีที่สินค้าไม่มีoption
   options,
-  isReview = true, // ต้องถามธรรม์อีกที
 }) {
   const [open, setOpen] = useState(false);
   const [openThankYouDialog, setOpenThankYouDialog] = useState(false);
@@ -58,7 +57,7 @@ function ReviewDialog({
     { key: 4, label: "Good Ship Services", clicked: false },
   ]);
   const [imageList, setImageList] = useState([]);
-  const [starScore, setStarScore] = useState();
+  const [starScore, setStarScore] = useState(0);
   const onUploadFile = (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target?.files[0]);
@@ -91,12 +90,17 @@ function ReviewDialog({
     chipData.forEach((el) => {
       if (el.clicked) chipCheck = true;
     });
+    console.log(chipCheck);
     imageList.forEach((el) => {
       if (imageList) imageCheck = true;
     });
+    console.log(imageCheck);
     if (commentProductText) commentCheck = true;
+    console.log(commentCheck);
     if (starScore != 0) scoreCheck = true;
+    console.log(scoreCheck);
     if (chipCheck || imageCheck || commentCheck || scoreCheck) allCheck = true;
+    console.log(allCheck);
     return allCheck;
   }, [chipData, imageList, commentProductText, starScore]);
 
