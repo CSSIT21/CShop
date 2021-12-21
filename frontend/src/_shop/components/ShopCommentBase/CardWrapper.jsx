@@ -59,7 +59,7 @@ const CardWrapper = ({ type }) => {
                 rating={item.rating}
                 comment={item.comment}
                 productDetail={item.productDetail}
-                review_time={item.review_time}
+                review_time={item.review_time ? item.review_time : item.date}
                 key={item.id}
               />
             )}
