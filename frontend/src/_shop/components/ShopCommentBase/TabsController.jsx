@@ -15,21 +15,30 @@ import config from "~/common/constants";
 const TabsController = ({ ...rest }) => {
   const classes = useStyles();
   const { id, cateId } = useParams();
-  const [onLoad, setonLoad] = useState(false);
   const [value, setValue] = React.useState(0);
-  const [rating, setrating] = useState();
+  const [rating, setrating] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   useEffect(() => {
     axios.get(`${config.SERVER_URL}/sellershop/${id}`).then(({ data }) => {
       if (data.shopinfo.rating) {
-        setrating(Math.round(data.shopinfo.rating * 10) / 10);
+        let a = data.shopinfo.rating;
+        let floor = Math.floor(a);
+        let r = Math.abs(floor - a);
+        if (r > 0.5) {
+          a = floor + 1;
+        } else if (r == 0) {
+          a = floor;
+        } else if (r <= 0.5) {
+          a = floor + 0.5;
+        }
+        setrating(a);
       } else {
         setrating(0);
       }
     });
-  }, []);
+  }, [value]);
   return (
     <>
       <Box sx={{ width: "100%", padding: "20px" }} {...rest}>
@@ -60,8 +69,8 @@ const TabsController = ({ ...rest }) => {
             Rating {rating} out of 5
           </Typography>
           <Rating
-            defaultValue={rating}
-            precision={0.1}
+            value={rating}
+            precision={0.5}
             readOnly
             icon={
               <StarRateRounded
