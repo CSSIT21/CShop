@@ -11,44 +11,23 @@ import config from "~/common/constants";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 
-const SuggestionSection = ({ onFavorite = () => { } }) => {
+const SuggestionSection = () => {
+	const classes = useStyles();
 	const { isLoggedIn, user } = useRecoilValue(authState);
 	const [products, setProducts] = useState([]);
-	const [skip, setSkip] = useState(4);
-	const classes = useStyles();
-	const [product_ids, setProduct_ids] = useState([]);
+	const [skip, setSkip] = useState(0);
+
+	useEffect(() => {
+		getData();
+	}, [skip]);
 
 	const getData = () => {
-		if (isLoggedIn) {
-			axios
-				.get(`https://ml-1.cshop.cscms.ml/suggestHomepage?uid=${user.id}`)
-				.then(({ data }) => {
-					// setProduct_ids(data.products);
-					// return data.products;
-					setProduct_ids([123, 234, 45, 452, 45, 92, 35, 6, 8, 9, 55, 7563, 92, 32, 6, 23, 2, 4, 5, 7, 34, 2, 35, 776, 4576, 908, 34]);
-					return [123, 234, 45, 452, 45, 92, 35, 6, 8, 9, 55, 7563, 92, 32, 6, 23, 2, 4, 5, 7, 34, 2, 35, 776, 4576, 908, 34];
-				})
-				.then((products) => {
-					axios
-						.get(`${config.SERVER_URL}/home/suggestions/${user.id}?product_ids=${products}&take=12&skip=0`)
-						.then(({ data }) => {
-							if (data.success) {
-								return setProducts(data.suggestions);
-							}
-							else {
-								return console.log(data);
-							}
-						})
-				})
-				.catch((err) => {
-					console.log(err.message);
-				})
-		}
-	};
+		let customer_id = 0, take = 8;
+		if (isLoggedIn) customer_id = user.id;
+		if (skip === 0) take = 12;
 
-	const getMoreData = () => {
 		axios
-			.get(`${config.SERVER_URL}/home/suggestions/${user.id}?product_ids=${product_ids}&take=8&skip=${skip}`)
+			.get(`${config.SERVER_URL}/home/suggestions/${customer_id}?take=${take}&skip=${skip}`)
 			.then(({ data }) => {
 				if (data.success) {
 					return setProducts(products => [...products, ...data.suggestions]);
@@ -62,13 +41,31 @@ const SuggestionSection = ({ onFavorite = () => { } }) => {
 			})
 	};
 
-	useEffect(() => {
-		getData();
-	}, []);
+	const onFavorite = (id) => {
+		if (isLoggedIn) {
+			setProducts(products => {
+				const target = products.find((e) => e.id == id);
 
-	useEffect(() => {
-		getMoreData();
-	}, [skip]);
+				if (target.customer_wishlist.length > 0) target.customer_wishlist.pop();
+				else target.customer_wishlist = [
+					{ product_id: target.id, customer_id: user.id },
+				];
+
+				return [...products];
+			});
+		}
+		else {
+			Swal.fire({
+				text: "Please login to add a product to your wishlist!",
+				icon: "error",
+				confirmButtonText: "OK",
+				confirmButtonColor: "#FD6637",
+				width: 300,
+				timer: 2000,
+				timerProgressBar: true
+			});
+		}
+	};
 
 	return (
 		<Box className={classes.suggestionWrapper}>
@@ -91,7 +88,10 @@ const SuggestionSection = ({ onFavorite = () => { } }) => {
 						<CButton
 							title="Show more products"
 							height='40px'
-							onClick={() => setSkip(skip + 8)}
+							onClick={() => {
+								if (skip === 0) setSkip(12);
+								else setSkip(skip => skip + 8);
+							}}
 						/>
 					</Box>
 				</>)

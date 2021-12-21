@@ -11,41 +11,13 @@ import {
 } from "@mui/material";
 import { isFunc, isUndef } from "~/common/utils/index";
 import CButton from "~/common/components/CButton";
-import authState from "~/common/store/authState";
-import { useRecoilValue } from "recoil";
-import axios from "axios";
-import config from "~/common/constants";
 
 const ProductContent = ({
   product,
   status,
   onFavourite,
   statusProps = {},
-  addToCart,
 }) => {
-  const { user, isLoggedIn } = useRecoilValue(authState);
-
-  const onAddToCard = () => {
-    if (isLoggedIn) {
-      axios
-        .post(
-          `${config.SERVER_URL}/log-system/add-to-cart/${user.id}/${product.id}`,
-          {
-            added_date: new Date().toISOString(),
-          }
-        )
-        .then(({ data }) => {
-          if (data.success) {
-            return console.log(data.addToCart);
-          } else {
-            return console.log(data);
-          }
-        })
-        .catch((err) => {
-          return console.log(err.message);
-        });
-    }
-  };
 
   return (
     <>
@@ -96,16 +68,6 @@ const ProductContent = ({
           )}
         </IconButton>
       </CardActions>
-      {addToCart && (
-        <CButton
-          icon={<ShoppingCartIcon sx={{ fontSize: "18px" }} />}
-          title="Add to cart"
-          fontSize="14px"
-          width="100%"
-          height="38px"
-          onClick={onAddToCard}
-        />
-      )}
     </>
   );
 };
