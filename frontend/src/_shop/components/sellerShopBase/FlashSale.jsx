@@ -19,17 +19,13 @@ const FlashSale = ({ flashSale, flashSaleItems, onFavourite }) => {
   const curDate = new Date().getTime();
   const endDate = new Date(flashSale.ended_date).getTime();
   const [timeLeft, settimeLeft] = useState(endDate - curDate);
-  const hours = useMemo(
-    () => Math.floor(endDate - curDate / 3600000),
-    [curDate]
-  );
+  const hours = useMemo(() => Math.floor(timeLeft / 3600000), [curDate]);
   const mins = useMemo(
-    () => Math.floor((endDate - curDate - hours * 3600000) / 60000),
+    () => Math.floor((timeLeft - hours * 3600000) / 60000),
     [curDate]
   );
   const secs = useMemo(
-    () =>
-      Math.floor((endDate - curDate - mins * 60000 - hours * 3600000) / 1000),
+    () => Math.floor((timeLeft - mins * 60000 - hours * 3600000) / 1000),
     [curDate]
   );
   const [rotateSecs, setrotateSecs] = useState(false);
