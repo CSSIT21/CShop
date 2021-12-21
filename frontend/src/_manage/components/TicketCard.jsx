@@ -103,7 +103,7 @@ export class TicketCard extends React.Component {
     }
 
     await axios.post(
-      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Changed status of ticket #' + this.props.ticket.id + " to " + event.target.value
+      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=Changed status of ticket " + this.props.ticket.id + " to " + event.target.value
     );
     
     document.location.reload();
