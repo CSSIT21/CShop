@@ -28,20 +28,22 @@ const ProductContent = ({
   const onAddToCard = () => {
     if (isLoggedIn) {
       axios
-        .post(`${config.SERVER_URL}/log-system/add-to-cart/${user.id}/${product.id}`, {
-          added_date: new Date().toISOString(),
-        })
+        .post(
+          `${config.SERVER_URL}/log-system/add-to-cart/${user.id}/${product.id}`,
+          {
+            added_date: new Date().toISOString(),
+          }
+        )
         .then(({ data }) => {
           if (data.success) {
             return console.log(data.addToCart);
-          }
-          else {
+          } else {
             return console.log(data);
           }
         })
         .catch((err) => {
           return console.log(err.message);
-        })
+        });
     }
   };
 
@@ -71,7 +73,16 @@ const ProductContent = ({
           onClick={(e) => {
             e.preventDefault();
             onFavourite(product.id);
-            //api fav
+            if (auth.isLoggedIn) {
+              axios
+                .post(`${config.SERVER_URL}/profile/favourite`, {
+                  customer_id: auth.user.id,
+                  product_id: product.id,
+                })
+                .then(({ data }) => {
+                  console.log(data);
+                });
+            }
           }}
           sx={{ fontWeight: "bold", fontSize: "22px" }}
         >
