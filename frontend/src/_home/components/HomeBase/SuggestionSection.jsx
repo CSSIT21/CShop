@@ -9,6 +9,7 @@ import ProductCard from "~/common/components/ProductCard";
 import axios from "axios";
 import config from "~/common/constants";
 import { useRecoilValue } from "recoil";
+import Swal from 'sweetalert2';
 import authState from "~/common/store/authState";
 
 const SuggestionSection = () => {
