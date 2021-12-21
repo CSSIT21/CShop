@@ -24,7 +24,31 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
         confirmButtonText: "OK",
       });
     }
-    // else location.href = "http://localhost:3000/register";
+  };
+
+  const goToShop = () => {
+    if (auth.isLoggedIn) {
+      axios
+        .post(`${config.SERVER_URL}/log-system/shop/${user.id}/${shopId}`, {
+          view_date: new Date().toISOString(),
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            location.href = `http://localhost:3000/chat/${shopId}`;
+          } else {
+            console.log(data);
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      Swal.fire({
+        title: "Please login to chat with shop!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   const activeTimeFormat = () => {
@@ -108,11 +132,15 @@ const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
               Chat now
             </Button>
             {/* </Link> */}
-            <Link to={`/shop/${shopId}`}>
-              <Button startIcon={<StoreOutlinedIcon />} style={goToShopStyle}>
-                Go to shop
-              </Button>
-            </Link>
+            {/* <Link to={`/shop/${shopId}`}> */}
+            <Button
+              startIcon={<StoreOutlinedIcon />}
+              style={goToShopStyle}
+              onClick={goToShop}
+            >
+              Go to shop
+            </Button>
+            {/* </Link> */}
           </Box>
         </Box>
       </Box>
