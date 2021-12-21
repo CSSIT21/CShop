@@ -92,6 +92,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				return await this.getNotification(client, data.as);
 				break;
 			}
+
+			case 'shop': {
+				return await this.getShop(client, data.as);
+				break;
+			}
 		}
 	}
 
@@ -171,6 +176,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				data: noti,
 			},
 		};
+	}
+
+	async getShop(@ConnectedSocket() client: Socket, uid: number) {
+		const shop = await this.chatService.findShop(uid);
+		return {
+			event: 'get',
+			data: {
+				item: 'shop',
+				data: shop
+			}
+		}
 	}
 
 	@SubscribeMessage('join')

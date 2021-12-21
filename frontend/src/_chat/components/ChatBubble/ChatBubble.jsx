@@ -69,7 +69,11 @@ const ChatBubble = (props) => {
     }, [props.shouldScroll])
 
     useEffect(() => {
-        if(!props.read) props.onRead(props.messageId)
+        console.log(props.read, props.fromCustomer, props.isCustomerView)
+        if(!props.read && ((!props.fromCustomer && props.isCustomerView) || (props.fromCustomer && !props.isCustomerView)))
+        {
+            props.onRead(props.messageId)
+        }
     }, [props.read])
 
     return (
@@ -80,7 +84,12 @@ const ChatBubble = (props) => {
             {bubble}
             <Box className={classes.statusText}>
                 <Typography variant="caption" component="span">
-                    {(props.fromCustomer && props.read) ? 'Read' : ''}
+                    {(props.fromCustomer &&
+                        props.isCustomerView &&
+                        props.read) ||
+                    (!props.fromCustomer && !props.isCustomerView && props.read)
+                        ? 'Read'
+                        : ''}
                 </Typography>
                 <Typography variant="caption" component="span">
                     {formatTime(props.time)}

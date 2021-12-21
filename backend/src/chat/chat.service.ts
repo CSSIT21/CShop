@@ -269,6 +269,14 @@ ORDER BY message_time DESC;`;
 		});
 	}
 
+	async findShop(uid: number) {
+		return await this.prisma.$queryRaw`SELECT shop_name, path AS shop_pic
+FROM customer_info
+    JOIN shop_info ON shop_info.customer_id = customer_info.customer_id
+    LEFT JOIN shop_picture sp on shop_info.id = sp.shop_id
+WHERE customer_info.customer_id = ${uid}`;
+	}
+
 	static push(notification: { from: number; to: number; text: string; redirect_to: string }) {
 		//   console.log('gonna push ', notification)
 		const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;

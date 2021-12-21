@@ -53,13 +53,15 @@ class ChatService {
     _users = null
     static socket
 
-    constructor(user, onGetComplete, onReceive) {
+    constructor(user, onGetComplete, onGetShopComplete, onReceive) {
         // console.log('init')
         this._uid = user.id
         this._isCustomer = user.role === 'CUSTOMER'
         ChatService.socket = io(config.SOCKET_URL)
         this.onGetComplete = onGetComplete
+        this.onGetShopComplete = onGetShopComplete
         this.onReceive = onReceive
+        this._isCustomerView = true
         this.init()
     }
 
@@ -74,7 +76,10 @@ class ChatService {
         ChatService.socket.on('status', (response) => {
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let conv = messages.find((m) => m.id === response.conversation_id)
-            if (response.peer === 'shop' && this._isCustomer) {
+            if (
+                (response.peer === 'shop' && conv.customer_id === this._uid) ||
+                (response.peer === 'customer' && conv.customer_id !== this._uid)
+            ) {
                 conv.active = response.event === 'join' ? true : false
             }
             sessionStorage.setItem('messages', JSON.stringify(messages))
@@ -110,7 +115,7 @@ class ChatService {
                 conversation.latest_text =
                     response.content_type === 'Text' ? response.content : ''
                 conversation.latest_id = response.id
-                if (this._isCustomer && !response.from_customer)
+                if (conversation.customer_id === this._uid && !response.from_customer)
                     conversation.seen = false
                 messages.unshift(messages.splice(index, 1)[0])
                 sessionStorage.setItem('messages', JSON.stringify(messages))
@@ -155,6 +160,13 @@ class ChatService {
                 : 'conversation',
             as: this._uid
         })
+        if(!this._isCustomer)
+        {
+            ChatService.socket.emit('get', {
+                item: 'shop',
+                as: this._uid
+            })
+        }
         sessionStorage.setItem('isGetting', 'true')
     }
 
@@ -166,7 +178,7 @@ class ChatService {
                     // console.log('joining ' + conv.id)
                     ChatService.socket.emit('join', {
                         conversation_id: conv.id,
-                        from_customer: this._isCustomer
+                        from_customer: conv.customer_id === this._uid
                     })
                     messages.push({ ...conv, messages: [], active: false })
                 }
@@ -207,11 +219,19 @@ class ChatService {
                         conv.active = false
                         ChatService.socket.emit('join', {
                             conversation_id: conv.id,
-                            from_customer: this._isCustomer
+                            from_customer: conv.customer_id === this._uid
                         })
                     }
                 }
                 sessionStorage.setItem('messages', JSON.stringify(messages))
+                break
+
+            case 'shop':
+                sessionStorage.setItem('shop', JSON.stringify({
+                    name: response.data[0].shop_name,
+                    pic: response.data[0].shop_pic
+                }))
+                this.onGetShopComplete()
                 break
         }
 
@@ -224,6 +244,10 @@ class ChatService {
 
     get users() {
         return this._users
+    }
+
+    get shop() {
+        return JSON.parse(sessionStorage.getItem('shop')) || {}
     }
 
     get isGetting() {
@@ -292,12 +316,14 @@ class ChatService {
 
     sendText(text, conversation_id) {
         const temp_id = nanoid()
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
         const message = {
             temp_id: temp_id,
             conversation_id: conversation_id,
             content_type: 'Text',
             content: text,
-            from_customer: this._isCustomer
+            from_customer: conversation.customer_id === this._uid
         }
         console.log(
             `%c ChatService.js %c '${text}' sent to conv #${conversation_id}`,
@@ -305,8 +331,7 @@ class ChatService {
             ''
         )
         ChatService.socket.emit('send', message)
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
+
         conversation.messages.push({
             ...message,
             message_time: '',
@@ -324,15 +349,16 @@ class ChatService {
 
     async sendImage(image, conversation_id) {
         const temp_id = nanoid()
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
         const message = {
             temp_id: temp_id,
             conversation_id: conversation_id,
             content_type: 'Image',
             content: null,
-            from_customer: this._isCustomer
+            from_customer: conversation.customer_id === this._uid
         }
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
+        
         conversation.messages.push({
             ...message,
             message_time: '',
@@ -356,19 +382,19 @@ class ChatService {
         )
     }
 
-    
 
     async sendVideo(video, conversation_id) {
         const temp_id = nanoid()
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
         const message = {
             temp_id: temp_id,
             conversation_id: conversation_id,
             content_type: 'Video',
             content: null,
-            from_customer: this._isCustomer
+            from_customer: conversation.customer_id === this._uid
         }
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
+        
         conversation.messages.push({
             ...message,
             message_time: '',
@@ -416,17 +442,10 @@ class ChatService {
     }
 
     read(conversation_id, message_id) {
-        if (
-            this._isCustomer ^
-            this.conversation(conversation_id).messages.find(
-                (m) => m.id === message_id
-            )?.from_customer
-        ) {
-            ChatService.socket.emit('read', {
-                conversation_id: conversation_id,
-                message_id: message_id
-            })
-        }
+        ChatService.socket.emit('read', {
+            conversation_id: conversation_id,
+            message_id: message_id
+        })
     }
 
     static disconnect() {
@@ -434,6 +453,7 @@ class ChatService {
         sessionStorage.removeItem('temp')
         sessionStorage.removeItem('messages')
         sessionStorage.removeItem('isGetting')
+        sessionStorage.removeItem('shop')
     }
 }
 
