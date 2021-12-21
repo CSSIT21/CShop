@@ -25,7 +25,6 @@ const SellerShop = () => {
   const [coupons, setcoupons] = useState();
   const [shopInfo, setshopInfo] = useState();
   const [sections, setsections] = useState([]);
-  const [follow, setfollow] = useState(false);
   const [menus, setmenus] = useState([]);
   const [flashSale, setflashSale] = useState();
   const [flashSaleItems, setflashSaleItems] = useState([]);
@@ -42,7 +41,7 @@ const SellerShop = () => {
         }
       } else {
         Swal.fire({
-          title: "Please login to add a product to your wishlist!",
+          text: "Please login to add a product to your wishlist!",
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -64,17 +63,8 @@ const SellerShop = () => {
       .then(() => {
         let userId = 0;
         if (auth.isLoggedIn) {
-          console.log("login");
           userId = auth.user.id;
         }
-        axios
-          .get(
-            `${config.SERVER_URL}/sellershop/follow/${id}?customer_id=${userId}`
-          )
-          .then(({ data }) => {
-            setfollow(data.result);
-          });
-
         axios
           .get(
             `${config.SERVER_URL}/sellershop/sections/${id}?customer_id=${userId}`
@@ -118,7 +108,7 @@ const SellerShop = () => {
             {loading ? (
               <Skeleton animation="wave" width="100%" height="200px" />
             ) : (
-              <Header shopInfo={shopInfo} follow={follow} />
+              <Header shopInfo={shopInfo} />
             )}
           </Box>
           <Box

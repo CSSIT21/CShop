@@ -11,6 +11,7 @@ import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
 import { ConversationDto } from './dto/conversation.dto';
+import { NotificationDto } from './dto/notification.dto';
 
 const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;
 
@@ -54,14 +55,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		}
 	}
 
-	@SubscribeMessage('test')
-	test(@MessageBody() data: { message: string }) {
-		return {
-			event: 'test',
-			data: data.message + ' okay',
-		};
-	}
-
 	@SubscribeMessage('get')
 	async get(@MessageBody() data: { item: string; as: number; with?: any }, @ConnectedSocket() client: Socket) {
 		console.log('/chat get', data);
@@ -88,6 +81,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 			case 'latestMessageId': {
 				return await this.getLatestMessageId(client, data.as);
+				break;
+			}
+
+			case 'notification': {
+				return await this.getNotification(client, data.as);
 				break;
 			}
 		}
@@ -148,6 +146,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		};
 	}
 
+	async getNotification(@ConnectedSocket() client: Socket, uid: number) {
+		const noti = await this.chatService.findAllNotification(uid);
+		// console.log(noti);
+		return {
+			event: 'get',
+			data: {
+				item: 'notification',
+				data: noti,
+			},
+		};
+	}
+
 	@SubscribeMessage('join')
 	async join(@MessageBody() data: ConversationDto, @ConnectedSocket() client: Socket) {
 		/** should first check if the user is authorized for that conversation **/
@@ -195,7 +205,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			peer: isCustomer ? 'customer' : 'shop',
 			conversation_id: data.conversation_id,
 		});
-		console.log(this.connectionMap.get(data.conversation_id));
+		// console.log(this.connectionMap.get(data.conversation_id));
 		if (Object.values(this.connectionMap.get(data.conversation_id)).every((t) => t !== null)) {
 			this.server.to(data.conversation_id.toString()).emit('status', {
 				event: 'join',
@@ -229,6 +239,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	async read(@MessageBody() data: { conversation_id: number; message_id: number }) {
 		await this.chatService.updateMessageToSeen(data.message_id);
 		this.server.to(data.conversation_id.toString()).emit('read', data);
+	}
+
+	@SubscribeMessage('hello')
+	hello(@MessageBody() data: { uid: number }, @ConnectedSocket() client: Socket) {
+		client.join('user' + data.uid);
+		// console.log('user ' + data.uid + ' joined');
+	}
+
+	@SubscribeMessage('push')
+	async push(@MessageBody() data: NotificationDto) {
+		const noti = await this.chatService.createNotification(data);
+		this.server.to('user' + data.customer_id).emit('push', noti);
 	}
 
 	// @SubscribeMessage('createChat')
