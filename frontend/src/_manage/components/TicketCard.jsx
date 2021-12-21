@@ -64,6 +64,10 @@ export class TicketCard extends React.Component {
       }
     );
 
+    await axios.post(
+      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + "Assigned ticket #" + this.props.ticket.id
+    );
+
     document.location.reload();
   }
 
@@ -75,6 +79,10 @@ export class TicketCard extends React.Component {
         "status": '',
         "admin_id": 1111
       }
+    );
+
+    await axios.post(
+      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + "Returned ticket #" + this.props.ticket.id
     );
 
     document.location.reload();
@@ -93,6 +101,10 @@ export class TicketCard extends React.Component {
         }
       );
     }
+
+    await axios.post(
+      "http://localhost:8080/manageaccount/audit/create?id=" + this.props.auth.user.id + "&log=" + 'Changed status of ticket #' + this.props.ticket.id + " to " + event.target.value
+    );
     
     document.location.reload();
     this.dialogClose();
