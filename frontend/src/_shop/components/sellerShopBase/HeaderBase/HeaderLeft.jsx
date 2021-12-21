@@ -7,12 +7,10 @@ import Avatar from "@mui/material/Avatar";
 import AvatarImage from "~/common/assets/images/profileshop.png";
 import FollowButton from "~/common/components/FollowButton";
 import dayjs from "dayjs";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
-import * as relativeTime from "dayjs/plugin/relativeTime";
-import axios from "axios";
-import config from "~/common/constants";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const useStyles = makeStyles({
   HeaderLeftShop: {
@@ -30,18 +28,18 @@ const useStyles = makeStyles({
   },
 });
 
-const HeaderLeft = ({ shopInfo = {}, follow = false }) => {
+const HeaderLeft = ({ shopInfo = {} }) => {
   const classes = useStyles();
   const auth = useRecoilValue(authState);
   const { id, cateId } = useParams();
   const [shopimage, setshopimage] = useState(AvatarImage);
   const [date, setdate] = useState();
+  const router = useHistory();
   useEffect(() => {
     if (shopInfo.shop_picture) {
       setshopimage(shopInfo.shop_picture.path);
     }
   }, [shopInfo]);
-  console.log("follow", follow);
   useEffect(() => {
     const joinDate = shopInfo.last_active;
     setdate(dayjs(joinDate).fromNow());
@@ -77,12 +75,22 @@ const HeaderLeft = ({ shopInfo = {}, follow = false }) => {
                 height="45px"
                 fontSize="14px"
                 fontWeight="500"
-                follow={follow}
                 shop_id={id}
                 customer_id={auth.user.id}
               />
 
               <Button
+                onClick={() => {
+                  if (auth.isLoggedIn) {
+                    router.push("/chat/" + id);
+                  } else {
+                    Swal.fire({
+                      text: "Please login to chat with seller!",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                    });
+                  }
+                }}
                 sx={{ margin: "24px 0 0 0", padding: "10px 20px" }}
                 width="120px"
                 height="45px"

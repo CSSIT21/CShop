@@ -30,8 +30,17 @@ const ChatBubble = (props) => {
         bubble = (
             <ImageBubble
                 variant={props.variant}
-                src={props.content}
-                openModal={() => props.openModal('media', props.messageId)}
+                src={Number.isInteger(props.messageId) ? props.content : null}
+                openModal={() => {
+                    if(Number.isInteger(props.messageId))
+                    {
+                        props.openModal('media', props.currentConversation, props.messageId)
+                    }
+                    else
+                    {
+                        props.openSnackbar()
+                    }
+                }}
             />
         )
     } else if (props.contentType === 'Video') {
@@ -40,7 +49,17 @@ const ChatBubble = (props) => {
                 variant={props.variant}
                 src={props.content}
                 thumbnail={props.contentExtra}
-                openModal={() => props.openModal('media', props.messageId)}
+                isUploading={Number.isInteger(props.messageId)}
+                openModal={() => {
+                    if(Number.isInteger(props.messageId))
+                    {
+                        props.openModal('media', props.currentConversation, props.messageId)
+                    }
+                    else
+                    {
+                        props.openSnackbar()
+                    }
+                }}
             />
         )
     }

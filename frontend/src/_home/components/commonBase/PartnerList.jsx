@@ -24,7 +24,7 @@ const PartnerList = ({
                     <ImageListItem key={item.id}>
                         <img
                             style={imgStyle}
-                            src={item.url}
+                            src={item.path}
                             alt={item.name}
                             loading="lazy"
                         />

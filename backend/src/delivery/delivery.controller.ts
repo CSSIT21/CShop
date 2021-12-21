@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Query } from '@nestjs/common';
+import { Public } from 'src/common/decorators/public.decorator';
 import { DeliveryService } from './delivery.service';
 import { Address } from './dto/address.dto';
 import { ChangeStatus } from './dto/change-status.dto';
@@ -11,6 +12,7 @@ export class DeliveryController {
 	constructor(private readonly deliveryService: DeliveryService) { }
 
 	@Post('login')
+	@Public()
 	public async login(@Body() createDeliveryDto: DeliveryLoginDTO, @Res() res) {
 		try {
 			const loginCheck = await this.deliveryService.login(createDeliveryDto);
@@ -31,57 +33,32 @@ export class DeliveryController {
 	}
 
 	@Post('generate-tracking')
+	@Public()
 	generateTrackingNumber(@Body() address: Address) {
 		return this.deliveryService.generateTrackingNumber(address)
 	}
 
-	@Get('requests')
-	getAllRequests() {
-		return this.deliveryService.getAllRequests();
-	}
-
-	@Get('packages')
-	getAllpackages() {
-		return this.deliveryService.getAllpackages();
-	}
-
-	@Get('delivering')
-	getAllDelivering() {
-		return this.deliveryService.getAllDelivering();
-	}
-
-	@Get('success')
-	getAllSuccess() {
-		return this.deliveryService.getAllSuccess();
+	@Get('admin')
+	@Public()
+	getAllRequests(@Query('status') status: string) {
+		return this.deliveryService.getAdminCheckStatus(status);
 	}
 
 	@Post('change-status')
+	@Public()
 	changeStatus(@Body() newStatus: ChangeStatus) {
 		return this.deliveryService.changeStatus(newStatus)
 	}
 
 	@Post('update-detail')
+	@Public()
 	updateDetail(@Body() newDetail: UpdateDetailDTO) {
 		return this.deliveryService.updateDetail(newDetail)
 	}
 
 	@Get('search')
+	@Public()
 	getDetail(@Query('tracking') trackingNumber: string) {
 		return this.deliveryService.getDetail(trackingNumber)
-	}
-
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.deliveryService.findOne(+id);
-	}
-
-	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateDeliveryDto: UpdateDeliveryDto) {
-		return this.deliveryService.update(+id, updateDeliveryDto);
-	}
-
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.deliveryService.remove(+id);
 	}
 }

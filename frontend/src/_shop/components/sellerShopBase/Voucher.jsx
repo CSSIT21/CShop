@@ -43,7 +43,7 @@ const Voucher = ({ shopcoupons }) => {
         });
     } else {
       Swal.fire({
-        title: "Please login to claim a coupon!",
+        text: "Please login to claim a coupon!",
         icon: "error",
         confirmButtonText: "OK",
       });
