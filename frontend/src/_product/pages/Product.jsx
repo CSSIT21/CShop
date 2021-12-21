@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 const ProductPage = (props) => {
   const auth = useRecoilValue(authState);
   const [productsSuggestion, setProductsSuggestion] = useState();
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState();
   const [productDetails, setProductDetails] = useState({ title: "" });
   const [commentPictures, setCommentPictures] = useState();
   const [selected, setSelected] = useState({});
@@ -55,7 +55,6 @@ const ProductPage = (props) => {
   const onFavourite = () => {
     setProductDetails(() => {
       if (auth.isLoggedIn) {
-        console.log(productDetails.customer_wishlist);
         if (productDetails.customer_wishlist.length > 0) {
           setFavorite(false);
         } else {
@@ -69,14 +68,29 @@ const ProductPage = (props) => {
         });
       }
 
-      console.log(auth.user?.id + " " + id);
       axios
         .post(`${config.SERVER_URL}/profile/favourite`, {
           customer_id: auth.user?.id,
           product_id: parseInt(id),
         })
         .then(({ data }) => {
-          console.log(data);
+          axios
+            .get(
+              `${config.SERVER_URL}/product/${id}?customerId=${auth.user.id}`
+            )
+            .then(({ data }) => {
+              if (data.success) {
+                setProductDetails(data.product_details);
+              }
+            })
+            .catch((e) => {
+              console.log(e.message);
+              Swal.fire({
+                title: "Something went wrong!",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            });
         })
         .catch((e) => {
           console.log(e.message);
@@ -88,14 +102,6 @@ const ProductPage = (props) => {
         });
       return productDetails;
     });
-
-    // setProductsSuggestion((products) => {
-    //   console.log(products);
-    //   const target = products[index];
-    //   target.favourite = !target.favourite;
-
-    //   return [...products];
-    // });
   };
 
   const avgRatingFormat = () => {
@@ -145,6 +151,7 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setProductDetails(data.product_details);
+          setFavorite(data.product_details.customer_wishlist.length > 0);
         }
       })
       .catch((e) => {
@@ -253,9 +260,12 @@ const ProductPage = (props) => {
       )
       .then(({ data }) => {
         if (data.success) {
-          return console.log(data.addToCart);
-        } else {
-          return console.log(data);
+          Swal.fire({
+            title: "Success!",
+            text: "The item already added in the cart",
+            icon: "success",
+            timer: 2000,
+          });
         }
       })
       .catch((err) => {
@@ -264,9 +274,7 @@ const ProductPage = (props) => {
 
     let options = [Object.keys(selected).length];
     Object.entries(selected).forEach(([key, value], i) => {
-      console.log(i);
       options[i] = value;
-      console.log(`${key}: ${value}`);
     });
     axios
       .post(`${config.SERVER_URL}/cart/addtocart`, {
@@ -333,7 +341,6 @@ const ProductPage = (props) => {
       .then(({ data }) => {
         if (data.success) {
           setProductsSuggestion(data.suggest_products);
-          console.log(data.suggest_products);
         }
       })
       .catch((e) => {
@@ -348,8 +355,6 @@ const ProductPage = (props) => {
   useEffect(() => {
     avgRatingFormat();
   }, [avgRating]);
-
-  // console.log(productTitle);
 
   return (
     <Box
@@ -394,7 +399,7 @@ const ProductPage = (props) => {
           productDetails={productDetails?.product_detail?.info}
         />
         <ProductRating
-          avgRating={avgRating || null}
+          avgRating={avgRating}
           commentPictures={commentPictures || []}
           comments={comments || []}
         />

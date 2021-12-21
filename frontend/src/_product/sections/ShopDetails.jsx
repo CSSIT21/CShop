@@ -12,7 +12,6 @@ import dayjs from "dayjs";
 const ShopDetails = ({ shopDetail, shopId, auth, avgRating }) => {
   const [activeTime, setActiveTime] = useState();
   const [joinTime, setJoinTime] = useState();
-  const rating = "4.7";
 
   const handleGoToChat = () => {
     if (auth.isLoggedIn)

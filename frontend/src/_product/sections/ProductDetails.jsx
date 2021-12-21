@@ -34,9 +34,9 @@ const ProductDetails = ({
   favorite,
   setFavorite,
 }) => {
-  const handleClickClose = () => {
-    setOpen(false);
-  };
+  // const handleClickClose = () => {
+  //   setOpen(false);
+  // };
   const handleAddToCart = () => {
     if (auth.isLoggedIn) {
       addToCart();
@@ -193,11 +193,11 @@ const ProductDetails = ({
             >
               Add to cart
             </Button>
-            <ConfirmDialogs
+            {/* <ConfirmDialogs
               text="The item already added in the cart"
               open={open}
               handleClose={handleClickClose}
-            />
+            /> */}
           </Box>
         </Box>
         <Box sx={{ display: "flex", marginTop: "12px", fontSize: "16px" }}>
