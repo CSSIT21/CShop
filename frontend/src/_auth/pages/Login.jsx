@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import authState from "../../common/store/authState";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Dialog from "@mui/material/Dialog";
+import { Typography } from "@mui/material";
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -24,6 +26,7 @@ const LoginPage = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const resetAuth = useResetRecoilState(authState);
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const onLogin = async () => {
     if (email === "") {
@@ -78,8 +81,8 @@ const LoginPage = () => {
   };
 
   useLayoutEffect(() => {
-    document.body.classList.add('gray');
-    return () => document.body.classList.remove('gray');
+    document.body.classList.add("gray");
+    return () => document.body.classList.remove("gray");
   }, []);
   return (
     <Fragment>
@@ -88,10 +91,8 @@ const LoginPage = () => {
           <Box className={classes.header}>Sign In</Box>
           <Box className={classes.textFieldBox}>
             <TextField
-
               id="phoneNumber"
               placeholder="Phone Number"
-
               id="email"
               placeholder="Email"
               variant="outlined"
@@ -159,8 +160,10 @@ const LoginPage = () => {
               ></LoadingButton>
             )}
           </Box>
-          <Box className={classes.text}>Forgot your password?</Box>
-          <Box className={classes.divider}>OR</Box>
+          <Box className={classes.text} onClick={() => setOpen(true)}>
+            Forgot your password?
+          </Box>
+          {/* <Box className={classes.divider}>OR</Box>
           <Button
             variant="contained"
             style={{
@@ -176,7 +179,7 @@ const LoginPage = () => {
             startIcon={<Avatar src={GoogleLogo} />}
           >
             Sign in With Google
-          </Button>
+          </Button> */}
           <Box className={classes.condition2}>
             Does not have any account yet?{"\u00A0"}
             <Link to="/register">
@@ -185,6 +188,27 @@ const LoginPage = () => {
           </Box>
         </Box>
       </Box>
+      <Dialog open={open} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem", marginTop: "50px" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </Fragment>
   );
 };
@@ -229,6 +253,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     width: "500px",
+    marginBottom: "40px",
   },
   condition2: {
     margin: "20px 0",

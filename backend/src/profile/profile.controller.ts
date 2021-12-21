@@ -6,6 +6,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { FavouriteProduct } from './dto/favourite.dto';
 import { Order } from './dto/order.dto';
 import { Product } from './dto/product.dto';
+import { Address } from './dto/address.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -56,6 +57,12 @@ export class ProfileController {
 	@Public()
 	public async addAddress(@Body() data: User) {
 		return await this.profileService.addAddress(data);
+	}
+
+	@Patch('/address/changeprimary')
+	@Public()
+	public async changePrimary(@Body() data: Address) {
+		return await this.profileService.changePrimary(data);
 	}
 
 	@Post('/favourite')

@@ -6,6 +6,7 @@ import * as CryptoJs from 'crypto-js';
 import { FavouriteProduct } from './dto/favourite.dto';
 import { Order } from './dto/order.dto';
 import { Product } from './dto/product.dto';
+import { Address } from './dto/address.dto';
 
 @Injectable()
 export class ProfileService {
@@ -454,6 +455,46 @@ export class ProfileService {
 				return true;
 			}
 			return false;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async changePrimary(data: Address) {
+		const { customer_id, address_id } = data;
+		try {
+			const oldPrimary = await this.prisma.customer_address.findFirst({
+				where: {
+					customer_id: customer_id,
+					primary: true,
+				},
+			});
+			await this.prisma.customer_address.update({
+				where: {
+					id: oldPrimary.id,
+				},
+				data: {
+					primary: false,
+				},
+			});
+			const newPrimary = await this.prisma.customer_address.findFirst({
+				where: {
+					customer_id: customer_id,
+					address_id: address_id,
+				},
+			});
+			await this.prisma.customer_address.update({
+				where: {
+					id: newPrimary.id,
+				},
+				data: {
+					primary: true,
+				},
+			});
+			return true;
 		} catch (e) {
 			console.log(e.message);
 			return {
