@@ -31,6 +31,27 @@ export class CoinService {
         })   
     }
 
+    public async usedCoin(userId : number){
+        await prisma.discount_customer_coin.update({ 
+            where:{
+                customer_id: userId
+            },
+            data:{
+                total_coin: 0
+            },
+            
+        })
+
+        return await prisma.discount_customer_coin.findMany({
+            where:{
+                customer_id: userId
+            },
+            select:{
+                total_coin:true
+            }
+        })   
+    }
+
     // public async userGetCoin(userId: number ,amount: number){
     //     console.log(userId,amount);
     //     await prisma.discount_customer_coin.create({
@@ -41,21 +62,30 @@ export class CoinService {
     //     })
     // }
 
-    // , got_date:Date, expire_date:Date, get_from:Text
-    // got_date, get_from, expire_date
-
-    public async coinInfo(userId: number ,amount: number){
-        console.log(userId,amount);
+    public async coincheckinInfo(userId: number){
+        console.log(userId);
         await prisma.discount_coin_information.create({
             data:{
                 customer_id : userId,
-                amount : amount,
+                amount : 1,
                 got_date : new Date().toISOString(),
                 expire_date : new Date().toISOString(),
                 get_from: "Check-in"
             }
         })
     }
+
+    public async checkcoin(userId: number){
+        console.log(userId);
+        await prisma.discount_daily_coin.create({
+            data:{
+                customer_id : userId,
+                got_date : new Date().toISOString(),
+            }
+        })
+    }
+
+
 
     public async checkcoinUser(userId: number){
         const userCoin= await prisma.discount_daily_coin.findMany({
@@ -79,6 +109,14 @@ export class CoinService {
         return await prisma.discount_used_coin.findMany({
 			where: {
 				customer_id: userId,
+                OR: [
+                    {
+                        user_for: "Shopping"
+                    },
+                    {
+                        user_for: "Payment"
+                    }
+                ]
 			},
 			select: {
 				used_amount: true,
@@ -95,6 +133,14 @@ export class CoinService {
         return await prisma.discount_coin_information.findMany({
 			where: {
 				customer_id: userId,
+                OR: [
+                    {
+                        get_from: "Check-in"
+                    },
+                    {
+                        get_from: "Payment"
+                    }
+                ]
 			},
 			select: {
 				amount: true,
@@ -107,10 +153,54 @@ export class CoinService {
 		});
     }
 
-    // public async showAll(userId: number){
-    //     return await prisma.discount_coin_information.findMany({
-            
-	// 	});
-    // }
+
+    public async showAll(userId: number){
+        const recieve = await prisma.discount_coin_information.findMany({
+			where: {
+				customer_id: userId,
+                OR: [
+                    {
+                        get_from: "Check-in"
+                    },
+                    {
+                        get_from: "Payment"
+                    }
+                ]
+			},
+			select: {
+				amount: true,
+                got_date: true,
+                get_from: true
+			},
+            orderBy: {
+                got_date: "desc"
+            }
+		});
+
+
+        const used = await prisma.discount_used_coin.findMany({
+			where: {
+				customer_id: userId,
+                OR: [
+                    {
+                        user_for: "Shopping"
+                    },
+                    {
+                        user_for: "Payment"
+                    }
+                ]
+			},
+			select: {
+				used_amount: true,
+                used_time: true,
+                user_for: true
+			},
+            orderBy: {
+                used_time: "desc"
+            }
+		});
+
+        return ({recieve,used});
+    }
 
 }

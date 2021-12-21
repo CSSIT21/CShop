@@ -11,12 +11,6 @@ export class CoinController {
 
     constructor(private readonly coinService: CoinService, public prisma: PrismaService) {}
 
-    @Get('/test')
-    @Public()
-    test(@Req() req, @Res() res): void {
-        res.send("Hello Coin");
-    }
-
     @Get('/showusedcoin')
 	@Public()
 	async showUsedCoin(@Req() req, @Res() res){
@@ -33,18 +27,35 @@ export class CoinController {
 		res.send(await this.coinService.showRecievecoin(userId));
 	}
 
+	@Get('/showallcoin')
+	@Public()
+	async allHistory(@Req() req, @Res() res){
+		var request = req.body;
+		var userId = request.userId;
+		res.send(await this.coinService.showAll(userId));
+	}
+
     @Post('/checkin')
 	@Public()
 	async checkin(@Body()request , @Res() res): Promise<void> {
 		var userId = request.userId;
-        var amount = request.amount;
 		console.log(userId)
-        console.log(amount)
-		// const a = await this.coinService.userGetCoin(userId, amount);
+		const a = await this.coinService.coincheckinInfo(userId);
+		const b = await this.coinService.checkcoin(userId);
 		const ckeckin_coin = await this.coinService.checkIn(userId)
 		const check = await this.coinService.checkcoinUser(userId);
 		res.send({ckeckin_coin,check})
 	}
+
+    @Post('/used')
+	@Public()
+	async usedcoin(@Body()request , @Res() res): Promise<void> {
+		var userId = request.userId;
+		console.log(userId)
+		const used_coin = await this.coinService.usedCoin(userId)
+		res.send({used_coin})
+	}
+
 
 
     // @Post('/recieve')

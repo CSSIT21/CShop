@@ -13,6 +13,7 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
+import { CoinModule } from './coin/coin.module';
 
 @Module({
 	imports: [
@@ -25,7 +26,8 @@ import { LogSystemModule } from './home/log-system/log-system.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
-		PromotionModule
+		PromotionModule,
+		CoinModule
 	],
 
 	controllers: [AppController],

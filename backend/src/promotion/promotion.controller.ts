@@ -25,7 +25,6 @@ export class PromotionController {
 		const decreasecode = await this.promotionService.decodeevent(id)
 		const check = await this.promotionService.checkcodeUser(userId);
 		res.send({decreasecode,check})
-
 	}
 
 	@Post('/upapp')
