@@ -78,7 +78,7 @@ const TopSeller = () => {
 
   return (
     <Box className={classes.container}>
-      <Popup open={open} setOpen={setOpen} title="" description="" />
+      <Popup open={open} setOpen={setOpen} title="" description="" shoppath={shoppath}/>
       <Box className={classes.profile}>
         {shoppath ? (
           <Avatar

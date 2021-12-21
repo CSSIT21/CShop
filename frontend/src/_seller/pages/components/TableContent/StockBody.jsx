@@ -14,6 +14,8 @@ import Chip from "@mui/material/Chip";
 import { Box } from "@mui/system";
 import { Avatar, Typography } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
+import LoadingComponent from "../LoadingComponent";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const StockBody = ({ columns }) => {
   const shopid = useParams();
@@ -37,13 +39,15 @@ const StockBody = ({ columns }) => {
           )
         );
       setRows(created);
+      setOpen(false);
     } catch (e) {
       console.log(e);
     }
   };
 
-  useEffect(async () => {
-    await fetchStock();
+  useEffect(() => {
+    // setOpen(true);
+    fetchStock();
     // console.log(rows)
     // console.log(shopid.id)
   }, [rows]);
@@ -70,9 +74,11 @@ const StockBody = ({ columns }) => {
     setPage(0);
   };
 
+  const [open, setOpen] = useState(true);
   return (
     <>
-      {" "}
+      <LoadingComponent open={open} />
+
       <Box sx={{ p: 4 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -156,6 +162,7 @@ const StockBody = ({ columns }) => {
                                         sx={{
                                           display: "flex",
                                           width: "100%",
+                                          height: "10vh",
                                         }}
                                       ></Avatar>
                                     );

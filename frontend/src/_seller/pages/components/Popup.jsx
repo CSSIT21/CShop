@@ -21,6 +21,7 @@ export default function Popup({
   setOpen = () => {},
   // title = "",
   // description = "",
+  shoppath,
 }) {
   const [loading, setLoading] = React.useState(false);
 
@@ -75,9 +76,11 @@ export default function Popup({
       };
       if (file) {
         url = await getUrl(file);
-        // console.log(url.original_link);
+        console.log(url.original_link);
       }
       if (url.success) {
+        setPath(url.original_link);
+        setThumbnail(url.original_link);
         await axios.post(
           `${config.SERVER_URL}/sellerconsole/${shopid.id}/updateShopinfo`,
           {
@@ -86,8 +89,8 @@ export default function Popup({
             description: descrp,
             phone_number: phonenumber,
             title: pictitle,
-            path: url.original_link,
-            thumbnail: url.original_link,
+            path: path,
+            thumbnail: thumbnail,
           }
         );
         // window.alert("Success");
@@ -217,10 +220,7 @@ export default function Popup({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleClose}
-          sx={{ mt:2 }}
-        >
+        <Button onClick={handleClose} sx={{ mt: 2 }}>
           Cancel
         </Button>
         {/* <Button onClick={updateInfo}>Save</Button> */}

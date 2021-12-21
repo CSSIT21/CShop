@@ -11,6 +11,7 @@ import { makeStyles } from "@mui/styles";
 import { Avatar, Typography, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import LinearProgress from "@mui/material/LinearProgress";
+import LoadingComponent from "../LoadingComponent";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -75,6 +76,8 @@ const HistoryTable = ({ columns }) => {
       );
 
       setRows(created);
+      setOpen(false);
+
       // console.log(rows)
     } catch (e) {
       console.log(e);
@@ -86,10 +89,13 @@ const HistoryTable = ({ columns }) => {
     // console.log(rows);
 
     // console.log(shopid.id)
-  }, []);
+  }, [rows]);
+  const [open, setOpen] = useState(true);
 
   return (
     <>
+      <LoadingComponent open={open} />
+
       <Box sx={{ p: 4 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -114,7 +120,7 @@ const HistoryTable = ({ columns }) => {
                       <Box sx={{ display: "block", textAlign: "center" }}>
                         {" "}
                         <Typography variant="h4" component="div">
-                          No results found （；´д｀）ゞ
+                          No results found.
                         </Typography>
                       </Box>
                     </TableCell>
@@ -151,6 +157,7 @@ const HistoryTable = ({ columns }) => {
                                         sx={{
                                           display: "flex",
                                           width: "100%",
+                                          height: "10vh",
                                         }}
                                       ></Avatar>
                                     );

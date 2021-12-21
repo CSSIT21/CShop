@@ -10,6 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Avatar, Typography, Modal } from "@mui/material";
 import Box from "@mui/material/Box";
+import LoadingComponent from "../LoadingComponent";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -63,6 +64,7 @@ const HistoryDiscountBody = ({ columns }) => {
         )
       );
       setRows(created);
+      setOpen(false);
       // console.log(rows)
     } catch (e) {
       console.log(e);
@@ -72,9 +74,9 @@ const HistoryDiscountBody = ({ columns }) => {
   useEffect(() => {
     fetchStock();
     // console.log(rows);
-
+    // return () => setRows([]);
     // console.log(shopid.id)
-  }, []);
+  }, [rows]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -87,9 +89,12 @@ const HistoryDiscountBody = ({ columns }) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const [open, setOpen] = useState(true);
 
   return (
     <>
+      <LoadingComponent open={open} />
+
       <Box sx={{ p: 4 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -112,7 +117,7 @@ const HistoryDiscountBody = ({ columns }) => {
                   <TableRow>
                     <TableCell sx={{ display: "block", textAlign: "center" }}>
                       <Typography variant="h4" component="div">
-                        No results found （；´д｀）ゞ
+                        No results found.
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -132,8 +137,8 @@ const HistoryDiscountBody = ({ columns }) => {
                             return (
                               <TableCell key={column.id} align={column.align}>
                                 {/* {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value} */}
+              ? column.format(value)
+              : value} */}
 
                                 {(() => {
                                   if (
@@ -149,6 +154,7 @@ const HistoryDiscountBody = ({ columns }) => {
                                         sx={{
                                           display: "flex",
                                           width: "100%",
+                                          height: "10vh",
                                         }}
                                       ></Avatar>
                                     );

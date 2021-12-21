@@ -11,6 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Avatar, Typography, Modal } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
+import LoadingComponent from "../LoadingComponent";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -47,6 +48,7 @@ const ViewLogBody = ({ columns }) => {
       );
 
       setRows(created);
+      setOpen(false);
       // console.log(rows)
     } catch (e) {
       console.log(e);
@@ -72,8 +74,11 @@ const ViewLogBody = ({ columns }) => {
     setPage(0);
   };
 
+  const [open, setOpen] = useState(true);
+
   return (
     <>
+      <LoadingComponent open={open} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead sx={{ backgroundColor: "#FDF4DD" }}>
@@ -95,7 +100,7 @@ const ViewLogBody = ({ columns }) => {
                 <TableRow>
                   <TableCell sx={{ display: "block", textAlign: "center" }}>
                     <Typography variant="h4" component="div">
-                      No results found（；´д｀）ゞ
+                      No results found.
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -127,6 +132,7 @@ const ViewLogBody = ({ columns }) => {
                                       sx={{
                                         display: "flex",
                                         width: "100%",
+                                        height: "10vh",
                                       }}
                                     ></Avatar>
                                   );

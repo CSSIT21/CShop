@@ -11,6 +11,7 @@ import Chip from "@mui/material/Chip";
 import { Box } from "@mui/system";
 import { Avatar, Typography, Modal } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
+import LoadingComponent from "../LoadingComponent";
 
 import { useState, useEffect } from "react";
 import config from "~/common/constants";
@@ -41,24 +42,23 @@ const StockLogBody = ({ columns }) => {
       const res = await axios.get(
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/stockhistory`
       );
-      const created = res.data
-        .slice(0, 10)
-        .map((el) =>
-          createData(
-            el.product_id,
-            // el.product_id_from_sconsole_stock_history.product_picture.length ==
-            //   0
-            //   ? ""
-            //   : el.product_id_from_sconsole_stock_history.product_picture[0]
-            //       .path,
-            el.product_id_from_sconsole_stock_history.title,
-            el.quantity,
-            Ttype,
-            el.product_id_from_sconsole_stock_history.quantity,
-            el.updated_date
-          )
-        );
+      const created = res.data.slice(0, 10).map((el) =>
+        createData(
+          el.product_id,
+          // el.product_id_from_sconsole_stock_history.product_picture.length ==
+          //   0
+          //   ? ""
+          //   : el.product_id_from_sconsole_stock_history.product_picture[0]
+          //       .path,
+          el.product_id_from_sconsole_stock_history.title,
+          el.quantity,
+          Ttype,
+          el.product_id_from_sconsole_stock_history.quantity,
+          el.updated_date
+        )
+      );
       setRows(created);
+      setOpen(false);
     } catch (e) {
       console.log(e);
     }
@@ -90,9 +90,12 @@ const StockLogBody = ({ columns }) => {
     };
   }
 
+  const [open, setOpen] = useState(true);
+
   return (
     <>
-      {" "}
+      <LoadingComponent open={open} />
+
       <Box sx={{ p: 4 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -115,7 +118,7 @@ const StockLogBody = ({ columns }) => {
                   <TableRow>
                     <TableCell sx={{ display: "block", textAlign: "center" }}>
                       <Typography variant="h4" component="div">
-                        No results found （；´д｀）ゞ
+                        No results found.
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -176,6 +179,7 @@ const StockLogBody = ({ columns }) => {
                                         sx={{
                                           display: "flex",
                                           width: "100%",
+                                          height: "10vh",
                                         }}
                                       ></Avatar>
                                     );

@@ -6,8 +6,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-const LoadingComponent = () => {
-  const [open, setOpen] = React.useState(false);
+import CircularProgress from "@mui/material/CircularProgress";
+
+const LoadingComponent = ({open}) => {
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -20,35 +22,35 @@ const LoadingComponent = () => {
   };
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open responsive dialog
-      </Button>
+      </Button> */}
       <Dialog
         fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
+        sx={{ display: "flex", justifyContent: "center", textAlign: "center" }}
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+          <CircularProgress sx={{ color: "#FD6637" }} />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+          <DialogContentText sx={{ fontWeight: "bold", color: "#FD6637" }}>
+            Loading...
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        {/* <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Disagree
           </Button>
           <Button onClick={handleClose} autoFocus>
             Agree
           </Button>
-        </DialogActions>
+        </DialogActions> */}
       </Dialog>
-    </div>
+    </>
   );
 };
 

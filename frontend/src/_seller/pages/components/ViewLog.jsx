@@ -9,6 +9,7 @@ import config from "~/common/constants";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import ViewLogBody from "./TableContent/ViewLogBody";
+import LoadingComponent from "./LoadingComponent";
 
 const ViewLog = () => {
   const shopid = useParams();
@@ -37,11 +38,11 @@ const ViewLog = () => {
     // lastname,
     // gender,
     // view_date,
-
   ];
 
   return (
     <>
+  
       <Box>
         <Box sx={{ mt: "4rem" }} />
         <Box
@@ -53,7 +54,6 @@ const ViewLog = () => {
           }}
         >
           <PageHeader Pagename={Pagename} />
-   
         </Box>
 
         <Box sx={{ mt: "3rem" }} />

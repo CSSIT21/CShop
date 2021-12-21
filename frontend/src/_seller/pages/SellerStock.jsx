@@ -18,6 +18,7 @@ import authState from "../../common/store/authState";
 import { useRecoilValue } from "recoil";
 import PageHeader from "./components/PageHeader";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
+import LoadingComponent from "./components/LoadingComponent";
 
 import config from "~/common/constants";
 import axios from "axios";

@@ -11,6 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Avatar, Typography, Modal } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
+import LoadingComponent from "../LoadingComponent";
 
 import config from "~/common/constants";
 import axios from "axios";
@@ -42,6 +43,7 @@ const FlashSalesLogBody = ({ columns }) => {
       );
 
       setRows(created);
+      setOpen(false);
       // console.log(rows)
     } catch (e) {
       console.log(e);
@@ -53,7 +55,7 @@ const FlashSalesLogBody = ({ columns }) => {
     // console.log(rows);
 
     // console.log(shopid.id)
-  }, []);
+  }, [rows]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -67,8 +69,12 @@ const FlashSalesLogBody = ({ columns }) => {
     setPage(0);
   };
 
+  const [open, setOpen] = useState(true);
+
   return (
     <>
+      <LoadingComponent open={open} />
+
       <Box sx={{ p: 4 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -93,7 +99,7 @@ const FlashSalesLogBody = ({ columns }) => {
                       <Box sx={{ display: "block", textAlign: "center" }}>
                         {" "}
                         <Typography variant="h4" component="div">
-                        No results found （；´д｀）ゞ
+                          No results found.
                         </Typography>
                       </Box>
                     </TableCell>
@@ -131,6 +137,7 @@ const FlashSalesLogBody = ({ columns }) => {
                                         sx={{
                                           display: "flex",
                                           width: "100%",
+                                          height: "10vh",
                                         }}
                                       ></Avatar>
                                     );
