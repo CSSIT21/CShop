@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, TextField, Button } from "@mui/material";
 import CategoryPic1 from "~/common/assets/images/category-1.png";
 import { makeStyles } from "@mui/styles";
@@ -12,29 +12,31 @@ import IconButton from "@mui/material/IconButton";
 import { nanoid } from "nanoid";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { noop, convertFileBase64 } from "~/common/utils";
 
 const CarouselBanner = ({
   id = "0",
   contents = [
     {
-      name: "placeholder",
+      title: "placeholder",
       id: 1,
       img: "https://cloudfour.com/wp-content/uploads/2020/01/default.svg",
     },
   ],
 
   information,
-  setInformation = () => {},
+  setInformation = noop,
   order = 0,
   ...rest
 }) => {
   const [sectionImages, setSectionImages] = useState([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
-  useLayoutEffect(() => {
+  console.log("sectionImages", sectionImages);
+  useEffect(() => {
     if (id in information) {
-      setSectionImages(information[id].img);
+      console.log("layout effect");
+      setSectionImages(information[id].content.banners);
     } else {
       console.log("image not found");
     }
@@ -54,16 +56,18 @@ const CarouselBanner = ({
     setOpen(false);
   };
 
-  const uploadFile = (e) => {
+  const uploadFile = async (e) => {
     if (e.target.files.length) {
       const path = URL.createObjectURL(e.target.files[0]);
-
+      const title = e.target.files[0].name;
+      const imagesetter = {
+        id: nanoid(),
+        path: path,
+        title: title,
+        file: e.target.files[0],
+      };
       setSectionImages((sectionImages) => {
-        sectionImages.push({
-          id: nanoid(),
-          path: path,
-        });
-
+        sectionImages.push(imagesetter);
         return [...sectionImages];
       });
 
@@ -75,7 +79,7 @@ const CarouselBanner = ({
   const saveUpload = () => {
     setInformation((info) => ({
       ...info,
-      [id]: { ...(info[id] || contents), img: sectionImages },
+      [id]: { ...info[id], content: { id: id, banners: sectionImages } },
     }));
   };
   return (
@@ -124,7 +128,7 @@ const CarouselBanner = ({
             <img
               onClick={handleClickOpen}
               src={contents[0].img}
-              alt={contents[0].name}
+              alt={contents[0].title}
               width="100%"
               style={{
                 transition: "0.25s all ease-in-out",
@@ -134,7 +138,7 @@ const CarouselBanner = ({
             <img
               onClick={handleClickOpen}
               src={sectionImages[0].path}
-              alt={sectionImages[0].id}
+              alt={sectionImages[0].title}
               width="100%"
               style={{
                 transition: "0.25s all ease-in-out",

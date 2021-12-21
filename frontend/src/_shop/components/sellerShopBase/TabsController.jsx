@@ -14,7 +14,7 @@ import { styled } from "@mui/material/styles";
 const StyledTabs = styled((props) => <Tabs {...props} />)({
   "& .MuiTabs-flexContainer": {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
   },
 });
 
@@ -46,24 +46,14 @@ const TabsController = ({ categories = [], ...rest }) => {
         }}
       >
         <Link to={`/shop/${id}`}>
-          <Tab
-            className={classes.tabStyle}
-            label="Store"
-          />
+          <Tab className={classes.tabStyle} label="Store" />
         </Link>
         <Link to={`/shop/${id}/allproduct`}>
-          <Tab
-            className={classes.tabStyle}
-            
-            label="All Products"
-          />
+          <Tab className={classes.tabStyle} label="All Products" />
         </Link>
         {filterMenus.map((menu, idx) => (
-          <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
-            <Tab
-              className={classes.tabStyle}
-              label={menu.title}
-            />
+          <Link key={idx} to={`/shop/${id}/${menu.id}`}>
+            <Tab className={classes.tabStyle} label={menu.title} />
           </Link>
         ))}
         {categories.length > 2 && (
@@ -125,6 +115,6 @@ const useStyles = makeStyles({
     fontSize: "18px !important",
     textTransform: "capitalize !important",
     height: "75px !important",
-    width: "250px !important"
+    width: "250px !important",
   },
 });

@@ -8,23 +8,39 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ProductCard from "~/common/components/ProductCard";
 import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
+import config from "~/common/constants";
+import { useRecoilValue } from "recoil";
+import authState from "~/common/store/authState";
 
 const CarouselProduct = ({
   id = "0",
   information,
   setInformation = () => {},
   order = 0,
+  categories,
   ...rest
 }) => {
   const classes = useStyles();
-  const categories = ["Baba1", "Baba2", "Baba3"];
+  const auth = useRecoilValue(authState);
 
-  console.log(information);
-
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
+    const category_object = categories.find((el) => {
+      return el.title === e.target.value;
+    });
+    const { data } = await axios.get(
+      `${config.SERVER_URL}/shopcustomization/categoryproducts/${category_object.id}`
+    );
+    console.log(data.products.products);
     setInformation((info) => ({
       ...info,
-      [id]: { ...(info[id] || ""), img: e.target.value },
+      [id]: {
+        ...info[id],
+        content: {
+          category: e.target.value,
+          products: data.products.products,
+        },
+      },
     }));
   };
 
@@ -75,9 +91,9 @@ const CarouselProduct = ({
           spacing={2}
           sx={{ width: "100%", height: "100%", pointerEvents: "none" }}
         >
-          {[...Array(5)].map((id, idx) => (
+          {information[id].content.products.slice(0, 5).map((product, idx) => (
             <Grid item xs={2.4} key={idx}>
-              <ProductCard />
+              <ProductCard product={product} />
             </Grid>
           ))}
         </Grid>
@@ -89,13 +105,13 @@ const CarouselProduct = ({
           id="outlined-select-currency"
           select
           label="Select Category"
-          value={information[id] ? information[id].img : null}
+          value={information[id] ? information[id].content.category : null}
           onChange={handleChange}
           sx={{ width: "30%" }}
         >
           {categories.map((category, idx) => (
-            <MenuItem key={idx} value={category}>
-              {category}
+            <MenuItem key={category.id} value={category.title}>
+              {category.title}
             </MenuItem>
           ))}
         </TextField>

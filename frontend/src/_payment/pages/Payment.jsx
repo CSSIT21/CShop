@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import ChoiceForPay from '../components/ChoiceForPay';
 import { makeStyles } from '@mui/styles';
-import PaidByQr from './PaidByQr';
 import OrderSummarize from '../components/OrderSummerize';
+import  Axios  from 'axios';
+
+
+
+
 
 const useStyles = makeStyles({
     
@@ -24,22 +27,23 @@ const useStyles = makeStyles({
 })
 
 
-const payment = () => {
+
+const Payment = () => {
 
     const classes = useStyles();
-
-
+    
+    const orderId ={"orderId": 238}
 
     return (
         <Box>
             <Box className = {classes.boxLeft}>
-                <ChoiceForPay />
+                <ChoiceForPay order_id={orderId} />
             </Box>
             <Box className = {classes.boxRight}>
-                <OrderSummarize />
+                <OrderSummarize order_id={orderId} />
             </Box>
         </Box>
     )
 }
 
-export default payment
+export default Payment;

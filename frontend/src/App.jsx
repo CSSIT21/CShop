@@ -1,5 +1,5 @@
 /** internal */
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -52,6 +52,13 @@ import Promotion from "./_promotion/pages/Promotion";
 import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
 import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
+import Payment from "./_payment/pages/Payment";
+import PaidByQr from "./_payment/pages/PaidByQr";
+import Wallet from "./_payment/pages/Wallet";
+import CreditCard from "./_payment/pages/CreditCard";
+import PayByInternetBanking from "./_payment/pages/PayByInternetBanking";
+import Success from "./_auth/components/Success";
+
 
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
@@ -81,8 +88,7 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
-import Payment from "./_payment/pages/Payment";
-import Wallet from "./_payment/pages/Wallet";
+
 
 function App() {
   return (
@@ -274,19 +280,56 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/payment">
-                  <MainLayout>
-                    <Suspense fallback={<SkeletonLoading />}>
-                      <Payment />
-                    </Suspense>
-                  </MainLayout>
-                </Route>
-                <Route exact path="/wallet">
-                      <Wallet />
-                </Route>
+              
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}
+                {/* Payment Page */}
+                <Route path="/payment/" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Payment/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/paidbyqr/" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <PaidByQr/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/wallet" exact>
+                  
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Wallet/>
+                    </Suspense>
+                  
+                </Route>
+                <Route path="/payment/creditcard" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CreditCard/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/banking" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <PayByInternetBanking/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/success" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Success/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+
+
+
                 <Route path="/seller/:id/:path?" exact>
                   <SellerConsoleSidebarLayout>
                     <Suspense fallback={<SkeletonLoading />}>

@@ -1,19 +1,26 @@
 import { makeStyles } from "@mui/styles";
 import { Avatar } from "@mui/material";
 import { Box } from "@mui/system";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import authState from "~/common/store/authState";
 import DropdownDetail from "./DropdownDetail";
 
 const AccountDropdown = () => {
   const classes = useStyles();
-  const { user } = useRecoilValue(authState);
+  const [auth] = useRecoilState(authState);
 
   return (
     <Box className={classes.account}>
       <DropdownDetail>
-        <span className={classes.accountName}>{user.first_name} </span>
-        <Avatar src={user.url} sx={{ width: 30, height: 30 }} />
+        <span className={classes.accountName}>
+          {auth?.user?.customer_info?.firstname}{" "}
+        </span>
+        <Avatar
+          src={
+            auth?.user?.customer_picture?.picture_id_from_customer_picture?.path
+          }
+          sx={{ width: 30, height: 30 }}
+        />
       </DropdownDetail>
     </Box>
   );
