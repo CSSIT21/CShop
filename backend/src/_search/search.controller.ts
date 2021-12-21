@@ -95,6 +95,7 @@ export class SearchController {
 			include: {
 				product_picture: true,
 			},
+			take: 100,
 		});
 
 		return {

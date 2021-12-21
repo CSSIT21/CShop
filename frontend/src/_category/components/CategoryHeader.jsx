@@ -22,9 +22,9 @@ const CategoryHeader = ({ title = "", ...rest }) => {
     }else if(id == 3){
         return <img src={CategoryHeaderFashion} {...rest} alt="" />;
     }
-    // else if(id == 4){
-    //     return <img src={CategoryHeaderKids} {...rest} alt="" />;
-    // }
+    else if(id == 9){
+         return <img src={CategoryHeaderAccessories} {...rest} alt="" />;
+    }
     else if(id == 4){
         return <img src={CategoryHeaderLogo} {...rest} alt="" />;
     }else if(id == 5){
@@ -35,11 +35,9 @@ const CategoryHeader = ({ title = "", ...rest }) => {
         return <img src={CategoryHeaderFood} {...rest} alt="" />;
     }else if(id == 8){
         return <img src={CategoryHeaderSports} {...rest} alt="" />;
-    }else if(id == 9){
-        return <img src={CategoryHeaderAccessories} {...rest} alt="" />; 
-    }else if(id == 11){
+    }else if(id == 10){
         return <img src={CategoryHeaderOther} {...rest} alt="" />; 
-    }                                    
+    }                                
 
 };
 
