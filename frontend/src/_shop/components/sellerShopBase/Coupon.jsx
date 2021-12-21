@@ -8,7 +8,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import BorderLinearProgress from "~/common/components/BorderLinearProgress";
 import { noop } from "~/common/utils";
 import dayjs from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 

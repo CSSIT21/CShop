@@ -1,16 +1,16 @@
-import React from 'react'
 import { useState, useEffect } from "react";
 import { Box } from "@mui/system"
 import { makeStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 import Carousel from '~/common/components/Carousel';
 import CustomDot from "~/common/components/CarouselBase/CustomDot";
 import ProductCard from '~/common/components/ProductCard';
 import HeaderWithButton from './HeaderWithButton';
 import axios from "axios";
 import config from "~/common/constants";
+import Swal from 'sweetalert2';
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
-import { Typography } from '@mui/material';
 
 const BestsellerSection = () => {
 	const classes = useStyles();
@@ -19,6 +19,10 @@ const BestsellerSection = () => {
 	const [page, setPage] = useState(0);
 	const productsPerRow = 5;
 	const totalPage = Math.ceil(products.length / productsPerRow);
+
+	useEffect(() => {
+		getData();
+	}, [])
 
 	const getData = () => {
 		let id = 0;
@@ -39,9 +43,31 @@ const BestsellerSection = () => {
 			})
 	};
 
-	useEffect(() => {
-		getData();
-	}, [])
+	const onFavorite = (id) => {
+		if (isLoggedIn) {
+			setProducts(products => {
+				const target = products.find((e) => e.id == id);
+
+				if (target.customer_wishlist.length > 0) target.customer_wishlist.pop();
+				else target.customer_wishlist = [
+					{ product_id: target.id, customer_id: user.id },
+				];
+
+				return [...products];
+			});
+		}
+		else {
+			Swal.fire({
+				text: "Please login to add a product to your wishlist!",
+				icon: "error",
+				confirmButtonText: "OK",
+				confirmButtonColor: "#FD6637",
+				width: 300,
+				timer: 2000,
+				timerProgressBar: true
+			});
+		}
+	};
 
 	return (
 		<Box className={classes.bestsellerWrapper}>
@@ -65,6 +91,7 @@ const BestsellerSection = () => {
 							{(product) => (
 								<ProductCard
 									product={product}
+									onFavourite={onFavorite}
 									key={product.id} />
 							)}
 						</Carousel>)
@@ -83,6 +110,7 @@ const BestsellerSection = () => {
 		</Box>
 	)
 }
+
 const useStyles = makeStyles({
 	bestsellerWrapper: {
 		width: '100%',
@@ -98,6 +126,5 @@ const useStyles = makeStyles({
 		borderRadius: '20px',
 	},
 });
-
 
 export default BestsellerSection;

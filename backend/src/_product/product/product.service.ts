@@ -7,18 +7,24 @@ import { SuggestionProductDto } from './dto/suggestion-product.dto';
 @Injectable()
 export class ProductService {
 	constructor(private readonly prisma: PrismaService) {}
-
-	public async getProductDetails(id: number) {
+//
+	public async getProductDetails(id: number, customerId : number) {
 		try {
 			const product = await this.prisma.product.findUnique({
 				where: {
 					id: id,
-				}, include: {
-					product_detail:true
-				}
+				},
+				include: {
+					product_detail: true,
+					customer_wishlist: {
+						where: {
+							customer_id: customerId,
+						},
+					},
+				},
 			});
 
-			return  product;
+			return product;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -28,7 +34,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-	
+//
 	public async updateSuggestionProducts(id: number, suggestionProductDto: SuggestionProductDto) {
 		try {
 			const update = await this.prisma.product.update({
@@ -38,8 +44,8 @@ export class ProductService {
 				data: {
 					suggest_products: suggestionProductDto.products,
 				},
-			})
-			return  update;
+			});
+			return update;
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -48,9 +54,9 @@ export class ProductService {
 			console.log(e.message);
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
-}
-
-	public async getSuggestProducts(id: number) {
+	}
+//
+	public async getSuggestProducts(id: number, customerId : number) {
 		try {
 			const suggest_products_id = await this.prisma.product.findFirst({
 				where: {
@@ -67,20 +73,20 @@ export class ProductService {
 					this.prisma.product.findFirst({
 						where: {
 							id: suggest_products_id.suggest_products[i],
-						}, select: {
-							id:true,
+						},
+						select: {
+							id: true,
 							title: true,
 							price: true,
+							quantity:true,
 							product_picture: { take: 1 },
-							// , select: {
-							// id:true,
-							// title: true,
-							// price: true,
-							// product_picture: { take: 1 }.
-							
-						}
-						}
-					),
+							customer_wishlist: {
+								where: {
+									customer_id: customerId,
+								},
+							},
+						},
+					}),
 				);
 			}
 			suggest_products_list = await Promise.all(suggest_products_list);
@@ -95,7 +101,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-
+//
 	public async getProductPictures(id: number) {
 		try {
 			const product_pictures = await this.prisma.product_picture.findMany({
@@ -114,7 +120,7 @@ export class ProductService {
 			throw new HttpException('Error querying products request body incorrect', 500);
 		}
 	}
-
+//
 	public async getShopDetails(id: number) {
 		try {
 			// Shop Picture
@@ -126,6 +132,16 @@ export class ProductService {
 					shop_id: true,
 				},
 			});
+			
+			const avg_rating = await this.prisma.product.aggregate({
+				where: {
+					shop_id: product.shop_id,
+				},
+				_avg: {
+					rating: true,
+				},
+			});
+			let avg_shop_rating = avg_rating._avg.rating;
 			const shop_info = await this.prisma.shop_info.findFirst({
 				where: {
 					id: product.shop_id,
@@ -139,7 +155,7 @@ export class ProductService {
 					},
 				},
 			});
-			return shop_info;
+			return {shop_info, avg_shop_rating};
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -161,7 +177,7 @@ export class ProductService {
 			if (link && link.shorted_link) {
 				return link.shorted_link;
 			} else {
-				const generatedString = nanoid(8);
+				const generatedString = nanoid(3);
 				const link = await this.prisma.product_short_link.create({
 					data: {
 						product_id: id,
@@ -208,5 +224,28 @@ export class ProductService {
 		}
 		console.log(err.message);
 		throw new HttpException('Error querying comments request body incorrect', 500);
+	}
+
+	public async updateProductsRating(id: number, rating: any ) {
+		try {
+			const update = await this.prisma.product.update({
+				where: {
+					id: id,
+				},
+				data: {
+					rating: rating,
+				}, select: {
+					rating:true
+				}
+			});
+			return update;
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(e.message);
+				throw new HttpException('Error querying products please check your information!', 500);
+			}
+			console.log(e.message);
+			throw new HttpException('Error querying products request body incorrect', 500);
+		}
 	}
 }

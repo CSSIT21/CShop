@@ -11,17 +11,22 @@ import axios from "axios";
 import config from "~/common/constants";
 
 const CategoriesSection = () => {
+	const classes = useStyles();
 	const [categories, setCategories] = useState([]);
 	const [page, setPage] = useState(0);
-	const classes = useStyles();
 	const itemsPerRow = 6;
 	const totalPage = Math.ceil(categories.length / itemsPerRow);
 
-	const getData = () => {
+	useEffect(() => {
+		getData();
+	}, [])
+
+	const getData = async () => {
 		axios
 			.get(`${config.SERVER_URL}/home/categories`)
 			.then(({ data }) => {
 				if (data.success) {
+					console.log(data.categories);
 					return setCategories(data.categories);
 				}
 				else {
@@ -32,10 +37,6 @@ const CategoriesSection = () => {
 				return console.log(err.message);
 			})
 	};
-
-	useEffect(() => {
-		getData();
-	}, [])
 
 	return (
 		<Box className={classes.categoriesWrapper}>
@@ -57,11 +58,11 @@ const CategoriesSection = () => {
 							setPageState={setPage}
 							itemsPerRow={itemsPerRow}
 						>
-							{({ id, name, icon_id_from_category }) => (
-								<Link to={`/search/category/${id}`}>
+							{({ id, name, icon_id_from_category: icon }) => (
+								<Link to={name === 'Free Shipping' ? '/promotion' : `/search/category/${id}`}>
 									<Box className={classes.categoriesItem} key={id}>
 										<Typography component="h3" color="black" fontWeight={600} mb={2} >{name}</Typography>
-										<img src={icon_id_from_category.path} alt={icon_id_from_category.title} />
+										<div><img src={icon.path} alt={icon.title} /></div>
 									</Box>
 								</Link>
 							)}
@@ -77,7 +78,6 @@ const CategoriesSection = () => {
 					No categories to show
 				</Typography>}
 		</Box >
-
 	);
 };
 
@@ -91,6 +91,7 @@ const useStyles = makeStyles({
 		width: "90%",
 		margin: "0 auto",
 		padding: '20px 10px',
+		height: '150px',
 
 		backgroundColor: '#EFEFF1',
 		borderRadius: '20px',
@@ -100,8 +101,12 @@ const useStyles = makeStyles({
 		alignItems: 'center',
 		flexDirection: 'column',
 
+		'& div': {
+			padding: '0 20px',
+		},
+
 		'& img': {
-			width: '100px',
+			width: '100%',
 		},
 
 	},

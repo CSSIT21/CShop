@@ -36,7 +36,6 @@ const ProductCard = (props) => {
     to = "/product/1",
     onFavourite = noop,
     status = undefined,
-    addToCart = false,
   } = props;
 
   const postData = () => {
@@ -79,7 +78,6 @@ const ProductCard = (props) => {
           product={product}
           status={status}
           statusProps={props}
-          addToCart={addToCart}
           onFavourite={onFavourite}
         />
       </Card>

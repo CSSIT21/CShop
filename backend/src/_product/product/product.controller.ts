@@ -1,7 +1,8 @@
-import { Body,Controller, Get, Param, ParseIntPipe, Post, Res } from '@nestjs/common';
+import { Body,Controller, Get, Param, ParseIntPipe, Post, Query, Res } from '@nestjs/common';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ProductService } from './product.service';
 import { SuggestionProductDto } from './dto/suggestion-product.dto';
+import { customer_info, Prisma } from '@prisma/client';
 
 @Controller('product')
 export class ProductController {
@@ -9,8 +10,8 @@ export class ProductController {
 
 	@Get('/:id')
 	@Public()
-	public async findProductDetails(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const product_details = await this.productService.getProductDetails(id);
+	public async findProductDetails(@Param('id', ParseIntPipe) id: number, @Res() res, @Query('customerId',ParseIntPipe) customerId : number) {
+		const product_details = await this.productService.getProductDetails(id,customerId);
 		if (product_details) {
 			res.send({ success: true, product_details });
 		} else {
@@ -22,8 +23,8 @@ export class ProductController {
 
 	@Get(':id/getSuggest')
 	@Public()
-	public async findSuggestProducts(@Param('id', ParseIntPipe) id: number, @Res() res) {
-		const suggest_products = await this.productService.getSuggestProducts(id);
+	public async findSuggestProducts(@Param('id', ParseIntPipe) id: number, @Res() res, @Query('customerId',ParseIntPipe) customerId : number) {
+		const suggest_products = await this.productService.getSuggestProducts(id,customerId);
 		if (suggest_products) {
 			res.send({ success: true, suggest_products });
 		} else {
@@ -43,6 +44,23 @@ export class ProductController {
 		const suggest_product = await this.productService.updateSuggestionProducts(id,suggestionProductDto);
 		if (suggest_product) {
 			res.send({ success: true, suggest_product });
+		} else {
+			res.send({
+				success: false,
+			});
+		}
+	}
+	
+	@Post(':id/updateProductsRating')
+	@Public()
+	public async updateProductsRating(
+		@Body() rating,
+		@Param('id', ParseIntPipe) id: number,
+		@Res() res,
+	) {
+		const avgRating = await this.productService.updateProductsRating(id, rating.avgRating);
+		if (avgRating) {
+			res.send({ success: true, avgRating });
 		} else {
 			res.send({
 				success: false,

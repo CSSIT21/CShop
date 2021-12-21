@@ -12,6 +12,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingButton from "@mui/lab/LoadingButton";
 import config from "~/common/constants";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -22,6 +23,7 @@ const AddressInfo = ({ address, setAddress = () => {} }) => {
   const [open, setOpen] = useState(false);
   const auth = useRecoilValue(authState);
   const [isLoading, setIsLoading] = useState(false);
+  const [onLoad, setonLoad] = useState(false);
 
   const handleCloseDialog = () => {
     setOpen(false);
@@ -52,7 +54,30 @@ const AddressInfo = ({ address, setAddress = () => {} }) => {
         setOpen(false);
       });
   };
-
+  const changePrimary = (id) => {
+    setonLoad(true);
+    axios
+      .patch(config.SERVER_URL + "/profile/address/changeprimary", {
+        customer_id: auth.user.id,
+        address_id: id,
+      })
+      .then(({ data }) => {
+        Swal.fire({
+          title: "Success!",
+          text: "Your primary address has been changed!",
+          icon: "success",
+          timer: 3000,
+        });
+        axios
+          .post(config.SERVER_URL + "/profile/address/get", {
+            id: auth.user.id,
+          })
+          .then(({ data }) => {
+            setAddress(data.address);
+          });
+        setonLoad(false);
+      });
+  };
   return (
     <Box sx={{ width: "100%", marginTop: "50px", paddingBottom: "170px" }}>
       <Dialog
@@ -146,11 +171,36 @@ const AddressInfo = ({ address, setAddress = () => {} }) => {
                   setdeleteId(item.id);
                   setOpen(true);
                 }}
+                handleSetPrimary={() => {
+                  changePrimary(item.id);
+                }}
               />
             )}
           </For>
         </Grid>
       </Box>
+      <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem", marginTop: "50px" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </Box>
   );
 };
