@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { User } from './dto/user.dto';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
+import { FavouriteProduct } from './dto/favourite.dto';
+import { Order } from './dto/order.dto';
+import { Product } from './dto/product.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -33,8 +36,8 @@ export class ProfileController {
 
 	@Post('/followingshop')
 	@Public()
-	public async getFollowingShop(@Body() data: User) {
-		return await this.profileService.getFollowingShop(data);
+	public async getFollowingShop(@Body() data: User, @Query('page', ParseIntPipe) page: number) {
+		return await this.profileService.getFollowingShop(data, page);
 	}
 
 	@Post('/address/get')
@@ -53,5 +56,29 @@ export class ProfileController {
 	@Public()
 	public async addAddress(@Body() data: User) {
 		return await this.profileService.addAddress(data);
+	}
+
+	@Post('/favourite')
+	@Public()
+	public async favourite(@Body() data: FavouriteProduct) {
+		return await this.profileService.favourite(data);
+	}
+
+	@Post('/order')
+	@Public()
+	public async getOrders(@Body() data: Order) {
+		return await this.profileService.getOrders(data);
+	}
+
+	@Post('/order/detail')
+	@Public()
+	public async getOrderDetail(@Body() data: Order) {
+		return await this.profileService.getOrderDetail(data);
+	}
+
+	@Post('/order/detail/option')
+	@Public()
+	public async getProductOption(@Body() data: Product) {
+		return await this.profileService.getProductDetail(data);
 	}
 }

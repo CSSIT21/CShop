@@ -90,8 +90,6 @@ const NewBannerDialog = ({
 			})
 			.then(({ data }) => {
 				if (data.success) {
-					console.log(data.banner);
-
 					setItems(items => {
 						return [...items, data.banner];
 					});

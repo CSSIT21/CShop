@@ -4,6 +4,7 @@ import ProductBox from "./ProductBox";
 import StarBox from "./StarBox";
 import GeneratedComments from "./GeneratedComments";
 import CommentsBox from "./CommentsBox";
+import { Typography } from "@mui/material";
 
 function ReviewDialogContents({
   generatedCommentsData,
@@ -23,17 +24,11 @@ function ReviewDialogContents({
   img,
   productName,
   options,
-  choices,
 }) {
   return (
     <Box>
       <ConditionAccordion />
-      <ProductBox
-        img={img}
-        productName={[productName]}
-        options={options}
-        choices={choices}
-      />
+      <ProductBox img={img} productName={[productName]} options={options} />
       <StarBox starScore={starScore} setStarScore={setStarScore} />
       <GeneratedComments
         generatedComments={generatedCommentsData}

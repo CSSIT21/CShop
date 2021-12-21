@@ -83,6 +83,7 @@ import ShoppingCartPage from "./_cart/pages/ShoppingCartPage";
 import FollowedShop from "./_profile/pages/FollowedShop";
 import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
+import OrderDetail from "./_profile/pages/OrderDetail";
 
 function App() {
   return (
@@ -148,27 +149,34 @@ function App() {
                   </MainLayout>
                 </Route>
 
-              <Route path="/search/category/:id" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <CategoryPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/product/:id" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <ProductPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
-              <Route path="/chat/:id?" exact>
-                <MainLayout>
-                  <Suspense fallback={<SkeletonLoading />}>
-                    <ChatPage />
-                  </Suspense>
-                </MainLayout>
-              </Route>
+                <Route path="/search/category/:id" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/search" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CategoryPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/product/:id" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ProductPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path='/chat/:id?' exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ChatPage />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
 
                 {/* LOGIN PAGE */}
                 <Route path="/login" exact>
@@ -235,6 +243,13 @@ function App() {
                       <Route path="/profile/followedshop">
                         <FollowedShop />
                       </Route>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/profile/history/order/:id" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <OrderDetail />
                     </Suspense>
                   </MainLayout>
                 </Route>

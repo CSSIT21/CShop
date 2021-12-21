@@ -14,6 +14,14 @@ import { ShopcustomizationModule } from './_sellershop/shopcustomization/shopcus
 import { BannerModule } from './home/banner/banner.module';
 import { HomeModule } from './home/home/home.module';
 import { LogSystemModule } from './home/log-system/log-system.module';
+import { CartModule } from './cart/cart.module';
+
+import { ProductModule } from './_product/product/product.module';
+import { ReviewProductModule } from './_product/review-product/review-product.module';
+import { ShortLinkModule } from './_product/short-link/short-link.module';
+import { CommentModule } from './_product/comment/comment.module';
+import { SearchModule } from './_search/search.module';
+import { DeliveryModule } from './delivery/delivery.module';
 import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 
 @Module({
@@ -27,8 +35,18 @@ import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 		SellershopModule,
 		ShopcustomizationModule,
 		ProfileModule,
+		CartModule,
+		SellershopModule,
+		ShopcustomizationModule,
+		ProfileModule,
+		ProductModule,
+		ReviewProductModule,
+		ShortLinkModule,
+		CommentModule,
 		ChatModule,
 		PromotionModule,
+		SearchModule,
+		DeliveryModule,
 		ManageaccountModule
 	],
 
@@ -41,4 +59,4 @@ import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 		},
 	],
 })
-export class AppModule {}
+export class AppModule { }

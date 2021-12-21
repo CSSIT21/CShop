@@ -41,18 +41,17 @@ const ReviewCarousel = ({
 			</Fab>
 
 			<Box sx={{ width: "90%" }}>
-				{reviews.length > 0 &&
-					<Carousel
-						items={reviews}
-						pageState={currentPage}
-						setPageState={pageHandle}
-						itemsPerRow={itemsPerRow}
-						loop={loop}
-					>
-						{(review) => (
-							<AppReviewCard review={review} key={review.id} />
-						)}
-					</Carousel>}
+				<Carousel
+					items={reviews}
+					pageState={currentPage}
+					setPageState={pageHandle}
+					itemsPerRow={itemsPerRow}
+					loop={loop}>
+
+					{(review) => (
+						<AppReviewCard review={review} key={review.id} />
+					)}
+				</Carousel>
 			</Box>
 
 			<Fab
