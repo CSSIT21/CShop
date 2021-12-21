@@ -15,6 +15,7 @@ import StyledMenu from "../../StyledMenu";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import authState from "~/common/store/authState";
 import ChatService from "~/_chat/services/ChatService";
+import NotificationService from "~/common/services/NotficationService";
 
 const DropdownDetail = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -51,7 +52,9 @@ const DropdownDetail = ({ children }) => {
   const onLogOut = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/home");
-    ChatService.disconnect()
+    ChatService.disconnect();
+    console.log(NotificationService)
+    // NotificationService.disconnect();
     return resetAuth();
   };
 

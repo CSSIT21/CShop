@@ -83,19 +83,6 @@ const ChatList = (props) => {
                         'Your chatbox is empty'
                     )}
                 </Box>
-                <Box className={classes.chatListButtom}>
-                    <Button
-                        variant="contained"
-                        className={classes.addNewChatButton}
-                        sx={{
-                            backgroundColor: '#FD6637',
-                            width: '100%',
-                            height: '100%'
-                        }}
-                    >
-                        Add New Chat
-                    </Button>
-                </Box>
             </Box>
         )
     }
