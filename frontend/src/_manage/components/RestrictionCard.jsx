@@ -7,6 +7,7 @@ import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
+import config from '../../common/constants';
 
 export class SellerCard extends React.Component {
   constructor(props) {
@@ -17,10 +18,10 @@ export class SellerCard extends React.Component {
 
   async componentDidMount(){
     this.type = await axios.get(
-      "http://localhost:8080/manageaccount/suspension/type?id=" + this.props.res.suspension_type_id
+        config.SERVER_URL + "/manageaccount/suspension/type?id=" + this.props.res.suspension_type_id
     );
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/users/id?id=" + this.props.res.admin_id
+        config.SERVER_URL + "/manageaccount/users/id?id=" + this.props.res.admin_id
     );
 
     this.admin = fetchedData.data.customer_info;

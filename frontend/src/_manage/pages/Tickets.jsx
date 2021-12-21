@@ -19,6 +19,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import config from '../../common/constants';
 import TicketCard from "../components/TicketCard";
 import { Search } from '@mui/icons-material';
 import axios from "axios";
@@ -64,7 +65,7 @@ const ManageSellerAccountPage = () => {
     const [tickets, setTicketsList] = React.useState([]);
     const setTickets = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/tickets"
+            config.SERVER_URL + "/manageaccount/tickets"
         );
         setTicketsList(fetchedData.data);
       };

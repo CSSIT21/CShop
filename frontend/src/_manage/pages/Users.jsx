@@ -17,6 +17,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { useEffect } from "react";
+import config from '../../common/constants';
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
@@ -74,7 +75,7 @@ const ManageAccountPage = () => {
     const [users, setUsersList] = React.useState([]);
     const setUsers = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/users"
+            config.SERVER_URL + "/manageaccount/users"
         );
         fetchedData.data.forEach((u) => {u["name"] = u.customer_info.firstname + " " + u.customer_info.lastname; u["gender"] = u.customer_info.gender; u["birthdate"] = u.customer_info.birthdate})
         setUsersList(fetchedData.data);
@@ -109,15 +110,15 @@ const ManageAccountPage = () => {
 
     const deleteRestriction = async (userid) => {
         const res = await axios.post(
-            "http://localhost:8080/manageaccount/suspension/users/delete?id=" + userid
+            config.SERVER_URL + "/manageaccount/suspension/users/delete?id=" + userid
           );
 
         const fetchedData = await axios.get(
-            "http://localhost:8080/manageaccount/users/id?id=" + userid
+            config.SERVER_URL + "/manageaccount/users/id?id=" + userid
         );
 
         await axios.post(
-            "http://localhost:8080/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.customer_info.firstname + " " + fetchedData.data.customer_info.lastname
+            config.SERVER_URL + "/manageaccount/audit/create?id=" + auth.user.id + "&log=" + 'Removed suspension from ' + fetchedData.data.customer_info.firstname + " " + fetchedData.data.customer_info.lastname
         );
         
         document.location.reload();

@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Typography } from "@mui/material";
+import config from '../../common/constants';
 import { CardLayout } from "./UserCardStyled";
 import { Avatar } from "@mui/material";
 import { withStyles } from "@mui/styles";
@@ -16,7 +17,7 @@ export class AuditCard extends React.Component {
 
   async componentDidMount(){
     const fetchedData = await axios.get(
-      "http://localhost:8080/manageaccount/users/id?id=" + this.props.audit.admin_id
+      config.SERVER_URL + "/manageaccount/users/id?id=" + this.props.audit.admin_id
     );
 
     this.name = fetchedData.data.customer_info;
