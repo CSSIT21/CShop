@@ -96,6 +96,7 @@ const SellerFlashsell = () => {
       path != "" &&
       thumbnail != ""
     ) {
+      // console.log('HELLO')
       setLoading(true);
       handleSubmit();
     }
@@ -106,6 +107,7 @@ const SellerFlashsell = () => {
       const path = URL.createObjectURL(e.target.files[0]);
       // console.log(e.target.files[0].name);
       setPath(path);
+      setThumbnail(path);
       setTitle(e.target.files[0].name);
       setFile(e.target.files[0]);
     }
@@ -145,9 +147,9 @@ const SellerFlashsell = () => {
   };
 
   const handleSubmit = () => {
-    console.log(
-      `${descpt},${started_date},${ended_date},${title},${path},${thumbnail},${shopid.id}`
-    );
+    // console.log(
+    //   `${descpt},${started_date},${ended_date},${title},${path},${thumbnail},${shopid.id}`
+    // );
     newFlashSale();
   };
 
@@ -319,7 +321,7 @@ const SellerFlashsell = () => {
           <Typography variant="caption" gutterBottom sx={{ color: "orange" }}>
             *ALL PRODUCT IN YOUR SHOP WILL INCLUDED IN FLASH SALE
           </Typography>
-          <Box sx={{ m: 1 }}>
+          <Box sx={{ m: 1 }} onClick={handleClick}>
             {/* <Button
               variant="contained"
               startIcon={<FlashOnIcon sx={{ fontSize: "1.52em" }} />}
@@ -334,7 +336,7 @@ const SellerFlashsell = () => {
               <Typography sx={{ fontSize: "1.52em" }}>Create</Typography>
             </Button> */}
             <LoadingButton
-              onClick={handleClick}
+              
               startIcon={<FlashOnIcon sx={{ fontSize: "1.52em" }} />}
               loading={loading}
               loadingPosition="end"
