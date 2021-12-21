@@ -8,13 +8,13 @@ import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 import { Link, useParams } from "react-router-dom";
 
-const Header = ({ shopInfo = {}, follow = false }) => {
+const Header = ({ shopInfo = {} }) => {
   const auth = useRecoilValue(authState);
   const { id } = useParams();
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-        <HeaderLeft shopInfo={shopInfo} follow={follow} />
+        <HeaderLeft shopInfo={shopInfo} />
         <HeaderRight shopInfo={shopInfo} />
       </Box>
       <Box

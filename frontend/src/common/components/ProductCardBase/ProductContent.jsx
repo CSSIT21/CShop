@@ -11,6 +11,10 @@ import {
 } from "@mui/material";
 import { isFunc, isUndef } from "~/common/utils/index";
 import CButton from "~/common/components/CButton";
+import authState from "~/common/store/authState";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
+import config from "~/common/constants";
 
 const ProductContent = ({
   product,
@@ -19,6 +23,30 @@ const ProductContent = ({
   statusProps = {},
   addToCart,
 }) => {
+  const { user, isLoggedIn } = useRecoilValue(authState);
+
+  const onAddToCard = () => {
+    if (isLoggedIn) {
+      axios
+        .post(
+          `${config.SERVER_URL}/log-system/add-to-cart/${user.id}/${product.id}`,
+          {
+            added_date: new Date().toISOString(),
+          }
+        )
+        .then(({ data }) => {
+          if (data.success) {
+            return console.log(data.addToCart);
+          } else {
+            return console.log(data);
+          }
+        })
+        .catch((err) => {
+          return console.log(err.message);
+        });
+    }
+  };
+
   return (
     <>
       <CardContent sx={contentStyle}>
@@ -45,7 +73,16 @@ const ProductContent = ({
           onClick={(e) => {
             e.preventDefault();
             onFavourite(product.id);
-            //api fav
+            if (auth.isLoggedIn) {
+              axios
+                .post(`${config.SERVER_URL}/profile/favourite`, {
+                  customer_id: auth.user.id,
+                  product_id: product.id,
+                })
+                .then(({ data }) => {
+                  console.log(data);
+                });
+            }
           }}
           sx={{ fontWeight: "bold", fontSize: "22px" }}
         >
@@ -66,6 +103,7 @@ const ProductContent = ({
           fontSize="14px"
           width="100%"
           height="38px"
+          onClick={onAddToCard}
         />
       )}
     </>

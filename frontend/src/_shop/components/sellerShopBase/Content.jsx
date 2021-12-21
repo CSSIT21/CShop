@@ -21,6 +21,7 @@ const Content = ({ section = {} }) => {
       items={section.products}
     />,
     <iframe
+      style={{ margin: "20px 0px" }}
       width="1120"
       height="630"
       src={`https://www.youtube.com/embed/${section.path}`}
