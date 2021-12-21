@@ -17,6 +17,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import config from '../../common/constants';
 import AuditCard from "../components/AuditCard";
 import { Search } from '@mui/icons-material';
 import { grey, red, orange } from '@mui/material/colors';
@@ -66,7 +67,7 @@ const ManageAccountPage = () => {
     const [audits, setAuditList] = React.useState([]);
     const setAudits = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/audit"
+            config.SERVER_URL + "/manageaccount/audit"
         );
         setAuditList(fetchedData.data);
       };

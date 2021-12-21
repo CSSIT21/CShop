@@ -40,7 +40,7 @@ const ProductDetails = ({
   const handleAddToCart = () => {
     if (auth.isLoggedIn) {
       addToCart();
-    } else location.href = "http://localhost:3000/register";
+    } else location.href = "https://prod.cshop.cscms.ml/register";
   };
 
   const handleClickChoice = (e) => {

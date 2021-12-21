@@ -117,7 +117,7 @@ const ProductPage = (props) => {
       .get(`${config.SERVER_URL}/product/shortlink/${id}`)
       .then(({ data }) => {
         if (data.success) {
-          navigator.clipboard.writeText(`http://localhost:8080/l/${data.link}`);
+          navigator.clipboard.writeText(`${config.SERVER_URL}/l/${data.link}`);
           Swal.fire({
             title: "Success!",
             text: "Copied link",

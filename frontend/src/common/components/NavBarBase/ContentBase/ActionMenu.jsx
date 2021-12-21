@@ -35,7 +35,7 @@ const ActionMenu = () => {
     {
       label: "cart",
       icon: ShoppingCartOutlinedIcon,
-      value: "66+",
+      value: "0+",
       path: "/cart",
     },
   ]);

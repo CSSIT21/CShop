@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
+import config from '../../common/constants';
 import Coupon from "./Coupon";
 import p1 from "../picture/unsplash_23coWmkTNSg.png";
 import p2 from "../picture/unsplash_FoeIOgztCXo.png";
@@ -80,7 +81,7 @@ const couponshops = [
 
 const Couponshop = () => {
   const classes = useStyles();
-  let apiUrl = "http://localhost:8080/promotion"; 
+  let apiUrl =  config.SERVER_URL + "/promotion";
   
   const [post,setPost] = useState();
 

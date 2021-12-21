@@ -19,6 +19,7 @@ import SupportMedia from "../components/SupportMedia";
 import axios from "axios";
 import authState from '../../common/store/authState';
 import { useRecoilValue } from "recoil";
+import {  SERVER_URL } from '../../common/constants';
 
 const cardStyle = {
     width: '100%',
@@ -92,7 +93,7 @@ const ManageSellerAccountPage = () => {
           const path = res.data.original_link;
           if(res != null){
           const res = await axios.post(
-            "http://localhost:8080/manageaccount/tickets/create",
+              SERVER_URL + "/manageaccount/tickets/create",
             {
                 "title":title,
                 "description":desc,
