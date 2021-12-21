@@ -28,7 +28,7 @@ const StockBody = ({ columns }) => {
       );
 
       const created = res.data
-        .slice(0, 10)
+        .slice(0, 20)
         .map((el) =>
           createData(
             el.id,
