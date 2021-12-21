@@ -1534,6 +1534,12 @@ model delivery_admin_log {
   delivery_id_from_delivery_admin_log delivery_product_status @relation(fields: [delivery_id], references: [id])
 }
 
+model admin {
+  id       Int    @id(map: "admin_pk") @default(autoincrement())
+  username String @db.VarChar(20)
+  password String
+}
+
 enum homeBannerPicturePosition {
   Main
   Sub
