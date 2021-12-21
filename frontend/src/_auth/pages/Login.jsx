@@ -27,6 +27,9 @@ const LoginPage = () => {
   const resetAuth = useResetRecoilState(authState);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [newConfirmPassword, setConfirmNewPassword] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
 
   const onLogin = async () => {
     if (email === "") {
@@ -79,7 +82,55 @@ const LoginPage = () => {
         });
     }
   };
-
+  const handleCancelResetPassword = () => {
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setConfirmEmail("");
+    setOpen(false);
+  };
+  const handleResetPassword = () => {
+    if (
+      newPassword !== newConfirmPassword ||
+      newPassword === "" ||
+      newConfirmPassword === "" ||
+      confirmEmail === ""
+    ) {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please check if your information is correct!",
+        icon: "error",
+        confirmButtonText: "OK",
+        timer: 3000,
+      });
+      setOpen(false);
+    } else {
+      setIsLoading(true);
+      axios
+        .patch(config.SERVER_URL + "/profile/resetpassword", {
+          email: confirmEmail,
+          password: newPassword,
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            Swal.fire({
+              title: "Success!",
+              text: "Your password has been reset!",
+              icon: "success",
+              timer: 3000,
+            });
+          } else {
+            Swal.fire({
+              title: "Failed!",
+              text: "Email not exist!",
+              icon: "error",
+              timer: 3000,
+            });
+          }
+          setIsLoading(false);
+          setOpen(false);
+        });
+    }
+  };
   useLayoutEffect(() => {
     document.body.classList.add("gray");
     return () => document.body.classList.remove("gray");
@@ -186,25 +237,108 @@ const LoginPage = () => {
           </Box>
         </Box>
       </Box>
-      <Dialog open={open} aria-describedby="alert-dialog-slide-description">
+      <Dialog
+        open={open}
+        aria-describedby="alert-dialog-slide-description"
+        fullWidth
+      >
         <Box
           sx={{
-            height: "250px",
-            width: "500px",
+            width: "100%",
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
             alignItems: "center",
+            padding: "40px 0px",
           }}
         >
           <Typography
-            fontWeight="600"
-            fontSize="20px"
-            color="#FD6637"
-            sx={{ padding: "0 2rem", marginTop: "50px" }}
+            fontWeight="500"
+            fontSize="24px"
+            sx={{ marginBottom: "40px" }}
           >
-            Loading
+            Reset Password
           </Typography>
+          <TextField
+            id="confirmPassword"
+            placeholder="Email"
+            variant="outlined"
+            sx={{ borderRadius: "10px", width: "60%", marginBottom: "30px" }}
+            fullWidth
+            autoComplete="off"
+            onChange={(e) => {
+              setConfirmEmail(e.target.value);
+            }}
+          />
+          <TextField
+            id="newpassword"
+            placeholder="Password"
+            variant="outlined"
+            sx={{ borderRadius: "10px", width: "60%", marginBottom: "30px" }}
+            fullWidth
+            type={"password"}
+            autoComplete="off"
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+            }}
+          />
+          <TextField
+            id="newpasswordconfirm"
+            placeholder="Confirm Password"
+            variant="outlined"
+            sx={{ borderRadius: "10px", width: "60%" }}
+            type={"password"}
+            fullWidth
+            autoComplete="off"
+            onChange={(e) => {
+              setConfirmNewPassword(e.target.value);
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              width: "50%",
+              justifyContent: "space-around",
+            }}
+          >
+            <Button
+              variant="outlined"
+              style={{
+                width: "100px",
+                height: "50px",
+                textTransform: "capitalize",
+                marginTop: "40px",
+              }}
+              onClick={handleCancelResetPassword}
+            >
+              Cancel
+            </Button>
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  textTransform: "capitalize",
+                  marginTop: "40px",
+                }}
+                onClick={handleResetPassword}
+              >
+                Confirm
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "100px",
+                  textTransform: "capitalize",
+                  height: "50px",
+                  marginTop: "40px",
+                }}
+              ></LoadingButton>
+            )}
+          </Box>
         </Box>
       </Dialog>
     </Fragment>
@@ -252,6 +386,7 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
     width: "500px",
     marginBottom: "40px",
+    cursor: "pointer",
   },
   condition2: {
     margin: "20px 0",

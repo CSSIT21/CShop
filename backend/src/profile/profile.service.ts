@@ -32,10 +32,14 @@ export class ProfileService {
 							picture_id_from_customer_picture: true,
 						},
 					},
+					admin: true,
 				},
 			});
 			if (user.shop_info.length > 0) {
 				return { ...user, role: 'SELLER' };
+			}
+			if (user.admin) {
+				return { ...user, role: 'ADMIN' };
 			}
 			return { ...user, role: 'CUSTOMER' };
 		} catch (e) {
@@ -335,7 +339,11 @@ export class ProfileService {
 					customer_id: customer_id,
 				},
 				include: {
-					order_detail: true,
+					order_detail: {
+						include: {
+							address_id_from_order_detail: true,
+						},
+					},
 					order_item: {
 						select: {
 							product_id: true,
@@ -376,7 +384,11 @@ export class ProfileService {
 					id: order_id,
 				},
 				include: {
-					order_detail: true,
+					order_detail: {
+						include: {
+							address_id_from_order_detail: true,
+						},
+					},
 					order_item: {
 						select: {
 							product_id: true,
@@ -495,6 +507,28 @@ export class ProfileService {
 				},
 			});
 			return true;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async resetPassword(data: User) {
+		const { email, password } = data;
+		try {
+			await this.prisma.customer.update({
+				where: {
+					email: email,
+				},
+				data: {
+					password: CryptoJs.HmacSHA512(password, process.env.PASSWORD_KEY).toString(),
+				},
+			});
+			return {
+				success: true,
+			};
 		} catch (e) {
 			console.log(e.message);
 			return {

@@ -19,7 +19,9 @@ export class ProfileController {
 	}
 
 	@Get('/me')
+	@Public()
 	public async getInfo(@CurrentUser() currentUser) {
+		console.log(currentUser);
 		const user = await this.profileService.fetch(currentUser.id);
 		delete user.password;
 		return {
@@ -93,5 +95,11 @@ export class ProfileController {
 	@Public()
 	public async checkIfReview(@Body() data: Product) {
 		return await this.profileService.checkIfReview(data);
+	}
+
+	@Patch('/resetpassword')
+	@Public()
+	public async resetPassword(@Body() data: User) {
+		return await this.profileService.resetPassword(data);
 	}
 }

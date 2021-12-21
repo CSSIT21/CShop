@@ -16,7 +16,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
 	async validate(email: string, password: string): Promise<any> {
 		console.log('VALIDATING: ', email, password);
-
 		const user: any = await this.prisma.customer.findFirst({
 			where: { email },
 			include: {
@@ -35,6 +34,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 						picture_id_from_customer_picture: true,
 					},
 				},
+				admin: true,
+				admin_customer_suspensions: true,
 			},
 		});
 
@@ -44,6 +45,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
 		if (user.password !== CryptoJs.HmacSHA512(password, process.env.PASSWORD_KEY).toString()) {
 			throw new HttpException('Password is incorrect.', 500);
+		}
+		if (user.admin_customer_suspensions) {
+			throw new HttpException('This account is banned. Please contact our support', 500);
 		}
 
 		delete user.password;
@@ -60,6 +64,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 				},
 			});
 		}
+		if (user.admin) {
+			role = 'ADMIN';
+		}
 
 		const userWithRole = { ...user, role };
 
@@ -67,12 +74,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 			success: true,
 			message: 'Sign in successfully.',
 			user: userWithRole,
-			access_token: this.jwt.sign(
-				{ id: user.id, role },
-				{
-					expiresIn: '7d',
-				},
-			),
+			access_token: this.jwt.sign({ id: user.id, role }),
 		};
 	}
 }

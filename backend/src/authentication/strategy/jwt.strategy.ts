@@ -11,8 +11,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 				if (req.headers['authorization']) {
 					return req.headers['authorization'];
 				}
-				if (!req || !req.cookies) return null;
-				return req.cookies['authorization'];
+				if (req.cookies['authorization']) return req.cookies['authorization'];
+				return null;
 			},
 			ignoreExpiration: false,
 			secretOrKey: constants.jwtSecret,
