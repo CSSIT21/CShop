@@ -28,7 +28,7 @@ const StockBody = ({ columns }) => {
       );
 
       const created = res.data
-        .slice(0, 10)
+        .slice(0, 20)
         .map((el) =>
           createData(
             el.id,
@@ -101,7 +101,7 @@ const StockBody = ({ columns }) => {
                   <TableRow>
                     <TableCell sx={{ display: "block", textAlign: "center" }}>
                       <Typography variant="h4" component="div">
-                        No results found （；´д｀）ゞ
+                        No results found.
                       </Typography>
                     </TableCell>
                   </TableRow>

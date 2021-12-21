@@ -18,34 +18,10 @@ const Comments = ({
   reviewPhoto = [],
   reviewTime,
 }) => {
-  // const [anchorEl, setAnchorEl] = React.useState(null);
-  // const open = Boolean(anchorEl);
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-
   const [openDialog, setOpenDialog] = useState(false);
   const [page, setPage] = useState(0);
   const photoPerRow = 1;
   const totalPage = Math.ceil(reviewPhoto.length / photoPerRow);
-  // const onPrev = () => {
-  //   if (page === 0) {
-  //     setPage(totalPage - 1);
-  //   } else {
-  //     setPage(page - 1);
-  //   }
-  // };
-
-  // const onNext = () => {
-  //   if (totalPage - 1 === page) {
-  //     setPage(0);
-  //   } else {
-  //     setPage(page + 1);
-  //   }
-  // };
 
   const handleClickOpenDialog = (id) => {
     setPage(id);
@@ -134,7 +110,7 @@ const Comments = ({
             alignItems="center"
             marginTop="8px"
           >
-            {reviewPhoto &&
+            {reviewPhoto.length > 0 &&
               reviewPhoto?.slice(0, 5).map((val, key) => (
                 <ReviewPhoto
                   setPage={setPage}
@@ -182,25 +158,6 @@ const Comments = ({
           />
         </Box>
       </Box>
-
-      {/* flag icon
-      <IconButton
-        onClick={handleClick}
-        sx={{ position: "absolute", top: "10px", right: "0" }}
-      >
-        <EmojiFlagsRoundedIcon />
-      </IconButton>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={handleClose}>Report Abuse</MenuItem>
-      </Menu> */}
 
       {/* footer */}
       <CommentFooter commentDateTime={reviewTime} />

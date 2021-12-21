@@ -10,24 +10,28 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Logo from "../assets/images/Logo.svg";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import StoreRoundedIcon from "@mui/icons-material/StoreRounded";
-import NoAccountsRoundedIcon from "@mui/icons-material/NoAccountsRounded";
-import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
-import ViewCarouselRoundedIcon from "@mui/icons-material/ViewCarouselRounded";
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import StoreRoundedIcon from '@mui/icons-material/StoreRounded';
+import NoAccountsRoundedIcon from '@mui/icons-material/NoAccountsRounded';
+import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
+import ViewCarouselRoundedIcon from '@mui/icons-material/ViewCarouselRounded';
+import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { Link, useLocation } from "react-router-dom";
 import { useMiddleware } from "../hooks";
 
-const drawerWidth = 240;
+const drawerWidth = 222;
 
 const generateLink = (Icon, title = "", path = "/") => ({ Icon, title, path });
 
 let links = [
-  generateLink(PersonRoundedIcon, "Users", "/manage/users"),
-  generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
-  generateLink(NoAccountsRoundedIcon, "Banned users", "/manage/bannedusers"),
-  generateLink(BlockRoundedIcon, "Banned sellers", "/manage/bannedsellers"),
-  generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
+    generateLink(PersonRoundedIcon, "Users", "/manage/users"),
+    generateLink(StoreRoundedIcon, "Sellers", "/manage/sellers"),
+    generateLink(CardGiftcardRoundedIcon, "Products", "/manage/products"),
+    generateLink(HelpRoundedIcon, "Support", "/manage/tickets"),
+    generateLink(AssignmentIcon, "Audit Log", "/manage/audits"),
+    generateLink(ViewCarouselRoundedIcon, "Banner", "/manage/banner"),
 ];
 
 const openedMixin = (theme) => ({

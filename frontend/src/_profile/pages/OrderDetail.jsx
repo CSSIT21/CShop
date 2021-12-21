@@ -18,16 +18,17 @@ import Dialog from "@mui/material/Dialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import ProductDetailHeader from "../components/HistoryBase/ProductDetailHeader";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
 
 const OrderDetail = () => {
   const classes = useStyles();
   const orderId = useParams();
   const auth = useRecoilValue(authState);
-  // const [reviewable, setreviewable] = useState(true);
   const [onLoad, setonLoad] = useState(false);
   const [orderDetail, setorderDetail] = useState({});
   const [products, setProducts] = useState([]);
   const [cartitems, setcartitems] = useState([]);
+  const router = useHistory();
 
   const onHandleReOrder = () => {
     axios
@@ -36,9 +37,25 @@ const OrderDetail = () => {
         cartitems: cartitems,
       })
       .then(({ data }) => {
-        console.log(data);
+        if (data) {
+          Swal.fire({
+            title: "Success!",
+            text: "Your products have been added to cart",
+            icon: "success",
+            timer: 3000,
+          });
+        } else {
+          Swal.fire({
+            title: "Failed!",
+            text: "Products can not be order again",
+            icon: "error",
+            timer: 3000,
+          });
+        }
       });
-    // console.log(auth.user.id, cartitems);
+  };
+  const toChatShop = () => {
+    router.push(`/chat/${products[0].product_id_from_order_item.shop_id}`);
   };
   useEffect(() => {
     setonLoad(true);
@@ -58,8 +75,7 @@ const OrderDetail = () => {
       products.map((product) => ({
         productID: product.product_id,
         amount: product.quantity,
-        firstchoiceID: product.product_options[0],
-        seconedchoiceID: product.product_options[1],
+        product_options: product.product_options,
         price: product.product_id_from_order_item.price,
       }))
     );
@@ -130,6 +146,7 @@ const OrderDetail = () => {
                 variant="outlined"
                 sx={buttonStyle}
                 startIcon={<ChatRoundedIcon />}
+                onClick={toChatShop}
               >
                 Contact Seller
               </Button>

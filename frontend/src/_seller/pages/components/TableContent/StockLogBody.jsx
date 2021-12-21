@@ -42,7 +42,9 @@ const StockLogBody = ({ columns }) => {
       const res = await axios.get(
         `${config.SERVER_URL}/sellerconsole/${shopid.id}/stockhistory`
       );
-      const created = res.data.slice(0, 10).map((el) =>
+      const created = res.data
+      // .slice(0, 10)
+      .map((el) =>
         createData(
           el.product_id,
           // el.product_id_from_sconsole_stock_history.product_picture.length ==
