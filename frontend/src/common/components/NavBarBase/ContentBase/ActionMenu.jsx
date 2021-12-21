@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 import { For } from "~/common/utils";
 import NotificationService from "~/common/services/NotficationService";
 import authState from "~/common/store/authState";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useHistory } from "react-router-dom";
 import NotificationDropdown from "./NotificationDropdown";
 
@@ -39,6 +39,7 @@ const ActionMenu = () => {
       path: "/cart",
     },
   ]);
+
   const [notificationService, setNotificationService] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,8 +70,11 @@ const ActionMenu = () => {
     let act = [...actionLists];
     const count = notifications?.filter((n) => !n.seen).length;
     act[1].value = count;
+    act[2].value = '' + (auth?.user?.order_cart_item?.length || 0);
+    console.log(auth.user)
+    console.log(act)
     setActionLists(act);
-  }, [notifications]);
+  }, [notifications,auth]);
 
   function handleGet(noti) {
     setNotifications(noti);

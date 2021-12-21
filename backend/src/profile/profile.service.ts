@@ -32,6 +32,7 @@ export class ProfileService {
 							picture_id_from_customer_picture: true,
 						},
 					},
+					order_cart_item: true,
 					admin: true,
 				},
 			});
