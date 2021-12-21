@@ -169,8 +169,13 @@ const ChatPage = (props) => {
     }
 
     useEffect(() => {
-        if (router_id) {
-            alert('opening chat page for id#' + router_id)
+        if (auth.isLoggedIn && router_id) {
+            console.log('opening chat page for ' + (parseInt(router_id) ? 'id#' : 'url slug ') + router_id)
+            ChatService.getConversationId(parseInt(router_id), (id) => {
+                console.log('get coonv ' + id + ' complete')
+                // console.log(ChatService.conversation(id))
+                changeChat(id)
+            })
         }
         // console.log(
         //     `%c Chat.jsx %c initiated for user#${user_id}`,

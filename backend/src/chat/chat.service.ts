@@ -39,6 +39,40 @@ export class ChatService {
 		return conv;
 	}
 
+	async findUniqueConversationId(uid: number, shop_id: number) {
+		const conv: { id: number }[] = await this.prisma
+			.$queryRaw`SELECT id FROM chat_conversation WHERE customer_id = ${uid} AND shop_id = ${shop_id};`;
+		// console.log(conv);
+		const conv_id = conv.length > 0 ? conv[0].id : -1;
+		if(conv_id === -1)
+		{
+			const newConv_id = await this.createConversation(uid, shop_id)
+			await this.createMessage({
+				conversation_id: newConv_id,
+				content_type: 'Text',
+				content: 'Welcome to our shop',
+				from_customer: false,
+			});
+			return newConv_id
+		}
+		else
+		{
+			const msg = await this.prisma
+				.$queryRaw`SELECT COUNT(*) FROM chat_message cm JOIN chat_conversation cc on cc.id = cm.conversation_id
+WHERE cc.id = ${conv_id} AND cm.content_type <> 'Noti';`;
+			if(msg[0].count === 0)
+			{
+				await this.createMessage({
+					conversation_id: conv_id,
+					content_type: 'Text',
+					content: 'Welcome to our shop',
+					from_customer: false,
+				});
+			}
+		}
+		return conv_id;
+	}
+
 	async findAllConversation(uid: number) {
 		const conv = await this.prisma
 			.$queryRaw`WITH cmax(id, time) AS (SELECT conversation_id, max(message_time) FROM chat_message WHERE content_type <> 'Noti' GROUP BY conversation_id)
@@ -106,14 +140,14 @@ ORDER BY message_time;`;
 	}
 
 	async findLatestMessageId(uid: number) {
-		const message: {id: number}[] = await this.prisma.$queryRaw`SELECT chat_message.id
+		const message: { id: number }[] = await this.prisma.$queryRaw`SELECT chat_message.id
 FROM chat_message
     JOIN chat_conversation cc on chat_message.conversation_id = cc.id
     JOIN shop_info si on cc.shop_id = si.id
 WHERE cc.customer_id = ${uid} OR si.customer_id = ${uid}
 ORDER BY message_time DESC LIMIT 1;`;
 
-		return message.length === 1 ? message[0].id : 0
+		return message.length === 1 ? message[0].id : 0;
 	}
 
 	async findAllNotification(uid: number) {
@@ -133,7 +167,10 @@ ORDER BY message_time DESC;`;
 		const conv: { id: number }[] = await this.prisma
 			.$queryRaw`SELECT id FROM chat_conversation WHERE customer_id = ${notification.customer_id} AND shop_id = ${notification.shop_id};`;
 		// if(conv.length === 0) conv = await this.createConversation(notification.customer_id, notification.shop_id)
-		const conv_id = conv.length > 0 ? conv[0].id : await this.createConversation(notification.customer_id, notification.shop_id);
+		const conv_id =
+			conv.length > 0
+				? conv[0].id
+				: await this.createConversation(notification.customer_id, notification.shop_id);
 
 		const msg = await this.prisma.chat_message.create({
 			data: {
@@ -148,7 +185,7 @@ ORDER BY message_time DESC;`;
 				message_id: msg.id,
 				action_url: notification.action_url,
 				notification_text: notification.notification_text.substring(0, 100),
-				type: 'Text'
+				type: 'Text',
 			},
 		});
 		const shop = await this.prisma
@@ -161,7 +198,7 @@ ORDER BY message_time DESC;`;
 			notification_text: msgContent.notification_text,
 			message_time: msg.message_time,
 			conversation_id: conv_id,
-			shop_name: shop[0].shop_name
+			shop_name: shop[0].shop_name,
 		};
 	}
 
@@ -217,30 +254,30 @@ ORDER BY message_time DESC;`;
 			...msg,
 			content: msgContent.text || msgContent.path,
 			content_extra: msgContent.thumbnail || null,
-			temp_id: message.temp_id
+			temp_id: message.temp_id,
 		};
 	}
 
-  async updateMessageToSeen(message_id: number) {
-    await this.prisma.chat_message.update({
-      where: {
-        id: message_id
-      },
-      data: {
-        seen: true
-      }
-    })
-  }
+	async updateMessageToSeen(message_id: number) {
+		await this.prisma.chat_message.update({
+			where: {
+				id: message_id,
+			},
+			data: {
+				seen: true,
+			},
+		});
+	}
 
-  static push(notification: { from: number, to: number, text: string, redirect_to: string}) {
-	//   console.log('gonna push ', notification)
-	  const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;
-	  const socket = io('ws://0.0.0.0:' + SOCKET_PORT)
-	  socket.emit('push', {
-		  shop_id: notification.from,
-		  customer_id: notification.to,
-		  notification_text: notification.text,
-		  action_url: notification.redirect_to
-	  })
-  }
+	static push(notification: { from: number; to: number; text: string; redirect_to: string }) {
+		//   console.log('gonna push ', notification)
+		const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;
+		const socket = io('ws://0.0.0.0:' + SOCKET_PORT);
+		socket.emit('push', {
+			shop_id: notification.from,
+			customer_id: notification.to,
+			notification_text: notification.text,
+			action_url: notification.redirect_to,
+		});
+	}
 }

@@ -175,6 +175,11 @@ class ChatService {
                 this.onGetComplete()
                 break
 
+            case 'conversationId':
+                console.log('sohuld get conv id ' + response.data)
+                this.onGetConversationIdComplete(response.data)
+                break
+
             case 'message':
                 // console.log('got message')
                 messages = JSON.parse(sessionStorage.getItem('messages'))
@@ -250,6 +255,39 @@ class ChatService {
         })
         sessionStorage.setItem('isGetting', 'true')
         this.onGetConversationComplete = callback
+    }
+
+    getConversationId(shop_id, callback) {
+        // console.log('get', conversation_id)
+        sessionStorage.setItem('isGetting', 'true')
+        ChatService.socket.emit('get', {
+            item: 'conversationId',
+            as: this._uid,
+            with: shop_id
+        })
+        this.onGetConversationIdComplete = (id) => {
+            if(!this.conversation(id))
+            {
+                this.onGetComplete = (function (old) {
+                    function extendsInit() {
+                        old()
+                        callback(id)
+                    }
+
+                    return extendsInit
+                })(this.onGetComplete)
+
+                ChatService.socket.emit('get', {
+                    item: 'conversation',
+                    as: this._uid
+                })
+                sessionStorage.setItem('isGetting', 'true')
+            }
+            else
+            {
+                callback(id)
+            }
+        }
     }
 
     sendText(text, conversation_id) {

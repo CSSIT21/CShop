@@ -140,7 +140,7 @@ const ChatList = (props) => {
                         )
                     )}
             </Box>
-            <Box className={classes.chatListButtom}>
+            {/* <Box className={classes.chatListButtom}>
                 <Button
                     variant="contained"
                     className={classes.addNewChatButton}
@@ -152,7 +152,7 @@ const ChatList = (props) => {
                 >
                     Add New Chat
                 </Button>
-            </Box>
+            </Box> */}
         </Box>
     )
 }

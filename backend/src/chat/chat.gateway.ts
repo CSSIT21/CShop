@@ -70,6 +70,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				break;
 			}
 
+			case 'conversationId': {
+				return await this.getConversationId(client, data.as, data.with);
+			}
+
 			case 'message': {
 				if (data.with) {
 					return await this.getAllMessage(client, data.with.conversation_id);
@@ -114,6 +118,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			data: {
 				item: 'conversation',
 				data: conv,
+			},
+		};
+	}
+
+	async getConversationId(@ConnectedSocket() client: Socket, uid: number, shop_id: number) {
+		const conv_id = await this.chatService.findUniqueConversationId(uid, shop_id);
+		return {
+			event: 'get',
+			data: {
+				item: 'conversationId',
+				data: conv_id,
 			},
 		};
 	}

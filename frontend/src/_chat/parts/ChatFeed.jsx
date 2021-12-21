@@ -89,7 +89,11 @@ const ChatFeed = (props) => {
         return (
             <Box className={classes.chatFeedContainer}>
                 <Box className={classes.loader}>
-                    <TimeLabel text="Select chat from your left" />
+                    {props.ChatService.isGetting ? (
+                        <CircularProgress color="primary" />
+                    ) : (
+                        <TimeLabel text="Select chat from your left" />
+                    )}
                 </Box>
             </Box>
         )
