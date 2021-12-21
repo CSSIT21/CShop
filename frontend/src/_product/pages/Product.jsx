@@ -108,8 +108,8 @@ const ProductPage = (props) => {
     });
   };
 
-  const avgRatingFormat = () => {
-    let a = avgRating;
+  const avgRatingFormat = (avg) => {
+    let a = avg;
     let floor = Math.floor(a);
     let r = Math.abs(floor - a);
     if (r > 0.5) {
@@ -139,8 +139,8 @@ const ProductPage = (props) => {
       });
   };
 
-  const avgRatingShopFormat = () => {
-    let a = avgRatingShop;
+  const avgRatingShopFormat = (avg) => {
+    let a = avg;
     let floor = Math.floor(a);
     let r = Math.abs(floor - a);
     if (r > 0.5) {
@@ -209,7 +209,7 @@ const ProductPage = (props) => {
         if (data.success) {
           setShopId(data.shop_details.shop_info.id);
           setShopDetails(data.shop_details.shop_info);
-          setAvgRatingShop(data.shop_details.avg_shop_rating);
+          avgRatingShopFormat(data.shop_details.avg_shop_rating);
         }
       })
       .catch((e) => {
@@ -227,6 +227,7 @@ const ProductPage = (props) => {
         if (data.success) {
           setComments(data.comments.comment_list);
           setAvgRating(data.comments.avg_product_rating);
+          avgRatingFormat(data.comments.avg_product_rating);
         }
       })
       .catch((e) => {
@@ -393,12 +394,9 @@ const ProductPage = (props) => {
       });
   };
 
-  useEffect(() => {
-    avgRatingFormat();
-  }, [avgRating]);
-  useEffect(() => {
-    avgRatingShopFormat();
-  }, [avgRatingShop]);
+  // useEffect(() => {
+  //   avgRatingShopFormat();
+  // }, [avgRatingShop]);
 
   return (
     <Box

@@ -106,7 +106,6 @@ const ProductRating = ({ avgRating, commentPictures, comments }) => {
                   key={key}
                   reviewTime={val.review_time}
                   reviewPhoto={findCommentPicture(val.id)}
-                  // commentPictures[key]?.comment_pictures
                 />
               ))}
               <Box sx={{ marginTop: "50px" }}>
