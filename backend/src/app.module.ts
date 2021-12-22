@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/auth.module';
 import { JwtAuthGuard } from './common/guards/jwtAuth.guard';
 import { PrismaModule } from './prisma/prisma.module';
-//import { ChatModule } from './chat/chat.module';
+import { ChatModule } from './chat/chat.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { ProfileModule } from './profile/profile.module';
 import { SellershopModule } from './_sellershop/sellershop/sellershop.module';
@@ -24,7 +24,6 @@ import { CommentModule } from './_product/comment/comment.module';
 import { SearchModule } from './_search/search.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { ManageaccountModule } from './_manageaccount/manageaccount.module';
-import { PaymentModule } from './_payment/payment.module';
 
 @Module({
 	imports: [
@@ -46,8 +45,7 @@ import { PaymentModule } from './_payment/payment.module';
 		ReviewProductModule,
 		ShortLinkModule,
 		CommentModule,
-		PaymentModule,
-		//ChatModule,
+		ChatModule,
 		PromotionModule,
 		SearchModule,
 		DeliveryModule,
