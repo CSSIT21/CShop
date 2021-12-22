@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles'
 import { margin } from '@mui/system'
 import React, {useState} from 'react'
 import CButton from '../../common/components/CButton'
+import { Link } from 'react-router-dom'
 
 
 const useStyles = makeStyles({
@@ -69,7 +70,8 @@ const Success = ({orderId}) => {
                         Amount paid<Typography fontWeight={600} fontSize={20}>24 ฿</Typography>
                     </Box>
                     <Box marginTop={5} >
-                        <CButton title="Close" className={classes.contentStyle}/>
+                         <Link to ={"/home"} class>
+                        <CButton title="Close" className={classes.contentStyle}/></Link>
                     </Box>
                     
                 </CardContent>

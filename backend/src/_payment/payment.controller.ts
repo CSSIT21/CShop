@@ -65,21 +65,26 @@ export class PaymentController {
 
 	@Post('/confirm')
 	@Public()
-	callback(@Req() req, @Res() res) {
+	async callback(@Req() req, @Res() res) {
 		try{
 			const request = req.body;
 			console.log(request);
 			
-		let trans = this.paymentService.paidByQr(request, order_id, qr.str, qr.ref);
-			return {
-				success: true,
-				trans
-			}
+		let trans = await this.paymentService.paidByQr(request, order_id, qr.str, qr.ref);
+			if (request.billPaymentRef1 === qr.ref) { 
+				return {
+					success: true,
+					trans
+				}
+			} else {
+				return { success: false }
+			 }
+				
+			
+
 		}catch(err) {
 			return this.paymentService.throwError(err)
 	}
-
-		
 	}
 
 	@Get('/status')
@@ -92,7 +97,10 @@ export class PaymentController {
 				status: true
 			}
 		})
-		return payment.status
+		return {
+			success: true,
+			payment
+		}
 	}
 
 	@Get('/clear')
@@ -229,8 +237,8 @@ export class PaymentController {
 		) {
 		try {
 			const request = req.body;
-			const orderId = request.orerId;
-			console.log(request);
+			const orderId = request.orderId;
+			console.log(request.orderId);
 			
 				let paymentWallet = this.paymentService.paidByWallet(orderId);
 				return {
