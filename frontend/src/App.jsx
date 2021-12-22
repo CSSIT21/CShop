@@ -284,20 +284,21 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
-                <Route exact path="/coin/history">
+
+                 <Route exact path="/coin/history">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinHistoryPage />
                     </Suspense>
                   </MainLayout>
-                </Route>
-                <Route exact path="/coin">
+                </Route> 
+                 <Route exact path="/coin">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinRedeemPage />
                     </Suspense>
                   </MainLayout>
-                </Route>
+                </Route> 
                 <Route exact path="/cart">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
@@ -305,6 +306,7 @@ function App() {
                     </Suspense>
                   </MainLayout>
                 </Route>
+
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}
@@ -314,9 +316,11 @@ function App() {
                       <Route path="/seller/:id/dashboard">
                         <SellerDashboard />
                       </Route>
+
                       <Route path="/seller/:id/customize">
                         <SellerShopCustomizationPage />
                       </Route>
+
                       <Route path="/seller/:id/stock">
                         <SellerStock />
                       </Route>
