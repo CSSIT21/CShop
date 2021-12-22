@@ -24,6 +24,7 @@ import { CommentModule } from './_product/comment/comment.module';
 import { SearchModule } from './_search/search.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { ManageaccountModule } from './_manageaccount/manageaccount.module';
+import { CoinModule } from './coin/coin.module';
 
 @Module({
 	imports: [
@@ -49,7 +50,8 @@ import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 		PromotionModule,
 		SearchModule,
 		DeliveryModule,
-		ManageaccountModule
+		ManageaccountModule,
+		CoinModule
 	],
 
 	controllers: [AppController],
