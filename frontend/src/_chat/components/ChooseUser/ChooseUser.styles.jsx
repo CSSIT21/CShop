@@ -6,17 +6,7 @@ const useStyles = makeStyles({
         flexDirection: 'row !important',
         justifyContent: 'space-evenly !important',
         marginRight: '10px !important',
-        minWidth: '150px !important',
-        maxWidth: '250px !important'
-    },
-    displayName: {
-        width: '100%',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        height: '40px',
-        wordBreak: 'break-all',
-        whiteSpace: 'nowrap',
-        lineHeight: '40px !important'
+        width: '150px !important'
     }
 })
 

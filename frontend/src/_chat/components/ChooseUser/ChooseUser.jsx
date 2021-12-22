@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import useStyles from './ChooseUser.styles'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
@@ -17,14 +17,6 @@ const ChooseUser = (props) => {
     const handleClose = () => {
         setAnchorEl(null)
     }
-    const changeToCustomer = () => {
-        handleClose()
-        props.setView(true)
-    }
-    const changeToSeller = () => {
-        handleClose()
-        props.setView(false)
-    }
 
     return (
         <Box>
@@ -35,11 +27,11 @@ const ChooseUser = (props) => {
                 onClick={handleClick}
                 className={classes.chooseUserButton}
             >
-                <Typography className={classes.displayName}>{props.selected_name}</Typography>
+                johny
                 <Avatar
                     alt="User Pic"
-                    src={props.selected_pic}
-                    sx={{ width: 30, height: 30, marginLeft: 1 }}
+                    src={props.pic}
+                    sx={{ width: 30, height: 30 }}
                 />
             </Button>
             <Menu
@@ -54,8 +46,8 @@ const ChooseUser = (props) => {
                     horizontal: 'left'
                 }}
             >
-                <MenuItem onClick={changeToCustomer}>{props.user_name}</MenuItem>
-                <MenuItem onClick={changeToSeller}>{props.shop_name}</MenuItem>
+                <MenuItem onClick={handleClose}>Johny's shop</MenuItem>
+                <MenuItem onClick={handleClose}>Tanny's shop</MenuItem>
             </Menu>
         </Box>
     )

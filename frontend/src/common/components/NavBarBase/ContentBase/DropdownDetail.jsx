@@ -14,8 +14,6 @@ import { For } from "~/common//utils";
 import StyledMenu from "../../StyledMenu";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import authState from "~/common/store/authState";
-import ChatService from "~/_chat/services/ChatService";
-import NotificationService from "~/common/services/NotficationService";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 const DropdownDetail = ({ children }) => {
@@ -57,9 +55,8 @@ const DropdownDetail = ({ children }) => {
     }));
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/home");
-    ChatService.disconnect();
-    // NotificationService.disconnect();
     localStorage.clear();
+
     sessionStorage.clear();
     return resetAuth();
   };

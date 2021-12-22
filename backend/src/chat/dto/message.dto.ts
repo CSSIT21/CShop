@@ -6,6 +6,6 @@ export class MessageDto {
 	from_customer?: boolean;
 	content_type: ChatMessageTypes;
 	content: any;
-	content_extra?: any;
+	content_extra: any;
 	temp_id?: string;
 }

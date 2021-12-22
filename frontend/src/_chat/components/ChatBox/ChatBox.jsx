@@ -90,7 +90,7 @@ const ChatBox = React.forwardRef((props, ref) => {
                     </Typography>
                 </Box>
 
-                <CircleIcon sx={((props.fromCustomer && props.isCustomerView) || (!props.fromCustomer && !props.isCustomerView) || props.read) ? classes.circleRead : classes.circle} />
+                <CircleIcon sx={(props.fromCustomer || props.read) ? classes.circleRead : classes.circle} />
             </CardActionArea>
         </Card>
     )

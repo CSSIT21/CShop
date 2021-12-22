@@ -51,17 +51,14 @@ class ChatService {
     _uid = -1
     _isCustomer = null
     _users = null
-    static socket
 
-    constructor(user, onGetComplete, onGetShopComplete, onReceive) {
+    constructor(user, onGetComplete, onReceive) {
         // console.log('init')
         this._uid = user.id
         this._isCustomer = user.role === 'CUSTOMER'
-        ChatService.socket = io(config.SOCKET_URL)
+        this.socket = io(config.SOCKET_URL)
         this.onGetComplete = onGetComplete
-        this.onGetShopComplete = onGetShopComplete
         this.onReceive = onReceive
-        this._isCustomerView = true
         this.init()
     }
 
@@ -69,23 +66,20 @@ class ChatService {
         if (!sessionStorage.getItem('temp')) {
             sessionStorage.setItem('temp', '{}')
         }
-        ChatService.socket.on('get', (response) => {
+        this.socket.on('get', (response) => {
             this.handleGet(response)
         })
 
-        ChatService.socket.on('status', (response) => {
+        this.socket.on('status', (response) => {
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let conv = messages.find((m) => m.id === response.conversation_id)
-            if (
-                (response.peer === 'shop' && conv.customer_id === this._uid) ||
-                (response.peer === 'customer' && conv.customer_id !== this._uid)
-            ) {
+            if (response.peer === 'shop' && this._isCustomer) {
                 conv.active = response.event === 'join' ? true : false
             }
             sessionStorage.setItem('messages', JSON.stringify(messages))
         })
 
-        ChatService.socket.on('send', (response) => {
+        this.socket.on('send', (response) => {
             // console.log('send')
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let index = messages.findIndex(
@@ -115,7 +109,7 @@ class ChatService {
                 conversation.latest_text =
                     response.content_type === 'Text' ? response.content : ''
                 conversation.latest_id = response.id
-                if (conversation.customer_id === this._uid && !response.from_customer)
+                if (this._isCustomer && !response.from_customer)
                     conversation.seen = false
                 messages.unshift(messages.splice(index, 1)[0])
                 sessionStorage.setItem('messages', JSON.stringify(messages))
@@ -125,11 +119,12 @@ class ChatService {
             }
         })
 
-        ChatService.socket.on('read', (response) => {
+        this.socket.on('read', (response) => {
             let messages = JSON.parse(sessionStorage.getItem('messages'))
             let conversation = messages.find(
                 (m) => m.id === response.conversation_id
             )
+            console.log(conversation)
             let message = conversation.messages.find(
                 (m) => m.id === response.message_id
             )
@@ -139,19 +134,8 @@ class ChatService {
             sessionStorage.setItem('messages', JSON.stringify(messages))
         })
 
-        ChatService.socket.on('delete', (response) => {
-            let messages = JSON.parse(sessionStorage.getItem('messages'))
-            console.log(messages)
-            let conversation = messages.find(
-                (m) => m.id === response.data.conversation_id
-            )
-            console.log(conversation)
-            conversation.messages.splice(conversation.messages.findIndex(m => m.id === response.data.message_id), 1)
-            sessionStorage.setItem('messages', JSON.stringify(messages))
-        })
-
         // if (!sessionStorage.getItem('messages')) {
-        //     ChatService.socket.emit('get', {
+        //     this.socket.emit('get', {
         //         item: 'conversation',
         //         as: this._uid
         //     })
@@ -164,19 +148,12 @@ class ChatService {
         //     sessionStorage.setItem('isGetting', 'true')
         // }
 
-        ChatService.socket.emit('get', {
+        this.socket.emit('get', {
             item: sessionStorage.getItem('messages')
                 ? 'latestMessageId'
                 : 'conversation',
             as: this._uid
         })
-        if(!this._isCustomer)
-        {
-            ChatService.socket.emit('get', {
-                item: 'shop',
-                as: this._uid
-            })
-        }
         sessionStorage.setItem('isGetting', 'true')
     }
 
@@ -186,20 +163,15 @@ class ChatService {
             case 'conversation':
                 for (const conv of response.data) {
                     // console.log('joining ' + conv.id)
-                    ChatService.socket.emit('join', {
+                    this.socket.emit('join', {
                         conversation_id: conv.id,
-                        from_customer: conv.customer_id === this._uid
+                        from_customer: this._isCustomer
                     })
                     messages.push({ ...conv, messages: [], active: false })
                 }
                 // console.log('get', messages)
                 sessionStorage.setItem('messages', JSON.stringify(messages))
                 this.onGetComplete()
-                break
-
-            case 'conversationId':
-                console.log('sohuld get conv id ' + response.data)
-                this.onGetConversationIdComplete(response.data)
                 break
 
             case 'message':
@@ -219,7 +191,7 @@ class ChatService {
                     (messages.length > 0 &&
                         messages[0].latest_id !== response.data.id)
                 ) {
-                    ChatService.socket.emit('get', {
+                    this.socket.emit('get', {
                         item: 'conversation',
                         as: this._uid
                     })
@@ -227,21 +199,13 @@ class ChatService {
                 } else if (messages.length > 0) {
                     for (const conv of messages) {
                         conv.active = false
-                        ChatService.socket.emit('join', {
+                        this.socket.emit('join', {
                             conversation_id: conv.id,
-                            from_customer: conv.customer_id === this._uid
+                            from_customer: this._isCustomer
                         })
                     }
                 }
                 sessionStorage.setItem('messages', JSON.stringify(messages))
-                break
-
-            case 'shop':
-                sessionStorage.setItem('shop', JSON.stringify({
-                    name: response.data[0].shop_name,
-                    pic: response.data[0].shop_pic
-                }))
-                this.onGetShopComplete()
                 break
         }
 
@@ -254,10 +218,6 @@ class ChatService {
 
     get users() {
         return this._users
-    }
-
-    get shop() {
-        return JSON.parse(sessionStorage.getItem('shop')) || {}
     }
 
     get isGetting() {
@@ -281,7 +241,7 @@ class ChatService {
 
     getConversation(conversation_id, callback) {
         console.log('get', conversation_id)
-        ChatService.socket.emit('get', {
+        this.socket.emit('get', {
             item: 'message',
             with: {
                 conversation_id: conversation_id
@@ -291,57 +251,23 @@ class ChatService {
         this.onGetConversationComplete = callback
     }
 
-    getConversationId(shop_id, callback) {
-        // console.log('get', conversation_id)
-        sessionStorage.setItem('isGetting', 'true')
-        ChatService.socket.emit('get', {
-            item: 'conversationId',
-            as: this._uid,
-            with: shop_id
-        })
-        this.onGetConversationIdComplete = (id) => {
-            if(!this.conversation(id))
-            {
-                this.onGetComplete = (function (old) {
-                    function extendsInit() {
-                        old()
-                        callback(id)
-                    }
-
-                    return extendsInit
-                })(this.onGetComplete)
-
-                ChatService.socket.emit('get', {
-                    item: 'conversation',
-                    as: this._uid
-                })
-                sessionStorage.setItem('isGetting', 'true')
-            }
-            else
-            {
-                callback(id)
-            }
-        }
-    }
-
     sendText(text, conversation_id) {
         const temp_id = nanoid()
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
         const message = {
             temp_id: temp_id,
             conversation_id: conversation_id,
             content_type: 'Text',
             content: text,
-            from_customer: conversation.customer_id === this._uid
+            from_customer: this._isCustomer
         }
         console.log(
             `%c ChatService.js %c '${text}' sent to conv #${conversation_id}`,
             'color:white;background:green',
             ''
         )
-        ChatService.socket.emit('send', message)
-
+        this.socket.emit('send', message)
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
         conversation.messages.push({
             ...message,
             message_time: '',
@@ -359,16 +285,15 @@ class ChatService {
 
     async sendImage(image, conversation_id) {
         const temp_id = nanoid()
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
         const message = {
             temp_id: temp_id,
             conversation_id: conversation_id,
             content_type: 'Image',
             content: null,
-            from_customer: conversation.customer_id === this._uid
+            from_customer: this._isCustomer
         }
-        
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
         conversation.messages.push({
             ...message,
             message_time: '',
@@ -383,7 +308,7 @@ class ChatService {
         const url = await getUrl(image)
         if (!url.success) return
         message.content = url.original_link
-        ChatService.socket.emit('send', message)
+        this.socket.emit('send', message)
 
         console.log(
             `%c ChatService.js %c Image sent to conv #${conversation_id}`,
@@ -392,19 +317,19 @@ class ChatService {
         )
     }
 
+    
 
     async sendVideo(video, conversation_id) {
         const temp_id = nanoid()
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
         const message = {
             temp_id: temp_id,
             conversation_id: conversation_id,
             content_type: 'Video',
             content: null,
-            from_customer: conversation.customer_id === this._uid
+            from_customer: this._isCustomer
         }
-        
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
         conversation.messages.push({
             ...message,
             message_time: '',
@@ -432,7 +357,7 @@ class ChatService {
         if (!url.success) return
         message.content = url.original_link
         message.content_extra = thumbnail.original_link
-        ChatService.socket.emit('send', message)
+        this.socket.emit('send', message)
 
         console.log(
             `%c ChatService.js %c Video sent to conv #${conversation_id}`,
@@ -452,46 +377,17 @@ class ChatService {
     }
 
     read(conversation_id, message_id) {
-        ChatService.socket.emit('read', {
-            conversation_id: conversation_id,
-            message_id: message_id
-        })
-    }
-
-<<<<<<< HEAD
-    postMark(conversation_id, value) {
-        ChatService.socket.emit('post', {
-            item: 'mark',
-            with: conversation_id,
-            to: value
-        })
-        let messages = JSON.parse(sessionStorage.getItem('messages'))
-        let conversation = messages.find((m) => m.id === conversation_id)
-        conversation.marked_as = value
-        sessionStorage.setItem('messages', JSON.stringify(messages))
-    }
-
-    delete(conversation_id, message_id) {
-        if(!confirm('Confirm delete?')) return
-        // let messages = JSON.parse(sessionStorage.getItem('messages'))
-        // let conversation = messages.find((m) => m.id === conversation_id)
-        // conversation.messages.splice(conversation.messages.findIndex(m => m.id === message_id), 1)
-        // sessionStorage.setItem('messages', JSON.stringify(messages))
-
-        ChatService.socket.emit('delete', {
-            conversation_id: conversation_id,
-            message_id: message_id
-        })
-    }
-
-=======
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
-    static disconnect() {
-        ChatService.socket?.disconnect()
-        sessionStorage.removeItem('temp')
-        sessionStorage.removeItem('messages')
-        sessionStorage.removeItem('isGetting')
-        sessionStorage.removeItem('shop')
+        if (
+            this._isCustomer ^
+            this.conversation(conversation_id).messages.find(
+                (m) => m.id === message_id
+            )?.from_customer
+        ) {
+            this.socket.emit('read', {
+                conversation_id: conversation_id,
+                message_id: message_id
+            })
+        }
     }
 }
 
