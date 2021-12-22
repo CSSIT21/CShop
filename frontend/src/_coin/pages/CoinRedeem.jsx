@@ -128,7 +128,7 @@ const CoinRedeemPage = (coinredeem) => {
                     }}>
                         <img src={CoinPic} alt="pic" style={{ height: "60px", width: "60px", alignItem: "center", marginTop: "5px" }} />
 
-                        <Box className={classes.cointext}>{coin}3</Box>
+                        <Box className={classes.cointext}>{coin}</Box>
                         <Box className={classes.cointext}><Link to="/coin/history" > ></Link></Box>
                     </Box>
                     <Box sx={{ width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItem: "center", marginTop: "75px" }}>

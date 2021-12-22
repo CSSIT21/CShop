@@ -22,11 +22,6 @@ const Coupon = ({ coupon }) => {
         </Box>
         </Box>
 
-        <Button variant="secondary"  className={classes.button} sx={{
-          backgroundColor:'white', color:'#FD6637',
-          '&:hover': {
-            backgroundColor: '#ffab91', color:'white' , 
-        }}}>detail</Button>
       </Box>
     </Box>
   );
