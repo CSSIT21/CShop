@@ -4,15 +4,15 @@ import { Box } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import CouponPic from "~/common/assets/images/voucher-pic.png";
-import CButton from "~/common/components/CButton";
+import LoadingButton from "@mui/lab/LoadingButton";
 import BorderLinearProgress from "~/common/components/BorderLinearProgress";
 import { noop } from "~/common/utils";
 import dayjs from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
-const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
+const Coupon = ({ coupon, onClick = noop, loading }) => {
   const classes = useStyles();
   const [date, setdate] = useState();
 
@@ -22,15 +22,24 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 
   return (
     <Box className={classes.couponbox}>
-      <img src={CouponPic} width="150px" alt="coupon picture" />
+      <img
+        src={CouponPic}
+        src={
+          coupon.discount_id_from_discount_shop.picture_path
+            ? coupon.discount_id_from_discount_shop.picture_path
+            : CouponPic
+        }
+        width="150px"
+        alt="coupon picture"
+      />
 
       <Box className={classes.text}>
         <Typography sx={titleStyle}>
-          {coupon.discount_id_from_discount_shop.code}{" "}
+          {coupon.discount_id_from_discount_shop.description}{" "}
         </Typography>
         <BorderLinearProgress
           variant="determinate"
-          value={Math.ceil(100 * (coupon.quantity / 200))}
+          value={Math.ceil(100 * (coupon.quantity / coupon.max_quantity))}
           sx={{ margin: "10px 0" }}
         />
         <Typography sx={remainStyle}>
@@ -41,7 +50,9 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 
       <Divider orientation="vertical" flexItem />
       <Box sx={{ marginLeft: "30px" }}>
-        <CButton {...claimProps} onClick={onClick} />
+        <LoadingButton loading={loading} onClick={onClick} variant="contained">
+          Claim
+        </LoadingButton>
       </Box>
     </Box>
   );
@@ -50,18 +61,16 @@ const Coupon = ({ coupon, claimProps = { title: "Claim" }, onClick }) => {
 const useStyles = makeStyles({
   couponbox: {
     margin: "0px auto",
-    maxWidth: "80%",
+    width: "100%",
     padding: "15px",
-
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
-
     borderRadius: "15px",
     backgroundColor: "#FFFFFF",
   },
 
   text: {
-    width: "300px",
     padding: "0 20px",
   },
 });
@@ -70,6 +79,11 @@ const titleStyle = {
   fontSize: "20px",
   fontWeight: 600,
   color: "#FD6637",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  display: "-webkit-box",
+  WebkitLineClamp: 1 /* number of lines to show */,
+  WebkitBoxOrient: "vertical",
 };
 
 const remainStyle = {

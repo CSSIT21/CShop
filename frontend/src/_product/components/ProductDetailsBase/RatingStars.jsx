@@ -10,17 +10,19 @@ const RatingStars = ({ value, iconStyle, isComment, padding }) => {
       <Box sx={container}>
         <Rating
           sx={padding}
-          defaultValue={value}
+          value={value}
+          // defaultValue={value}
           precision={0.5}
-          readOnly
           icon={<StarRateRounded style={iconStyle} />}
           emptyIcon={<StarOutlineRounded style={iconStyle} />}
+          onChange={() => {}}
+          readOnly
         />
         {isComment ? (
           <></>
         ) : (
           <Box>
-            {value !== null && (
+            {value && (
               <Typography
                 sx={{
                   marginTop: 0.7,

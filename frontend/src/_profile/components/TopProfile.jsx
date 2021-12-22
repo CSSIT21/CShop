@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { Avatar, Typography, Button } from "@mui/material";
 import { useRecoilState } from "recoil";
 import authState from "../../common/store/authState";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import StoreIcon from "@mui/icons-material/Store";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -43,7 +43,7 @@ const TopProfile = () => {
       const path = URL.createObjectURL(e.target.files[0]);
       setImage(path);
       setimageFile(e.target.files[0]);
-      setimageTitle(e.target.files[0].name);
+      setimageTitle(e.target.files[0].name.slice(0, 50));
     }
   };
   const handleUpdateImage = async () => {
@@ -110,11 +110,11 @@ const TopProfile = () => {
         ></Avatar>
         <Box className={classes.nametag}>
           <Typography sx={{ fontSize: "24px", fontWeight: "500" }}>
-            {auth.user.customer_info.firstname}{" "}
-            {auth.user.customer_info.lastname}
+            {auth?.user?.customer_info?.firstname}{" "}
+            {auth?.user?.customer_info?.lastname}
           </Typography>
           <Typography sx={{ fontSize: "18px", fontWeight: "400" }}>
-            #{auth.user.customer_info.customer_id}
+            #{auth?.user?.customer_info?.customer_id}
           </Typography>
         </Box>
       </Box>
@@ -127,7 +127,7 @@ const TopProfile = () => {
             height: "45px",
           }}
           onClick={() => {
-            router.push(`/shop/${auth.user.shop_info[0].id}`);
+            router.push(`/shop/${auth?.user?.shop_info[0]?.id}`);
           }}
         >
           <Typography sx={{ fontSize: "12px" }}>My Shop</Typography>

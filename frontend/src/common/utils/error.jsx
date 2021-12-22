@@ -16,7 +16,7 @@ const ErrorPage = ({error, errorInfo}) => {
             var url = errorMessage.match(urlRegex)[1];
             return '~'+ getLocation(url.split('?')[0]).pathname;
         }catch(e){
-            return "แต่กูก็ไม่รู้เหมือนกันว่าพังตรงไหน";
+            return "แต่เราก็ไม่รู้เหมือนกันว่าพังตรงไหน";
         }
     }
 
@@ -29,7 +29,7 @@ const ErrorPage = ({error, errorInfo}) => {
     return (
         <div className="error" style={{padding: "20px", color: 'white'}}>
             <h1><WarningRounded/> โอ้วไม่นะ เพื่อน!, มี Error หว่ะ</h1>
-            <h4>ชิบหายละ ฝากเช็คไฟล์ตามนี้ที</h4>
+            <h4>ซวยละ ฝากเช็คไฟล์ตามนี้ที</h4>
             <div><b>คือ... Error มันบอกว่า</b> <span>{errorMessage}</span></div>
             <div class="naenam"><WarningRounded/> <b> คำแนะนำ</b>&nbsp;ลอง&nbsp;<b>เปิดดู&nbsp;หรือ&nbsp;แก้ไข</b>&nbsp;
             {componentStack && <b>{getUrl(componentStack.toString().split("\n").filter(e => e.trim() !== "")[0])}</b>}

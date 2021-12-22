@@ -2,40 +2,45 @@ import React from "react";
 import { Box, Grid, Typography, Chip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { For } from "~/common/utils";
+import { useHistory } from "react-router-dom";
 
 const OrderCard = ({ data }) => {
+  console.log(data);
   const classes = useStyles();
+  const router = useHistory();
   const getColor = () => {
     return (
       {
-        waiting: "#F4AF54",
-        success: "#B3E24B",
-        cancel: "#F25044",
-      }[data.status] || "primary"
+        Waiting: "#F4AF54",
+        Success: "#B3E24B",
+        Cancel: "#F25044",
+      }[data?.status] || "primary"
     );
   };
   const getBackgroundColor = () => {
     return (
       {
-        waiting: "#F4AF5433",
-        success: "#B3E24B33",
-        cancel: "#F2504433",
-      }[data.status] || "primary"
+        Waiting: "#F4AF5433",
+        Success: "#B3E24B33",
+        Cancel: "#F2504433",
+      }[data?.status] || "primary"
     );
   };
   const getChipColor = () => {
     return (
       {
-        waiting: "#D28C40",
-        success: "#5B8125",
-        cancel: "#F25044",
-      }[data.status] || "primary"
+        Waiting: "#D28C40",
+        Success: "#5B8125",
+        Cancel: "#F25044",
+      }[data?.status] || "primary"
     );
   };
-
+  const orderDetail = () => {
+    router.push(`/profile/history/order/${data.id}`);
+  };
   return (
     <>
-      <Box className={classes.card}>
+      <Box className={classes.card} onClick={orderDetail}>
         <Box
           sx={{
             width: "50px",
@@ -59,12 +64,12 @@ const OrderCard = ({ data }) => {
                     Order Number:
                   </Typography>
                   <Typography sx={{ fontSize: "21px", fontWeight: "500" }}>
-                    {data.orderNumber}
+                    {data?.id}
                   </Typography>
                 </Box>
                 <Box className={classes.orderTitle}>
                   <Chip
-                    label={data.status}
+                    label={data?.status}
                     sx={{
                       backgroundColor: getBackgroundColor(),
                       color: getChipColor(),
@@ -73,18 +78,39 @@ const OrderCard = ({ data }) => {
                     }}
                   />
                   <Typography sx={{ fontSize: "14px", fontWeight: "300" }}>
-                    {data.address}
+                    {
+                      data?.order_detail?.address_id_from_order_detail
+                        ?.address_line
+                    }
+                    ,{" "}
+                    {
+                      data?.order_detail?.address_id_from_order_detail
+                        ?.sub_district
+                    }
+                    ,{" "}
+                    {data?.order_detail?.address_id_from_order_detail?.district}
+                    ,{" "}
+                    {data?.order_detail?.address_id_from_order_detail?.province}
+                    ,{" "}
+                    {
+                      data?.order_detail?.address_id_from_order_detail
+                        ?.postal_code
+                    }
                   </Typography>
                 </Box>
                 <Box className={classes.orderTitle}>
-                  <For each={data.pic}>
+                  <For each={data.order_item}>
                     {(item, idx) => (
                       <img
-                        src={item}
-                        alt={idx}
+                        src={
+                          item?.product_id_from_order_item.product_picture[0]
+                            .path
+                        }
+                        alt=""
                         className={classes.pic}
                         width="84"
                         height="84"
+                        key={idx}
                       />
                     )}
                   </For>
@@ -115,13 +141,13 @@ const OrderCard = ({ data }) => {
                   <Typography fontWeight={500}>Order Date</Typography>
                 </Grid>
                 <Grid item xs={6} sx={textStyle}>
-                  <Typography>{data.date}</Typography>
+                  <Typography>{data?.order_date.split("T")[0]}</Typography>
                 </Grid>
                 <Grid item xs={6} sx={textStyle}>
                   <Typography fontWeight={500}>Amount Due</Typography>
                 </Grid>
                 <Grid item xs={6} sx={textStyle}>
-                  <Typography>{data.amount} THB</Typography>
+                  <Typography>{data?.total_price}฿</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -139,6 +165,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     width: "100%",
+    cursor: "pointer",
   },
   orderTitle: {
     display: "flex",

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
@@ -8,63 +9,32 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Indicator from "./components/Indicator";
+import { Chart } from "./components/TableContent/Chart";
+import CardGroup from "./components/CardGroup";
+import ViewLog from "./components/ViewLog";
+
+import config from "~/common/constants";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const SellerDashboard = () => {
-  const indicatorData = [
-    {
-      id: 0,
-      value: "34.7",
-      name: "Product",
-      color: "#FEF3F1",
-      fontColor: "#FD8A75",
-      icon: ShoppingCartIcon,
-    },
-    {
-      id: 1,
-      value: "34.7",
-      name: "Followers",
-      color: "#FCF6DE",
-      fontColor: "#EAC52E",
-      icon: PeopleAltIcon,
-    },
-    {
-      id: 2,
-      value: "34.7",
-      name: "Rating",
-      color: "#E1F4F8",
-      fontColor: "#42B8D4",
-      icon: StarIcon,
-    },
-    {
-      id: 3,
-      value: "34.7",
-      name: "Sales",
-      color: "#E0F8F2",
-      fontColor: "#43D5AE",
-      icon: MonetizationOnIcon,
-    },
-  ];
   return (
     <Box>
       <TopSeller />
+      <CardGroup />
+
       <Box
         sx={{
-          alignContent: "center",
-          position: "relative",
-          display: "flex",
-          justifyContent: "space-between",
+          Width: "95%",
+          pl: 4,
+          pr: 4,
+          // display: "flex",
+          // textAlign: "center",
+          // justifyContent: "center",
         }}
       >
-        {indicatorData.map((indicator) => (
-          <Indicator
-            value={indicator.value}
-            name={indicator.name}
-            color={indicator.color}
-            fontColor={indicator.fontColor}
-            icon={indicator.icon}
-            key={indicator.id}
-          />
-        ))}
+        {/* <Chart /> */}
+        <ViewLog />
       </Box>
     </Box>
   );

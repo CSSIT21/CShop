@@ -45,7 +45,8 @@ const CarouselProductSelect = ({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openAddProduct, setopenAddProduct] = useState(false);
-  const [Topic, setTopic] = useState("Topic");
+  const [Topic, setTopic] = useState("");
+  const [searchText, setsearchText] = useState("");
   const [selectedValue, setSelectedValue] = useState();
   useLayoutEffect(() => {
     if (id in information) {
@@ -79,10 +80,21 @@ const CarouselProductSelect = ({
       setSelectedValue(null);
     }
   };
-  const [products, setproducts] = useMemo(() => {
-    let products = originalProduct.filter((e) => !products_id.includes(e.id));
-    return [products];
-  }, [originalProduct, products_id, sectionImages]);
+
+  const products = useMemo(() => {
+    // "   hello  world   " -> "hello world"
+    let words = searchText.trim().split(" ");
+
+    let products = originalProduct.filter((e) => {
+      return (
+        !products_id.includes(e.id) &&
+        words.every((word) => {
+          return e.title.toLowerCase().includes(word.toLowerCase());
+        })
+      );
+    });
+    return products;
+  }, [originalProduct, products_id, sectionImages, searchText]);
   console.log(products, typeof products !== "undefined");
 
   const updateTopic = () => {
@@ -92,8 +104,11 @@ const CarouselProductSelect = ({
           ...info,
           [id]: {
             ...info[id],
-            header: Topic,
-            content: { products_info: sectionImages, products: products_id },
+            content: {
+              filter_name: Topic,
+              products_info: sectionImages,
+              products: products_id,
+            },
           },
         }));
       }, 500);
@@ -355,6 +370,10 @@ const CarouselProductSelect = ({
           sx={{ margin: "0 25px" }}
           variant="filled"
           size="small"
+          value={searchText}
+          onChange={(e) => {
+            setsearchText(e.target.value);
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

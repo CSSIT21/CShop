@@ -9,8 +9,67 @@ import {
   IconButton,
   CardActions,
 } from "@mui/material";
-import { isFunc, isUndef } from "./../../utils/index";
+import { isFunc, isUndef } from "~/common/utils/index";
 import CButton from "~/common/components/CButton";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
+import authState from "~/common/store/authState";
+import config from "~/common/constants";
+
+const ProductContent = ({ product, status, onFavourite, statusProps = {} }) => {
+  const { user, isLoggedIn } = useRecoilValue(authState);
+  return (
+    <>
+      <CardContent sx={contentStyle}>
+        <Typography fontWeight={600} component="span" sx={titleStyle}>
+          {product.title}
+        </Typography>
+        <Typography fontWeight={600} component="span" sx={{ marginLeft: 2 }}>
+          {product.price} B.
+        </Typography>
+      </CardContent>
+
+      <CardActions sx={actionStyle}>
+        {!isUndef(status) ? (
+          <Typography variant="caption" fontSize=".7rem" color="#A0A3BD">
+            amount: {product.quantity}
+          </Typography>
+        ) : isFunc(status) ? (
+          status(statusProps)
+        ) : (
+          <>{status}</>
+        )}
+
+        <IconButton
+          onClick={(e) => {
+            e.preventDefault();
+            onFavourite(product.id);
+            if (isLoggedIn) {
+              axios
+                .post(`${config.SERVER_URL}/profile/favourite`, {
+                  customer_id: user.id,
+                  product_id: product.id,
+                })
+                .then(({ data }) => {
+                  console.log(data);
+                });
+            }
+          }}
+          sx={{ fontWeight: "bold", fontSize: "22px" }}
+        >
+          {product.customer_wishlist && product.customer_wishlist.length > 0 ? (
+            <FavoriteRoundedIcon sx={{ color: "#FD6637" }} fontSize="inherit" />
+          ) : (
+            <FavoriteBorderRoundedIcon
+              sx={{ color: "#323232" }}
+              fontSize="inherit"
+            />
+          )}
+        </IconButton>
+      </CardActions>
+    </>
+  );
+};
 
 const contentStyle = {
   display: "flex",
@@ -35,65 +94,6 @@ const titleStyle = {
   display: "-webkit-box",
   WebkitLineClamp: 1 /* number of lines to show */,
   WebkitBoxOrient: "vertical",
-};
-
-const ProductContent = ({
-  product,
-  status,
-  onFavourite,
-  statusProps = {},
-  addToCart,
-}) => {
-  return (
-    <>
-      <CardContent sx={contentStyle}>
-        <Typography fontWeight={600} component="span" sx={titleStyle}>
-          {product.title}
-        </Typography>
-        <Typography fontWeight={600} component="span" sx={{ marginLeft: 2 }}>
-          {product.price} B.
-        </Typography>
-      </CardContent>
-
-      <CardActions sx={actionStyle}>
-        {!isUndef(status) ? (
-          <Typography variant="caption" fontSize=".7rem" color="#A0A3BD">
-            {product.status}
-          </Typography>
-        ) : isFunc(status) ? (
-          status(statusProps)
-        ) : (
-          <>{status}</>
-        )}
-
-        <IconButton
-          onClick={(e) => {
-            e.preventDefault();
-            onFavourite(product.id);
-          }}
-          sx={{ fontWeight: "bold", fontSize: "22px" }}
-        >
-          {product.favourite ? (
-            <FavoriteRoundedIcon sx={{ color: "#FD6637" }} fontSize="inherit" />
-          ) : (
-            <FavoriteBorderRoundedIcon
-              sx={{ color: "#323232" }}
-              fontSize="inherit"
-            />
-          )}
-        </IconButton>
-      </CardActions>
-      {addToCart && (
-        <CButton
-          icon={<ShoppingCartIcon sx={{ fontSize: "18px" }} />}
-          title="Add to cart"
-          fontSize="14px"
-          width="100%"
-          height="38px"
-        />
-      )}
-    </>
-  );
 };
 
 export default ProductContent;
