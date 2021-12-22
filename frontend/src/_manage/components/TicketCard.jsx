@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Collapse } from "@mui/material";
@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SupportMedia from "../components/SupportMedia";
 import axios from "axios";
 
-export class TicketCard extends React.Component {
+export class TicketCard extends Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -14,7 +14,7 @@ const Comment = ({
   productDetail,
   review_time = "",
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const date = review_time.split("T");
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

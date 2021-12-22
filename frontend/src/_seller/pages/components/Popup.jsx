@@ -23,7 +23,7 @@ export default function Popup({
   // description = "",
   shoppath,
 }) {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   function handleClick() {
     if (shopname != "") {

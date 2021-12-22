@@ -12,6 +12,7 @@ import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
 import { ConversationDto } from './dto/conversation.dto';
 import { NotificationDto } from './dto/notification.dto';
+import { ChatConversationMark } from '@prisma/client';
 
 const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;
 
@@ -53,11 +54,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				this.connectionMap.delete(conversation);
 			}
 		}
+		client.disconnect();
 	}
 
 	@SubscribeMessage('get')
 	async get(@MessageBody() data: { item: string; as: number; with?: any }, @ConnectedSocket() client: Socket) {
-		console.log('/chat get', data);
+		// console.log('/chat get', data);
 		// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 		switch (data.item) {
 			case 'conversation': {
@@ -68,6 +70,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 					return await this.getAllConversation(client, data.as);
 				}
 				break;
+			}
+
+			case 'conversationId': {
+				return await this.getConversationId(client, data.as, data.with);
 			}
 
 			case 'message': {
@@ -86,6 +92,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 			case 'notification': {
 				return await this.getNotification(client, data.as);
+				break;
+			}
+
+			case 'shop': {
+				return await this.getShop(client, data.as);
 				break;
 			}
 		}
@@ -114,6 +125,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			data: {
 				item: 'conversation',
 				data: conv,
+			},
+		};
+	}
+
+	async getConversationId(@ConnectedSocket() client: Socket, uid: number, shop_id: number) {
+		const conv_id = await this.chatService.findUniqueConversationId(uid, shop_id);
+		return {
+			event: 'get',
+			data: {
+				item: 'conversationId',
+				data: conv_id,
 			},
 		};
 	}
@@ -156,6 +178,42 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				data: noti,
 			},
 		};
+	}
+
+	async getShop(@ConnectedSocket() client: Socket, uid: number) {
+		const shop = await this.chatService.findShop(uid);
+		return {
+			event: 'get',
+			data: {
+				item: 'shop',
+				data: shop,
+			},
+		};
+	}
+
+	@SubscribeMessage('post')
+	async post(@MessageBody() data: any) {
+		switch (data.item) {
+			case 'mark':
+				await this.postMark(data.with, data.to);
+				break;
+		}
+	}
+
+	async postMark(conversation_id: number, value: ChatConversationMark) {
+		await this.chatService.updateMark(conversation_id, value);
+	}
+
+	@SubscribeMessage('delete')
+	async handleDelete(@MessageBody() data: any) {
+		await this.chatService.deleteMessage(data.message_id);
+		this.server.to(data.conversation_id.toString()).emit('delete', {
+			event: 'delete',
+			data: {
+				conversation_id: data.conversation_id,
+				message_id: data.message_id
+			}
+		});
 	}
 
 	@SubscribeMessage('join')

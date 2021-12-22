@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { CircularProgress, Snackbar } from '@mui/material'
@@ -7,8 +7,10 @@ import {
     ChatBubble,
     ChatMediaModal,
     MessageBar,
-    ProfileBar, ProfileBarSeller
+    ProfileBar,
+    ProfileBarSeller
 } from '../components'
+import ExtraInfo from '../components/ExtraInfo/ExtraInfo'
 
 const useStyles = makeStyles({
     chatFeedContainer: {
@@ -73,23 +75,33 @@ const TimeLabel = (props) => {
 
 const ChatFeed = (props) => {
     const [open, setOpen] = useState(false)
+    const [openDrawer, setOpenDrawer] = useState(false)
 
     function openSnackbar() {
         setOpen(true)
     }
-    
+
     function closeSnackbar() {
         setOpen(false)
     }
 
     const messages = props.ChatService.conversation(props.currentConversation)
+    const [markedAs, setMarkedAs] = useState('None')
+
+    useEffect(() => {
+        setMarkedAs(messages?.marked_as)
+    }, [messages])
     // console.log('feed ' + props.lastUpdate, messages)
     const classes = useStyles()
     if (messages === undefined) {
         return (
             <Box className={classes.chatFeedContainer}>
                 <Box className={classes.loader}>
-                    <TimeLabel text="Select chat from your left" />
+                    {props.ChatService.isGetting ? (
+                        <CircularProgress color="primary" />
+                    ) : (
+                        <TimeLabel text="Select chat from your left" />
+                    )}
                 </Box>
             </Box>
         )
@@ -98,13 +110,24 @@ const ChatFeed = (props) => {
             <Box className={classes.chatFeedContainer}>
                 {/* ChatFeed on the right shows all messages between two users */}
                 <Box className={classes.chatFeedTitle}>
-                    <ProfileBar
-                        displayName={messages.shop_name}
-                        status={false}
-                        pic={messages.shop_pic}
-                        url={'/shop/' + messages.shop_id}
-                        notification={messages.is_muted}
-                    />
+                    {props.isCustomerView ? (
+                        <ProfileBar
+                            displayName={messages.shop_name}
+                            status={false}
+                            pic={messages.shop_pic}
+                            url={'/shop/' + messages.shop_id}
+                            notification={messages.is_muted}
+                        />
+                    ) : (
+                        <ProfileBarSeller
+                            displayName={
+                                messages.firstname + ' ' + messages.lastname
+                            }
+                            status={false}
+                            pic={messages.customer_pic}
+                            mark={messages.marked_as}
+                        />
+                    )}
                 </Box>
                 <Box className={classes.loader}>
                     <CircularProgress color="primary" />
@@ -121,7 +144,20 @@ const ChatFeed = (props) => {
     }
 
     function handleRead(message_id) {
-        if(Number.isInteger(message_id)) props.ChatService.read(props.currentConversation, message_id)
+        if (Number.isInteger(message_id))
+        {
+            props.ChatService.read(props.currentConversation, message_id)
+        }
+    }
+
+    function handleDelete(message_id) {
+        props.ChatService.delete(props.currentConversation, message_id)
+    }
+
+    function setMark(mark) {
+        if(mark === markedAs) mark = 'None'
+        props.ChatService.postMark(messages.id, mark)
+        setMarkedAs(mark)
     }
     // if(messages.latest_id === )
     // console.log(messages)
@@ -138,18 +174,28 @@ const ChatFeed = (props) => {
         <Box className={classes.chatFeedContainer}>
             {/* ChatFeed on the right shows all messages between two users */}
             <Box className={classes.chatFeedTitle}>
-                {/* <ProfileBar
-                    displayName={messages.shop_name}
-                    status={messages.active}
-                    pic={messages.shop_pic}
-                    url={'/shop/' + messages.shop_id}
-                    notification={messages.is_muted}
-                /> */}
-                <ProfileBarSeller displayName={messages.shop_name}
-                    status={messages.active}
-                    pic={messages.shop_pic}
-                    url={'/shop/' + messages.shop_id}
-                    mark='Done'/>
+                {props.isCustomerView ? (
+                    <ProfileBar
+                        displayName={messages.shop_name}
+                        status={messages.active}
+                        pic={messages.shop_pic}
+                        url={'/shop/' + messages.shop_id}
+                        notification={messages.is_muted}
+                    />
+                ) : (
+                    <ProfileBarSeller
+                        displayName={
+                            messages.firstname + ' ' + messages.lastname
+                        }
+                        status={messages.active}
+                        pic={messages.customer_pic}
+                        mark={markedAs}
+                        setMark={setMark}
+                        openPreference={props.openPreference}
+                        openInfo={() => setOpenDrawer(true)}
+                        closeInfo={() => setOpenDrawer(false)}
+                    />
+                )}
             </Box>
             <Box className={classes.chatFeed}>
                 {messages.messages &&
@@ -157,7 +203,12 @@ const ChatFeed = (props) => {
                         <ChatBubble
                             key={i}
                             currentConversation={props.currentConversation}
-                            variant={m.from_customer ? 'right' : 'left'}
+                            variant={
+                                (m.from_customer && props.isCustomerView) ||
+                                (!m.from_customer && !props.isCustomerView)
+                                    ? 'right'
+                                    : 'left'
+                            }
                             read={m.seen}
                             fromCustomer={m.from_customer}
                             time={m.message_time}
@@ -170,11 +221,22 @@ const ChatFeed = (props) => {
                             shouldScroll={props.shouldScroll}
                             onRead={handleRead}
                             openSnackbar={openSnackbar}
+                            isCustomerView={props.isCustomerView}
+                            onDelete={handleDelete}
                         />
                     ))}
-                    <AutomatedChat/>
+                {props.isCustomerView && (
+                    <AutomatedChat
+                        handleSubmitMessage={props.handleSubmitMessage}
+                    />
+                )}
+                <ExtraInfo
+                    open={openDrawer}
+                    openPreference={props.openPreference}
+                    onClose={() => setOpenDrawer(false)}
+                />
             </Box>
-            
+
             <Box className={classes.chatFeedButtom}>
                 <MessageBar
                     currentConversation={props.currentConversation}

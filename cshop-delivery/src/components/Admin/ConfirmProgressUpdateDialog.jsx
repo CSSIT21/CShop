@@ -12,15 +12,15 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const ConfirmProgressUpdateDialog = React.forwardRef((props, ref) => {
-    const [open, setOpen] = React.useState(false);
-    const [newStatus, setNewStatus] = React.useState({
+    const [open, setOpen] = useState(false);
+    const [newStatus, setNewStatus] = useState({
         newProgress: "",
         trackingNumber: "",
         username: "",
         password: "",
         oldStatus: "",
     });
-    const [correct, setCorrect] = React.useState(false);
+    const [correct, setCorrect] = useState(false);
 
     const handleClickOpen = (newProgress, trackingNumber, status) => {
         setNewStatus({

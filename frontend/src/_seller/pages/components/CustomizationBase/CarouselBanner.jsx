@@ -31,7 +31,7 @@ const CarouselBanner = ({
 }) => {
   const [sectionImages, setSectionImages] = useState([]);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   console.log("sectionImages", sectionImages);
   useEffect(() => {
     if (id in information) {
