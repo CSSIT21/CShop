@@ -110,7 +110,7 @@ const ProfileBarSeller = (props) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="More info">
-                    <IconButton>
+                    <IconButton onClick={props.openInfo}>
                         <InfoIcon className={classes.grayButton} />
                     </IconButton>
                 </Tooltip>

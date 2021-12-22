@@ -75,6 +75,7 @@ const TimeLabel = (props) => {
 
 const ChatFeed = (props) => {
     const [open, setOpen] = useState(false)
+    const [openDrawer, setOpenDrawer] = useState(false)
 
     function openSnackbar() {
         setOpen(true)
@@ -147,7 +148,6 @@ const ChatFeed = (props) => {
         {
             props.ChatService.read(props.currentConversation, message_id)
         }
-<<<<<<< HEAD
     }
 
     function handleDelete(message_id) {
@@ -158,8 +158,6 @@ const ChatFeed = (props) => {
         if(mark === markedAs) mark = 'None'
         props.ChatService.postMark(messages.id, mark)
         setMarkedAs(mark)
-=======
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
     }
     // if(messages.latest_id === )
     // console.log(messages)
@@ -191,13 +189,11 @@ const ChatFeed = (props) => {
                         }
                         status={messages.active}
                         pic={messages.customer_pic}
-<<<<<<< HEAD
                         mark={markedAs}
                         setMark={setMark}
                         openPreference={props.openPreference}
-=======
-                        mark="Done"
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
+                        openInfo={() => setOpenDrawer(true)}
+                        closeInfo={() => setOpenDrawer(false)}
                     />
                 )}
             </Box>
@@ -208,15 +204,8 @@ const ChatFeed = (props) => {
                             key={i}
                             currentConversation={props.currentConversation}
                             variant={
-<<<<<<< HEAD
                                 (m.from_customer && props.isCustomerView) ||
                                 (!m.from_customer && !props.isCustomerView)
-=======
-                                (m.from_customer &&
-                                    props.isCustomerView) ||
-                                (!m.from_customer &&
-                                    !props.isCustomerView)
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                                     ? 'right'
                                     : 'left'
                             }
@@ -233,19 +222,19 @@ const ChatFeed = (props) => {
                             onRead={handleRead}
                             openSnackbar={openSnackbar}
                             isCustomerView={props.isCustomerView}
-<<<<<<< HEAD
                             onDelete={handleDelete}
                         />
                     ))}
-                {props.isCustomerView && <AutomatedChat
-                    handleSubmitMessage={props.handleSubmitMessage}
-                />}
-                <ExtraInfo open={true}/>
-=======
-                        />
-                    ))}
-                <AutomatedChat />
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
+                {props.isCustomerView && (
+                    <AutomatedChat
+                        handleSubmitMessage={props.handleSubmitMessage}
+                    />
+                )}
+                <ExtraInfo
+                    open={openDrawer}
+                    openPreference={props.openPreference}
+                    onClose={() => setOpenDrawer(false)}
+                />
             </Box>
 
             <Box className={classes.chatFeedButtom}>

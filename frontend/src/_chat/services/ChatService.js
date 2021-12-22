@@ -458,7 +458,6 @@ class ChatService {
         })
     }
 
-<<<<<<< HEAD
     postMark(conversation_id, value) {
         ChatService.socket.emit('post', {
             item: 'mark',
@@ -484,8 +483,6 @@ class ChatService {
         })
     }
 
-=======
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
     static disconnect() {
         ChatService.socket?.disconnect()
         sessionStorage.removeItem('temp')
