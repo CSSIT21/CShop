@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Collapse } from "@mui/material";
@@ -27,7 +27,7 @@ import {
 } from "../../common/constants/register";
 import { years } from "../common/future";
 
-export class SellerCard extends React.Component {
+export class SellerCard extends Component {
   constructor(props) {
     super(props);
     this.state = {

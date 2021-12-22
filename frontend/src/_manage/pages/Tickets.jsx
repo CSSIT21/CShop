@@ -18,7 +18,7 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import config from '../../common/constants';
 import TicketCard from "../components/TicketCard";
 import { Search } from '@mui/icons-material';

@@ -16,7 +16,7 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import config from '../../common/constants';
 import UserCard from "../components/UserCard";
 import { Search } from '@mui/icons-material';
