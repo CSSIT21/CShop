@@ -46,13 +46,14 @@ const OrderSummarize = ({ order_id }) => {
   }, [])
   console.log(order_id);
   const orderId ={"orderId": order_id}
-  const info = () => Axios.post( `${config.SERVER_URL}/payment/summary`,orderId.orderId).then((res) => {
+  const info = () => Axios.post( `${config.SERVER_URL}/payment/summary`,orderId).then((res) => {
             if (res.data.success) {
               
               setOrder(res.data.order)
               setCustomer(res.data.customer)
               setAddr(res.data.address)
 
+              return "Done"
             } else {
               return "Fail"
             }

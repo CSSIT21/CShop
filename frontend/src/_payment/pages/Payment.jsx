@@ -31,7 +31,8 @@ const useStyles = makeStyles({
 const Payment = () => {
 
     const { search } = useLocation()
-    const { orderID,cuponID, addressID } = queryString.parse(search)
+    const { orderID, cuponID, addressID } = queryString.parse(search)
+    const orderId = parseInt(orderID)
     
 
 
@@ -42,10 +43,10 @@ const Payment = () => {
     return (
         <Box>
             <Box className = {classes.boxLeft}>
-                <ChoiceForPay order_id={orderID} />
+                <ChoiceForPay order_id={orderId} />
             </Box>
             <Box className = {classes.boxRight}>
-                <OrderSummarize order_id={orderID} />
+                <OrderSummarize order_id={orderId} />
             </Box>
         </Box>
     )
