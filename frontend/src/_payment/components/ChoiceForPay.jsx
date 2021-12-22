@@ -1,5 +1,5 @@
 
-import { AccountBalance, CheckCircleOutlined, CircleOutlined } from '@mui/icons-material'
+import { AccountBalance, CheckCircleOutlined, CircleOutlined, WindowRounded } from '@mui/icons-material'
 import { Button, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Box } from '@mui/system'
@@ -13,6 +13,7 @@ import { PayByInternetBanking } from '../pages/PayByInternetBanking'
 
 import Axios from "axios";
 import config from "~/common/constants";
+import PaidByQr from '../pages/PaidByQr'
 
 
 const useStyles = makeStyles({
@@ -140,7 +141,9 @@ const ChoiceForPay = ({ order_id }) => {
             return route("success")
         }
         if (value === 'paidbyqr' && click) {
-           return route(value)
+            
+            <PaidByQr orderId={ order.id }/>
+           return route(value+"?orderId="+order.id)
         }
     }
 

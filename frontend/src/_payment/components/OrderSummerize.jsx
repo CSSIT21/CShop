@@ -86,7 +86,7 @@ const OrderSummarize = ({ order_id }) => {
       <Box className={classes.boxStyle}>
         <Box className={classes.boxHead}>Order Summary</Box>
         <Box className={classes.boxDetail}>
-          Order number<Typography>{ order_id.orderId }</Typography>
+          Order number<Typography>{ order_id }</Typography>
         </Box>
         <Box className={classes.boxDetail}>
           Purchaser<Typography>{customer.firstname}  { customer.lastname }</Typography>

@@ -196,7 +196,7 @@ export class PaymentService {
                 shop_id: true,
             }
         })
-        if (refRe.normalize() === ref.normalize()) {
+        if (refRe === ref) {
             let updatePayment = await this.prisma.payment.update({
                 where: {
                     id: orderId,
@@ -281,6 +281,8 @@ export class PaymentService {
                 customer_id: true,
             },
         })
+            
+            
         
         let payment = await this.prisma.payment.create({
             data: {
@@ -289,7 +291,7 @@ export class PaymentService {
                 amount: order.total_price,
                 status: "Pending",
                 created_date: new Date(),
-                updated_date: null,
+                updated_date: new Date(),
             }
         })
         let log = await this.prisma.home_payment_log.create({
@@ -308,6 +310,8 @@ export class PaymentService {
     }
 
     async paidByWallet(orderId?: number) {
+        console.log(orderId);
+        
         let order = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
@@ -323,29 +327,56 @@ export class PaymentService {
                 customer_id: order.customer_id,
             },
         })
-        if (wallet.balance > order.total_price) {
-            await this.prisma.wallet.update({
+        if (wallet === null) {
+            let wallet1 = await this.prisma.wallet.create({
+                data: {
+                    customer_id: order.customer_id,
+                    balance: 10000,
+                    updated_time: new Date().toISOString()
+                }
+            })
+        }
+        if (wallet.balance > order.total_price){
+            let decrease = await this.prisma.wallet.update({
                 where: {
                     id: wallet.id,
                 },
                 data: {
-                    balance: wallet.balance - order.total_price,
+                    balance: 10000 - order.total_price,
                     updated_time: new Date().toISOString(),
                 },
             })
+            console.log(wallet);
+            console.log(decrease);
+            
+            
             let trans = await this.prisma.payment_transaction.create({
             data: {
                 amount: order.total_price,
                 time: new Date().toISOString(),
                 desc: ""
             }
+            })
+            let orderItem = await this.prisma.order_item.findFirst({
+            where: {
+                order_id: orderId
+            }
         })
+            let refund = await this.prisma.order_refund_item.create({
+                data: {
+                    order_id: orderId,
+                    product_id: orderItem.product_id,
+                    product_options: orderItem.product_options,
+                    request: false,
+                    time_remaining: new Date()
+                }
+            })
             let walletTrans = await this.prisma.payment_wallet_transaction.create({
                 data: {
                     status: "Success",
                     wallet_id: wallet.id,
                     transaction_id: trans.id,
-                    refund_id: null,
+                    refund_id: refund.id,
             },
             })
 
