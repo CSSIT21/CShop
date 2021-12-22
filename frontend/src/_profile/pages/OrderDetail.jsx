@@ -29,7 +29,7 @@ const OrderDetail = () => {
   const [products, setProducts] = useState([]);
   const [cartitems, setcartitems] = useState([]);
   const router = useHistory();
-
+  console.log(orderDetail);
   const onHandleReOrder = () => {
     axios
       .post(`${config.SERVER_URL}/cart/rebuy`, {
@@ -115,7 +115,10 @@ const OrderDetail = () => {
                 fontWeight={"300"}
                 sx={{ marginBottom: "10px" }}
               >
-                Jirasin Jarethammajit
+                {
+                  orderDetail?.order_detail?.address_id_from_order_detail
+                    ?.recipient_name
+                }
               </Typography>
               <Box sx={{ color: "#949494" }}>
                 <Typography
@@ -123,10 +126,36 @@ const OrderDetail = () => {
                   fontWeight={"300"}
                   sx={{ marginBottom: "2px" }}
                 >
-                  0951146614
+                  {
+                    orderDetail?.order_detail?.address_id_from_order_detail
+                      ?.phone_number
+                  }
                 </Typography>
                 <Typography fontSize={"14px"} fontWeight={"300"}>
-                  This is my home, Talat Noi, Samphanthawong, Bangkok, 10100
+                  {
+                    orderDetail?.order_detail?.address_id_from_order_detail
+                      ?.address_line
+                  }
+                  ,{" "}
+                  {
+                    orderDetail?.order_detail?.address_id_from_order_detail
+                      ?.sub_district
+                  }
+                  ,{" "}
+                  {
+                    orderDetail?.order_detail?.address_id_from_order_detail
+                      ?.district
+                  }
+                  ,{" "}
+                  {
+                    orderDetail?.order_detail?.address_id_from_order_detail
+                      ?.province
+                  }
+                  ,{" "}
+                  {
+                    orderDetail?.order_detail?.address_id_from_order_detail
+                      ?.postal_code
+                  }
                 </Typography>
               </Box>
             </Box>

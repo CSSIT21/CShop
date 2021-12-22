@@ -177,19 +177,46 @@ export class SellershopService {
 				},
 			});
 			if (check) {
-				await this.prisma.customer_followed_shop.delete({
-					where: {
-						id: check.id,
-					},
-				});
+				await Promise.all([
+					this.prisma.customer_followed_shop.delete({
+						where: {
+							id: check.id,
+						},
+					}),
+					this.prisma.shop_info.update({
+						where: {
+							id: id,
+						},
+						data: {
+							followers: {
+								decrement: 1,
+							},
+						},
+					}),
+				]);
+
 				return 'You unfollow this shop';
 			}
-			await this.prisma.customer_followed_shop.create({
-				data: {
-					customer_id: customer_followed_shopCreateManyInput.customer_id,
-					shop_id: id,
-				},
-			});
+			await Promise.all([
+				this.prisma.customer_followed_shop.create({
+					data: {
+						customer_id: customer_followed_shopCreateManyInput.customer_id,
+						shop_id: id,
+					},
+				}),
+
+				this.prisma.shop_info.update({
+					where: {
+						id: id,
+					},
+					data: {
+						followers: {
+							increment: 1,
+						},
+					},
+				}),
+			]);
+
 			return 'You follow this shop';
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -327,14 +354,23 @@ export class SellershopService {
 					customer_id_from_shop_comment: {
 						include: {
 							customer_info: true,
-							customer_picture: true,
+							customer_picture: {
+								include: {
+									picture_id_from_customer_picture: true,
+								},
+							},
 						},
 					},
 				},
 				skip: (page - 1) * 10,
 				take: 10,
 			});
-			return comments;
+			const count = await this.prisma.shop_comment.count({
+				where: {
+					shop_id: id,
+				},
+			});
+			return { comments, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);
@@ -357,14 +393,30 @@ export class SellershopService {
 					customer_id_from_product_reviews: {
 						include: {
 							customer_info: true,
-							customer_picture: true,
+							customer_picture: {
+								include: {
+									picture_id_from_customer_picture: true,
+								},
+							},
+						},
+					},
+					product_id_from_product_reviews: {
+						include: {
+							product_picture: true,
 						},
 					},
 				},
 				skip: (page - 1) * 10,
 				take: 10,
 			});
-			return comments;
+			const count = await this.prisma.product_reviews.count({
+				where: {
+					product_id_from_product_reviews: {
+						shop_id: id,
+					},
+				},
+			});
+			return { comments, count };
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError) {
 				console.log(e.message);

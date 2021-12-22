@@ -17,6 +17,7 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import config from '../../common/constants';
 import AuditCard from "../components/AuditCard";
 import { Search } from '@mui/icons-material';
 import { grey, red, orange } from '@mui/material/colors';
@@ -66,7 +67,7 @@ const ManageAccountPage = () => {
     const [audits, setAuditList] = React.useState([]);
     const setAudits = async () => {
         const fetchedData = await axios.get(
-          "http://localhost:8080/manageaccount/audit"
+            config.SERVER_URL + "/manageaccount/audit"
         );
         setAuditList(fetchedData.data);
       };
@@ -84,7 +85,7 @@ const ManageAccountPage = () => {
         <div>
             <Box className={classes.topwrapper} sx={{ margin:'30px 30px'}}>
             </Box>
-            <Card variant="outlined" sx={cardStyle} sx={{ margin:'0px 45px'}}>
+            <Card variant="outlined" sx={{cardStyle}} sx={{ margin:'0px 45px'}}>
                 <Card variant="outlined" style={{
                     backgroundColor: "#FDF4DD",
                     border: 'none',
@@ -108,12 +109,12 @@ const ManageAccountPage = () => {
                     </CardContent>
                 </Card>
             <List>
-                <Card variant="outlined" sx={cardStyle}>
+                <Card variant="outlined" sx={{cardStyle}}>
                     <CardContent>
                         {
-                        audits.slice((page -1)  * 10, (page - 1) * 10 + 10)
+                        audits.reverse().slice((page -1)  * 10, (page - 1) * 10 + 10)
                         .map((key) => (
-                            <li key={key.admin_id.toString()}>
+                            <li key={key.id.toString()}>
                                 <div style={{ display:'flex', justifyContent:'center' }}>
                                     <AuditCard audit={key}/>
                                 </div>

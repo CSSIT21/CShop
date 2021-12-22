@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const ProductCommentImage = ({
   id = 1,
   name = "product's name",
-  variation = "black",
   img = "https://offautan-uc1.azureedge.net/-/media/images/off/ph/products-en/products-landing/landing/off_overtime_product_collections_large_2x.jpg?la=en-ph",
 }) => {
   return (
@@ -36,12 +35,6 @@ const ProductCommentImage = ({
           </Grid>
           <Grid item xs={8}>
             <Typography>{name}</Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography fontWeight={500}>Variation:</Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Typography>{variation}</Typography>
           </Grid>
         </Grid>
       </Box>

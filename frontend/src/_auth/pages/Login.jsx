@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import authState from "../../common/store/authState";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Dialog from "@mui/material/Dialog";
+import { Typography } from "@mui/material";
 
 const LoginPage = () => {
   const classes = useStyles();
@@ -24,6 +26,10 @@ const LoginPage = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const resetAuth = useResetRecoilState(authState);
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [newConfirmPassword, setConfirmNewPassword] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
 
   const onLogin = async () => {
     if (email === "") {
@@ -76,10 +82,58 @@ const LoginPage = () => {
         });
     }
   };
-
+  const handleCancelResetPassword = () => {
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setConfirmEmail("");
+    setOpen(false);
+  };
+  const handleResetPassword = () => {
+    if (
+      newPassword !== newConfirmPassword ||
+      newPassword === "" ||
+      newConfirmPassword === "" ||
+      confirmEmail === ""
+    ) {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please check if your information is correct!",
+        icon: "error",
+        confirmButtonText: "OK",
+        timer: 3000,
+      });
+      setOpen(false);
+    } else {
+      setIsLoading(true);
+      axios
+        .patch(config.SERVER_URL + "/profile/resetpassword", {
+          email: confirmEmail,
+          password: newPassword,
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            Swal.fire({
+              title: "Success!",
+              text: "Your password has been reset!",
+              icon: "success",
+              timer: 3000,
+            });
+          } else {
+            Swal.fire({
+              title: "Failed!",
+              text: "Email not exist!",
+              icon: "error",
+              timer: 3000,
+            });
+          }
+          setIsLoading(false);
+          setOpen(false);
+        });
+    }
+  };
   useLayoutEffect(() => {
-    document.body.classList.add('gray');
-    return () => document.body.classList.remove('gray');
+    document.body.classList.add("gray");
+    return () => document.body.classList.remove("gray");
   }, []);
   return (
     <Fragment>
@@ -88,10 +142,6 @@ const LoginPage = () => {
           <Box className={classes.header}>Sign In</Box>
           <Box className={classes.textFieldBox}>
             <TextField
-
-              id="phoneNumber"
-              placeholder="Phone Number"
-
               id="email"
               placeholder="Email"
               variant="outlined"
@@ -159,8 +209,10 @@ const LoginPage = () => {
               ></LoadingButton>
             )}
           </Box>
-          <Box className={classes.text}>Forgot your password?</Box>
-          <Box className={classes.divider}>OR</Box>
+          <Box className={classes.text} onClick={() => setOpen(true)}>
+            Forgot your password?
+          </Box>
+          {/* <Box className={classes.divider}>OR</Box>
           <Button
             variant="contained"
             style={{
@@ -176,7 +228,7 @@ const LoginPage = () => {
             startIcon={<Avatar src={GoogleLogo} />}
           >
             Sign in With Google
-          </Button>
+          </Button> */}
           <Box className={classes.condition2}>
             Does not have any account yet?{"\u00A0"}
             <Link to="/register">
@@ -185,6 +237,110 @@ const LoginPage = () => {
           </Box>
         </Box>
       </Box>
+      <Dialog
+        open={open}
+        aria-describedby="alert-dialog-slide-description"
+        fullWidth
+      >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "40px 0px",
+          }}
+        >
+          <Typography
+            fontWeight="500"
+            fontSize="24px"
+            sx={{ marginBottom: "40px" }}
+          >
+            Reset Password
+          </Typography>
+          <TextField
+            id="confirmPassword"
+            placeholder="Email"
+            variant="outlined"
+            sx={{ borderRadius: "10px", width: "60%", marginBottom: "30px" }}
+            fullWidth
+            autoComplete="off"
+            onChange={(e) => {
+              setConfirmEmail(e.target.value);
+            }}
+          />
+          <TextField
+            id="newpassword"
+            placeholder="Password"
+            variant="outlined"
+            sx={{ borderRadius: "10px", width: "60%", marginBottom: "30px" }}
+            fullWidth
+            type={"password"}
+            autoComplete="off"
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+            }}
+          />
+          <TextField
+            id="newpasswordconfirm"
+            placeholder="Confirm Password"
+            variant="outlined"
+            sx={{ borderRadius: "10px", width: "60%" }}
+            type={"password"}
+            fullWidth
+            autoComplete="off"
+            onChange={(e) => {
+              setConfirmNewPassword(e.target.value);
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              width: "50%",
+              justifyContent: "space-around",
+            }}
+          >
+            <Button
+              variant="outlined"
+              style={{
+                width: "100px",
+                height: "50px",
+                textTransform: "capitalize",
+                marginTop: "40px",
+              }}
+              onClick={handleCancelResetPassword}
+            >
+              Cancel
+            </Button>
+            {!isLoading ? (
+              <Button
+                variant="contained"
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  textTransform: "capitalize",
+                  marginTop: "40px",
+                }}
+                onClick={handleResetPassword}
+              >
+                Confirm
+              </Button>
+            ) : (
+              <LoadingButton
+                loading
+                variant="contained"
+                sx={{
+                  width: "100px",
+                  textTransform: "capitalize",
+                  height: "50px",
+                  marginTop: "40px",
+                }}
+              ></LoadingButton>
+            )}
+          </Box>
+        </Box>
+      </Dialog>
     </Fragment>
   );
 };
@@ -229,13 +385,15 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     width: "500px",
+    marginBottom: "40px",
+    cursor: "pointer",
   },
   condition2: {
     margin: "20px 0",
   },
   divider: {
     color: "#A0A3BD",
-    margin: "40px 0px",
+    margin: "30px 0px",
   },
   error: {
     marginTop: "5px",

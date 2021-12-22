@@ -13,6 +13,8 @@ const Banner = () => {
   const classes = useStyles();
   const [banners, setBanners] = useState([]);
   const [page, setPage] = useState(0);
+  const productsPerRow = 1;
+  const totalPage = Math.ceil(banners.length / productsPerRow);
 
   useEffect(() => {
     getData();
@@ -59,7 +61,7 @@ const Banner = () => {
             </Carousel>
 
           </Box>
-          <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={3} />
+          <CustomDot width={95} setPageState={setPage} currentPage={page} totalPage={totalPage} />
         </>)
         : <Typography
           textAlign="center"

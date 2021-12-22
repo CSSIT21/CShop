@@ -1,14 +1,17 @@
 import { Box } from "@mui/system";
-import React, { Fragment, useState, useEffect, useLayoutEffect } from "react";
+import React, { Fragment, useState, useLayoutEffect } from "react";
 import { makeStyles } from "@mui/styles";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import CButton from "../../common/components/CButton";
-import Avatar from "@mui/material/Avatar";
+import {
+  TextField,
+  Button,
+  Avatar,
+  Checkbox,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import GoogleLogo from "../assets/google-icon.png";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Checkbox from "@mui/material/Checkbox";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import axios from "axios";
@@ -22,8 +25,8 @@ const RegisterPage = () => {
   const classes = useStyles();
   const router = useHistory();
   useLayoutEffect(() => {
-    document.body.classList.add('gray');
-    return () => document.body.classList.remove('gray');
+    document.body.classList.add("gray");
+    return () => document.body.classList.remove("gray");
   }, []);
 
   const [userInfo, setUserInfo] = useRecoilState(registerState);
@@ -79,22 +82,50 @@ const RegisterPage = () => {
           <Box className={classes.header}>Sign Up</Box>
           <Box className={classes.textFieldBox}>
             <TextField
-              id="phoneNumber"
-              placeholder="Phone Number"
+              id="email"
+              placeholder="Email"
               variant="outlined"
               sx={{ borderRadius: "10px" }}
-              value={userInfo.phoneNumber}
+              value={userInfo.email}
               fullWidth
+              error={errorText.length === 0 ? false : true}
               onChange={(e) => {
                 setUserInfo({
                   ...userInfo,
-                  phoneNumber: e.target.value,
+                  email: e.target.value,
                 });
+                seterrorText("");
+              }}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  checkIfEmailIsValid();
+                }
               }}
             />
           </Box>
+          {errorText.length != 0 && (
+            <Box className={classes.error}>{errorText}</Box>
+          )}
           <Box className={classes.condition}>
-            <Checkbox />
+            <Checkbox checked={checked} onChange={handleCheck} />
+            <Snackbar
+              open={open}
+              autoHideDuration={4000}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              className={classes.alertCondition}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                variant="filled"
+                color="primary"
+                icon={false}
+                sx={{ width: "100%" }}
+              >
+                Please accept CShop Condition
+              </Alert>
+            </Snackbar>
             <Box className={classes.text}>
               Accept all{"\u00A0"}
               <span className={classes.textOrange}>CShop Conditions</span>
@@ -125,23 +156,22 @@ const RegisterPage = () => {
               ></LoadingButton>
             )}
           </Box>
-          <Box className={classes.divider}>OR</Box>
+          {/* <Box className={classes.divider}>OR</Box>
           <Button
             variant="contained"
             style={{
               backgroundColor: "white",
-              borderRadius: "12px",
               borderBlockColor: "gray",
               color: "black",
               width: "500px",
-              margin: "35px",
+              margin: "30px",
               padding: "8px",
               textTransform: "capitalize",
             }}
             startIcon={<Avatar src={GoogleLogo} />}
           >
             Sign Up With Google
-          </Button>
+          </Button> */}
           <Box className={classes.condition2}>
             Already have an account?{"\u00A0"}
             <Link to="/login">
@@ -184,7 +214,7 @@ const useStyles = makeStyles({
     width: "500px",
   },
   condition: {
-    marginTop: "20px",
+    marginTop: "15px",
     display: "flex",
     width: "500px",
     flexDirection: "row",
@@ -198,7 +228,7 @@ const useStyles = makeStyles({
     color: "#FD6637",
   },
   button: {
-    margin: "35px",
+    margin: "30px",
   },
   condition2: {
     margin: "20px 0",
@@ -208,7 +238,13 @@ const useStyles = makeStyles({
   },
   divider: {
     color: "#A0A3BD",
-    margin: "10px 0px",
+  },
+  error: {
+    marginTop: "15px",
+    fontSize: "14px",
+    color: "#FD3737",
+    textAlign: "right",
+    width: "500px",
   },
 });
 export default RegisterPage;

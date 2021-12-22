@@ -46,6 +46,7 @@ export class SearchController {
 		@Query('category', new DefaultValuePipe(0), ParseIntPipe) category: number,
 		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
 		@Query('itemPerPage', new DefaultValuePipe(10), ParseIntPipe) itemPerPage: number,
+		@Query('cursor', new DefaultValuePipe(1), ParseIntPipe) startId: number,
 	) {
 		console.log('query: ', query.trim().split(' '));
 		console.log('category: ', category);
@@ -95,6 +96,7 @@ export class SearchController {
 			include: {
 				product_picture: true,
 			},
+			take: 144,
 		});
 
 		return {

@@ -6,6 +6,7 @@ import * as CryptoJs from 'crypto-js';
 import { FavouriteProduct } from './dto/favourite.dto';
 import { Order } from './dto/order.dto';
 import { Product } from './dto/product.dto';
+import { Address } from './dto/address.dto';
 
 @Injectable()
 export class ProfileService {
@@ -31,10 +32,15 @@ export class ProfileService {
 							picture_id_from_customer_picture: true,
 						},
 					},
+					order_cart_item: true,
+					admin: true,
 				},
 			});
 			if (user.shop_info.length > 0) {
 				return { ...user, role: 'SELLER' };
+			}
+			if (user.admin) {
+				return { ...user, role: 'ADMIN' };
 			}
 			return { ...user, role: 'CUSTOMER' };
 		} catch (e) {
@@ -334,7 +340,11 @@ export class ProfileService {
 					customer_id: customer_id,
 				},
 				include: {
-					order_detail: true,
+					order_detail: {
+						include: {
+							address_id_from_order_detail: true,
+						},
+					},
 					order_item: {
 						select: {
 							product_id: true,
@@ -375,7 +385,11 @@ export class ProfileService {
 					id: order_id,
 				},
 				include: {
-					order_detail: true,
+					order_detail: {
+						include: {
+							address_id_from_order_detail: true,
+						},
+					},
 					order_item: {
 						select: {
 							product_id: true,
@@ -454,6 +468,68 @@ export class ProfileService {
 				return true;
 			}
 			return false;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async changePrimary(data: Address) {
+		const { customer_id, address_id } = data;
+		try {
+			const oldPrimary = await this.prisma.customer_address.findFirst({
+				where: {
+					customer_id: customer_id,
+					primary: true,
+				},
+			});
+			await this.prisma.customer_address.update({
+				where: {
+					id: oldPrimary.id,
+				},
+				data: {
+					primary: false,
+				},
+			});
+			const newPrimary = await this.prisma.customer_address.findFirst({
+				where: {
+					customer_id: customer_id,
+					address_id: address_id,
+				},
+			});
+			await this.prisma.customer_address.update({
+				where: {
+					id: newPrimary.id,
+				},
+				data: {
+					primary: true,
+				},
+			});
+			return true;
+		} catch (e) {
+			console.log(e.message);
+			return {
+				success: false,
+				message: 'Error!',
+			};
+		}
+	}
+	public async resetPassword(data: User) {
+		const { email, password } = data;
+		try {
+			await this.prisma.customer.update({
+				where: {
+					email: email,
+				},
+				data: {
+					password: CryptoJs.HmacSHA512(password, process.env.PASSWORD_KEY).toString(),
+				},
+			});
+			return {
+				success: true,
+			};
 		} catch (e) {
 			console.log(e.message);
 			return {

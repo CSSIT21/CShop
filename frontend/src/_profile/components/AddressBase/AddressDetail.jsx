@@ -2,9 +2,13 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import { Typography, IconButton, Button } from "@mui/material";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-const AddressDetail = ({ data, index, handleOpenDelete = () => {} }) => {
+const AddressDetail = ({
+  data,
+  index,
+  handleOpenDelete = () => {},
+  handleSetPrimary = () => {},
+}) => {
   const bgColor = index % 2 === 1 ? "#EFEFF1" : "white";
-
   return (
     <>
       <Grid
@@ -13,12 +17,16 @@ const AddressDetail = ({ data, index, handleOpenDelete = () => {} }) => {
         sx={{ color: "#FD6637", padding: "20px 0px", textAlign: "center" }}
         style={{ backgroundColor: bgColor }}
       >
-        {data.customer_address[0].primary && <Typography>Primary</Typography>}
-        {/* {!data.primary && (
-          <Button sx={{ textTransform: "capitalize", color: "#A0A3BD" }}>
+        {data.customer_address[0].primary ? (
+          <Typography>Primary</Typography>
+        ) : (
+          <Button
+            sx={{ textTransform: "capitalize", color: "#A0A3BD" }}
+            onClick={handleSetPrimary}
+          >
             Set Primary
           </Button>
-        )} */}
+        )}
       </Grid>
       <Grid item xs={2} sx={gridPadding} style={{ backgroundColor: bgColor }}>
         {data.recipient_name}

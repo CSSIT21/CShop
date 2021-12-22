@@ -77,8 +77,8 @@ const Comment = ({
       {productDetail && (
         <ProductCommentImage
           id={productDetail.id}
-          name={productDetail.name}
-          variation={productDetail.variation}
+          name={productDetail.title}
+          img={productDetail.product_picture[0].path}
         />
       )}
       <IconButton
