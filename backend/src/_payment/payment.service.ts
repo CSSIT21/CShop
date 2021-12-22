@@ -67,25 +67,21 @@ export class PaymentService {
                 console.error(error);
             });
         let str: any;
-        await Axios({
+        const response = await Axios({
             method: 'post',
             url: 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/qrcode/create',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept-Language': 'EN',
                 Authorization: 'Bearer ' + accessToken,
-                RequestUId: process.env.uuid,
+                RequestUId: "5CC06509-D8BA-479E-BB22-D3CAF343D49C",
                 ResourceOwnerId: process.env.API_Key,
             },
             data: JSON.stringify(data),
-        })
-            .then((response) => {
-                d1 = (<any>response.data)
-                str = d1.data.qrRawData;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        });
+		d1 = (<any>response.data)
+		str = d1.data.qrRawData;
+
         let createPayment = await this.createPaymentQr(orderId);
         //let createTrans = await this.createPaymentQrTrans(order.total_price, ref1, createPayment.id, str);
         if (order.total_price > 100) {

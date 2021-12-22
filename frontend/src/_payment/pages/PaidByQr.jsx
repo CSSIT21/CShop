@@ -60,7 +60,7 @@ const PaidByQr = () => {
     const [qrCode, setQrCode] = useState("");
 
     const { search } = useLocation()
-    const { orderId } = queryString.parse(search)
+    const { orderId } = queryString.parse(search);
     const order_id = { "orderId" : parseInt(orderId) };
     
 
@@ -81,7 +81,7 @@ const PaidByQr = () => {
     const getStatus = () => {
         Axios.get(`${config.SERVER_URL}/payment/status`).then((res) => {
             if (res.data === "Success") {
-                return window.location.href =`http://localhost:3000/payment/success`
+                return window.location.href =`${config.SERVER_URL}/payment/success`
             }
         })
     }
@@ -133,10 +133,7 @@ const PaidByQr = () => {
                     <Typography>scan and pay via your mobile banking application</Typography>
                 </Box>
                 <Box className={classes.sizeQr}>
-                    {console.log(qrCode)}
-                    {qrCode.length > 1 ? (
-                        <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}/>
-                    ) : null}
+                    <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}/>
                 </Box>
                 <Box className={classes.boxDetail}>
                     <Typography>QRcode valid until {time} </Typography>

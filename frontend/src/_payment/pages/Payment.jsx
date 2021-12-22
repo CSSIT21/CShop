@@ -30,8 +30,8 @@ const useStyles = makeStyles({
 
 const Payment = () => {
 
-    const { search } = useLocation()
-    const { orderID, cuponID, addressID } = queryString.parse(search)
+    const { search } = useLocation();
+    const { orderId: orderID, cuponID, addressID } = queryString.parse(search)
     const orderId = parseInt(orderID)
     
 
