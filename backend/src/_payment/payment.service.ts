@@ -248,7 +248,15 @@ export class PaymentService {
                 customer_id: order.customer_id
             }
         });
-        
+		if(wallet == null){
+			wallet = await this.prisma.wallet.create({
+                data: {
+                    customer_id: order.customer_id,
+                    balance: 10000,
+                    updated_time: new Date().toISOString()
+                }
+            })
+		}
             return { wallet, order}
         } catch (err) {
             console.log(err)
@@ -324,7 +332,7 @@ export class PaymentService {
             },
         })
         if (wallet === null) {
-            let wallet1 = await this.prisma.wallet.create({
+            wallet = await this.prisma.wallet.create({
                 data: {
                     customer_id: order.customer_id,
                     balance: 10000,
