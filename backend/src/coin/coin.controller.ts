@@ -10,96 +10,64 @@ const prisma = new PrismaClient();
 export class CoinController {
 
     constructor(private readonly coinService: CoinService, public prisma: PrismaService) {}
+    @Post('/checkin')
+    @Public()
+    async checkinCoin(@Body()request , @Res() res){
+        var userId = request.userId;
+        console.log(userId)
+        const a = await this.coinService.coincheckinInfo(userId);
+        const b = await this.coinService.checkcoin(userId);
+    }
 
     @Get('/showusedcoin')
-	@Public()
-	async showUsedCoin(@Req() req, @Res() res){
-		var request = req.body;
-		var userId = request.userId;
-		res.send(await this.coinService.showUsedcoin(userId));
-	}
+    @Public()
+    async showUsedCoin(@Req() req, @Res() res){
+        var request = req.body;
+        var userId = request.userId;
+        res.send(await this.coinService.showUsedcoin(userId));
+    }
 
     @Get('/showrecievecoin')
-	@Public()
-	async showRecieveCoin(@Req() req, @Res() res){
-		var request = req.body;
-		var userId = request.userId;
-		res.send(await this.coinService.showRecievecoin(userId));
-	}
+    @Public()
+    async showRecieveCoin(@Req() req, @Res() res){
+        var request = req.body;
+        var userId = request.userId;
+        res.send(await this.coinService.showRecievecoin(userId));
+    }
 
-	@Get('/showallcoin')
-	@Public()
-	async allHistory(@Req() req, @Res() res){
-		var request = req.body;
-		var userId = request.userId;
-		res.send(await this.coinService.showAll(userId));
-	}
+    @Get('/showallcoin')
+    @Public()
+    async allHistory(@Req() req, @Res() res){
+        var request = req.body;
+        var userId = request.userId;
+        res.send(await this.coinService.showAll(userId));
+    }
 
     @Post('/recievecoin')
-	@Public()
-	async recievecheckin(@Body()request , @Res() res): Promise<void> {
-		var userId = request.userId;
-		console.log(userId)
-		const a = await this.coinService.coincheckinInfo(userId);
-		const b = await this.coinService.checkcoin(userId);
-	}
+    @Public()
+    async recievecheckin(@Body()request , @Res() res): Promise<void> {
+        var userId = request.userId;
+        console.log(userId)
+        const a = await this.coinService.coincheckinInfo(userId);
+        const b = await this.coinService.checkcoin(userId);
+    }
 
-	@Get('totalcoin')
-	@Public()
-	async checkin(@Body()request , @Res() res): Promise<void> {
-		var userId = request.userId;
-		console.log(userId)
-		const ckeckin_coin = await this.coinService.checkIn(userId)
-		const check = await this.coinService.checkcoinUser(userId);
-		res.send({ckeckin_coin,check})
-	}
+    @Get('/totalcoin')
+    @Public()
+    async checkin(@Body()request , @Res() res): Promise<void> {
+        var userId = request.userId;
+        console.log(userId)
+        const ckeckin_coin = await this.coinService.checkIn(userId)
+        const check = await this.coinService.checkcoinUser(userId);
+        res.send({ckeckin_coin,check})
+    }
 
     @Post('/used')
-	@Public()
-	async usedcoin(@Body()request , @Res() res): Promise<void> {
-		var userId = request.userId;
-		console.log(userId)
-		const used_coin = await this.coinService.usedCoin(userId)
-		res.send({used_coin})
-	}
-
-
-
-    // @Post('/recieve')
-	// @Public()
-	// async recieve(@Body()request , @Res() res): Promise<void> {
-	// 	var userId = request.userId;
-    //     var amount = request.amount;
-    //     var got_date = request.got_date;
-    //     var get_from = request.get_from;
-    //     var expire_date = request.expire_date;
-	// 	console.log(userId,amount, got_date, expire_date, get_from)
-	// 	const a = await this.coinService.coinInfo(userId,amount, got_date, expire_date, get_from);
-	// 	res.send(this.showRecieveCoin)
-	// }
-
-
-
-
-
-
-    // @Post('/show')
-    // @Public()
-    // async showCoinInfo() {
-    //     return await this.prisma.discount_coin_information.findMany()
-    // }
-
-    
-
-
-
-    // @Get('/allhistory')
-	// @Public()
-	// async showAllHistory(@Req() req, @Res() res){
-	// 	var request = req.body;
-	// 	var userId = request.userId;
-	// 	res.send(await this.coinService.showAll(this.showUsedCoin, this.showRecieveCoin));
-	// }
-
-
+    @Public()
+    async usedcoin(@Body()request , @Res() res): Promise<void> {
+        var userId = request.userId;
+        console.log(userId)
+        const used_coin = await this.coinService.usedCoin(userId)
+        res.send({used_coin})
+    }
 }

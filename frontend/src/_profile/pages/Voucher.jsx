@@ -47,7 +47,7 @@ const couponsreward = [
 ];
 const couponsshop = [
   {
-    title: "Discount  20%",
+    title: "shop",
     detail: "This coupon can be use to Electronic Category",
     valid: "Until 31/12/2021",
     pic: "https://pbs.twimg.com/profile_images/1068192031153868800/Y-5gyvsP_400x400.jpg"

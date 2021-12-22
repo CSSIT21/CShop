@@ -285,20 +285,20 @@ function App() {
                   </MainLayout>
                 </Route>
 
-                {/* <Route exact path="/coin/history">
+                 <Route exact path="/coin/history">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinHistoryPage />
                     </Suspense>
                   </MainLayout>
-                </Route> */}
-                {/* <Route exact path="/coin">
+                </Route> 
+                 <Route exact path="/coin">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <CoinRedeemPage />
                     </Suspense>
                   </MainLayout>
-                </Route> */}
+                </Route> 
                 <Route exact path="/cart">
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
