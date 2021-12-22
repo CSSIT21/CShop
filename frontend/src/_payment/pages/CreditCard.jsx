@@ -91,11 +91,11 @@ const CreditCard = ({ orderId }) => {
         <Box className={classes.expAndSecurityBox} marginBottom={2}>
           <Box>
             <Typography>Exp date</Typography>
-            <TextField type="month"  onChange={(e)=>setExp(new Date(e.target.value).toISOString())} />
+            <TextField type="month" style = {{width: 300}} onChange={(e)=>setExp(new Date(e.target.value).toISOString())} />
           </Box>
-          <Box className={classes.securityBox}>
+          <Box >
             <Typography>Security code</Typography>
-            <TextField type="number" onInput={(e) => { e.target.value = (e.target.value).toString().slice(0, 3) }}
+            <TextField type="number" style = {{width: 300}} onInput={(e) => { e.target.value = (e.target.value).toString().slice(0, 3) }}
               onChange={(e) => setCvc(e.target.value)} />
           </Box>
         </Box>
@@ -135,10 +135,8 @@ const useStyles = makeStyles({
       marginBottom: "40px",
       display: "inline-block",
     },
-    button: {
-      display: "flex",
-      justifyContent: "center",
-      margin: "70px 0 180px 0",
+      button: {
+      margin: '20px 0 0 35% !important'
     },
     error: {
       fontSize: "14px",
@@ -175,6 +173,7 @@ const useStyles = makeStyles({
     expAndSecurityBox: {
       display: "flex",
       flexDirection: "row",
+      justifyContent: 'space-between'
     },
   });
 
