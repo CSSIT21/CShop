@@ -15,7 +15,7 @@ import config from "~/common/constants";
 const TabsController = ({ ...rest }) => {
   const classes = useStyles();
   const { id, cateId } = useParams();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [rating, setrating] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);

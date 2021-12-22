@@ -86,7 +86,7 @@ const SellerFlashsell = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [file, setFile] = useState("");
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   function handleClick() {
     if (
       descpt != "" &&

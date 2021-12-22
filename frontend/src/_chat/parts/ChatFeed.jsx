@@ -75,6 +75,7 @@ const TimeLabel = (props) => {
 
 const ChatFeed = (props) => {
     const [open, setOpen] = useState(false)
+    const [openDrawer, setOpenDrawer] = useState(false)
 
     function openSnackbar() {
         setOpen(true)
@@ -191,6 +192,8 @@ const ChatFeed = (props) => {
                         mark={markedAs}
                         setMark={setMark}
                         openPreference={props.openPreference}
+                        openInfo={() => setOpenDrawer(true)}
+                        closeInfo={() => setOpenDrawer(false)}
                     />
                 )}
             </Box>
@@ -222,10 +225,16 @@ const ChatFeed = (props) => {
                             onDelete={handleDelete}
                         />
                     ))}
-                {props.isCustomerView && <AutomatedChat
-                    handleSubmitMessage={props.handleSubmitMessage}
-                />}
-                <ExtraInfo open={true}/>
+                {props.isCustomerView && (
+                    <AutomatedChat
+                        handleSubmitMessage={props.handleSubmitMessage}
+                    />
+                )}
+                <ExtraInfo
+                    open={openDrawer}
+                    openPreference={props.openPreference}
+                    onClose={() => setOpenDrawer(false)}
+                />
             </Box>
 
             <Box className={classes.chatFeedButtom}>

@@ -46,13 +46,14 @@ const OrderSummarize = ({ order_id }) => {
   }, [])
   console.log(order_id);
   const orderId ={"orderId": order_id}
-  const info = () => Axios.post( `${config.SERVER_URL}/payment/summary`,orderId.orderId).then((res) => {
+  const info = () => Axios.post( `${config.SERVER_URL}/payment/summary`,orderId).then((res) => {
             if (res.data.success) {
               
               setOrder(res.data.order)
               setCustomer(res.data.customer)
               setAddr(res.data.address)
 
+              return "Done"
             } else {
               return "Fail"
             }
@@ -85,7 +86,7 @@ const OrderSummarize = ({ order_id }) => {
       <Box className={classes.boxStyle}>
         <Box className={classes.boxHead}>Order Summary</Box>
         <Box className={classes.boxDetail}>
-          Order number<Typography>{ order_id.orderId }</Typography>
+          Order number<Typography>{ order_id }</Typography>
         </Box>
         <Box className={classes.boxDetail}>
           Purchaser<Typography>{customer.firstname}  { customer.lastname }</Typography>

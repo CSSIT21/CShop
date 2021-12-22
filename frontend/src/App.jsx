@@ -56,6 +56,12 @@ import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization
 import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
 import SellerCreateCoupon from "./_seller/pages/SellerCreateCoupon";
+import Payment from "./_payment/pages/Payment";
+import PaidByQr from "./_payment/pages/PaidByQr";
+import Wallet from "./_payment/pages/Wallet";
+import CreditCard from "./_payment/pages/CreditCard";
+import Banking from "./_payment/pages/PayByInternetBanking";
+import Success from "./_payment/pages/Success";
 
 /** pages lazy loading*/
 // const HomePage = lazy(() => import("./_home/pages/Home"));
@@ -307,6 +313,49 @@ function App() {
                   </MainLayout>
                 </Route>
 
+                {/* Payment */}
+                <Route path="/payment" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Payment/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/paidbyqr" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <PaidByQr/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/wallet" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Wallet/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/creditcard" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CreditCard/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/banking" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Banking/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route path="/payment/success" exact>
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <Success/>
+                    </Suspense>
+                  </MainLayout>
+                </Route>
                 {/* <Route path="/seller/:id?" exact>
                 <Redirect to="stock"/>
               </Route> */}

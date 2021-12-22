@@ -25,6 +25,7 @@ import { SearchModule } from './_search/search.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { ManageaccountModule } from './_manageaccount/manageaccount.module';
 import { CoinModule } from './coin/coin.module';
+import { PaymentModule } from './_payment/payment.module';
 
 @Module({
 	imports: [
@@ -51,7 +52,8 @@ import { CoinModule } from './coin/coin.module';
 		SearchModule,
 		DeliveryModule,
 		ManageaccountModule,
-		CoinModule
+		CoinModule,
+		PaymentModule
 	],
 
 	controllers: [AppController],

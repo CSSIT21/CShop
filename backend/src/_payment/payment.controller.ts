@@ -48,6 +48,8 @@ export class PaymentController {
 		try {
 			const request = req.body;
 			let orderId = request.orderId;
+			
+			
 			order_id = request.orderId;
 			qr = await this.paymentService.getQr(orderId)
 			let rawQr = qr.str;
@@ -228,6 +230,8 @@ export class PaymentController {
 		try {
 			const request = req.body;
 			const orderId = request.orerId;
+			console.log(request);
+			
 				let paymentWallet = this.paymentService.paidByWallet(orderId);
 				return {
 					success: true,
@@ -300,7 +304,7 @@ export class PaymentController {
 	@Public()
 	createCoin() {
 		try {
-			this.paymentService.createCoin();
+			this.paymentService.createPaymentWallet(2);
 		} catch (err) {
 			return this.paymentService.throwError(err);
 		}

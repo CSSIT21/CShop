@@ -57,16 +57,16 @@ const Success = ({orderId}) => {
                     </Box>
                 
                     <Box className={classes.contentStyle}>    
-                        Transaction id<Typography>1212312121</Typography>
+                        Transaction id<Typography>238</Typography>
                     </Box>
                     <Box className={classes.contentStyle}>
-                        Payment type <Typography>Banking</Typography>
+                        Payment type <Typography>Wallet</Typography>
                     </Box>
                     <Box className={classes.contentStyle}>    
-                        Name <Typography>Sirawit YoYo</Typography>
+                        Name <Typography>Jirasin Jarethammajit</Typography>
                     </Box>
                     <Box marginTop={2} fontWeight={600} className={classes.contentStyle}>    
-                        Amount paid<Typography fontWeight={600} fontSize={20}>5,201.25 ฿</Typography>
+                        Amount paid<Typography fontWeight={600} fontSize={20}>24 ฿</Typography>
                     </Box>
                     <Box marginTop={5} >
                         <CButton title="Close" className={classes.contentStyle}/>

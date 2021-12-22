@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Typography } from "@mui/material";
@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import config from '../../common/constants';
 
-export class SellerCard extends React.Component {
+export class SellerCard extends Component {
   constructor(props) {
     super(props);
     this.type = {data:{title: 'PENDING'}};

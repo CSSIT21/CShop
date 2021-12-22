@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from 'react';
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import {
   Accordion,
@@ -12,7 +12,7 @@ import { makeStyles } from "@mui/styles";
 import Box from "@mui/material/Box";
 
 const ProductDescription = ({ productDetails }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen(!open);
   };

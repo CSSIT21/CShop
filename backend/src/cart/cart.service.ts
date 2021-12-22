@@ -201,7 +201,7 @@ export class CartService {
 			recipient_name: address.recipient_name,
 		});
 		const status = await prisma.order_status.create({ data: { status_id: trackingdata.id } });
-		await prisma.order.create({
+		const order = await prisma.order.create({
 			data: {
 				total_price: totalprice,
 				order_date: new Date(),
@@ -223,7 +223,7 @@ export class CartService {
 		await prisma.order_item.createMany({ data });
 		await prisma.order_cart_item.deleteMany({ where: { customer_id: userID } });
 
-		return true;
+		return order;
 	}
 
 	update(id: number, updateCartDto: UpdateCartDto) {

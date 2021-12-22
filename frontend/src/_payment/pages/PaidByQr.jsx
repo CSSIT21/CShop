@@ -8,6 +8,8 @@ import OrderSummarize from '../components/OrderSummerize';
 import { Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import CButton from '../../common/components/CButton';
+import { useLocation } from 'react-router-dom'
+import queryString from 'query-string'
 
 
 const useStyles = makeStyles({
@@ -50,23 +52,27 @@ const useStyles = makeStyles({
 
 
 
-const PaidByQr = ({ orderId }) => {
+const PaidByQr = () => {
     const classes = useStyles();
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(5);
     const [display, setDisplay] = useState("none")
     const [qrCode, setQrCode] = useState("");
 
-    console.log(orderId);
+    const { search } = useLocation()
+    const { orderId } = queryString.parse(search);
+    const order_id = { "orderId" : parseInt(orderId) };
+    
 
     useEffect(() => {
-        getQr(); getStatus()
+        getQr(); getStatus();
     },[])
     
 
     const getQr = () => {
-    Axios.post(`${config.SERVER_URL}/payment/qrcode`,orderId).then(({ data }) => {
-            if (data.success) {
+        Axios.post(`${config.SERVER_URL}/payment/qrcode`, order_id).then(({ data }) => {
+        console.log(data);
+        if (data.success) {
                 setQrCode(data.rawQr)
             } 
         }).catch((err) => {return Promise.reject(err)})
@@ -75,7 +81,7 @@ const PaidByQr = ({ orderId }) => {
     const getStatus = () => {
         Axios.get(`${config.SERVER_URL}/payment/status`).then((res) => {
             if (res.data === "Success") {
-                return window.location.href =`http://localhost:3000/payment/success`
+                return window.location.href =`${config.SERVER_URL}/payment/success`
             }
         })
     }
@@ -126,10 +132,8 @@ const PaidByQr = ({ orderId }) => {
                     <Typography>Please, capture the screen below</Typography>
                     <Typography>scan and pay via your mobile banking application</Typography>
                 </Box>
-                <Box className = {classes.sizeQr}>
-                    {qrCode.length > 1 ? (
-                        <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}/>
-                    ) : null}
+                <Box className={classes.sizeQr}>
+                    <LazyImage src={`https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=${qrCode}`}/>
                 </Box>
                 <Box className={classes.boxDetail}>
                     <Typography>QRcode valid until {time} </Typography>

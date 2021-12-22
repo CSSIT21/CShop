@@ -16,7 +16,7 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import config from '../../common/constants';
 import SellerCard from "../components/SellerCard";
 import { Search } from '@mui/icons-material';
@@ -67,7 +67,7 @@ let resId = 1000;
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
 
-    const [sellers, setSellersList] = React.useState([]);
+    const [sellers, setSellersList] = useState([]);
     const setSellers = async () => {
         const fetchedData = await axios.get(
             config.SERVER_URL + "/manageaccount/sellers"
@@ -75,28 +75,28 @@ const ManageSellerAccountPage = () => {
         setSellersList(fetchedData.data);
       };
 
-    const [sortBy, setSortBy] = React.useState('');
+    const [sortBy, setSortBy] = useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
       };
 
-    const [sortOrder, setSortOrder] = React.useState(false);
+    const [sortOrder, setSortOrder] = useState(false);
     const toggleSort = () => {
         setSortOrder(!sortOrder);
       }
 
-    const [showRestricted, setShowRestricted] = React.useState(false);
+    const [showRestricted, setShowRestricted] = useState(false);
     const toggleShowRestricted = () => {
         setShowRestricted(!showRestricted);
         setPage(1);
         }
 
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = useState(1);
     const handlePagination = (event) => {
         setPage(event.target.textContent);
     }
 
-    const [search, setSearch] = React.useState('');
+    const [search, setSearch] = useState('');
     const handleSearch = (event) => {
         setSearch(event.target.value);
     }

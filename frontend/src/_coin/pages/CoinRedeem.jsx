@@ -65,8 +65,8 @@ const CoinRedeemPage = (coinredeem) => {
         'Day7',
     ];
 
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
+    const [activeStep, setActiveStep] = useState(0);
+    const [completed, setCompleted] = useState({});
 
     const totalSteps = () => {
         return steps.length;

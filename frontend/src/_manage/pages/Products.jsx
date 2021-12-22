@@ -16,7 +16,7 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputAdornment } from '@mui/material';
-import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import config from '../../common/constants';
 import ProductCard from "../components/ProductCard";
 import { Search } from '@mui/icons-material';
@@ -87,7 +87,7 @@ let resId = 1000;
 const ManageAccountPage = () => {
     const classes = useStyles();
     
-    const [products, setProductsList] = React.useState([]);
+    const [products, setProductsList] = useState([]);
     const setProducts = async () => {
         const fetchedData = await axios.get(
           config.SERVER_URL + "/manageaccount/products"
@@ -95,22 +95,22 @@ const ManageAccountPage = () => {
         setProductsList(fetchedData.data);
       };
     
-    const [sortBy, setSortBy] = React.useState('');
+    const [sortBy, setSortBy] = useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
       };
 
-    const [sortOrder, setSortOrder] = React.useState(false);
+    const [sortOrder, setSortOrder] = useState(false);
     const toggleSort = () => {
         setSortOrder(!sortOrder);
       }
 
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = useState(1);
     const handlePagination = (event) => {
         setPage(event.target.textContent);
     }
 
-    const [search, setSearch] = React.useState('');
+    const [search, setSearch] = useState('');
     const handleSearch = (event) => {
         setSearch(event.target.value);
     }

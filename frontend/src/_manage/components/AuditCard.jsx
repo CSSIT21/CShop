@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Typography } from "@mui/material";
@@ -9,7 +9,7 @@ import { withStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import axios from "axios";
 
-export class AuditCard extends React.Component {
+export class AuditCard extends Component {
   constructor(props) {
     super(props);
     this.name = {firstname: 'PENDING', lastname: ''};
