@@ -10,6 +10,7 @@ import {
     ProfileBar,
     ProfileBarSeller
 } from '../components'
+import ExtraInfo from '../components/ExtraInfo/ExtraInfo'
 
 const useStyles = makeStyles({
     chatFeedContainer: {
@@ -217,6 +218,7 @@ const ChatFeed = (props) => {
                 {props.isCustomerView && <AutomatedChat
                     handleSubmitMessage={props.handleSubmitMessage}
                 />}
+                <ExtraInfo open={true}/>
             </Box>
 
             <Box className={classes.chatFeedButtom}>
