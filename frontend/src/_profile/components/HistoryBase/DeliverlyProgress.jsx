@@ -76,8 +76,8 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
 }));
 
 const steps = [
-  "Received a request",
-  "Received a package",
+  "Received_a_request",
+  "Received_a_package",
   "Delivering",
   "Success",
 ];

@@ -212,9 +212,9 @@ export class CartService {
 
 		const data = orders.map((item) => {
 			return {
-				order_id: 1,
+				order_id: order.id,
 				price: item.product_id_from_order_cart_item.price,
-				product_id: item.id,
+				product_id: item.product_id,
 				quantity: item.quantity,
 				status_id: status.id,
 				product_options: item.product_options,

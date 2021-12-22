@@ -125,6 +125,8 @@ const ProductDetail = ({
           className={classes.pic}
           width="80"
           height="80"
+          onClick={onClickProduct}
+          style={{ cursor: "pointer" }}
         />
       </Grid>
       <Grid item xs={10} sx={gridStyle}>

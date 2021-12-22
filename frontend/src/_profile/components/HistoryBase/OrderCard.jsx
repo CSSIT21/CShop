@@ -5,7 +5,6 @@ import { For } from "~/common/utils";
 import { useHistory } from "react-router-dom";
 
 const OrderCard = ({ data }) => {
-  console.log(data);
   const classes = useStyles();
   const router = useHistory();
   const getColor = () => {
