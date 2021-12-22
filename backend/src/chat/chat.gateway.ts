@@ -54,7 +54,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				this.connectionMap.delete(conversation);
 			}
 		}
-		client.disconnect()
+		client.disconnect();
 	}
 
 	@SubscribeMessage('get')
@@ -186,21 +186,34 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			event: 'get',
 			data: {
 				item: 'shop',
-				data: shop
-			}
-		}
+				data: shop,
+			},
+		};
 	}
 
 	@SubscribeMessage('post')
 	async post(@MessageBody() data: any) {
-		switch(data.item) {
+		switch (data.item) {
 			case 'mark':
-				await this.postMark(data.with, data.to)
+				await this.postMark(data.with, data.to);
+				break;
 		}
 	}
 
 	async postMark(conversation_id: number, value: ChatConversationMark) {
-		await this.chatService.updateMark(conversation_id, value)
+		await this.chatService.updateMark(conversation_id, value);
+	}
+
+	@SubscribeMessage('delete')
+	async handleDelete(@MessageBody() data: any) {
+		await this.chatService.deleteMessage(data.message_id);
+		this.server.to(data.conversation_id.toString()).emit('delete', {
+			event: 'delete',
+			data: {
+				conversation_id: data.conversation_id,
+				message_id: data.message_id
+			}
+		});
 	}
 
 	@SubscribeMessage('join')

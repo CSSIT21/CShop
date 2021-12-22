@@ -23,6 +23,7 @@ const ChatPreferenceModal = (props) => {
     return (
         <Modal
             open={props.open}
+            onClose={props.onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             className={classes.modalContainer}
@@ -33,11 +34,11 @@ const ChatPreferenceModal = (props) => {
                         <Typography
                             sx={{ fontWeight: '500', fontSize: '19.57px' }}
                         >
-                            Chat preferences - Johny's shop
+                            Chat preferences - {props.shop_name}
                         </Typography>
                     </Box>
 
-                    <IconButton>
+                    <IconButton onClick={props.onClose}>
                         <CloseIcon />
                     </IconButton>
                 </Box>
@@ -54,14 +55,11 @@ const ChatPreferenceModal = (props) => {
                             be greeted with
                         </Typography>
                         <TextField
-                            id="filled-textarea"
                             fullWidth
-                            label="fullWidth"
-                            label=""
-                            placeholder=""
+                            label="Message"
                             multiline
                             variant="standard"
-                            defaultValue="Welcome to our shop chat"
+                            defaultValue="Welcome to our shop"
                             sx={{
                                 background: ' rgba(236, 236, 238, 0.7)',
                                 boxShadow: '1px 2px 3px rgba(0, 0, 0, 0.1)',
@@ -117,17 +115,17 @@ const ChatPreferenceModal = (props) => {
                             />
                             <ChatLabel
                                 color="#7600BF"
-                                text="คนนี้เรื่องเยอะ"
+                                text="Need refund"
                                 removeable={true}
                             />
                             <ChatLabel
                                 color="#BF0039"
-                                text="ตอบช้า"
+                                text="Question"
                                 removeable={true}
                             />
                             <ChatLabel
                                 color="#F1CA3F"
-                                text="Woohoo"
+                                text="Picky"
                                 removeable={true}
                             />
                         </Box>
@@ -146,7 +144,7 @@ const ChatPreferenceModal = (props) => {
                         <Typography
                             sx={{ fontWeight: '500', fontSize: '22px' }}
                         >
-                            Automated response
+                            Quick reply
                         </Typography>
                         <Box className={classes.messageTable}>
                             <TableContainer component={Paper}>
@@ -157,16 +155,15 @@ const ChatPreferenceModal = (props) => {
                                                 Hello
                                             </TableCell>
                                             <TableCell align="center">
-                                                Go away, shop is closed
+                                                Hello, leave a message to us!
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell align="center">
-                                                When will item x come in stock
-                                                again
+                                                Where is your shop located?
                                             </TableCell>
                                             <TableCell align="center">
-                                                Probably next year
+                                                Bangkok
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -175,7 +172,7 @@ const ChatPreferenceModal = (props) => {
                                                     id="standard-basic"
                                                     variant="standard"
                                                     size="small"
-                                                    placeholder="Type query here"
+                                                    placeholder="Answer"
                                                 />
                                             </TableCell>
                                             <TableCell align="center">
@@ -183,7 +180,7 @@ const ChatPreferenceModal = (props) => {
                                                     id="standard-basic"
                                                     variant="standard"
                                                     size="small"
-                                                    placeholder="Response"
+                                                    placeholder="Reply"
                                                 />
                                             </TableCell>
                                         </TableRow>

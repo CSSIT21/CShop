@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/system'
-import { Button, Typography, Avatar } from '@mui/material'
+import { Button, Typography, Avatar, Tooltip } from '@mui/material'
 import { IconButton } from '@mui/material'
 import useStyles from './ProfileBarSeller.styles'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -49,32 +49,73 @@ const ProfileBarSeller = (props) => {
                 </Box>
             </Box>
             <Box className={classes.buttonZone}>
-    
-                <IconButton onClick={() => {
-                    props.setMark('Spam')
-                }}>
-                    <FlagIcon className={props.mark === 'Spam' ? classes.orangeButton : classes.grayButton}/>
-                </IconButton>
-                <IconButton onClick={() => {
-                    props.setMark('Important')
-                }}>
-                    <StarIcon className={props.mark === 'Important' ? classes.orangeButton : classes.grayButton} />
-                </IconButton>
-                <IconButton onClick={() => {
-                    props.setMark('Unread')
-                }}>
-                    <EmailIcon className={props.mark === 'Unread' ? classes.orangeButton : classes.grayButton} />
-                </IconButton>
-                <IconButton onClick={() => {
-                    props.setMark('Done')
-                }}>
-                    <CheckIcon className={props.mark === 'Done' ? classes.orangeButton : classes.grayButton} />
-                </IconButton>
-                <IconButton>
-                    <InfoIcon className={classes.grayButton} />
-                </IconButton>
-                <IconButton>
-                    <SettingsIcon className={classes.blackButton}/>
+                <Tooltip title="Spam">
+                    <IconButton
+                        onClick={() => {
+                            props.setMark('Spam')
+                        }}
+                    >
+                        <FlagIcon
+                            className={
+                                props.mark === 'Spam'
+                                    ? classes.orangeButton
+                                    : classes.grayButton
+                            }
+                        />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Important">
+                    <IconButton
+                        onClick={() => {
+                            props.setMark('Important')
+                        }}
+                    >
+                        <StarIcon
+                            className={
+                                props.mark === 'Important'
+                                    ? classes.orangeButton
+                                    : classes.grayButton
+                            }
+                        />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Read later">
+                    <IconButton
+                        onClick={() => {
+                            props.setMark('Unread')
+                        }}
+                    >
+                        <EmailIcon
+                            className={
+                                props.mark === 'Unread'
+                                    ? classes.orangeButton
+                                    : classes.grayButton
+                            }
+                        />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Done">
+                    <IconButton
+                        onClick={() => {
+                            props.setMark('Done')
+                        }}
+                    >
+                        <CheckIcon
+                            className={
+                                props.mark === 'Done'
+                                    ? classes.orangeButton
+                                    : classes.grayButton
+                            }
+                        />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="More info">
+                    <IconButton>
+                        <InfoIcon className={classes.grayButton} />
+                    </IconButton>
+                </Tooltip>
+                <IconButton onClick={props.openPreference}>
+                    <SettingsIcon className={classes.blackButton} />
                 </IconButton>
             </Box>
         </Box>

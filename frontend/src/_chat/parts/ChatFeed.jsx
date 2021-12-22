@@ -149,7 +149,12 @@ const ChatFeed = (props) => {
         }
     }
 
+    function handleDelete(message_id) {
+        props.ChatService.delete(props.currentConversation, message_id)
+    }
+
     function setMark(mark) {
+        if(mark === markedAs) mark = 'None'
         props.ChatService.postMark(messages.id, mark)
         setMarkedAs(mark)
     }
@@ -185,6 +190,7 @@ const ChatFeed = (props) => {
                         pic={messages.customer_pic}
                         mark={markedAs}
                         setMark={setMark}
+                        openPreference={props.openPreference}
                     />
                 )}
             </Box>
@@ -213,6 +219,7 @@ const ChatFeed = (props) => {
                             onRead={handleRead}
                             openSnackbar={openSnackbar}
                             isCustomerView={props.isCustomerView}
+                            onDelete={handleDelete}
                         />
                     ))}
                 {props.isCustomerView && <AutomatedChat

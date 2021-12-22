@@ -5,10 +5,10 @@ import useStyles from './AutomatedChat.styles'
 const AutomatedChat = (props) => {
     const classes = useStyles()
     const quickReply = [
-        'How much',
+        'Hello',
         'Where is your shop located?',
-        'Is the shirt number xxx available?',
-        'Hello'
+        'Can you provide a full invoice?',
+        'How much?'
     ]
 
     return (

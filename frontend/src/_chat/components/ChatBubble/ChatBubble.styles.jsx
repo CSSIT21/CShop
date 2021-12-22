@@ -24,6 +24,9 @@ const useStyles = makeStyles({
         '& span': {
             fontSize: 10
         }
+    },
+    delete: {
+        color: '#A0A3BD'
     }
 })
 
