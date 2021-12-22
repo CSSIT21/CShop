@@ -40,6 +40,11 @@ const ChatPage = (props) => {
     const classes = useStyles()
     const [shouldScroll, setShouldScroll] = useState(false)
     const [isCustomerView, setIsCustomerView] = useState(true)
+<<<<<<< HEAD
+=======
+
+    // console.log('rendering with messages: ', messages)
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
 
     function handleGetConversation() {
         setShouldScroll(true)
@@ -49,8 +54,18 @@ const ChatPage = (props) => {
         console.log(ChatService.shop)
     }
 
+    function handleGetShop() {
+        console.log(ChatService.shop)
+    }
+
     function handleIncomingMessage(message) {
         setShouldScroll(true)
+    }
+
+    function handleChangeView(newView) {
+        console.log(newView ? 'use customer view' : 'use seller view')
+        setIsCustomerView(newView)
+        setCurrentConversation(0)
     }
 
     function handleChangeView(newView) {
@@ -118,7 +133,11 @@ const ChatPage = (props) => {
             console.log('opening chat page for ' + (parseInt(router_id) ? 'id#' : 'url slug ') + router_id)
             ChatService.getConversationId(parseInt(router_id), (id) => {
                 console.log('get coonv ' + id + ' complete')
+<<<<<<< HEAD
                 handleChangeView(true)
+=======
+                // console.log(ChatService.conversation(id))
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                 changeChat(id)
             })
         }
