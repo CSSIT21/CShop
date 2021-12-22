@@ -43,7 +43,7 @@ const CarouselProductSelect = ({
 
   console.log(products_id);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [openAddProduct, setopenAddProduct] = useState(false);
   const [Topic, setTopic] = useState("");
   const [searchText, setsearchText] = useState("");

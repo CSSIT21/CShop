@@ -9,7 +9,7 @@ import { Avatar } from '@mui/material'
 
 const ChooseUser = (props) => {
     const classes = useStyles()
-    const [anchorEl, setAnchorEl] = React.useState(null)
+    const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)

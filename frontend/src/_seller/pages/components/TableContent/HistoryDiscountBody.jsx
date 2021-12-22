@@ -78,8 +78,8 @@ const HistoryDiscountBody = ({ columns }) => {
     // console.log(shopid.id)
   }, [rows]);
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

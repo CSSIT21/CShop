@@ -14,7 +14,7 @@ const StyledRating = styled(Rating)({
 });
 function StarBox({ starScore, setStarScore }) {
   // value = -1 --> change to 0
-  const [hover, setHover] = React.useState(-1);
+  const [hover, setHover] = useState(-1);
 
   return (
     <Box sx={container}>

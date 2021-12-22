@@ -8,7 +8,7 @@ import { makeStyles } from "@mui/styles";
 
 const TabsController = ({ orders, ...rest }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const getColor = () => {
     return value === 0 ? "#D28C40" : value === 1 ? "#5B8125" : "#AC303A";
   };
