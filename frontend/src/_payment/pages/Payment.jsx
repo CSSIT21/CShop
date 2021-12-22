@@ -42,10 +42,10 @@ const Payment = () => {
     return (
         <Box>
             <Box className = {classes.boxLeft}>
-                <ChoiceForPay order_id={orderID.orderID} />
+                <ChoiceForPay order_id={orderID} />
             </Box>
             <Box className = {classes.boxRight}>
-                <OrderSummarize order_id={orderID.orderID} />
+                <OrderSummarize order_id={orderID} />
             </Box>
         </Box>
     )

@@ -246,6 +246,8 @@ export class PaymentController {
 	async getCusInfo(@Req() req) {
 		const request = req.body
 		const orderId = request.orderId
+		console.log(orderId);
+		
 		
 		
 		try {

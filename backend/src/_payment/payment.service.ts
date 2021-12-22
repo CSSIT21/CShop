@@ -22,6 +22,8 @@ export class PaymentService {
     
     //-----------------QR code---------------//
     async getQr(orderId?: number) {
+        //console.log(orderId);
+        
         const order = await this.prisma.order.findFirst({
             where: {
                 id: orderId,
