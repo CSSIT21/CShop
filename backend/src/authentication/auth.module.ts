@@ -16,7 +16,7 @@ import constraints from 'src/common/constants';
 		PassportModule,
 		JwtModule.register({
 			secret: constraints.jwtSecret,
-			signOptions: { expiresIn: '3d' },
+			signOptions: { expiresIn: '7d' },
 		}),
 	],
 	controllers: [AuthenticationController],

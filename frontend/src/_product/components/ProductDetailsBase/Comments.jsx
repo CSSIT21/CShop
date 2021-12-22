@@ -11,41 +11,17 @@ import Stack from "@mui/material/Stack";
 import DialogImage from "./DialogImage";
 
 const Comments = ({
-  // commentDetails,
   imageURL,
   username,
   rating,
   comment,
   reviewPhoto = [],
+  reviewTime,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const [openDialog, setOpenDialog] = useState(false);
   const [page, setPage] = useState(0);
   const photoPerRow = 1;
   const totalPage = Math.ceil(reviewPhoto.length / photoPerRow);
-  const onPrev = () => {
-    if (page === 0) {
-      setPage(totalPage - 1);
-    } else {
-      setPage(page - 1);
-    }
-  };
-
-  const onNext = () => {
-    if (totalPage - 1 === page) {
-      setPage(0);
-    } else {
-      setPage(page + 1);
-    }
-  };
 
   const handleClickOpenDialog = (id) => {
     setPage(id);
@@ -55,7 +31,6 @@ const Comments = ({
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
   return (
     <Box
       sx={{
@@ -74,7 +49,11 @@ const Comments = ({
       >
         <Avatar
           alt={username.toUpperCase()}
-          src={imageURL}
+          src={
+            imageURL
+              ? imageURL
+              : "https://hbr.org/resources/images/article_assets/2019/11/Nov19_14_sb10067951dd-001.jpg"
+          }
           sx={{
             width: 64,
             height: 64,
@@ -131,29 +110,29 @@ const Comments = ({
             alignItems="center"
             marginTop="8px"
           >
-            {reviewPhoto &&
-              reviewPhoto.slice(0, 5).map((val, key) => (
+            {reviewPhoto.length > 0 &&
+              reviewPhoto?.slice(0, 5).map((val, key) => (
                 <ReviewPhoto
                   setPage={setPage}
                   page={page}
                   id={key}
-                  img={val}
+                  // img={val.path}
                   key={key}
                   handleClickOpen={handleClickOpenDialog}
                 >
                   {
                     <Box variant="outlined">
-                      <img src={val} style={imageStyle} alt={key} />
+                      <img src={val?.path} style={imageStyle} alt={key} />
                     </Box>
                   }
                 </ReviewPhoto>
               ))}
 
             {/* More photo */}
-            {reviewPhoto.length >= 6 && (
+            {reviewPhoto?.length >= 6 && (
               <ReviewPhoto
                 id={5}
-                img={reviewPhoto[5]}
+                img={reviewPhoto[5]?.path}
                 setPage={setPage}
                 page={page}
                 handleClickOpen={handleClickOpenDialog}
@@ -161,7 +140,7 @@ const Comments = ({
                 {
                   <Box sx={numberConatiner}>
                     <Typography variant="h6" color="#bdbdbd">
-                      +{reviewPhoto.length - 5}
+                      +{reviewPhoto?.length - 5}
                     </Typography>
                   </Box>
                 }
@@ -180,27 +159,8 @@ const Comments = ({
         </Box>
       </Box>
 
-      {/* flag icon */}
-      <IconButton
-        onClick={handleClick}
-        sx={{ position: "absolute", top: "10px", right: "0" }}
-      >
-        <EmojiFlagsRoundedIcon />
-      </IconButton>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={handleClose}>Report Abuse</MenuItem>
-      </Menu>
-
       {/* footer */}
-      <CommentFooter />
+      <CommentFooter commentDateTime={reviewTime} />
       <Divider sx={{ alignSelf: "stretch", marginTop: 3 }} />
     </Box>
   );

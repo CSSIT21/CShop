@@ -3,12 +3,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import { useParams } from "react-router";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 const StyledTabs = styled((props) => <Tabs {...props} />)({
@@ -48,7 +47,7 @@ const TabsController = ({ categories = [], ...rest }) => {
         <Link to={`/shop/${id}`}>
           <Tab className={classes.tabStyle} label="Store" />
         </Link>
-        <Link to={`/shop/${id}/allproduct`}>
+        <Link to={`/shop/${id}/0`}>
           <Tab className={classes.tabStyle} label="All Products" />
         </Link>
         {filterMenus.map((menu, idx) => (
@@ -87,9 +86,9 @@ const TabsController = ({ categories = [], ...rest }) => {
               }}
               sx={{ color: "black" }}
             >
-              {categories.slice(3, categories.length).map((menu, idx) => {
+              {categories.slice(2, categories.length).map((menu, idx) => {
                 return (
-                  <Link key={idx} to={`/shop/${id}/${menu.cateId}`}>
+                  <Link key={idx} to={`/shop/${id}/${menu.id}`}>
                     <MenuItem
                       sx={{ height: "50px", width: "200px", color: "black" }}
                       onClick={handleClose}

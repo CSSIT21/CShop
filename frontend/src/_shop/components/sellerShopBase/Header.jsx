@@ -6,16 +6,15 @@ import Button from "@mui/material/Button";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 
-const Header = ({ shopInfo = {}, follow = false }) => {
+const Header = ({ shopInfo = {} }) => {
   const auth = useRecoilValue(authState);
   const { id } = useParams();
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-        <HeaderLeft shopInfo={shopInfo} follow={follow} />
+        <HeaderLeft shopInfo={shopInfo} />
         <HeaderRight shopInfo={shopInfo} />
       </Box>
       <Box
@@ -26,7 +25,7 @@ const Header = ({ shopInfo = {}, follow = false }) => {
         }}
       >
         {auth.user.role == "SELLER" && auth.user.shop_info[0].id == id && (
-          <Link to={`/seller/1/dashboard`}>
+          <Link to={`/seller/${id}/dashboard`}>
             <Button
               sx={{ margin: "0 50px 0 0", padding: "10px 20px" }}
               variant="outlined"

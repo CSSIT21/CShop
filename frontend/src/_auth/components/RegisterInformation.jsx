@@ -6,11 +6,10 @@ import { years, months, days, genders } from "../../common/constants/register";
 import { useRecoilState } from "recoil";
 import registerState from "../../common/store/registerState";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { getUrl } from "~/common/utils";
 
 const RegisterInformation = ({ handleNext = () => {} }) => {
   const classes = useStyles();
@@ -81,7 +80,7 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
       setUserInfo({
         ...userInfo,
         url: path,
-        title: e.target.files[0].name,
+        title: e.target.files[0].name.slice(0, 50),
         file: e.target.files[0],
       });
     }
@@ -212,7 +211,10 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
                 error={phoneNumError.length === 0 ? false : true}
                 value={userInfo.phoneNumber}
                 onChange={(e) => {
-                  setUserInfo({ ...userInfo, phoneNumber: e.target.value });
+                  setUserInfo({
+                    ...userInfo,
+                    phoneNumber: e.target.value.slice(0, 10),
+                  });
                   setphoneNumError("");
                 }}
               />
@@ -256,7 +258,6 @@ const RegisterInformation = ({ handleNext = () => {} }) => {
               <LocalizationProvider dateAdapter={DateAdapter}>
                 <DatePicker
                   value={userInfo.birthdate}
-                  sx={{ width: "100%" }}
                   renderInput={(params) => <TextField {...params} />}
                   onChange={(e) => {
                     setUserInfo({ ...userInfo, birthdate: e.toISOString() });
@@ -343,12 +344,13 @@ const useStyles = makeStyles({
   },
   birthdateSelect: {
     display: "flex",
-    justifyContent: "space-between",
     marginTop: "35px",
-    backgroundColor: "white",
-    borderRadius: "10px",
-    width: "266px",
+    "& .MuiFormControl-root ": {
+      backgroundColor: "white",
+      borderRadius: "10px",
+    },
   },
+
   button: {
     display: "flex",
     justifyContent: "center",

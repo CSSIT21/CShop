@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { makeStyles } from "@mui/styles";
 import { CircularProgress } from "@mui/material";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { noop } from '~/common/utils';
 
 const SubImage = ({
-	id = 1,
 	path = "",
 	title = "picture",
 	onDelete = noop,
@@ -28,7 +28,7 @@ const SubImage = ({
 				: <DeleteRoundedIcon
 					className={classes.iconStyle}
 					sx={{ fontSize: "1.7rem" }}
-					onClick={() => onDelete(id)}
+					onClick={onDelete}
 				/>
 			}
 		</div>

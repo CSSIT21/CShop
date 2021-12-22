@@ -16,7 +16,6 @@ import CarouselBannerIcon from "./components/CustomizationBase/DragableIcon/Caro
 import YoutubeEmbedIcon from "./components/CustomizationBase/DragableIcon/YoutubeEmbedIcon";
 import ProductCarouselIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselIcon";
 import ProductCarouselSelectIcon from "./components/CustomizationBase/DragableIcon/ProductCarouselSelectIcon";
-import Button from "@mui/material/Button";
 import { getUrl } from "~/common/utils";
 import axios from "axios";
 import config from "~/common/constants";
@@ -24,6 +23,8 @@ import Swal from "sweetalert2";
 import { useRecoilValue } from "recoil";
 import authState from "~/common/store/authState";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Dialog from "@mui/material/Dialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -143,6 +144,7 @@ const SellerShopCustomization = () => {
   const auth = useRecoilValue(authState);
   const shopName = "Shop name";
   const dropArea = "area";
+  const [onLoad, setonLoad] = useState(false);
   const [loading, setloading] = useState(false);
   const [state, setState] = useState({
     [dropArea]: [],
@@ -178,6 +180,7 @@ const SellerShopCustomization = () => {
 
   useEffect(() => {
     (async () => {
+      setonLoad(true);
       await axios
         .get(
           `${config.SERVER_URL}/shopcustomization/category/${auth.user.shop_info[0].id}`
@@ -204,6 +207,7 @@ const SellerShopCustomization = () => {
           `${config.SERVER_URL}/shopcustomization/${auth.user.shop_info[0].id}`
         )
         .then(({ data }) => setState({ area: data.sections }));
+      setonLoad(false);
     })();
   }, []);
   console.log(Object.entries(sectionInfos));
@@ -527,9 +531,6 @@ const SellerShopCustomization = () => {
                                     {...provided.dragHandleProps}
                                     order={index}
                                   />
-                                  <Box>
-                                    Hello {item.content} {JSON.stringify(item)}
-                                  </Box>
                                 </div>
                               )}
                             </Draggable>
@@ -546,6 +547,28 @@ const SellerShopCustomization = () => {
           </Content>
         </DragDropContext>
       </Box>
+      <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+        <Box
+          sx={{
+            height: "250px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
+          <Typography
+            fontWeight="600"
+            fontSize="20px"
+            color="#FD6637"
+            sx={{ padding: "0 2rem", marginTop: "50px" }}
+          >
+            Loading
+          </Typography>
+        </Box>
+      </Dialog>
     </>
   );
 };

@@ -6,8 +6,16 @@ import ProductCommentImage from "./ProductCommentImage";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-const Comment = ({ imageURL, username, rating, comment, productDetail }) => {
+const Comment = ({
+  imageURL,
+  username,
+  rating,
+  comment,
+  productDetail,
+  review_time = "",
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const date = review_time.split("T");
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,8 +77,8 @@ const Comment = ({ imageURL, username, rating, comment, productDetail }) => {
       {productDetail && (
         <ProductCommentImage
           id={productDetail.id}
-          name={productDetail.name}
-          variation={productDetail.variation}
+          name={productDetail.title}
+          img={productDetail.product_picture[0].path}
         />
       )}
       <IconButton
@@ -96,7 +104,7 @@ const Comment = ({ imageURL, username, rating, comment, productDetail }) => {
         fontSize="12px"
         fontWeight={400}
       >
-        Commented on 23/12/2021 At 10:00
+        Commented on {date[0]}
       </Typography>
       <Divider sx={{ alignSelf: "stretch", marginTop: 3 }} />
     </Box>

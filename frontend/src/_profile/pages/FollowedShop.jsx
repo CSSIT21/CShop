@@ -1,45 +1,46 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import TopProfile from "../components/TopProfile";
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography, Box, Grid, Avatar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import ShopImg from "../assets/shop.png";
 import { For } from "~/common/utils";
 import Pagination from "@mui/material/Pagination";
 import DoDisturbAltRoundedIcon from "@mui/icons-material/DoDisturbAltRounded";
+import axios from "axios";
+import config from "../../common/constants";
+import authState from "../../common/store/authState";
+import { useRecoilValue } from "recoil";
+import { useHistory } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const shop = [
-  {
-    name: "muumel shop",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-  {
-    name: "SAMSONG",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-  {
-    name: "Tiffany&Co.",
-    img: ShopImg,
-  },
-];
 const FollowedShop = () => {
   const classes = useStyles();
+  const auth = useRecoilValue(authState);
+  const [shop, setShop] = useState([]);
+  const router = useHistory();
+  const [onLoad, setonLoad] = useState(false);
+  const [page, setpage] = useState(1);
+  const [count, setcount] = useState(0);
+
   useLayoutEffect(() => {
     document.body.classList.add("gray");
     return () => document.body.classList.remove("gray");
   }, []);
+  useEffect(() => {
+    setonLoad(true);
+    axios
+      .post(config.SERVER_URL + "/profile/followingshop/?page=" + page, {
+        id: auth.user.id,
+      })
+      .then(({ data }) => {
+        setShop(data.filteredShop);
+        setcount(data.count);
+        setonLoad(false);
+        window.scrollTo(0, 0);
+      });
+  }, [page]);
+
   return (
     <>
       <TopProfile />
@@ -50,17 +51,18 @@ const FollowedShop = () => {
               fontSize: "32px",
               fontWeight: "600",
               margin: "60px auto",
+              marginBottom: "100px",
             }}
           >
             Following Shop
           </Typography>
-          <Box className={classes.searchBox}>
+          {/* <Box className={classes.searchBox}>
             <SearchIcon className={classes.searchIcon} />
             <input
               className={classes.searchInput}
               placeholder="Search for shop"
             />
-          </Box>
+          </Box> */}
           {shop.length === 0 ? (
             <Box className={classes.noShopFollow}>
               <DoDisturbAltRoundedIcon
@@ -89,15 +91,32 @@ const FollowedShop = () => {
                           wordBreak: "break-word",
                         }}
                       >
-                        <img src={item.img} alt="Shop Img" width="125px" />
+                        <Avatar
+                          src={
+                            item.shop_id_from_customer_followed_shop
+                              .shop_picture.path
+                          }
+                          alt="Shop Img"
+                          onClick={() => {
+                            router.push(
+                              `/shop/${item.shop_id_from_customer_followed_shop.id}`
+                            );
+                            window.scrollTo(0, 0);
+                          }}
+                          sx={{
+                            width: "130px",
+                            height: "130px",
+                            cursor: "pointer",
+                          }}
+                        />
                         <Typography
                           sx={{
                             textAlign: "center",
-                            marginTop: "15px",
+                            marginTop: "30px",
                             padding: "0 20px",
                           }}
                         >
-                          {item.name}
+                          {item.shop_id_from_customer_followed_shop.shop_name}
                         </Typography>
                       </Box>
                     </Grid>
@@ -105,17 +124,40 @@ const FollowedShop = () => {
                 </For>
               </Grid>
               <Pagination
-                count={10}
+                count={Math.ceil(count / 20)}
                 shape="rounded"
                 size="large"
-                page={1}
+                page={page}
+                onChange={(e, value) => setpage(value)}
                 sx={{
-                  marginTop: "60px",
+                  margin: "60px 0px",
                 }}
               />
             </Box>
           )}
         </Box>
+        <Dialog open={onLoad} aria-describedby="alert-dialog-slide-description">
+          <Box
+            sx={{
+              height: "250px",
+              width: "500px",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress size={70} sx={{ marginTop: "1rem" }} />
+            <Typography
+              fontWeight="600"
+              fontSize="20px"
+              color="#FD6637"
+              sx={{ padding: "0 2rem", marginTop: "50px" }}
+            >
+              Loading
+            </Typography>
+          </Box>
+        </Dialog>
       </Box>
     </>
   );
