@@ -58,7 +58,7 @@ const ActionMenu = () => {
 
   useEffect(() => {
     setNotificationService(
-      () => new NotificationService(auth, handleGet, handleGet, handleGet)
+      () => new NotificationService(auth, handleGet, handleGet, handleGet, onClear)
     );
   }, [auth.isLoggedIn]);
 
@@ -81,8 +81,11 @@ const ActionMenu = () => {
   }
 
   function handleRead(conversation_id, message_id) {
-	  console.log('read ', conversation_id, message_id);
 	  notificationService.read(conversation_id, message_id)
+  }
+
+  function onClear() {
+	  setNotifications([])
   }
 
   return (

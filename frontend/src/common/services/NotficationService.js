@@ -2,13 +2,18 @@ import { io } from "socket.io-client";
 import config from "~/common/constants/index";
 
 class NotificationService {
-  constructor(auth, onGetComplete, onPush, onReadSuccess) {
+  static socket;
+  static notifications;
+  static clear;
+
+  constructor(auth, onGetComplete, onPush, onReadSuccess, clear) {
     this.auth = auth;
     this.connect();
     this.notifications = [];
     this.onGetComplete = onGetComplete;
     this.onPush = onPush;
     this.onReadSuccess = onReadSuccess;
+    this.clear = clear;
   }
 
   connect() {
@@ -44,6 +49,12 @@ class NotificationService {
     });
     this.notifications.find((n) => n.id === message_id).seen = true;
     this.onReadSuccess([...this.notifications]);
+  }
+
+  static disconnect() {
+      this.socket.disconnect();
+      this.notifications = [];
+      this.clear();
   }
 }
 
