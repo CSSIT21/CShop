@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient, ChatMessageTypes } from '@prisma/client';
+import { PrismaClient, ChatMessageTypes, ChatConversationMark } from '@prisma/client';
 import { MessageDto } from './dto/message.dto';
 import { NotificationDto } from './dto/notification.dto';
 import { io } from 'socket.io-client';
@@ -44,15 +44,28 @@ export class ChatService {
 			.$queryRaw`SELECT id FROM chat_conversation WHERE customer_id = ${uid} AND shop_id = ${shop_id};`;
 		// console.log(conv);
 		const conv_id = conv.length > 0 ? conv[0].id : -1;
+<<<<<<< HEAD
+		if (conv_id === -1) {
+			const newConv_id = await this.createConversation(uid, shop_id);
+=======
 		if(conv_id === -1)
 		{
 			const newConv_id = await this.createConversation(uid, shop_id)
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
 			await this.createMessage({
 				conversation_id: newConv_id,
 				content_type: 'Text',
 				content: 'Welcome to our shop',
 				from_customer: false,
 			});
+<<<<<<< HEAD
+			return newConv_id;
+		} else {
+			const msg = await this.prisma
+				.$queryRaw`SELECT COUNT(*) FROM chat_message cm JOIN chat_conversation cc on cc.id = cm.conversation_id
+WHERE cc.id = ${conv_id} AND cm.content_type <> 'Noti';`;
+			if (msg[0].count === 0) {
+=======
 			return newConv_id
 		}
 		else
@@ -62,6 +75,7 @@ export class ChatService {
 WHERE cc.id = ${conv_id} AND cm.content_type <> 'Noti';`;
 			if(msg[0].count === 0)
 			{
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
 				await this.createMessage({
 					conversation_id: conv_id,
 					content_type: 'Text',
@@ -277,6 +291,24 @@ FROM customer_info
 WHERE customer_info.customer_id = ${uid}`;
 	}
 
+<<<<<<< HEAD
+	async updateMark(conversation_id: number, value: ChatConversationMark) {
+		await this.prisma.$queryRaw`UPDATE chat_conversation SET marked_as = ${value} WHERE id = ${conversation_id};`;
+	}
+
+	async updateGreet(conversation_id: number, value: ChatConversationMark) {
+		// await this.prisma.$queryRaw`UPDATE chat_conversation SET marked_as = ${value} WHERE id = ${conversation_id};`;
+	}
+
+	async deleteMessage(message_id: number) {
+		await this.prisma.$queryRaw`DELETE FROM chat_text WHERE message_id = ${message_id}`
+		await this.prisma.$queryRaw`DELETE FROM chat_image WHERE message_id = ${message_id}`;
+		await this.prisma.$queryRaw`DELETE FROM chat_video WHERE message_id = ${message_id}`;
+		await this.prisma.$queryRaw`DELETE FROM chat_message WHERE id = ${message_id}`;
+	}
+
+=======
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
 	static push(notification: { from: number; to: number; text: string; redirect_to: string }) {
 		//   console.log('gonna push ', notification)
 		const SOCKET_PORT = parseInt(process.env.SERVER_PORT) + 1;

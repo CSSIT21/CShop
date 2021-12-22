@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
 import { makeStyles } from '@mui/styles'
 import { CircularProgress, Snackbar } from '@mui/material'
@@ -10,6 +10,7 @@ import {
     ProfileBar,
     ProfileBarSeller
 } from '../components'
+import ExtraInfo from '../components/ExtraInfo/ExtraInfo'
 
 const useStyles = makeStyles({
     chatFeedContainer: {
@@ -84,6 +85,11 @@ const ChatFeed = (props) => {
     }
 
     const messages = props.ChatService.conversation(props.currentConversation)
+    const [markedAs, setMarkedAs] = useState('None')
+
+    useEffect(() => {
+        setMarkedAs(messages?.marked_as)
+    }, [messages])
     // console.log('feed ' + props.lastUpdate, messages)
     const classes = useStyles()
     if (messages === undefined) {
@@ -103,13 +109,24 @@ const ChatFeed = (props) => {
             <Box className={classes.chatFeedContainer}>
                 {/* ChatFeed on the right shows all messages between two users */}
                 <Box className={classes.chatFeedTitle}>
-                    <ProfileBar
-                        displayName={messages.shop_name}
-                        status={false}
-                        pic={messages.shop_pic}
-                        url={'/shop/' + messages.shop_id}
-                        notification={messages.is_muted}
-                    />
+                    {props.isCustomerView ? (
+                        <ProfileBar
+                            displayName={messages.shop_name}
+                            status={false}
+                            pic={messages.shop_pic}
+                            url={'/shop/' + messages.shop_id}
+                            notification={messages.is_muted}
+                        />
+                    ) : (
+                        <ProfileBarSeller
+                            displayName={
+                                messages.firstname + ' ' + messages.lastname
+                            }
+                            status={false}
+                            pic={messages.customer_pic}
+                            mark={messages.marked_as}
+                        />
+                    )}
                 </Box>
                 <Box className={classes.loader}>
                     <CircularProgress color="primary" />
@@ -130,6 +147,19 @@ const ChatFeed = (props) => {
         {
             props.ChatService.read(props.currentConversation, message_id)
         }
+<<<<<<< HEAD
+    }
+
+    function handleDelete(message_id) {
+        props.ChatService.delete(props.currentConversation, message_id)
+    }
+
+    function setMark(mark) {
+        if(mark === markedAs) mark = 'None'
+        props.ChatService.postMark(messages.id, mark)
+        setMarkedAs(mark)
+=======
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
     }
     // if(messages.latest_id === )
     // console.log(messages)
@@ -161,7 +191,13 @@ const ChatFeed = (props) => {
                         }
                         status={messages.active}
                         pic={messages.customer_pic}
+<<<<<<< HEAD
+                        mark={markedAs}
+                        setMark={setMark}
+                        openPreference={props.openPreference}
+=======
                         mark="Done"
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                     />
                 )}
             </Box>
@@ -172,10 +208,15 @@ const ChatFeed = (props) => {
                             key={i}
                             currentConversation={props.currentConversation}
                             variant={
+<<<<<<< HEAD
+                                (m.from_customer && props.isCustomerView) ||
+                                (!m.from_customer && !props.isCustomerView)
+=======
                                 (m.from_customer &&
                                     props.isCustomerView) ||
                                 (!m.from_customer &&
                                     !props.isCustomerView)
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                                     ? 'right'
                                     : 'left'
                             }
@@ -192,9 +233,19 @@ const ChatFeed = (props) => {
                             onRead={handleRead}
                             openSnackbar={openSnackbar}
                             isCustomerView={props.isCustomerView}
+<<<<<<< HEAD
+                            onDelete={handleDelete}
+                        />
+                    ))}
+                {props.isCustomerView && <AutomatedChat
+                    handleSubmitMessage={props.handleSubmitMessage}
+                />}
+                <ExtraInfo open={true}/>
+=======
                         />
                     ))}
                 <AutomatedChat />
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
             </Box>
 
             <Box className={classes.chatFeedButtom}>

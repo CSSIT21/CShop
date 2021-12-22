@@ -148,6 +148,7 @@ const ChatList = (props) => {
                                     )
                                 }}
                                 read={message.seen}
+                                isCustomerView={props.isCustomerView}
                             />
                         )
                     )}

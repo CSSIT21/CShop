@@ -130,13 +130,23 @@ class ChatService {
             let conversation = messages.find(
                 (m) => m.id === response.conversation_id
             )
-            console.log(conversation)
             let message = conversation.messages.find(
                 (m) => m.id === response.message_id
             )
             message.seen = true
             console.log('read ', message.id, message.seen)
             if (message.id === conversation.latest_id) conversation.seen = true
+            sessionStorage.setItem('messages', JSON.stringify(messages))
+        })
+
+        ChatService.socket.on('delete', (response) => {
+            let messages = JSON.parse(sessionStorage.getItem('messages'))
+            console.log(messages)
+            let conversation = messages.find(
+                (m) => m.id === response.data.conversation_id
+            )
+            console.log(conversation)
+            conversation.messages.splice(conversation.messages.findIndex(m => m.id === response.data.message_id), 1)
             sessionStorage.setItem('messages', JSON.stringify(messages))
         })
 
@@ -448,6 +458,34 @@ class ChatService {
         })
     }
 
+<<<<<<< HEAD
+    postMark(conversation_id, value) {
+        ChatService.socket.emit('post', {
+            item: 'mark',
+            with: conversation_id,
+            to: value
+        })
+        let messages = JSON.parse(sessionStorage.getItem('messages'))
+        let conversation = messages.find((m) => m.id === conversation_id)
+        conversation.marked_as = value
+        sessionStorage.setItem('messages', JSON.stringify(messages))
+    }
+
+    delete(conversation_id, message_id) {
+        if(!confirm('Confirm delete?')) return
+        // let messages = JSON.parse(sessionStorage.getItem('messages'))
+        // let conversation = messages.find((m) => m.id === conversation_id)
+        // conversation.messages.splice(conversation.messages.findIndex(m => m.id === message_id), 1)
+        // sessionStorage.setItem('messages', JSON.stringify(messages))
+
+        ChatService.socket.emit('delete', {
+            conversation_id: conversation_id,
+            message_id: message_id
+        })
+    }
+
+=======
+>>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
     static disconnect() {
         ChatService.socket?.disconnect()
         sessionStorage.removeItem('temp')
