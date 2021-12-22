@@ -8,7 +8,12 @@ import ReviewDialog from "../../../_product/components/ReviewBase/ReviewDialog";
 import config from "~/common/constants";
 import axios from "axios";
 
-const ProductDetail = ({ data, status, customerId }) => {
+const ProductDetail = ({
+  data,
+  status,
+  customerId,
+  onClickProduct = () => {},
+}) => {
   const [reviewable, setreviewable] = useState(false);
   const [options, setOptions] = useState([]);
   const classes = useStyles();
@@ -39,7 +44,13 @@ const ProductDetail = ({ data, status, customerId }) => {
   if (status === "Success") {
     return (
       <>
-        <Grid item xs={1} sx={gridStyle}>
+        <Grid
+          item
+          xs={1}
+          sx={gridStyle}
+          onClick={onClickProduct}
+          style={{ cursor: "pointer" }}
+        >
           <img
             src={data.product_id_from_order_item.product_picture[0].path}
             alt=""
