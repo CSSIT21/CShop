@@ -44,7 +44,7 @@ const CreditCard = ({ orderId }) => {
 
   const onClickHandler = () => {
     confirm();
-    
+    window.location.href =`http://localhost:3000/payment/success`
   }
 
   const confirm = () => {

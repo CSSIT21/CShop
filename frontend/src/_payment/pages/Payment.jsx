@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Button } from '@mui/material';
+import React from 'react';
 import { Box } from '@mui/system';
 import ChoiceForPay from '../components/ChoiceForPay';
 import { makeStyles } from '@mui/styles';
 import OrderSummarize from '../components/OrderSummerize';
-import  Axios  from 'axios';
+import { useLocation } from 'react-router-dom'
+import queryString from 'query-string'
 
 
 
@@ -30,17 +30,22 @@ const useStyles = makeStyles({
 
 const Payment = () => {
 
+    const { search } = useLocation()
+    const { orderID,cuponID, addressID } = queryString.parse(search)
+    
+
+
     const classes = useStyles();
     
-    const orderId ={"orderId": 238}
+ 
 
     return (
         <Box>
             <Box className = {classes.boxLeft}>
-                <ChoiceForPay order_id={orderId} />
+                <ChoiceForPay order_id={orderID.orderID} />
             </Box>
             <Box className = {classes.boxRight}>
-                <OrderSummarize order_id={orderId} />
+                <OrderSummarize order_id={orderID.orderID} />
             </Box>
         </Box>
     )

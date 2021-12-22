@@ -57,8 +57,10 @@ const PaidByQr = ({ orderId }) => {
     const [display, setDisplay] = useState("none")
     const [qrCode, setQrCode] = useState("");
 
+    console.log(orderId);
+
     useEffect(() => {
-        getQr()
+        getQr(); getStatus()
     },[])
     
 
@@ -68,6 +70,14 @@ const PaidByQr = ({ orderId }) => {
                 setQrCode(data.rawQr)
             } 
         }).catch((err) => {return Promise.reject(err)})
+    }
+
+    const getStatus = () => {
+        Axios.get(`${config.SERVER_URL}/payment/status`).then((res) => {
+            if (res.data === "Success") {
+                return window.location.href =`http://localhost:3000/payment/success`
+            }
+        })
     }
     
 

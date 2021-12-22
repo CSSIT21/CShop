@@ -44,7 +44,7 @@ const OrderSummarize = ({ order_id }) => {
   useEffect(() => {
     info()
   }, [])
-
+console.log(order_id);
   const info = () => Axios.post( `${config.SERVER_URL}/payment/summary`,order_id).then((res) => {
             if (res.data.success) {
               

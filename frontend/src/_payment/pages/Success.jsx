@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 
 })
 
-const Success = () => {
+const Success = ({orderId}) => {
     const classes = useStyles();
 
     const [name, setName] = useState("")

@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import { Box } from "@mui/system";
-import axios from 'axios'
+import axios from 'axios';
 import { Banking } from "../components/Banking";
 import { Typography } from "@mui/material";
 
 
-export class PayByInternetBanking extends Component {
+export class PayByInternetBanking extends Component  {
   state = {
     charge: undefined
   }
   createInternetBankingCharge = async (id, total_price, token) => {
     try {
+      console.log(total_price);
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:8080/internet-banking',
+          url: 'http://localhost:8080/payment/internetbanking',
           data: {
             id,
             total_price,
-            token
+            token,
           },
           headers: {
             "Content-Type": "application/json"
@@ -33,7 +34,8 @@ export class PayByInternetBanking extends Component {
       } catch (error) {
         console.log(error)
       }
-    }
+  }
+  use
   
     render() {
       const { order } = this.props;

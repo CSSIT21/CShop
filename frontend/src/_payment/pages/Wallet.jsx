@@ -11,14 +11,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import PayByInternetBanking from "./PayByInternetBanking";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Popup from "../components/Popup";
 import Axios from "axios";
 import config from "~/common/constants";
-import { useEffect } from "react";
-import { useState } from "react";
+import React ,{ useEffect, useState  } from "react";
+
 
 const useStyles = makeStyles({
   navbarWrapper: {
@@ -75,7 +74,7 @@ const rows = [
 ];
 
 const Wallet = ({order_id}) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const classes = useStyles();
@@ -98,6 +97,7 @@ const Wallet = ({order_id}) => {
       }
     }).catch((err) => console.log(err))
   }
+
 
   
 
@@ -190,7 +190,7 @@ const Wallet = ({order_id}) => {
           </TableContainer>
         </Box>
       </Box>
-      <PayByInternetBanking/>
+      
     </>
   );
 };

@@ -1,12 +1,15 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { Component } from 'react'
 import { Box } from "@mui/system";
 import axios from 'axios'
 import Script from "react-load-script";
-import { Button, FormControl } from '@mui/material';
+import { Button } from '@mui/material';
 
 let OmiseCard;
 
 export class Banking extends Component {
+
+
     handleLoadScript = () => {
         OmiseCard = window.OmiseCard;
         OmiseCard.configure({
@@ -26,14 +29,23 @@ export class Banking extends Component {
         OmiseCard.configureButton("#internet-banking");
         OmiseCard.attach();
       };
+  
+   
     
+  
+  
       omiseCardHandler = () => {
-        const { order, createInternetBankingCharge} = this.props;
+        const { createInternetBankingCharge } = this.props;
+        const order = 998;
+        const total_price = 100;
         OmiseCard.open({
+          order : order,
+          total_price : total_price,
           frameDescription: "Invoice #3847",
-          amount: order.total_price,
+          amount: total_price,
           onCreateTokenSuccess: token => {
-            createInternetBankingCharge(order.id, order.total_price, token)
+            createInternetBankingCharge(order, total_price, token)
+            console.log(token);
           },
           onFormClosed: () => {}
         });
@@ -44,7 +56,8 @@ export class Banking extends Component {
         this.internetBankingConfigure();
         this.omiseCardHandler();
       };
-      render() {
+  render() {
+        
         return (
           <Box className="own-form">
             <Script
@@ -54,12 +67,12 @@ export class Banking extends Component {
             <form>
               <Button
                 id="internet-banking"
-                className="btn internet-banking"
+                className="internet-banking"
                 type="button"
                 // disabled={this.props.cart.amount === 0}
                 onClick={this.handleClick}
               >
-                Pay with Internet Banking
+                Confirm
               </Button>
             </form>
           </Box>

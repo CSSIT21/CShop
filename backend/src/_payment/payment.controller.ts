@@ -10,6 +10,7 @@ let request: object;
 
 let qr: any;
 let order_id: number;
+let orderIdBank: number;
 const omise = require('omise')({
 	publicKey: process.env.OMISE_PUBLIC_KEY,
 	secretKey: process.env.OMISE_SECRET_KEY,
@@ -64,7 +65,9 @@ export class PaymentController {
 	@Public()
 	callback(@Req() req, @Res() res) {
 		try{
-		const request = req.body;
+			const request = req.body;
+			console.log(request);
+			
 		let trans = this.paymentService.paidByQr(request, order_id, qr.str, qr.ref);
 			return {
 				success: true,
@@ -78,8 +81,16 @@ export class PaymentController {
 	}
 
 	@Get('/status')
-	getStatus(@Req() req, @Res() res): void {
-		res.send({ request });
+	async getStatus(@Req() req, @Res() res) {
+		let payment = await this.prisma.payment.findFirst({
+			where: {
+				order_id: order_id,
+			},
+			select: {
+				status: true
+			}
+		})
+		return payment.status
 	}
 
 	@Get('/clear')
@@ -92,20 +103,21 @@ export class PaymentController {
 
 	//------------------------Internet Banking Pin------------------------//
 
-	@Post('/krungsri')
+	@Post('/internetbanking')
 	@Public()
-	async getKrungsri(@Req() req, @Res() res): Promise<void> {
-		const request = req.body;
-		const orderId = request.orderId
+	async getBanking(@Req() req, @Res() res): Promise<void> {
+
 		const checkoutInternetBanking = async (req, res, next) => {
 			const { id, total_price, token } = req.body;
-		  
+			orderIdBank = id;
+			
 			try {
+			let payment = this.paymentService.createBankPayment(id)
 			  const charge = await omise.charges.create({
 				total_price,
 				source: token,
 				currency: "THB",
-				return_uri: "http://localhost:3000/success"
+				return_uri: "http://localhost:3000/payment/success"
 			  });
 		  
 			  res.send({
@@ -123,10 +135,30 @@ export class PaymentController {
 	@Public()
 	bankCallback(@Req() req, @Res() res): void {
 		try {
-			request = req.body
-			console.log(request);
-			
-    		res.status(200).send(request);
+			const request = req.body
+			const status = request.status
+			const amount = request.source.amount
+			const updateDate = request.paid_at
+			const auth_link = request.authorize_uri
+			let trans = this.paymentService.paidByBank(orderIdBank,status,amount,updateDate,auth_link)
+
+		} catch (err) {
+			return this.paymentService.throwError(err)
+		}
+	}
+
+	@Post('/Banking')
+	@Public()
+	bankPayment(@Req() req) {
+		try {
+			const request = req.body
+			const orderId = request.orderId
+			orderIdBank = orderId;
+			let payment = this.paymentService.createBankPayment(orderId)
+			return {
+				success: true,
+				payment
+			}
 		} catch (err) {
 			return this.paymentService.throwError(err)
 		}

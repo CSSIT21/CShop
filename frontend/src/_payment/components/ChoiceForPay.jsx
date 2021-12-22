@@ -1,17 +1,19 @@
 
 import { AccountBalance, CheckCircleOutlined, CircleOutlined } from '@mui/icons-material'
-import { Button, Checkbox, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, Typography } from '@mui/material'
+import { Button, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import Baht from '../assets/images/baht.png'
 import LazyImage from '../../common/components/LazyImage/LazyImage'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
-import CreditCard from '../pages/CreditCard'
+
 import VisaCard from '../assets/images/Visa_2021.svg'
-import InternetBanking from '../pages/PayByInternetBanking'
-import Wallet from '../pages/Wallet'
-import PaidByQr from '../pages/PaidByQr'
+import { PayByInternetBanking } from '../pages/PayByInternetBanking'
+
+import Axios from "axios";
+import config from "~/common/constants";
+
 
 const useStyles = makeStyles({
 	checkBox: {
@@ -67,6 +69,14 @@ const useStyles = makeStyles({
         left: '200px',
         alignItems: 'center',
     },
+    textWallet: {
+        fontSize: 'large',
+        display: 'flex',
+        flexDirection: 'row',
+        position: 'absolute',
+        right: "180px",
+        bottom: "486px"
+    }
     // fullBox: {
     //     display: 'flex',
     //     position: 'static',
@@ -82,25 +92,55 @@ const ChoiceForPay = ({ order_id }) => {
 
     const classes = useStyles();
     const [value, setValue] = React.useState('');
-
+    const [wallet, setWallet] = useState([]);
+    const [order, setOrder] = useState([]);
+    const [click, setClick] = useState(true)
+    const orderId = { "orderId": 238 }
     
+    useEffect(() => {
+        getWallet()
+    }, [])
+
+  const getWallet = () => {
+    Axios.post(`${config.SERVER_URL}/payment/mywallet`, orderId).then((res) => {
+      if (res.data.success) {
+        setWallet(res.data.walletOrder.wallet);
+
+        setOrder(res.data.walletOrder.order);
+      }
+    }).catch((err) => console.log(err))
+  }
+
+  const paidByWallet = () => {
+    Axios.post(`${config.SERVER_URL}/payment/wallet`, orderId).then((res) => {
+      if (res.data.success) {
+        console.log("Done");
+      }
+    }).catch((err) => console.log(err))
+  }
+
+    const route = (value) => {
+        return window.location.href =`http://localhost:3000/payment/${value}`
+    }
     
     const handleRadioChange = (event) => {
         setValue(event.target.value);
     };
 
-    const handleSubmit = () => {
-        if (value === 'creditCard') {
-            <CreditCard/>;
+    const handleSubmit = (value) => {
+        if (value === 'creditcard' && click) {
+            console.log("willy");
+            return route(value)
         }
-        if (value === 'InBanking') {
-            <InternetBanking/>
+        if (value === 'banking' && click ) {
+            return <PayByInternetBanking id={order.id} total_price='100' />
         }
-        if (value === 'wallet') {
-            <Wallet/>
+        if (value === 'wallet' && click && wallet.balance >= order.total_price) {
+            paidByWallet();
+            return route("success")
         }
-        if (value === 'qr') {
-           <PaidByQr orderId={order_id}/>
+        if (value === 'paidbyqr' && click) {
+           return route(value)
         }
     }
 
@@ -137,8 +177,12 @@ const ChoiceForPay = ({ order_id }) => {
                         </Box>
                         <Box className={classes.boxStyle}>
                             <FormControlLabel className={classes.checkBox} value="wallet" label="Wallet" control={
-                                    <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} />
-                            }/>
+                                    <Radio icon={<CircleOutlined />} checkedIcon={<CheckCircleOutlined />} /> 
+                            } />
+                            <Typography className={classes.textWallet} sx={{fontSize: "27px"}}>
+                                {wallet.balance}
+                                <LazyImage src={Baht} lazy="https://via.placeholder.com/20x20.png" />
+                            </Typography>
                         </Box>
                         <Box className={classes.boxStyle}>
                             <FormControlLabel className={classes.checkBox} value="paidbyqr" label="QR Code" control={
@@ -147,11 +191,14 @@ const ChoiceForPay = ({ order_id }) => {
                         </Box>
                     </RadioGroup>
                     <Box className={classes.boxButton}>
-                        <Link to={"/payment/" + value}>
-                            <Button className={classes.confirmButton} onClick={handleSubmit()} color="primary">
+                        {/* <Link to={"/payment/" + value}> */}
+                        {value === "banking"
+                        ?   <PayByInternetBanking className={classes.confirmButton} color="primary"/> 
+                        :   <Button className={classes.confirmButton} onClick={function (event) { setClick(true); handleSubmit(value); }} color="primary">
                                 Confirm
                             </Button>
-                        </Link>
+                        }
+                        {/* </Link> */}
                     </Box>
                 </FormGroup>
             </Grid>

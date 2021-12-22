@@ -57,7 +57,7 @@ import PaidByQr from "./_payment/pages/PaidByQr";
 import Wallet from "./_payment/pages/Wallet";
 import CreditCard from "./_payment/pages/CreditCard";
 import PayByInternetBanking from "./_payment/pages/PayByInternetBanking";
-import Success from "./_auth/components/Success";
+import Success from "./_payment/pages/Success";
 
 
 /** pages lazy loading*/
