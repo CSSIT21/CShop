@@ -8,7 +8,12 @@ import ReviewDialog from "../../../_product/components/ReviewBase/ReviewDialog";
 import config from "~/common/constants";
 import axios from "axios";
 
-const ProductDetail = ({ data, status, customerId }) => {
+const ProductDetail = ({
+  data,
+  status,
+  customerId,
+  onClickProduct = () => {},
+}) => {
   const [reviewable, setreviewable] = useState(false);
   const [options, setOptions] = useState([]);
   const classes = useStyles();
@@ -41,7 +46,7 @@ const ProductDetail = ({ data, status, customerId }) => {
   if (status === "Success") {
     return (
       <>
-        <Grid item xs={1} sx={gridStyle}>
+        <Grid item xs={1} sx={gridStyle} onClick={onClickProduct}>
           <img
             src={data.product_id_from_order_item.product_picture[0].path}
             alt=""
@@ -50,7 +55,7 @@ const ProductDetail = ({ data, status, customerId }) => {
             height="90"
           />
         </Grid>
-        <Grid item xs={8} sx={gridStyle}>
+        <Grid item xs={8} sx={gridStyle} onClick={onClickProduct}>
           <Typography className={classes.shopName}>
             {data.product_id_from_order_item.title}
           </Typography>
@@ -68,7 +73,7 @@ const ProductDetail = ({ data, status, customerId }) => {
           </Typography>
           <Typography>x{data.quantity}</Typography>
         </Grid>
-        <Grid item xs={1} sx={gridStyle}>
+        <Grid item xs={1} sx={gridStyle} onClick={onClickProduct}>
           {data.product_id_from_order_item.price}฿
         </Grid>
         <Grid item xs={2} sx={gridStyle}>

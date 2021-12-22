@@ -57,6 +57,9 @@ const OrderDetail = () => {
   const toChatShop = () => {
     router.push(`/chat/${products[0].product_id_from_order_item.shop_id}`);
   };
+  const goToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
   useEffect(() => {
     setonLoad(true);
     axios
@@ -163,6 +166,9 @@ const OrderDetail = () => {
                 data={product}
                 status={orderDetail.status}
                 customerId={auth.user.id}
+                onClickProduct={() => {
+                  goToProduct(product.product_id);
+                }}
               />
             ))}
           </Grid>
