@@ -40,11 +40,6 @@ const ChatPage = (props) => {
     const classes = useStyles()
     const [shouldScroll, setShouldScroll] = useState(false)
     const [isCustomerView, setIsCustomerView] = useState(true)
-<<<<<<< HEAD
-=======
-
-    // console.log('rendering with messages: ', messages)
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
 
     function handleGetConversation() {
         setShouldScroll(true)
@@ -134,7 +129,6 @@ const ChatPage = (props) => {
             ChatService.getConversationId(parseInt(router_id), (id) => {
                 console.log('get coonv ' + id + ' complete')
                 handleChangeView(true)
-                // console.log(ChatService.conversation(id))
                 changeChat(id)
             })
         }
