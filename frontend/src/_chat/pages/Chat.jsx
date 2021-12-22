@@ -133,11 +133,8 @@ const ChatPage = (props) => {
             console.log('opening chat page for ' + (parseInt(router_id) ? 'id#' : 'url slug ') + router_id)
             ChatService.getConversationId(parseInt(router_id), (id) => {
                 console.log('get coonv ' + id + ' complete')
-<<<<<<< HEAD
                 handleChangeView(true)
-=======
                 // console.log(ChatService.conversation(id))
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                 changeChat(id)
             })
         }
