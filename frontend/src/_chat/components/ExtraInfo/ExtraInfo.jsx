@@ -17,13 +17,9 @@ import Paper from '@mui/material/Paper'
 
 const ExtraInfo = (props) => {
     const classes = useStyles(props.color)
-    function labelPrompt() {
-        prompt('Add your label')
-    }
-
     return (
         <Box >
-            <Drawer open={props.open} anchor="right">
+            <Drawer open={props.open} onClose={props.onClose} anchor="right">
                 <Box className={classes.drawerContainer}>
                 <Box className={classes.drawerContent}>
                     <Box className={classes.labels}>
@@ -40,7 +36,7 @@ const ExtraInfo = (props) => {
                             />
                             <ChatLabel
                                 color="#7600BF"
-                                text="คนนี้เรื่องเยอะ"
+                                text="Need refund"
                                 removeable={true}
                             />
                         </Box>
@@ -57,23 +53,23 @@ const ExtraInfo = (props) => {
                             />
                             <ChatLabel
                                 color="#7600BF"
-                                text="คนนี้เรื่องเยอะ"
+                                text="Need refund"
                                 removeable={false}
                             />
                             <ChatLabel
                                 color="#BF0039"
-                                text="ตอบช้า"
+                                text="Question"
                                 removeable={false}
                             />
                             <ChatLabel
                                 color="#F1CA3F"
-                                text="Woohoo"
+                                text="Picky"
                                 removeable={false}
                             />
                         </Box>
                         <Button
                             className={classes.addLabelButton}
-                            onClick={() => labelPrompt()}
+                            onClick={props.openPreference}
                         >
                             <AddIcon />
                             <Typography sx={{ marginLeft: '14px' }}>

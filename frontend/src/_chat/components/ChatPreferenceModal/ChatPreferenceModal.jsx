@@ -85,7 +85,7 @@ const ChatPreferenceModal = (props) => {
                                 id="standard-basic"
                                 variant="standard"
                                 size="small"
-                                defaultValue="johnyshop"
+                                defaultValue={props.shop_name.toLowerCase().replace(/\s/, '')}
                                 sx={{
                                     width: '150px',
                                     height: '30px',

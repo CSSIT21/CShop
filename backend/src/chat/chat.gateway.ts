@@ -186,7 +186,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 			event: 'get',
 			data: {
 				item: 'shop',
-<<<<<<< HEAD
 				data: shop,
 			},
 		};
@@ -215,11 +214,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				message_id: data.message_id
 			}
 		});
-=======
-				data: shop
-			}
-		}
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
 	}
 
 	@SubscribeMessage('join')
