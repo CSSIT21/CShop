@@ -3,7 +3,7 @@ import { AccountBalance, CheckCircleOutlined, CircleOutlined, WindowRounded } fr
 import { Button, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Box } from '@mui/system'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Baht from '../assets/images/baht.png'
 import LazyImage from '../../common/components/LazyImage/LazyImage'
 import CreditCardIcon from '../assets/images/mc_vrt_pos.svg'
@@ -92,11 +92,11 @@ const useStyles = makeStyles({
 const ChoiceForPay = ({ order_id }) => {
 
     const classes = useStyles();
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
     const [wallet, setWallet] = useState([]);
     const [order, setOrder] = useState([]);
     const [click, setClick] = useState(true)
-    const orderId = { "orderId": 238 }
+    const orderId = { "orderId": order_id }
     
     useEffect(() => {
         getWallet()
@@ -105,6 +105,7 @@ const ChoiceForPay = ({ order_id }) => {
   const getWallet = () => {
     Axios.post(`${config.SERVER_URL}/payment/mywallet`, orderId).then((res) => {
       if (res.data.success) {
+          console.log(res.data)
         setWallet(res.data.walletOrder.wallet);
 
         setOrder(res.data.walletOrder.order);
@@ -134,7 +135,7 @@ const ChoiceForPay = ({ order_id }) => {
             return route(value)
         }
         if (value === 'banking' && click ) {
-            return <PayByInternetBanking id={order.id} total_price='100' />
+            return <PayByInternetBanking id={order_id} total_price='100' />
         }
         if (value === 'wallet' && click && wallet.balance >= order.total_price) {
             paidByWallet();
@@ -142,8 +143,8 @@ const ChoiceForPay = ({ order_id }) => {
         }
         if (value === 'paidbyqr' && click) {
             
-            <PaidByQr orderId={ order.id }/>
-           return route(value+"?orderId="+order.id)
+            <PaidByQr orderId={ order_id }/>
+           return route(value+"?orderId="+order_id)
         }
     }
 
