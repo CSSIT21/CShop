@@ -72,7 +72,7 @@ let resId = 1000;
 const ManageAccountPage = () => {
     const classes = useStyles();
 
-    const [users, setUsersList] = React.useState([]);
+    const [users, setUsersList] = useState([]);
     const setUsers = async () => {
         const fetchedData = await axios.get(
             config.SERVER_URL + "/manageaccount/users"
@@ -81,29 +81,29 @@ const ManageAccountPage = () => {
         setUsersList(fetchedData.data);
       };
 
-    const [sortBy, setSortBy] = React.useState('');
+    const [sortBy, setSortBy] = useState('');
     const setSort = (event) => {
         setSortBy(event.target.value);
         console.log(sortBy);
       };
 
-    const [sortOrder, setSortOrder] = React.useState(false);
+    const [sortOrder, setSortOrder] = useState(false);
     const toggleSort = () => {
         setSortOrder(!sortOrder);
       }
 
-    const [showRestricted, setShowRestricted] = React.useState(false);
+    const [showRestricted, setShowRestricted] = useState(false);
     const toggleShowRestricted = () => {
         setShowRestricted(!showRestricted);
         setPage(1);
         }
 
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = useState(1);
     const handlePagination = (event) => {
         setPage(event.target.textContent);
     }
 
-    const [search, setSearch] = React.useState('');
+    const [search, setSearch] = useState('');
     const handleSearch = (event) => {
         setSearch(event.target.value);
     }

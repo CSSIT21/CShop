@@ -139,7 +139,7 @@ const SellerCreateCoupon = (props) => {
     checkValidation();
   };
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   function handleClick() {
     if (
       code != "" &&

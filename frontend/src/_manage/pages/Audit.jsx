@@ -64,7 +64,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const ManageAccountPage = () => {
     const classes = useStyles();
     
-    const [audits, setAuditList] = React.useState([]);
+    const [audits, setAuditList] = useState([]);
     const setAudits = async () => {
         const fetchedData = await axios.get(
             config.SERVER_URL + "/manageaccount/audit"
@@ -72,7 +72,7 @@ const ManageAccountPage = () => {
         setAuditList(fetchedData.data);
       };
 
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = useState(1);
     const handlePagination = (event) => {
         setPage(event.target.textContent);
     }

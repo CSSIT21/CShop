@@ -15,7 +15,7 @@ import Popuppic from '~/common/assets/images/popup.png';
 
 const CoinRedeemPage = (coinredeem) => {
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -39,8 +39,8 @@ const CoinRedeemPage = (coinredeem) => {
         'Day7',
     ];
 
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
+    const [activeStep, setActiveStep] = useState(0);
+    const [completed, setCompleted] = useState({});
 
     const totalSteps = () => {
         return steps.length;

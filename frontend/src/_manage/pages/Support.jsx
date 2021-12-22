@@ -39,38 +39,38 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const ManageSellerAccountPage = () => {
     const classes = useStyles();
-    const [type, setType] = React.useState(0);
+    const [type, setType] = useState(0);
     const setTicketType = (event) => {
         setType(event.target.value);
       };
 
-    const [desc, setDesc] = React.useState('');
+    const [desc, setDesc] = useState('');
     const setDescription = (event) => {
           setDesc(event.target.value);
         };
 
-    const [title, setTitle] = React.useState('');
+    const [title, setTitle] = useState('');
     const setTicketTitle = (event) => {
             setTitle(event.target.value);
         };
 
-    const [target, setTarget] = React.useState('');
+    const [target, setTarget] = useState('');
     const setTicketTarget = (event) => {
             setTarget(event.target.value);
         };
 
-    const [picture, setPicture] = React.useState("https://via.placeholder.com/410x360");
+    const [picture, setPicture] = useState("https://via.placeholder.com/410x360");
     const setPictureUpload = (event) => {
         console.log(event.target.value);
         setPicture(event.target.value);
       };
 
-    const [picture64, setPicture64] = React.useState('');
+    const [picture64, setPicture64] = useState('');
     const setPictureUpload64 = (ba) => {
         setPicture64(ba);
       };
 
-    const [submitstatus, setStatus] = React.useState('');
+    const [submitstatus, setStatus] = useState('');
     const setSubmitStatus = (sa) => {
         setStatus(sa);
       };
