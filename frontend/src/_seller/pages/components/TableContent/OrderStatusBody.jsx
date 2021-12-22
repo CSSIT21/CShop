@@ -20,8 +20,8 @@ import CorrectOnClick from "./CorrectOnClick";
 import IncorrectOnClick from "./IncorrectOnClick";
 
 const OrderStatusBody = ({ rows, columns,handleClick }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

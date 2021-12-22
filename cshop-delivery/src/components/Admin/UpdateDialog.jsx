@@ -12,9 +12,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const UpdateDialog = React.forwardRef((props, ref) => {
-    const [open, setOpen] = React.useState(false);
-    const [correct, setCorrect] = React.useState(false);
-    const [newdetail, setNewDetail] = React.useState({
+    const [open, setOpen] = useState(false);
+    const [correct, setCorrect] = useState(false);
+    const [newdetail, setNewDetail] = useState({
         newDetail: "",
         trackingNumber: "",
         username: "",

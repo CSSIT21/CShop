@@ -230,7 +230,7 @@ export default function AddProduct({ product, setProduct }) {
 
   const shopid = useParams();
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   function handleClick() {
     if (
       title != "" &&
