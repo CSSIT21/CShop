@@ -90,16 +90,11 @@ const ChatBubble = (props) => {
 
     useEffect(() => {
         console.log(props.read, props.fromCustomer, props.isCustomerView)
-<<<<<<< HEAD
         if (
             !props.read &&
             ((!props.fromCustomer && props.isCustomerView) ||
                 (props.fromCustomer && !props.isCustomerView))
         ) {
-=======
-        if(!props.read && ((!props.fromCustomer && props.isCustomerView) || (props.fromCustomer && !props.isCustomerView)))
-        {
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
             props.onRead(props.messageId)
         }
     }, [props.read])
