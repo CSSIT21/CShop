@@ -147,7 +147,6 @@ const ChatFeed = (props) => {
         {
             props.ChatService.read(props.currentConversation, message_id)
         }
-<<<<<<< HEAD
     }
 
     function handleDelete(message_id) {
@@ -158,8 +157,6 @@ const ChatFeed = (props) => {
         if(mark === markedAs) mark = 'None'
         props.ChatService.postMark(messages.id, mark)
         setMarkedAs(mark)
-=======
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
     }
     // if(messages.latest_id === )
     // console.log(messages)
@@ -191,13 +188,9 @@ const ChatFeed = (props) => {
                         }
                         status={messages.active}
                         pic={messages.customer_pic}
-<<<<<<< HEAD
                         mark={markedAs}
                         setMark={setMark}
                         openPreference={props.openPreference}
-=======
-                        mark="Done"
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                     />
                 )}
             </Box>
@@ -208,15 +201,8 @@ const ChatFeed = (props) => {
                             key={i}
                             currentConversation={props.currentConversation}
                             variant={
-<<<<<<< HEAD
                                 (m.from_customer && props.isCustomerView) ||
                                 (!m.from_customer && !props.isCustomerView)
-=======
-                                (m.from_customer &&
-                                    props.isCustomerView) ||
-                                (!m.from_customer &&
-                                    !props.isCustomerView)
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
                                     ? 'right'
                                     : 'left'
                             }
@@ -233,7 +219,6 @@ const ChatFeed = (props) => {
                             onRead={handleRead}
                             openSnackbar={openSnackbar}
                             isCustomerView={props.isCustomerView}
-<<<<<<< HEAD
                             onDelete={handleDelete}
                         />
                     ))}
@@ -241,11 +226,6 @@ const ChatFeed = (props) => {
                     handleSubmitMessage={props.handleSubmitMessage}
                 />}
                 <ExtraInfo open={true}/>
-=======
-                        />
-                    ))}
-                <AutomatedChat />
->>>>>>> e6d1778afc25ba9872981e9480dc73e0717f9068
             </Box>
 
             <Box className={classes.chatFeedButtom}>
