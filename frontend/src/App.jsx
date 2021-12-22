@@ -52,6 +52,7 @@ import SellerRefundLog from "./_seller/pages/SellerRefundLog";
 import SellerOrderLog from "./_seller/pages/SellerOrderLog";
 import SellerOrderStatus from "./_seller/pages/SellerOrderStatus";
 import Promotion from "./_promotion/pages/Promotion";
+import CreatePromotion from './_promotion/pages/CreatePromotion'
 import SellerShopCustomizationPage from "./_seller/pages/SellerShopCustomization";
 import ShopComment from "./_shop/pages/ShopComment";
 import NotFoundPage from "./common/pages/404";
@@ -93,6 +94,7 @@ import SellerRegister from "./_auth/pages/SellerRegister";
 import ManageBanner from "./_home/pages/ManageBanner";
 import SellerFlashSalesLog from "./_seller/pages/SellerFlashSalesLog";
 import OrderDetail from "./_profile/pages/OrderDetail";
+import ShowEventPromotion from "./_promotion/pages/ShowEventPromotion";
 
 function App() {
   return (
@@ -287,6 +289,20 @@ function App() {
                   <MainLayout>
                     <Suspense fallback={<SkeletonLoading />}>
                       <Promotion />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route exact path="/createpromotion">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <CreatePromotion />
+                    </Suspense>
+                  </MainLayout>
+                </Route>
+                <Route exact path="/showeventpromotion">
+                  <MainLayout>
+                    <Suspense fallback={<SkeletonLoading />}>
+                      <ShowEventPromotion/>
                     </Suspense>
                   </MainLayout>
                 </Route>
