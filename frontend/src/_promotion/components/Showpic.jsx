@@ -1,9 +1,4 @@
 import React from 'react'
-import p1 from "../picture/1.jpg"
-import p2 from "../picture/2.jpg"
-import p3 from "../picture/3.jpg"
-import p4 from "../picture/4.jpg"
-import p5 from "../picture/5.jpg"
 import p6 from "../picture/Banner.png"
 import Carousel from "../../common/components/Carousel";
 import { useState } from "react";
